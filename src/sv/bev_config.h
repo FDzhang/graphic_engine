@@ -1,0 +1,133 @@
+#ifndef _BEV_CONFIG_H
+#define _BEV_CONFIG_H
+
+
+
+#define USE_CONFIG_FILE (1)
+#define GENERATE_BIN_FOR_CONFIG_FILE (0)
+#define MAX_NAME_LENGTH 50
+typedef int int32_t;
+typedef float float32_t;
+typedef double	float64_t;
+
+#undef SMC_MAJOR_VERSION
+#undef SMC_MINOR_VERSION
+
+// SMC
+typedef struct {
+    int SMC_MAJOR_VERSION;
+	int SMC_MINOR_VERSION;
+	int DISTORTION_MODEL;
+	float FRONT_CAMERA_SENSOR_WIDTH;			
+	float FRONT_CAMERA_SENSOR_HEIGHT;			  
+	float FRONT_CAMERA_SENSOR_CENTER_X;
+	float FRONT_CAMERA_SENSOR_CENTER_Y;		   
+	float FRONT_CAMERA_SKEW_C;			
+	float FRONT_CAMERA_SKEW_D;			 
+	float FRONT_CAMERA_H_FOV;					   
+	float FRONT_CAMERA_V_FOV;					  
+	float FRONT_CAMERA_IMAGE_CENTER_X; 		
+	float FRONT_CAMERA_IMAGE_CENTER_Y; 		  
+	float FRONT_CAMERA_SKEW_E; 		
+	float FRONT_CAMERA_IMAGE_TOP_CUT;		   
+	//int FRONT_CAMERA_DISTORTION_FILE_INDEX;	  
+	char FRONT_CAMERA_LUT_FILE_NAME[MAX_NAME_LENGTH];
+	float REAR_CAMERA_SENSOR_WIDTH;		   
+	float REAR_CAMERA_SENSOR_HEIGHT;			 
+	float REAR_CAMERA_SENSOR_CENTER_X; 		
+	float REAR_CAMERA_SENSOR_CENTER_Y; 		  
+	float REAR_CAMERA_SKEW_C; 		   
+	float REAR_CAMERA_SKEW_D;			
+	float REAR_CAMERA_H_FOV;					  
+	float REAR_CAMERA_V_FOV;					 
+	float REAR_CAMERA_IMAGE_CENTER_X;		   
+	float REAR_CAMERA_IMAGE_CENTER_Y;			 
+	float REAR_CAMERA_SKEW_E;		   
+	float REAR_CAMERA_IMAGE_TOP_CUT;		  
+	//int REAR_CAMERA_LUT_FILE_NAME;	 .
+		
+	char REAR_CAMERA_LUT_FILE_NAME[MAX_NAME_LENGTH];
+	float LEFT_CAMERA_SENSOR_WIDTH;		   
+	float LEFT_CAMERA_SENSOR_HEIGHT;			 
+	float LEFT_CAMERA_SENSOR_CENTER_X; 		
+	float LEFT_CAMERA_SENSOR_CENTER_Y; 		  
+	float LEFT_CAMERA_SKEW_C; 		   
+	float LEFT_CAMERA_SKEW_D;			
+	float LEFT_CAMERA_H_FOV;					  
+	float LEFT_CAMERA_V_FOV;					 
+	float LEFT_CAMERA_IMAGE_CENTER_X;		   
+	float LEFT_CAMERA_IMAGE_CENTER_Y;			 
+	float LEFT_CAMERA_SKEW_E;		   
+	float LEFT_CAMERA_IMAGE_TOP_CUT;		  
+	//int LEFT_CAMERA_LUT_FILE_NAME;	 
+	
+	char LEFT_CAMERA_LUT_FILE_NAME[MAX_NAME_LENGTH];
+	float RIGHT_CAMERA_SENSOR_WIDTH;			
+	float RIGHT_CAMERA_SENSOR_HEIGHT;			  
+	float RIGHT_CAMERA_SENSOR_CENTER_X;		 
+	float RIGHT_CAMERA_SENSOR_CENTER_Y;		   
+	float RIGHT_CAMERA_SKEW_C;			
+	float RIGHT_CAMERA_SKEW_D;			 
+	float RIGHT_CAMERA_H_FOV;					   
+	float RIGHT_CAMERA_V_FOV;					  
+	float RIGHT_CAMERA_IMAGE_CENTER_X; 		
+	float RIGHT_CAMERA_IMAGE_CENTER_Y;		  
+	float RIGHT_CAMERA_SKEW_E; 		
+	float RIGHT_CAMERA_IMAGE_TOP_CUT;		   
+	//int RIGHT_CAMERA_LUT_FILE_NAME;	  
+	
+	char RIGHT_CAMERA_LUT_FILE_NAME[MAX_NAME_LENGTH];
+} SV_SMC_CONFIG_T;
+
+// SMC
+typedef struct {
+    int SMC_MAJOR_VERSION;
+	int SMC_MINOR_VERSION;
+	float SPACE_MODEL_SCALE_SIZE;
+	float SPACE_MODEL_Y_MIN;
+	float VEHICLE_LENGTH;
+	float VEHICLE_REARWHEEL_TO_REAR_BUMPER;
+	float CAR_MODEL_POSITION_X;			   
+	float CAR_MODEL_POSITION_Y;					
+	float CAR_MODEL_POSITION_Z;					
+	float CAR_MODEL_SCALE_X;						
+	float CAR_MODEL_SCALE_Y;						
+	float CAR_MODEL_SCALE_Z;						
+	float WHEEL_MODEL_SCALE;						
+	float WHEEL_MODEL_OFFSET_FRONT;				
+	float WHEEL_MODEL_OFFSET_REAR; 				
+	float WHEEL_MODEL_OFFSET_WIDTH;				
+	float WHEEL_MODEL_OFFSET_UP;				   
+	float GROUND_MODEL_WIDTH;					 
+	float GROUND_MODEL_HEIGHT; 					
+	float GROUND_MODEL_POS_X;						
+	float GROUND_MODEL_POS_Y;					   
+	float GROUND_MODEL_POS_Z;						
+	int GROUND_MODEL_ENABLE; 				 
+	float LEFT_PANEL_POSITION_X;					
+	float LEFT_PANEL_POSITION_Y;				   
+	float LEFT_PANEL_WIDTH;					  
+	float LEFT_PANEL_HEIGHT;					  
+	float BOTTOM_PANEL_POSITION_X; 			   
+	float BOTTOM_PANEL_POSITION_Y; 				
+	float BOTTOM_PANEL_WIDTH;					   
+	float BOTTOM_PANEL_HEIGHT; 					
+	float RIGHT_PANEL_POSITION_X;				
+	float RIGHT_PANEL_POSITION_Y;				   
+	float RIGHT_PANEL_WIDTH;					  
+	float RIGHT_PANEL_HEIGHT;					  
+} SV_SMC_CONFIG_HMI_T;
+
+
+
+typedef struct
+{
+	 SV_SMC_CONFIG_T smc;
+	 SV_SMC_CONFIG_HMI_T smc_hmi;
+	 
+}BEV_CONFIG_T;
+
+int32_t bev_Load_Configure( BEV_CONFIG_T * pData, char* SMC, char* AMC, char* USC );
+//int32_t Convert_Configure_to_SMC(Smc_Cal_T * pSMC_Data, BEV_CONFIG_T *pConfig_data );
+
+#endif

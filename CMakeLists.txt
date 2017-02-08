@@ -1,0 +1,27 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake.modules)
+INCLUDE(${CMAKE_MODULE_PATH}/toolchain.cmake)
+
+IF(NOT rootfs_FOUND)
+	FIND_PACKAGE(rootfs)
+ENDIF()
+
+IF(NOT algocomm_FOUND AND NOT algocomm_SOURCE_FOUND)
+	FIND_PACKAGE(algocomm)
+ENDIF()
+
+IF(NOT rootfs_FOUND)
+	MESSAGE(FATAL_ERROR "No rootfs found!")
+ENDIF()
+
+IF(NOT algocomm_FOUND AND NOT algocomm_SOURCE_FOUND)
+	MESSAGE(FATAL_ERROR "No algocomm library found!")
+ENDIF()
+
+
+#设置包含目录
+INCLUDE_DIRECTORIES(include)
+
+#添加子目录
+ADD_SUBDIRECTORY(src)
