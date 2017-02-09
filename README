@@ -1,0 +1,11 @@
+ARM A15侧OpenGL ES绘制HMI及相关控制代码库
+
+依赖algo_common, rootfs
+
+编译方法：
+	以下编译若不在服务器上编译，请设置环境变量TOOLCHAIN_DIR指向编译器所在路径
+	(1) 设置algo_common库存放路径，ALGOCOMM_ROOT_DIR指向库目录，其下lib子目录有对应的so库文件，include子目录下有相关头文件
+	(2) 设置环境变量J6_ROOTFS指向文件系统目录取代建立链接
+	(3) 进入任意编译目录(也可以在代码目录中，但是建议在其它目录中编译从而保持本目录整洁),执行 cmake {代码目录}
+	(4) 执行make, 编译成功将在编译目录的lib子目录中生成对应的so库文件
+	
