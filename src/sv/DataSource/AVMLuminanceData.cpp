@@ -78,19 +78,19 @@ int AVMLuminanceData::get_Lumin_para_from_file(Lumin_para *myLumin_para, char *f
 		printf("File %s cannot be opened\n", filename);
 	   return -1;
 	}
-
+  
 		*(K_FL+0) = 1.0;
 		*(K_FL+1) = 1.0;
 		*(K_FL+2 )= 1.0;
-
+		
 		 *(K_BL+0) = 1.0;
 		 *(K_BL+1) = 1.0;
 		 *(K_BL+2 )= 1.0;
-
+		 
 		 *(K_FR+0) = 1.0;
 		 *(K_FR+1) = 1.0;
 		 *(K_FR+2 )= 1.0;
-
+		 
 		 *(K_BR+0) = 1.0;
 		 *(K_BR+1) = 1.0;
 		 *(K_BR+2 )= 1.0;
@@ -99,10 +99,10 @@ int AVMLuminanceData::get_Lumin_para_from_file(Lumin_para *myLumin_para, char *f
  fscanf(f,"\n");
  fgets(buf,CMV_MAX_BUF,f);
  fscanf(f,"%f,%f,%f",point_TL,point_TL+1,point_TL+2);
-
+ 
  printf("\r\n m_lumin_para.Lumin_point_TL = %f",*point_TL);
 
-
+ 
  fscanf(f,"\n");
  fgets(buf,CMV_MAX_BUF,f);
  fscanf(f,"%f,%f,%f",point_TR,point_TR+1,point_TR+2);
@@ -131,28 +131,14 @@ fscanf(f,"%f,%f,%f",point_RT,point_RT+1,point_RT+2);
 
 AVMLuminanceData::AVMLuminanceData()
 {
-    InitDefaultLuminanceParams();
+
 }
 AVMLuminanceData::~AVMLuminanceData()
 {
+
+
+
 }
-
-void AVMLuminanceData::InitDefaultLuminanceParams()
-{
-    for(int i =0;i<3;i++)
-   {
-       m_lumin_para.K_FL[i] = 1.0;
-	   m_lumin_para.K_FR[i] = 1.0;
-	   m_lumin_para.K_RF[i] = 1.0;
-	   m_lumin_para.K_RB[i] = 1.0;
-	   m_lumin_para.K_LF[i] = 1.0;
-	   m_lumin_para.K_LB[i] = 1.0;
-	   m_lumin_para.K_BL[i] = 1.0;
-	   m_lumin_para.K_BR[i] = 1.0;
-
-   }
-}
-
 void AVMLuminanceData::CalcLuminanceCof(float *first_lumin,float *second_lumin,float *first_cof,float *second_cof)
 {
         float sigma_N = 6502500.0;
@@ -179,13 +165,13 @@ void AVMLuminanceData::CalcLuminanceCof(float *first_lumin,float *second_lumin,f
 
 }
 
-/*Init from pose file ,file sotre camera pose index as front right rear left*/
+/*Init from pose file ,file sotre camera pose index as front right rear left*/	
 void AVMLuminanceData::Init( char *pfilename)
 {
      int i=0;
 
 	get_Lumin_para_from_file(&m_lumin_para,pfilename);
-
+	
 
 }
 
@@ -210,9 +196,9 @@ void AVMLuminanceData::ConvertRgb2Yuv(float *pLuminancergb,float *pYUV)
 {
 
    pYUV[0] = (float)(pLuminancergb[0])*0.299+(float)(pLuminancergb[1])*0.587 + (pLuminancergb[2])*0.11413;
-
+   
    pYUV[1]=(float)0.5+(float)(pLuminancergb[0])*(-0.169)+(float)(pLuminancergb[1])*(-0.331) + (pLuminancergb[2])*0.5;
-
+   
    pYUV[2]=(float)0.5+(float)(pLuminancergb[0])*0.5+(float)(pLuminancergb[1])*(-0.419)+ (pLuminancergb[2])*(-0.081);
 
    return;
@@ -247,10 +233,10 @@ void AVMLuminanceData::GetLuminCof(float **pLumin)
 void AVMLuminanceData::CalcLuminanceCof()
 {
 	CalcLuminanceCof(&(m_luminance_normalize_yuv[3*eLeftFront]),&(m_luminance_normalize_yuv[3*eFrontLeft]),m_lumin_para.K_LF,m_lumin_para.K_FL);
-	CalcLuminanceCof(&(m_luminance_normalize_yuv[3*eFrontRight]),&(m_luminance_normalize_yuv[3*eRightFront]),m_lumin_para.K_FR,m_lumin_para.K_RF);
+	CalcLuminanceCof(&(m_luminance_normalize_yuv[3*eFrontRight]),&(m_luminance_normalize_yuv[3*eRightFront]),m_lumin_para.K_FR,m_lumin_para.K_RF);		
 	CalcLuminanceCof(&(m_luminance_normalize_yuv[3*eRearLeft]),&(m_luminance_normalize_yuv[3*eLeftRear]),m_lumin_para.K_BL,m_lumin_para.K_LB);
-	CalcLuminanceCof(&(m_luminance_normalize_yuv[3*eRightRear]),&(m_luminance_normalize_yuv[3*eRearRight]),m_lumin_para.K_RB,m_lumin_para.K_BR);
-
+	CalcLuminanceCof(&(m_luminance_normalize_yuv[3*eRightRear]),&(m_luminance_normalize_yuv[3*eRearRight]),m_lumin_para.K_RB,m_lumin_para.K_BR);   
+	
     MergeDataToAll(m_lumin_cof,&m_lumin_para);
 }
 void AVMLuminanceData::MergeDataToAll(float *pCof,Lumin_para *pCofSeparate)
@@ -280,7 +266,7 @@ void AVMLuminanceData::SetLuminanceUnNormalizeRGB(unsigned int *pLuminance)
 	memcpy(m_luminance_rgb,pLuminance,24*sizeof(unsigned int));
 	Normalize(m_luminance_rgb,m_luminance_normalize_rgb);
 	ConvertRgb2YuvNorm();
-	CalcLuminanceCof();
+	CalcLuminanceCof();	
    return;
 
 }
@@ -289,7 +275,7 @@ void AVMLuminanceData::SetLuminanceUnNormalizeYUV(unsigned int *pLuminance)
 {
 	memcpy(m_luminance_yuv,pLuminance,24*sizeof(unsigned int));
 	Normalize(m_luminance_yuv,m_luminance_normalize_yuv);
-	CalcLuminanceCof();
+	CalcLuminanceCof();	
    return;
 
 }
@@ -305,7 +291,7 @@ void AVMLuminanceData::SetLuminanceCofYUVReslt(CoefYUV *pLuminance)
 	   m_lumin_para.K_RB[i] = pLuminance->K_RB[i];
 	   m_lumin_para.K_LF[i] = pLuminance->K_LF[i];
 	   m_lumin_para.K_LB[i] = pLuminance->K_LB[i];
-	   m_lumin_para.K_BL[i] = pLuminance->K_BL[i];
+	   m_lumin_para.K_BL[i] = pLuminance->K_BL[i];	   
 	   m_lumin_para.K_BR[i] = pLuminance->K_BR[i];
 
    }
@@ -314,7 +300,7 @@ void AVMLuminanceData::SetLuminanceCofYUVReslt(CoefYUV *pLuminance)
 
    return;
 
-}
+}	
 
 /*===========================================================================*\
  * External Function Definitions

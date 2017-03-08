@@ -97,7 +97,7 @@ void AVMCANData::Get_Turn_Signal(unsigned char* Turn_Signal)
 void AVMCANData::Get_PA_State(unsigned char pos,unsigned char Dist,unsigned char* objstate)
 {
 
-    *objstate = m_CAN_Data.radar_alarm[2*pos+Dist];
+    *objstate = m_CAN_Data.radar_alarm[4*pos+Dist];
 
 }
 	

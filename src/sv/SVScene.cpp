@@ -5,6 +5,7 @@
 #include "GlSVOverlayAPA.h"
 #include "GlSVOverlayStichWheel.h"
 #include "SVNodeAdasHmi.h"
+#include "RenderNode/SVNodeCrossImage.h"
 extern IXrCore* g_pIXrCore;
 extern IDeviceManager* rm;
 extern IAnimationManager* am;
@@ -43,6 +44,7 @@ char skyFA[]	= XR_RES"skyfbaex.mqo";
 char skyBA[]	= XR_RES"skyfbaex.mqo";
 char skyFC[]	= XR_RES"skyfbcylinder.mqo";
 char skyBC[]	= XR_RES"skyfbcylinder.mqo";
+
 
 
 char CONTROLPANELFRONT[] = XR_RES"front_ctl.bmp";
@@ -2730,6 +2732,8 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 		printf("\r\n Error loading %s",_DATAPGSPARA_);
 		return FALSE;
 	}
+	m_crossImage = new SVNodeCrossImage();
+	m_crossImage->Init(&CenterReg);
 
 	m_SV2DData = new GlSV2D;
 	m_SV2DData->Init();
@@ -2756,6 +2760,8 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	result.ppmm_y= gf_pgs_para[3];
 
 
+	//m_crossImage = new SVNodeCrossImage();
+	//m_crossImage->Init(&CenterReg);
 
     m_APA_overlay = new GlSVOverlayAPA;
 	m_APA_overlay->Init(m_2DAVMNode,XR_RES,result);
@@ -3661,6 +3667,10 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 		//#ifdef ALI
 	    //	m_sceneNode->SetEnable(1);
 		//#else
+			    m_2DAVMNode->SetEnable(1);
+
+		m_pAdasHmi->SetEnable(1);
+    	m_crossImage->SetEnable(0);
 			m_sceneNode->SetEnable(0);
 		//#endif
 		m_objectNode->SetEnable(0);
@@ -3673,12 +3683,12 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 	       // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWFRONT);
 			//m_SV2Dplane[eFrontSingle]->SetEnable(0);
 			sv2Ddelegate->SetChannel(front_camera_index);
-		   m_overlay_2d_single->SetEnable(1);
+		   //m_overlay_2d_single->SetEnable(1);
 			break;
             case REAR_SINGLE_VIEW:
 	        //m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWREAR);
 			sv2Ddelegate->SetChannel(rear_camera_index);
-			 m_overlay_2d_single->SetEnable(1);
+			 //m_overlay_2d_single->SetEnable(1);
 			break;
             case LEFT_SINGLE_VIEW:
 	       // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWLEFT);
@@ -3695,6 +3705,16 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 
 
     }
+	else if(Input == CROSS_IMAGE_VIEW)
+	{
+	  	m_sceneNode->SetEnable(0);
+		m_objectNode->SetEnable(0);
+        m_2DSingleViewNode->SetEnable(0);
+	    m_2DAVMNode->SetEnable(0);
+
+		m_pAdasHmi->SetEnable(0);
+    	m_crossImage->SetEnable(1);
+	}
 	else
 	{
         #if 0
@@ -3702,6 +3722,10 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
     	m_objectNode->SetRenderROI(&RightReg);
     	m_2DSingleViewNode->SetRenderROI(&RightBottomFadeReg);
 		#endif
+			    m_2DAVMNode->SetEnable(1);
+
+		m_pAdasHmi->SetEnable(1);
+    	m_crossImage->SetEnable(0);
 	    m_sceneNode->SetEnable(1);
 
 		m_objectNode->SetEnable(1);
@@ -4576,10 +4600,12 @@ int SVScene::Update(int view_control_flag, int param2)
 		ProcessTurnLight(turn_light_state);
 
 		#endif
+		
 	if(cnt > START_UP_TURN_TIME)
 	{
 	   if(bevSecTour[0]->GetActiveState()==0)
 	   {
+
     	SwitchView(enter_top_flag,view_control_flag);
 		//SwitchView2DOnly(enter_top_flag);
 
@@ -4589,6 +4615,7 @@ int SVScene::Update(int view_control_flag, int param2)
 	{
 	    cnt++;
 	}
+
    // m_luminance->Update();
 	//AVMData::GetInstance()->m_lumin_para->SetLuminanceUnNormalizeRGB(g_uiAverageIllum);
 	time_now = XrGetTime();
@@ -4624,6 +4651,20 @@ int SVScene::Update(int view_control_flag, int param2)
 	m_APA_overlay->Update(g_APA_Result);
 	time_pre = time_now;
 	#endif
+	if(speed > SINGLE_VIEW_TO_3D_GATE-5)
+	{
+	    m_overlay_2d_single->SetEnable(0);
+		
+	    m_overlay_2d->SetEnable(0);
+	}
+	else
+	{
+	
+	    m_overlay_2d_single->SetEnable(1);
+		
+	    m_overlay_2d->SetEnable(1);
+	}
+
 		//m_Car->SetEnable(0);
 		//m_ground->SetEnable(0);
 	return 0;
@@ -5319,6 +5360,9 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 
 
     		}
+			JudgeCameraDir(&cam_dir,gear_state,turn_light,speed,speed_high_flag);
+			view_cmd = (FRONT_3D_VIEW+cam_dir);
+			
 	    }
 		else
 		{
@@ -5344,14 +5388,29 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 	{
 	    view_cmd = BOSH_REAR_VIEW_TOP;
 	}
+
+
+    if(view_cmd == FRONT_3D_VIEW||REAR_3D_VIEW == view_cmd)
+    {
+        view_cmd = FRONT_SINGLE_VIEW;
+    }
+	
     if(view_control_flag == 1)
     {
         view_cmd = REAR_SINGLE_VIEW;
     }
+    else if (view_control_flag == 3)
+    {
+        view_cmd = RIGHT_SINGLE_VIEW;		
+    }
+    else if(view_control_flag == 2)
+    {
+        view_cmd = CROSS_IMAGE_VIEW;
+    }
+
     if(view_cmd != m_last_view)
     {
-		SwitchViewLogic(view_cmd);
-
+        SwitchViewLogic(view_cmd);
     }
     if(pre_wheel_rot != wheel_rot)
     {

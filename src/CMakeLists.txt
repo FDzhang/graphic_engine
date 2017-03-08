@@ -13,6 +13,7 @@ AUX_SOURCE_DIRECTORY(sv/HMI svhmi_srcs)
 AUX_SOURCE_DIRECTORY(sv/HMISource svhmisrc_srcs)
 AUX_SOURCE_DIRECTORY(sv/RenderDelegate svrender_srcs)
 AUX_SOURCE_DIRECTORY(sv/VideoSource svvideosrc_srcs)
+AUX_SOURCE_DIRECTORY(sv/RenderNode svrendernode_srcs)
 AUX_SOURCE_DIRECTORY(sv sv_srcs)
 
 AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrResource xrres_srcs)
@@ -39,7 +40,7 @@ AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Common srccomm_srcs)
 
 INCLUDE_DIRECTORIES(${J6_ROOTFS}/usr/include ${J6_ROOTFS}/usr/include/freetype2 ${algocomm_INCLUDE_DIR} ${algocomm_INCLUDE_DIR}/avm .)
 
-ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_srcs} ${svdatasrc_srcs} ${svhmi_srcs} ${svhmisrc_srcs} ${svrender_srcs} 
+ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_srcs} ${svdatasrc_srcs} ${svhmi_srcs} ${svhmisrc_srcs} ${svrender_srcs} ${svrendernode_srcs}
 		${svvideosrc_srcs} ${sv_srcs} ${xrres_srcs} ${xrrender_srcs} ${xrrshaders_srcs} ${xrrshader_srcs}
 		 ${xrplatform_srcs} ${xreffect_srcs} ${xrnode_srcs}  ${xrlight_srcs} ${xrlayer_srcs} ${xrinter_srcs} 
 		 ${xrmeterial_srcs} ${xrcamera_srcs} ${xrmesh_srcs} ${xranimat_srcs} ${xrscene_srcs} ${xrcore_srcs} 

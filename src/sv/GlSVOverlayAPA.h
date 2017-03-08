@@ -12,6 +12,9 @@
 #define NO_PARK_LOT  0
 #define PARK_LOT_RECT 1
 
+#define PARKABLE_PARK_LOT 0
+#define UNPARKABLE_PORK_LOT 1
+#define UNLOCKPARKABLE_PORK_LOT 2
 
 class GlSVOverlayAPA
 {
@@ -26,7 +29,7 @@ public:
 	void ProcessScrollSign(int direct_indicate,float scroll_rate);
 	void CalScrollPos(float scroll_rate,float *Inrect,float*pOutputRect,int direct);
 	void Cal_World_2_Image_Coordinate(float *out_Model_Coord,float *in_world_coord)	;
-	void ProcessParkLotSign(int park_lot_flag,float *lot_pos);
+	void ProcessParkLotSign(int park_lot_flag,float *lot_pos,unsigned char park_lot_type);
 
 
 private:
@@ -42,7 +45,8 @@ private:
 	char m_parklotdetect_texture[MAX_NAME_LENGTH];
 	char m_online_enable_texture[MAX_NAME_LENGTH];
 	char m_online_apa_conflict_texture[MAX_NAME_LENGTH];
-
+	char m_parklot_unpark_texture[MAX_NAME_LENGTH];
+	char m_parklot_unlockpark_texture[MAX_NAME_LENGTH];
 	INode *m_pSignNode;
 	INode *m_pArrowNode;
 	INode *m_pScrollNode;

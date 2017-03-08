@@ -7,6 +7,8 @@
 #include "../XrNode/Scene/CSceneNode.h"
 #include "../XrNode/Scene/CPostProcessingNode.h"
 #include "../Render/CRenderManager.h"
+//#include "CPickerManager.h"
+
 
 extern Int32	g_screenWidth;
 extern Int32	g_screenHeight;
@@ -111,6 +113,7 @@ private:
 	CDeviceManager											    m_dm;
 	CAnimationManager											m_am;
 	CRenderManager												m_rm;
+	//CPickerManager												m_pickMngr;
 	Int32														m_screenWidth;
 	Int32														m_screenHeight;
 	Boolean														m_isLayerHit;

@@ -24,6 +24,7 @@ public:
 
 	void Init(BEV_CONFIG_T  pConfig,ISceneNode *pSencenode,ISceneNode *pStichSencenode,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 	int Update(void);
+	void SetEnable(unsigned char flag);
 
 private:
 	HMITextBox *m_pTextBox;	

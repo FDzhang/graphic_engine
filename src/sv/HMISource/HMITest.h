@@ -17,7 +17,7 @@ class SVNodeTestHMI
 {
 public:
 	SVNodeTestHMI();
-
+	
 	void InitHMI(int window_width, int window_height);
 	void SetHMIParams();
 	st_ADAS_Mdl_HMI_T* SVNodeTestHMI::GetHMI();
@@ -26,12 +26,13 @@ public:
 	void UpdateHMIChainStatus(int chain_status);
 
 	void UpdateHMINextChainsStatus(int next_chain_status);
-	void setIconStatus();
-
+	void setIconStatus();	
+	void UpdateHMIChainProcessingStatus(float fps, float avg_latency, float max_latency, float alg_average_cost, float alg_max_cost);
+	
 public:
 	static int alg_status;
 	static int demo_status;
-
+	
 private:
 	void SetHMIText();
 	void SetHMIIcon();
@@ -52,22 +53,18 @@ private:
 
 	int m_current_chains_status;
 	int m_last_selected_chains;
+	
+	int text_frame_ratio_pos[2];
+	int text_frame_ratio_width;
+	int text_frame_ratio_fontsize;
 
-	int text_frame_num_pos[2];
-	int text_frame_num_width;
-	int text_frame_num_fontsize;
+	int text_frame_latency_pos[2];
+	int text_frame_latency_width;
+	int text_frame_latency_fontsize;
 
-	int text_frame_drop_pos[2];
-	int text_frame_drop_width;
-	int text_frame_drop_fontsize;
-
-	int text_total_time_pos[2];
-	int text_total_time_width;
-	int text_total_time_fontsize;
-
-	int text_avg_time_pos[2];
-	int text_avg_time_width;
-	int text_avg_time_fontsize;
+	int text_alg_time_pos[2];
+	int text_alg_time_width;
+	int text_alg_time_fontsize;
 
 	int text_steering_angle_pos[2];
 	int text_steering_angle_width;
@@ -170,30 +167,26 @@ private:
 	int scroll_1_pos[2];
 	int scroll_1_width;
 	int scroll_1_height;
-
+	
 	int scroll_2_pos[2];
 	int scroll_2_width;
 	int scroll_2_height;
-
+	
 	int scroll_3_pos[2];
 	int scroll_3_width;
 	int scroll_3_height;
 
-	int scroll_frame_num_pos[2];
-	int scroll_frame_num_width;
-	int scroll_frame_num_height;
+	int scroll_frame_ratio_pos[2];
+	int scroll_frame_ratio_width;
+	int scroll_frame_ratio_height;
 
-	int scroll_frame_drop_pos[2];
-	int scroll_frame_drop_width;
-	int scroll_frame_drop_height;
+	int scroll_frame_latency_pos[2];
+	int scroll_frame_latency_width;
+	int scroll_frame_latency_height;
 
-	int scroll_total_time_pos[2];
-	int scroll_total_time_width;
-	int scroll_total_time_height;
-
-	int scroll_avg_time_pos[2];
-	int scroll_avg_time_width;
-	int scroll_avg_time_height;
+	int scroll_alg_time_pos[2];
+	int scroll_alg_time_width;
+	int scroll_alg_time_height;
 
 	int scroll_steering_ang_pos[2];
 	int scroll_steering_ang_width;

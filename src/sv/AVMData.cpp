@@ -111,6 +111,7 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	m_pAVMData->m_lumin_para = new AVMLuminanceData;
 	m_pAVMData->m_2D_lut = new AVM2DLUT;
 	m_pAVMData->m_p_can_data = new AVMCANData;
+	m_pAVMData->m_process_info = new AVMProcessingInfo;
     if(config.platform_config == PLATFORM_PC_IMAGE)
     {
         pCamSource = new CImageCameraSourceRender;
@@ -268,11 +269,31 @@ void AVMData::cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_im
     	out_gpu_Coord[0] = (in_coord_normal[0]-m_pAVMData->m_front_single_view_rect[rect_left])/(m_pAVMData->m_front_single_view_rect[rect_right]-m_pAVMData->m_front_single_view_rect[rect_left])/0.5-1;
 	
 	}
+}
 
+void AVMProcessingInfo::UpdateFps(float fps)
+{
+	m_Processing_Data.sgxfps = fps;
+}
 
+void AVMProcessingInfo::UpdateFrameLatency(float avg_in_ms, float max_in_ms)
+{
+	m_Processing_Data.srcToSgxAvgLatency = avg_in_ms;
+	m_Processing_Data.srcToSgxMaxLatency = max_in_ms;
+}
 
+void AVMProcessingInfo::UpdateAlgCost(float avg_in_ms, float max_in_ms)
+{
+	m_Processing_Data.algAvgCost_ms = avg_in_ms;
+	m_Processing_Data.algMaxCost_ms = max_in_ms;
+}
 
-	
+void AVMProcessingInfo::GetProcessInfo(ProcessInfoData *pInfo)
+{
+	if(pInfo)
+	{
+		memcpy(pInfo, &m_Processing_Data, sizeof(ProcessInfoData));
+	}
 }
 
 /*===========================================================================*\

@@ -62,27 +62,27 @@ public:
 
 	AVMLuminanceData();
 	~AVMLuminanceData();
-
-
+	
+	
 	void CalcLuminanceCof(float *first_lumin,float *second_lumin,float *first_cof,float *second_cof);
-
+	
 	void Init( char *pfilename);
-
+	
 	void SetLuminanceNormalizeRGB(float *pLuminance);
 
 	void SetLuminanceNormalizeYUV(float *pLuminance);
 
-
+	
 
 	void GetLuminCof(Lumin_para **pLumin);
-
+	
 	void GetLuminCof(float **pLumin);
-
+	
 	void SetLuminanceCofYUVReslt(CoefYUV *pLuminance);
-
+	
 
 	void SetLuminanceUnNormalizeRGB(unsigned int *pLuminance);
-
+	
 	void SetLuminanceUnNormalizeYUV(unsigned int *pLuminance);
 
 private:
@@ -91,13 +91,12 @@ private:
 	void Normalize(unsigned int *pInput,float *pOutput);
 	void ConvertRgb2Yuv(float *pLuminancergb,float *pYUV);
 	void ConvertRgb2YuvNorm(void);
-	void InitDefaultLuminanceParams();
 
 	int get_Lumin_para_from_file(Lumin_para *myLumin_para, char *filename);
 
     Lumin_para m_lumin_para;
 	float m_luminance_normalize_yuv[24];
-	float m_luminance_normalize_rgb[24];
+	float m_luminance_normalize_rgb[24];	
 	unsigned int m_luminance_rgb[24];
 	unsigned int m_luminance_yuv[24];
 	float m_lumin_cof[24];

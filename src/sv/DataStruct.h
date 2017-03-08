@@ -34,7 +34,7 @@
 //#include "reuse.h"
 #include "bev_config.h"
 #include "DataStruct_IF.h"
-#include "GPU_Module_Interface.h"
+#include "gpu_public_data_struct.h"
 #include "smc.h"
 #include "commondef.h"
 /*===========================================================================*\
@@ -71,6 +71,35 @@ eConfigNum,eFrontVertexNum,eFrontIndexNum,eRearVertexNum,eRearIndexNum,eLeftVert
 enum MeshIndex{
 eFrontMesh,eRearMesh,eLeftMesh,eRightMesh,eFrontLeftMesh,eFrontRightMesh,eRearLeftMesh,eRearRightMesh,eCarImageMesh,eFrontSingle,eRearSingle,eLeftSingle,eRightSingle,eMeshIndexMax,eRightBottomMesh,
 };
+#define num_Channel 3
+
+typedef struct CoefYUV
+{	//the Coef for LB balance correction
+	//front left
+	float32_t K_FL[num_Channel];
+
+	//front right
+	float32_t K_FR[num_Channel];
+
+	//right front
+	float32_t K_RF[num_Channel];
+
+	//right rear
+	float32_t K_RB[num_Channel];
+
+	//rear left
+	float32_t K_BL[num_Channel];
+
+	//rear right
+	float32_t K_BR[num_Channel];
+
+	//left front
+	float32_t K_LF[num_Channel];
+
+	//left rear
+	float32_t K_LB[num_Channel];	
+
+}CoefYUV;
 
 enum{
 	front_lut_index=0,
@@ -163,11 +192,11 @@ typedef struct CvPoint2D32f
 	float x;
 	float y;
 
-    //zhangzhijie: commment it,  as a interface struct, c++ version is not suitable
-	//CvPoint2D32f(float _x = 0, float _y = 0): x(_x), y(_y) {}
+
+	CvPoint2D32f(float _x = 0, float _y = 0): x(_x), y(_y) {}
+
 }
 CvPoint2D32f;
-
 typedef struct Vehicle_Param_T
 {
     float vehicle_length;      //unit mm 

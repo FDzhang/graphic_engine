@@ -59,7 +59,7 @@
  * Local Object Definitions
 \*===========================================================================*/
 static char *m_ShaderName[6]={"OVVertShaderNew.vtx","OVFragShader_J6.frg","OVVertShaderSV2D.vtx","OVFragShaderSV2D_J6.frg","OVVertShaderEmirror.vtx","OVFragEmirror_J6.frg"};
-
+static char *m_CamIMGName[4] = {"front.bmp","rear.bmp","left.bmp","right.bmp"};
 /*===========================================================================*\
  * Local Function Prototypes
 \*===========================================================================*/
@@ -88,7 +88,7 @@ void CJ6CameraSourceRender::SetCameraSourceToMaterial(IMaterial *pMaterial,int c
     printf("\r\n m_texture_index[%d] = %d",camera_index,m_texture_index[camera_index]);
 	
     char TempName[MAX_NAME_LENGTH];
-	sprintf(&(TempName[0]),"%s%s",m_file_path,"front.bmp");
+	sprintf(&(TempName[0]),"%s%s",m_file_path,m_CamIMGName[camera_index]);
 	printf("\r\n load texture name[%s]",TempName);
 	//pMaterial->SetDiffuseMap(m_texture_index[camera_index]);
 	

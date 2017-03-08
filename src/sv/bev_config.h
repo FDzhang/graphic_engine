@@ -10,9 +10,6 @@ typedef int int32_t;
 typedef float float32_t;
 typedef double	float64_t;
 
-#undef SMC_MAJOR_VERSION
-#undef SMC_MINOR_VERSION
-
 // SMC
 typedef struct {
     int SMC_MAJOR_VERSION;

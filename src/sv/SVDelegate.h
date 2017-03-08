@@ -189,7 +189,6 @@ public:
 		String ModelName = pIObject->GetName();
 
 
-
         if(m_update_flag[id-48])
         {
 
@@ -653,7 +652,7 @@ public:
 		//XRVec3 VecCofL1,VecCofL2;
 		float fLumCofL1[3];
 		float fLumCofL2[3];
-
+        int camera_index=0;
 		pMtl->GetEffect()->GetEffectParam(&pShader, &pUB, &pRS, &pLayout);
 
 		char id = pIObject->GetName()[0];
@@ -661,6 +660,7 @@ public:
 		SV2D_PARAM_CB sv2D_param;
 		unsigned int chn = id -48;
 		float luminance_direct;
+		int mtl_id;
 
 		// first config OpenGL
         switch(id)
@@ -690,6 +690,7 @@ public:
 			case '9':
 			case 'b':
 			case 'a':
+			case 's':
 				sv2D_param.InputFlag=1.0;
 				
 				pRS->Set(XR_CULLMODE_NONE | XR_FRONTFACE_CCW);
@@ -777,7 +778,29 @@ switch(id)
                             luminance_direct = 1.0; 						   
 
              break;
+			case 's':
+				
+						//XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
+						
+						mtl_id = pMtl->GetDiffuseMap()->texid;
+						for(camera_index=0;camera_index<4;camera_index++)
+						{
+						    if(mtl_id == AVMData::GetInstance()->m_cam_source->GetCameraSourceTextureId(camera_index))
+						    {
+						        break;
+						    }
+							
+						}
+						AVMData::GetInstance()->m_cam_source->UseCameraTexture(camera_index);
+							for(int i=0;i<3;i++)
+                            {
+							    fLumCofL1[i]=1.0;
+								fLumCofL2[i]=1.0;
+                            }
+                            luminance_direct = 1.0; 
+             break;
              default:
+			 	
 						   AVMData::GetInstance()->m_cam_source->UseCameraTexture(channelId);
 							for(int i=0;i<3;i++)
                             {

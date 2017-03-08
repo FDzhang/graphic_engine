@@ -73,6 +73,36 @@ typedef struct Calib_3D_Para_T
 /*===========================================================================*\
  * Exported Object Declarations
 \*===========================================================================*/
+typedef struct
+{
+	float sgxfps;
+	float srcToSgxAvgLatency;
+	float srcToSgxMaxLatency;
+	float algAvgCost_ms;
+	float algMaxCost_ms;
+}ProcessInfoData;
+
+class AVMProcessingInfo
+{
+public:
+	AVMProcessingInfo()
+	{
+		m_Processing_Data.sgxfps = 0.0f;
+		m_Processing_Data.srcToSgxAvgLatency = 0.0f;
+		m_Processing_Data.srcToSgxMaxLatency = 0.0f;
+		m_Processing_Data.algAvgCost_ms = 0.0f;
+		m_Processing_Data.algMaxCost_ms = 0.0f;
+	};
+	~AVMProcessingInfo();
+	void UpdateFps(float fps);
+	void UpdateFrameLatency(float avg_in_ms, float max_in_ms);
+	void UpdateAlgCost(float avg_in_ms, float max_in_ms);
+	void GetProcessInfo(ProcessInfoData *pInfo);
+	
+private:
+	ProcessInfoData m_Processing_Data;
+};
+
 class AVMData
 {
 public:
@@ -99,7 +129,7 @@ public:
 		AVM2DLUT *m_2D_lut;
 		AVMCANData *m_p_can_data;
 		ICameraSourceRender *m_cam_source;
-		
+		AVMProcessingInfo *m_process_info;
 
 private:
     AVMData();
