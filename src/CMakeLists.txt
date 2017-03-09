@@ -39,6 +39,7 @@ AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Common srccomm_srcs)
 
 
 INCLUDE_DIRECTORIES(${J6_ROOTFS}/usr/include ${J6_ROOTFS}/usr/include/freetype2 ${algocomm_INCLUDE_DIR} ${algocomm_INCLUDE_DIR}/avm .)
+LINK_DIRECTORIES(${J6_ROOTFS}/lib ${J6_ROOTFS}/usr/lib)
 
 ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_srcs} ${svdatasrc_srcs} ${svhmi_srcs} ${svhmisrc_srcs} ${svrender_srcs} ${svrendernode_srcs}
 		${svvideosrc_srcs} ${sv_srcs} ${xrres_srcs} ${xrrender_srcs} ${xrrshaders_srcs} ${xrrshader_srcs}
