@@ -86,6 +86,7 @@ public:
 	void SetLuminanceUnNormalizeYUV(unsigned int *pLuminance);
 
 private:
+    void Reset();
 	void CalcLuminanceCof();
 	void MergeDataToAll(float *pCof,Lumin_para *pCofSeparate);
 	void Normalize(unsigned int *pInput,float *pOutput);

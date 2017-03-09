@@ -131,7 +131,7 @@ fscanf(f,"%f,%f,%f",point_RT,point_RT+1,point_RT+2);
 
 AVMLuminanceData::AVMLuminanceData()
 {
-
+    Reset();
 }
 AVMLuminanceData::~AVMLuminanceData()
 {
@@ -227,6 +227,25 @@ void AVMLuminanceData::GetLuminCof(float **pLumin)
    *pLumin = m_lumin_cof;
    return;
 
+}
+
+void AVMLuminanceData::Reset()
+{
+    for(int i = 0; i < 24; ++i)
+    {
+        m_lumin_cof[i] = 1.0;
+    }
+    for(int i = 0; i<3;i++)
+    {
+        m_lumin_para.K_FL[i] = 1.0f;
+        m_lumin_para.K_FR[i] = 1.0f;
+        m_lumin_para.K_RF[i] = 1.0f;
+        m_lumin_para.K_RB[i] = 1.0f;
+        m_lumin_para.K_BL[i] = 1.0f;
+        m_lumin_para.K_BR[i] = 1.0f;
+        m_lumin_para.K_LF[i] = 1.0f;
+        m_lumin_para.K_LB[i] = 1.0f;
+    }
 }
 
 
