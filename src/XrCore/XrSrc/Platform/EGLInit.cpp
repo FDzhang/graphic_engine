@@ -27,9 +27,9 @@ bool TestEGLError(HWND hWnd, char* pszLocation)
 #endif
 //#ifdef LINUX_J6
 //{
-	extern EGLDisplay my_display;
-	extern EGLContext my_context;
-	extern EGLSurface my_surf;
+static EGLDisplay my_display;
+static EGLContext my_context;
+static EGLSurface my_surf;
 
 //}
 void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf)
