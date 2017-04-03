@@ -41,7 +41,7 @@ extern "C" {
  * Other Header Files
  *------------------------------------------------------------------------------------------*/
 #include "avm/smc.h"
-#include "avm/commondef.h"
+#include "commondef.h"
 #include "gpu_public_data_struct.h"
 /*------------------------------------------------------------------------------------------
  * Exported Preprocessor #define Constants
