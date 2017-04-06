@@ -21,11 +21,12 @@ ELSE()
 	ENDIF()
 	
 	#查看是否存在lib库
-	find_library(algorithm_LIBRARY NAMES algorithm PATHS ${algo_root_dir}/lib)
-	find_path(algorithm_LIBRARY_DIR libalgorithm.so PATHS ${algo_root_dir}/lib)
+	#find_library(algorithm_LIBRARY NAMES pld PATHS ${algo_root_dir}/lib)
+	find_path(algorithm_LIBRARY_DIR libpld.so PATHS ${algo_root_dir}/lib)
 	
-	IF(algorithm_LIBRARY)
+	IF(algorithm_LIBRARY_DIR)
 		SET(algorithm_FOUND TRUE)
+        SET(algorithm_LIBRARY "bsd ldw lka pld pp oc stitcher")
 		MESSAGE(STATUS "algorithm library found at ${algo_root_dir}")
 	ELSEIF(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${algo_root_dir}/src)
 		#虽然没有库，但是有源代码，
