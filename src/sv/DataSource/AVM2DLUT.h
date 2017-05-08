@@ -62,8 +62,9 @@ public:
 
     AVM2DLUT();
     ~AVM2DLUT();
-    /*Init from pose file ,file sotre camera pose index as front right rear left*/	
+    /*Init from pose file ,file sotre camera pose index as front right rear left*/
     void Init( char *pConfigfilename,char *pIndexfilename,char *datafilename,char *carposefile,char *carposeadjustfile,char *calibfile);
+    bool Init( char *pConfigfilename,char *pIndexfilename,char *datafilename,char *carposefile,StitcherResult *pSticherReslt);
     void GetLutData(float **pData,int index);
     void GetLutIndex(GLushort **pData,int index);
     void GetLutData(float **pData);
@@ -72,8 +73,8 @@ public:
 
 
     void UpdateLUT(GLfloat *pData,GLushort *pIndex);
-	int  GetDataTotalCnt(void );	
-	int  GetIndexTotalCnt(void );	
+	int  GetDataTotalCnt(void );
+	int  GetIndexTotalCnt(void );
 	void GetCarRect(float *pData,int index);
 	void GetCarShadowAdjust(float *pData,int index);
 	void CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
@@ -84,16 +85,16 @@ private:
 	int LoadConfigFile(char *pFileName,GLuint **pContent);
     int LoadDataFile(char *pFileName,GLfloat **pContent,int num);
 	int LoadDataFile(char *pFileName,GLfloat *pContent,int num);
-	
+
     int SaveTxtFile(char *pFileName,GLfloat *pBuf,int size);
     int SaveTxtFileShort(char *pFileName,GLushort *pBuf,int size);
     int LoadIndexFile(char *pFileName,GLushort **pContent,int num);
-    void read_file_from_bin(void *pData,char *pName,int size);
-    void LoadConfigBinFile( char *pName,unsigned int *pui_config);
-    void LoadDataBinFile(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd],float **pVertex);
-    void LoadDataBinFileTotal(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd]);
-    void LoadIndexBinFileTotal(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd]);
-    void LoadIndexBinFile(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd],GLushort **pVertex);
+    bool read_file_from_bin(void *pData,char *pName,int size);
+    bool LoadConfigBinFile( char *pName,unsigned int *pui_config);
+    bool LoadDataBinFile(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd],float **pVertex,  GLfloat* ext = NULL);
+    bool LoadDataBinFileTotal(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd]);
+    bool LoadIndexBinFileTotal(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd]);
+    bool LoadIndexBinFile(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd],GLushort **pVertex, GLushort* ext = NULL);
 
 
 	GLfloat *m_pfSrcData[16];
