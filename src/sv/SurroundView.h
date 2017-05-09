@@ -21,7 +21,8 @@ public:
 
 	virtual ~XRSV() {m_pAdasMdl = NULL;};
 
-	bool init(int width, int height, Smc_Cal_T *pSmcCfg,str_avm_pose_t * pPose);
+	//bool init(int width, int height, Smc_Cal_T *pSmcCfg,str_avm_pose_t * pPose);
+	bool init(int width, int height, st_GPU_Init_Config_T& gpu_init);
 	bool draw();
 	bool update(unsigned int view_control_flag);
 	void SingleTouchDown(int x, int y);
@@ -40,10 +41,10 @@ public:
 	void KeyDown(int x);
 	//>>>>>>> feature_autoparking
 	void Pinch(float distance);
-	
+
 	void SwitchViewButton(int buttonid);
 	bool initVehicleParam(SV_VEHICLE_PARAM_T in_veh_param);
-    void initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);		
+    void initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 	int m_useHDR;
 
 protected:
@@ -61,6 +62,9 @@ protected:
 	SV_DATA_CONFIG_T m_sv_data_config;
 	st_ADAS_Mdl_HMI_T **m_pAdasMdl;
 	int m_adas_mdl_num;
+
+public:
+    static PFUpdateJointParamCallback UpdateJonintParam;
 
 };
 

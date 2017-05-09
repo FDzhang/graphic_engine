@@ -36,7 +36,7 @@
 /*===========================================================================*\
  * Other Header Files
 \*===========================================================================*/
-
+#include "luminb_result.h"
 
 #define CMV_MAX_BUF 1024
 
@@ -62,27 +62,27 @@ public:
 
 	AVMLuminanceData();
 	~AVMLuminanceData();
-	
-	
+
+
 	void CalcLuminanceCof(float *first_lumin,float *second_lumin,float *first_cof,float *second_cof);
-	
+
 	void Init( char *pfilename);
-	
+
 	void SetLuminanceNormalizeRGB(float *pLuminance);
 
 	void SetLuminanceNormalizeYUV(float *pLuminance);
 
-	
+
 
 	void GetLuminCof(Lumin_para **pLumin);
-	
+
 	void GetLuminCof(float **pLumin);
-	
+
 	void SetLuminanceCofYUVReslt(CoefYUV *pLuminance);
-	
+
 
 	void SetLuminanceUnNormalizeRGB(unsigned int *pLuminance);
-	
+
 	void SetLuminanceUnNormalizeYUV(unsigned int *pLuminance);
 
 private:
@@ -97,7 +97,7 @@ private:
 
     Lumin_para m_lumin_para;
 	float m_luminance_normalize_yuv[24];
-	float m_luminance_normalize_rgb[24];	
+	float m_luminance_normalize_rgb[24];
 	unsigned int m_luminance_rgb[24];
 	unsigned int m_luminance_yuv[24];
 	float m_lumin_cof[24];
