@@ -458,6 +458,7 @@ int InitAppNew(int width, int height, st_GPU_Init_Config_T* gpu_init)
 {
     if(gpu_init != NULL)
     {
+        InitVehcleParam();
         if(app.init(width, height, *gpu_init))
         {
             return 0;
