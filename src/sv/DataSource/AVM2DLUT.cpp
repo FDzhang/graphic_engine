@@ -509,7 +509,6 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
     float* data_buffer;
     short* gui_index_buffer;
     str_avm_pose_t pose;
-    bool updated = false;
     bool ret = false;
 
     if(pSticherReslt != NULL)
@@ -523,8 +522,20 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
         {
             if(LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex, (GLushort*)param->gpu_lut_index) == true)
             {
-                updated = true;
-                ret = true;
+                //更新小车区域
+                m_car_rect[0] = -1.0+2.0*(float)pSticherReslt->car_Icon_Rect.x/(float)pSticherReslt->bev_img_width - 0.03;
+                m_car_rect[1] = 1.0-2.0*(float)pSticherReslt->car_Icon_Rect.y/(float)pSticherReslt->bev_img_height + 0.08;
+
+                m_car_rect[2] = -1.0+2.0*((float)pSticherReslt->car_Icon_Rect.x+(float)pSticherReslt->car_Icon_Rect.width)/(float)pSticherReslt->bev_img_width + 0.03;
+                m_car_rect[3] = 1.0-2.0*((float)pSticherReslt->car_Icon_Rect.y+(float)pSticherReslt->car_Icon_Rect.height)/(float)pSticherReslt->bev_img_height - 0.08;
+
+                //更新pgs
+                m_calib_para[0] = pSticherReslt->cx;
+                m_calib_para[1] = pSticherReslt->cy;
+                m_calib_para[2] = pSticherReslt->ppmmx;
+                m_calib_para[3] = pSticherReslt->ppmmy;
+
+                return true;
             }
             else
             {//index加载失败，释放data
@@ -533,47 +544,25 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
         }
     }
 
-    if(updated == false)
-    {
-        m_pfDataTotal = NULL;
-        m_pucIndexTotal = NULL;
 
-        if(LoadConfigBinFile(pConfigfilename,&m_uiConfigBin[0][0]))
+    m_pfDataTotal = NULL;
+    m_pucIndexTotal = NULL;
+
+    if(LoadConfigBinFile(pConfigfilename,&m_uiConfigBin[0][0]))
+    {
+        if(LoadDataBinFile(&m_pfDataTotal,datafilename,m_uiConfigBin,m_pfSrcData) == true)
         {
-            if(LoadDataBinFile(&m_pfDataTotal,datafilename,m_uiConfigBin,m_pfSrcData) == true)
+            if(LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex) == true)
             {
-                if(LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex) == true)
-                {
-                    ret = true;
-                }
-                else
-                {
-                    delete [] m_pfDataTotal;
-                }
+                ret = true;
+            }
+            else
+            {
+                delete [] m_pfDataTotal;
             }
         }
     }
-    if(carposefile != NULL)
-    {
-        LoadDataFile(carposefile,&(m_car_rect[0]),4);
-    }
-	else
-	{
-	    m_car_rect[0] = -1.0+2.0*(float)pSticherReslt->car_Icon_Rect.x/(float)pSticherReslt->bev_img_width;
-		m_car_rect[1] = 1.0-2.0*(float)pSticherReslt->car_Icon_Rect.y/(float)pSticherReslt->bev_img_height;
 
-	    m_car_rect[2] = -1.0+2.0*((float)pSticherReslt->car_Icon_Rect.x+(float)pSticherReslt->car_Icon_Rect.width)/(float)pSticherReslt->bev_img_width;
-		m_car_rect[3] = 1.0-2.0*((float)pSticherReslt->car_Icon_Rect.y+(float)pSticherReslt->car_Icon_Rect.height)/(float)pSticherReslt->bev_img_height;
-
-		float rate = (m_car_rect[2] - m_car_rect[0]) * 0.73 / 7.7;
-		m_car_rect[0] -= rate;
-		m_car_rect[2] += rate;
-
-	}
-    m_car_shadow_adjust_rect[0] = -0.04;
-	m_car_shadow_adjust_rect[1] = 0.08;
-	m_car_shadow_adjust_rect[2] = 0.04;
-	m_car_shadow_adjust_rect[3] = -0.08;
     return ret;
 }
 
