@@ -232,7 +232,7 @@ LutData,MAX_NAME_LENGTH);
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
 	#endif
-
+    svui->InitNode(sv_config,width,height);
 	return true;
 }
 
