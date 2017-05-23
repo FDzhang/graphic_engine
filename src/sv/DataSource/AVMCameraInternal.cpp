@@ -60,7 +60,7 @@
 \*===========================================================================*/
 int AVMCameraInternal::get_camera_config(CAMERA_CFG *cam_model, BEV_CONFIG_T pconfig)
 {
-    
+
 
    	cam_model[right_camera_index].CAM_TYPE = 0;
 	cam_model[right_camera_index].CAM_INT_W = (pconfig.smc.RIGHT_CAMERA_SENSOR_WIDTH);
@@ -107,7 +107,7 @@ int AVMCameraInternal::get_camera_config(CAMERA_CFG *cam_model, BEV_CONFIG_T pco
 	cam_model[front_camera_index].CAM_LEN_CY = (pconfig.smc.FRONT_CAMERA_IMAGE_CENTER_Y);
 	cam_model[front_camera_index].CAM_SKEW_E = (pconfig.smc.FRONT_CAMERA_SKEW_E);
 	cam_model[front_camera_index].CAM_LEN_TOP_CUT = (int)(pconfig.smc.FRONT_CAMERA_IMAGE_TOP_CUT);
-	
+
 	sprintf(cam_model[front_camera_index].CAM_LEN_DIST_LUT,"%s%s",XR_RES,pconfig.smc.FRONT_CAMERA_LUT_FILE_NAME);
 
 
@@ -124,7 +124,7 @@ int AVMCameraInternal::get_camera_config(CAMERA_CFG *cam_model, BEV_CONFIG_T pco
 	cam_model[rear_camera_index].CAM_LEN_CY = (int)(pconfig.smc.REAR_CAMERA_IMAGE_CENTER_Y);
 	cam_model[rear_camera_index].CAM_SKEW_E = (pconfig.smc.REAR_CAMERA_SKEW_E);
 	cam_model[rear_camera_index].CAM_LEN_TOP_CUT = (int)(pconfig.smc.REAR_CAMERA_IMAGE_TOP_CUT);
-	
+
 	sprintf(cam_model[rear_camera_index].CAM_LEN_DIST_LUT,"%s%s",XR_RES,pconfig.smc.REAR_CAMERA_LUT_FILE_NAME);
 
 
@@ -151,14 +151,14 @@ AVMCameraInternal::~AVMCameraInternal()
     {
         delete [] m_camera_lut[i];
     }
-    	
+
 
 
 }
-void AVMCameraInternal::InitParamFromSysConfig(CAMERA_CFG *cam_model,Smc_Cal_T *p_sys_config)
+
+void AVMCameraInternal::InitParamFromSysConfig(CAMERA_CFG *cam_model,Camera_Param_T *p_sys_config,Smc_Cal_T *pSMC)
 {
-    
-	Cam_Int_T sys_cam_mdl; 
+	Cam_Int_T sys_cam_mdl;
     int j=0;
     for(int i =0;i<4;i++)
     {
@@ -178,10 +178,10 @@ void AVMCameraInternal::InitParamFromSysConfig(CAMERA_CFG *cam_model,Smc_Cal_T *
 		{
 		    j=1;
 		}
-        sys_cam_mdl = p_sys_config->camera_param[j].cam_int;
-			
+        sys_cam_mdl = p_sys_config[j].cam_int;
+
 		cam_model[i].CAM_TYPE = 0;
-		cam_model[i].CAM_INT_W = sys_cam_mdl.cam_int_w;
+		cam_model[i].CAM_INT_W = p_sys_config->cam_input.input_image_width;
 		cam_model[i].CAM_INT_H = sys_cam_mdl.cam_int_h;
 		cam_model[i].CAM_INT_CX = sys_cam_mdl.cam_int_cu;
 		cam_model[i].CAM_INT_CY = sys_cam_mdl.cam_int_cv;
@@ -193,34 +193,35 @@ void AVMCameraInternal::InitParamFromSysConfig(CAMERA_CFG *cam_model,Smc_Cal_T *
 		cam_model[i].CAM_LEN_TOP_CUT = sys_cam_mdl.cam_int_use_fov;
 		printf("before cam_lut_index = %d ",sys_cam_mdl.cam_int_lut);
 
-	    m_camera_lut[i] = p_sys_config->lut_lable[sys_cam_mdl.cam_int_lut];
-        printf("cam_lut_index =0x%x", m_camera_lut[i]);
+	    m_camera_lut[i] = pSMC->lut_lable[sys_cam_mdl.cam_int_lut];
+		printf("cam_lut_index =0x%x", m_camera_lut[i]);
     }
 
 }
+
 void AVMCameraInternal::InitLutMemory(void)
 {
     for(int i=0;i<4;i++)
     {
         m_camera_lut[i] = new float [LUT_ROW_NUM];
     }
-    	
-		
+
+
 }
 
-/*Init from pose file ,file sotre camera pose index as front right rear left*/	
+/*Init from pose file ,file sotre camera pose index as front right rear left*/
 void AVMCameraInternal::Init( BEV_CONFIG_T pconfig)
 {
      int i=0;
-	
-	
-	
+
+
+
 	get_camera_config(m_cam_cfg_fisheye,pconfig);
 	InitLutMemory();
-	
+
 	for(i=0;i<4;i++)
 	{
-	
+
 		ReadFloatSpaceTxtFile(m_cam_cfg_fisheye[i].CAM_LEN_DIST_LUT,m_camera_lut[i],LUT_ROW_NUM);
 		Cam_InitIntrinsic(
 			&m_cam_fisheye_instrict[i],m_cam_cfg_fisheye[i].CAM_INT_W,
@@ -234,21 +235,20 @@ void AVMCameraInternal::Init( BEV_CONFIG_T pconfig)
 			m_cam_cfg_fisheye[i].CAM_LEN_ORIGIN_HFOV,
 			m_cam_cfg_fisheye[i].CAM_LEN_ORIGIN_VFOV,
 			m_cam_cfg_fisheye[i].CAM_LEN_TOP_CUT
-			);	
+			);
 	}
 
 
 }
-void AVMCameraInternal::Init(Smc_Cal_T *pIntParam)
+
+void AVMCameraInternal::Init(Camera_Param_T *p_Int_Cam,Smc_Cal_T* pIntParam)
 {
-     int i=0;
+    int i=0;
 
-	 InitParamFromSysConfig(m_cam_cfg_fisheye,pIntParam);
+    InitParamFromSysConfig(&m_cam_cfg_fisheye[0],p_Int_Cam,pIntParam);
 
-	
 	for(i=0;i<4;i++)
 	{
-	
 		Cam_InitIntrinsic(
 			&m_cam_fisheye_instrict[i],m_cam_cfg_fisheye[i].CAM_INT_W,
 			m_cam_cfg_fisheye[i].CAM_INT_H,
@@ -261,7 +261,35 @@ void AVMCameraInternal::Init(Smc_Cal_T *pIntParam)
 			m_cam_cfg_fisheye[i].CAM_LEN_ORIGIN_HFOV,
 			m_cam_cfg_fisheye[i].CAM_LEN_ORIGIN_VFOV,
 			m_cam_cfg_fisheye[i].CAM_LEN_TOP_CUT
-			);	
+            );
+	}
+
+
+}
+
+void AVMCameraInternal::Init(Smc_Cal_T *pIntParam)
+{
+     int i=0;
+
+	 InitParamFromSysConfig(m_cam_cfg_fisheye, pIntParam->camera_param, pIntParam);
+
+
+	for(i=0;i<4;i++)
+	{
+
+		Cam_InitIntrinsic(
+			&m_cam_fisheye_instrict[i],m_cam_cfg_fisheye[i].CAM_INT_W,
+			m_cam_cfg_fisheye[i].CAM_INT_H,
+			m_cam_cfg_fisheye[i].CAM_INT_CX,
+			m_cam_cfg_fisheye[i].CAM_INT_CY,
+			m_cam_cfg_fisheye[i].CAM_SKEW_C,
+			m_cam_cfg_fisheye[i].CAM_SKEW_D,
+			m_cam_cfg_fisheye[i].CAM_SKEW_E,
+			m_camera_lut[i],
+			m_cam_cfg_fisheye[i].CAM_LEN_ORIGIN_HFOV,
+			m_cam_cfg_fisheye[i].CAM_LEN_ORIGIN_VFOV,
+			m_cam_cfg_fisheye[i].CAM_LEN_TOP_CUT
+			);
 	}
 
 
@@ -270,9 +298,9 @@ void AVMCameraInternal::Init(Smc_Cal_T *pIntParam)
 
 void AVMCameraInternal::Init(Cam_Model_Intrinsic *pCamIntMdl)
 {
-	
+
     int j=0;
-	
+
     for(int i =0;i<4;i++)
     {
         if(i == right_camera_index)
@@ -291,7 +319,7 @@ void AVMCameraInternal::Init(Cam_Model_Intrinsic *pCamIntMdl)
 		{
 		    j=1;
 		}
-        
+
 		m_cam_fisheye_instrict[i]=pCamIntMdl[j];
 
 	}
@@ -328,10 +356,10 @@ void AVMCameraInternal::MapCamRay2ImagePointGpu(float *pWld,float *pTex,int came
        );
     pTex[0]/=m_cam_cfg_fisheye[camera_index].CAM_INT_W;
     pTex[1]/=m_cam_cfg_fisheye[camera_index].CAM_INT_H;
-	
+
 
 }
-	
+
 
 /*===========================================================================*\
  * External Function Definitions

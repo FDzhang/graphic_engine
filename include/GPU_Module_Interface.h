@@ -59,36 +59,7 @@ extern "C" {
 //重定义, 省去包含egl等头文件
 typedef unsigned int GLuint;
 
-//截自源文件: DataStruct.h
-#define num_Channel 3
-typedef struct CoefYUV
-{	//the Coef for LB balance correction
-	//front left
-	float32_t K_FL[num_Channel];
-
-	//front right
-	float32_t K_FR[num_Channel];
-
-	//right front
-	float32_t K_RF[num_Channel];
-
-	//right rear
-	float32_t K_RB[num_Channel];
-
-	//rear left
-	float32_t K_BL[num_Channel];
-
-	//rear right
-	float32_t K_BR[num_Channel];
-
-	//left front
-	float32_t K_LF[num_Channel];
-
-	//left rear
-	float32_t K_LB[num_Channel];
-
-}CoefYUV;
-
+#include "luminb_result.h"
 /*------------------------------------------------------------------------------------------
  * Exported Object Declarations
  *------------------------------------------------------------------------------------------*/
@@ -98,10 +69,7 @@ typedef struct CoefYUV
  *------------------------------------------------------------------------------------------*/
 DLL_PUBLIC void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 DLL_PUBLIC void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf);
-DLL_PUBLIC int InitApp(int width,
-                       int height,
-                       Smc_Cal_T *pSmcCfgm,
-                       str_avm_pose_t * pPose);
+DLL_PUBLIC int InitAppNew(int width, int height, st_GPU_Init_Config_T* gpu_init);
 DLL_PUBLIC int UpdateApp(unsigned int view_control_flag,GLuint texYuv[]);
 DLL_PUBLIC int OnMouseSingleUp(int x,int y);
 DLL_PUBLIC int OnMouseSingleDown(int x,int y);
