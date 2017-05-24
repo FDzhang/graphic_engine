@@ -84,6 +84,17 @@ public:
 	/* [in] */ class CLight* pLight,
 	/* [in] */ class IObject* pIObject);
 };
+class RenderDelegate_Color_Plot: public IRenderDelegate
+{ 
+public:
+	virtual Int32 OnRender(
+	/* [in] */ class IMaterial* pMtl,
+	/* [in] */ const XRMat4* pModelMatrix,
+	/* [in] */ const XRMat4* pViewMatrix,
+	/* [in] */ const XRMat4* pProjMatrix,
+	/* [in] */ class CLight* pLight,
+	/* [in] */ class IObject* pIObject);
+};
 class RenderDelegate_Dynamic_Blend: public IRenderDelegate
 { 
 public:

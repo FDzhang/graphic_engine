@@ -78,6 +78,7 @@ public:
 	void GetCarRect(float *pData,int index);
 	void GetCarShadowAdjust(float *pData,int index);
 	void CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
+	void CvtPointWorld2ImageUnitmm(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
 	void CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
 
 private:

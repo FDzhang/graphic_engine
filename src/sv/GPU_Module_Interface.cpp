@@ -25,7 +25,7 @@ st_singleview_rect_data_T tempBSDRectData[8];
 st_ADAS_Mdl_HMI_T BSD_Mdel_HMI;
 st_ADAS_Mdl_HMI_T LDW_MDEL_HMI;
 st_ADAS_Mdl_HMI_T *pHMIArray[2];
-
+Radar_PLD_Result g_radar_pld_reslt;
 SVNodeTestHMI test_hmi;
 st_ADAS_Mdl_HMI_T* pTestHMI[1];
 static int chains_status = 0;
@@ -461,6 +461,8 @@ int InitAppNew(int width, int height, st_GPU_Init_Config_T* gpu_init)
         InitVehcleParam();
         if(app.init(width, height, *gpu_init))
         {
+            g_radar_pld_reslt.iParkLotBitFlag=0;
+			g_radar_pld_reslt.iParkLotNum=0;
             return 0;
         }
         return -1;
@@ -468,6 +470,24 @@ int InitAppNew(int width, int height, st_GPU_Init_Config_T* gpu_init)
     return -22;//参数错误
 }
 //} add end ke.zhonghua
+void GetSonarPLDRslt(Radar_PLD_Result *pReslt)
+{
+     pReslt->iParkLotBitFlag = g_radar_pld_reslt.iParkLotBitFlag;
+	 pReslt->iParkLotNum = g_radar_pld_reslt.iParkLotNum;
+	 for(int i=0;i<4;i++)
+	 {
+	     pReslt->sFrontMarginGround_Points[i] = g_radar_pld_reslt.sFrontMarginGround_Points[i];
+         pReslt->sGround_Points[i] = g_radar_pld_reslt.sGround_Points[i];
+	     pReslt->sTruePLD_Points[i] = g_radar_pld_reslt.sTruePLD_Points[i];
+         pReslt->sRearMarginGround_Points[i] = g_radar_pld_reslt.sRearMarginGround_Points[i];
+
+	 }
+}
+Radar_PLD_Result* GetSonarPLDDataPointer(void)
+{
+    return &g_radar_pld_reslt;
+
+}
 
 int UpdateApp(unsigned int view_control_flag,GLuint texYuv[])
 {

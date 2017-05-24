@@ -6,6 +6,7 @@
 #include "GlSVOverlayStichWheel.h"
 #include "SVNodeAdasHmi.h"
 #include "RenderNode/SVNodeCrossImage.h"
+#include "RenderNode/SVNodeSonar.h"
 extern IXrCore* g_pIXrCore;
 extern IDeviceManager* rm;
 extern IAnimationManager* am;
@@ -2779,6 +2780,8 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 #endif
     m_pAdasHmi = new SVNodeAdasHMI;
 	m_pAdasHmi->Init(pConfig,m_2DSingleViewNode,m_2DAVMNode,pAdasMdlHmiHandle,HmiMdlNum);
+	m_pNodeSonar = new SVNodeSonar;
+	m_pNodeSonar->Init(&pConfig,m_2DAVMNode);
 #if 1
 
 
@@ -4645,6 +4648,8 @@ int SVScene::Update(int view_control_flag, int param2)
 	m_stich_wheel->Update(steer_angle);
 
 	#endif
+	float *pdist=	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
+	m_pNodeSonar->Update(steer_angle, speed, left_wheel_speed, left_wheel_speed, gear_state, time_interval, yaw_rate, pdist);
 	APAOverlayStruct pgs_result;
 
 

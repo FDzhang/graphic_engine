@@ -169,6 +169,36 @@ Int32 RenderDelegate_Rigid_Blend::OnRender(
 
 	return 0;
 }
+Int32 RenderDelegate_Color_Plot::OnRender(
+	/* [in] */ class IMaterial* pMtl,
+	/* [in] */ const XRMat4* pModelMatrix,
+	/* [in] */ const XRMat4* pViewMatrix,
+	/* [in] */ const XRMat4* pProjMatrix,
+	/* [in] */ class CLight* pLight,
+	/* [in] */ class IObject* pIObject)
+{
+	CShaderObject* pShader;
+	CUniformBlock* pUB;
+	CRenderState* pRS;
+	CVertexLayout* pLayout;
+	pMtl->GetEffect()->GetEffectParam(&pShader, &pUB, &pRS, &pLayout);
+	CNode* node = (CNode*)pIObject->GetRealType();
+	String name = node->GetName();
+	XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
+	XRDM->context()->PSSetTexture(1, pMtl->GetEnvironmentMap(), XRDM->GetDefaultSampler()); 
+
+	FR_ColorPlot_CB cb;
+	cb.TransformMatrix = (*pProjMatrix)* (* pViewMatrix)*(*pModelMatrix);
+	
+	Float32 color[4]={1.0,1.0,1.0,1.0};
+	pMtl->GetAmbientColor(&color[0],&color[1],&color[2],&color[3]);
+	
+	cb.WaveColor.Set(color[0],color[1],color[2]);	
+	XRDM->context()->UpdateUniformBlock(pUB, &cb);
+	XRDM->context()->VSSetUniformBlock(0, pUB);
+
+	return 0;
+}
 Int32 RenderDelegate_Dynamic_Blend::OnRender(
 	/* [in] */ class IMaterial* pMtl,
 	/* [in] */ const XRMat4* pModelMatrix,

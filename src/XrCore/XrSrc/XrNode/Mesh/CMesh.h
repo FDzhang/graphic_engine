@@ -63,6 +63,7 @@ public:
 	Int32  GetIndexCount() { return m_indexCount; }
 	 void  SetIndexCount(Int32 indexCount) { m_indexCount= indexCount; }
 	 void  SetVertexCount(Int32 indexCount) { m_vertexCount= indexCount; }
+	 xr_state UpdateVertexNum(Int32 vertex_count);
 
 	Void ReleaseIB();
 	Void ReleaseVB();
@@ -113,7 +114,8 @@ public:
 	Void CleanExternalModel();
 	UInt32 GetExternalModelFormat() { return m_externalFormat; }
 	Void SetExternalModelFormat(UInt32 format) { m_externalFormat = format; }
-	
+	virtual void SetRenderPlot(unsigned char flag){m_plot_flag = flag;}
+	virtual unsigned char GetRenderPlot(void){return m_plot_flag;}
 	virtual unsigned char  GetEnable();
 	virtual xr_state SetEnable(unsigned char enable);
 
@@ -135,6 +137,7 @@ private:
 	Void*					m_externalModel;
 	UInt32					m_externalFormat;
 	unsigned char           m_enable;
+	unsigned char          m_plot_flag;
 };
 
 #endif  //__CMESH_H__
