@@ -28,7 +28,7 @@
 #define FINAL_PARKING_LOT_VERTICAL_LEGNTH  5000
 #define FINAL_PARKING_LOT_VERTICAL_WIDTH   2100
 #define SEACHING_SLOT_STEERING_GATE  180
-
+#define MIN_VEHICLE_WIDTH 1650
 
 #define PARKING_LOT_PARALLEL  0
 #define PARKING_LOT_VERTICAL  1
@@ -273,7 +273,7 @@ private:
 	int m_obj_jump_point_index[2];
 	st_lot_data_T m_slot_data[max_sonar_num];
 	bool m_sonar_overlap_flag[max_sonar_num][max_sonar_num];
-
+    unsigned char m_track_park_lot_flag;
 	int m_filter_time;
     	 
 };
