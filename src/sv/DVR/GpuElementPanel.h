@@ -1,7 +1,7 @@
-#ifndef VIDEOPLAYBUTTON_H /* { */
-#define VIDEOPLAYBUTTON_H
+#ifndef _GPU_ELEMENT_PANNEL_H_ /* { */
+#define _GPU_ELEMENT_PANNEL_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: VideoPlayButton.h
+ * FILE:GpuElementPannel.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,28 +23,30 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 11 5月 2017 dota2_black 
+ * VERSION: 23 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "CVideoButton.h"
+#include "IGUIElement.h"
+#include "XrCore/XrSrc/XrUILibrary/CXrPanel.h"
 
-/** 创建video play button*/
-class VideoPlayButton : public CVideoButton
+namespace GUI
 {
-public:
-    VideoPlayButton()
-        :CVideoButton("play")
+    class CGPUPanel : public IGUIElement
     {
-    }
-    ~VideoPlayButton() {}
-    void InitNode(ILayoutNode* node)
-    {
-        CVideoButton::InitNode(node);
-        Init(1100, 500, 120, 120, 1, XR_RES_DVR"DVR_play.dds", XR_RES_DVR"DVR_pause.dds");
-    }
-protected:
-    Void OnPress(Int32 id) { DEBUG("button id is %d\n",id);}
-    Void OnRelease(Int32 id, Boolean isIn) { DEBUG("button id is %d\n",id);}
-};
+    
+    public:
+        CGPUPanel();
+        ~CGPUPanel();
+        bool Create(const uint32_t pos_x, const uint32_t pos_y,
+                    const uint32_t element_width, const uint32_t element_height);
+        void SetElementEffect(void* effect, long style);
+    private:
+        CXrPanel* m_panel;
+        uint32_t m_layout_x, m_layout_y;
+        uint32_t m_panel_width, m_panel_height;
+    private:
+        DECLEAR_DYNAMIC_CLASS(CGPUPanel, IGUIElement)
+    };
+}
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
@@ -53,4 +55,4 @@ protected:
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } VIDEOPLAYBUTTON_H */
+#endif /* } _GPU_ELEMENT_PANEL_H_ */

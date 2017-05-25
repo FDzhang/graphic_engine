@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------------------
- * FILE: RuntimeClass.cpp
+ * FILE: LayoutElement.cpp
  *==========================================================================================
  * Copyright 2017  O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -21,40 +21,29 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 14 5月 2017 dota2_black 
+ * VERSION: 13 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "RuntimeClass.h"
+#include "IGUIElement.h"
 
-CObject::CObject()
+namespace GUI
 {
-    DEBUG("CObject Constructor.\n");
-}
-CObject::~CObject()
-{
-}
-bool CObject::IsKindOf(const CRuntimeClass* pClass) const
-{
-    CRuntimeClass* pClassThis = GetRuntimeClass();
-    //! 遍历CRuntimeClass链表节点
-    while(pClassThis != NULL)
+    uint32_t IGUIElement::m_focus_id = 0;
+    void GPU_SetElementTexture(IGUIElement* element, const IGUITexture* array_texture, uint32_t array_size)
     {
-        if(pClassThis == pClass)
-        {
-            Log_Debug("%s is %s\n", GetRuntimeClass()->m_className, pClass->m_className);
-            return true;
-        }
-        pClassThis = pClassThis->m_pBaseClass;
+        
     }
-    DEBUG("%s is not %s\n", GetRuntimeClass()->m_className, pClass->m_className);
-    return false;
-}
 
-struct CRuntimeClass CObject::classCObject={
-    "COBject",sizeof(CObject),0xFFFF,NULL,NULL,NULL
-};
-CRuntimeClass* CObject::GetRuntimeClass() const
-{
-	return &CObject::classCObject;
+    void GPU_SetElementOpacity(IGUIElement* element, const uint32_t opacity)
+    {
+        
+    }
+
+    void GPU_SetElementEventEffect(IGUIElement* element, const uint32_t style)
+    {
+        
+    }
+
+    IMPLEMENT_DYNAMIC_BASE(IGUIElement)
 }
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
