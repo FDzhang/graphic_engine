@@ -8,6 +8,7 @@ SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 AUX_SOURCE_DIRECTORY(. gpu_srcs)
 
 #添加sv子目录所有代码
+AUX_SOURCE_DIRECTORY(sv/DVR svdvr_srcs)
 AUX_SOURCE_DIRECTORY(sv/DataSource svdatasrc_srcs)
 AUX_SOURCE_DIRECTORY(sv/HMI svhmi_srcs)
 AUX_SOURCE_DIRECTORY(sv/HMISource svhmisrc_srcs)
@@ -45,7 +46,7 @@ INCLUDE_DIRECTORIES(${J6_ROOTFS}/usr/include ${J6_ROOTFS}/usr/include/freetype2
                     )
 LINK_DIRECTORIES(${J6_ROOTFS}/lib ${J6_ROOTFS}/usr/lib)
 
-ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_srcs} ${svdatasrc_srcs} ${svhmi_srcs} ${svhmisrc_srcs} ${svrender_srcs} ${svrendernode_srcs}
+ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_srcs} ${svdvr_srcs} ${svdatasrc_srcs} ${svhmi_srcs} ${svhmisrc_srcs} ${svrender_srcs} ${svrendernode_srcs}
 		${svvideosrc_srcs} ${sv_srcs} ${xrres_srcs} ${xrrender_srcs} ${xrrshaders_srcs} ${xrrshader_srcs}
 		 ${xrplatform_srcs} ${xreffect_srcs} ${xrnode_srcs}  ${xrlight_srcs} ${xrlayer_srcs} ${xrinter_srcs} 
 		 ${xrmeterial_srcs} ${xrcamera_srcs} ${xrmesh_srcs} ${xranimat_srcs} ${xrscene_srcs} ${xrcore_srcs} 

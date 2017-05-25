@@ -1903,6 +1903,10 @@ int SVUI::InitPositionAdjustPanel()
 
 
 }
+#include "DVR/LayoutButton.h"
+#include "DVR/LayoutProcessBar.h"
+CLayoutButton button;
+CLayoutProcessBar bar;
 
 int SVUI::InitUI()
 {
@@ -1945,9 +1949,28 @@ int SVUI::InitUI()
    InitLiscenseKeyboard();
 //	InitBottomPanel();
 	//InitAliCtrlPanel();
-	
+   
+   //dota2_black: 添加DVR layouts, 后期将序列化xml配置,在进程load时动态创建需要的layout element
+#if 1
+   button.InitElementNode(m_node);
+   button.InitElementSize(640, 360, 120,120, 1);
+   TextureName array_texture[] = { XR_RES_DVR"BC64.dds", XR_RES_DVR"DVR_play.dds"};
+   button.InitElementTexture(array_texture);
+   button.CreateElement();
+   
+   bar.InitElementNode(m_node);
+   bar.InitElementSize(100, 500, 1000, 42, 1);
 
-
+   TextureName array_texture_bar[] = { XR_RES_DVR"barBase.dds", /**临时设置，待修改进度条特效*/
+                                       XR_RES_DVR"barBase.dds",
+                                       XR_RES_DVR"barFinished.dds",
+                                       XR_RES_DVR"barSlide.dds"};
+   bar.InitElementTexture(array_texture_bar);
+   bar.CreateElement();
+#else
+   
+#endif
+   
 	return 0;
 }
 #define KEY_BOARD_CONER_SIZE 3
