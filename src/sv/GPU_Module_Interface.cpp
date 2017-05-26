@@ -61,6 +61,7 @@ void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 	g_APA_HMI_data.icon_num = 1;
 	pAdasMdlHmiHandle[HmiMdlNum++] = &g_APA_HMI_data;
 	app.initAdasMdlHmi(pAdasMdlHmiHandle,HmiMdlNum);
+
 }
 void TestCustomHMI(void)
 {
@@ -264,17 +265,14 @@ void TestAdasHMI(void)
 
 
 }
-int OnMouseSingleDown(int x,int y);
-int OnMouseSingleUp(int x,int y);
-int OnMouseSingleMove(int x,int y);
-    
+
 void UpdateCustomHMIData()
 {
 	float steer_angle;
 	float vehicle_speed;
 	float yaw_rate_value;
 	ProcessInfoData InfoData;
-	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);	
+	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);
 	AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&vehicle_speed);
 	AVMData::GetInstance()->m_p_can_data->Get_Yaw_Rate(&yaw_rate_value);
 	AVMData::GetInstance()->m_process_info->GetProcessInfo(&InfoData);
@@ -288,21 +286,6 @@ void UpdateCustomHMIData()
 		InfoData.srcToSgxMaxLatency,
 		InfoData.algAvgCost_ms,
 		InfoData.algMaxCost_ms);
-
-    static unsigned int down =  0;
-    down = down % 1280;
-    
-    if(down % 15 == 0)
-    {
-        OnMouseSingleDown(640,360);
-    }
-    if(down % 30 == 0)
-    {
-        OnMouseSingleUp(640,360);
-    }
-    OnMouseSingleDown(100,600);
-    OnMouseSingleMove(down, 600);
-    down ++;
 }
 
 void setHMIAlgStatus(int alg_status_value)

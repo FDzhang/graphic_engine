@@ -73,6 +73,7 @@ namespace GUI
                 &barROI,
                 &sliderROI
                 );
+            SetElementId(m_baseLayerId);
         }
         else
         {
@@ -95,9 +96,17 @@ namespace GUI
     }
     Boolean CGPUProcessbar::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
+        DEBUG("%d %d %d\n", m_baseLayerId, layerId, type);
+        m_cmdTarget->DispatchEvent(layerId, type);
         CXrSlideBar::OnTouchEvent(layerId, x, y, type);
     }
 
+    void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)
+    {
+        float percent = current_time / whole_time;
+        CXrSlideBar::SetValue(percent);
+    }
+    
     IMPLEMENT_DYNAMIC_CLASS(CGPUProcessbar)
 }
 /*------------------------------------------------------------------------------------------

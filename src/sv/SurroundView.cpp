@@ -173,6 +173,8 @@ void XRSV::initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 	m_adas_mdl_num = HmiMdlNum;
 
 }
+#include "DVR/Layout.h"
+
 bool XRSV::init(int width, int height, st_GPU_Init_Config_T& gpu_init_cfg)
 {
 	int i,logoMtlId,logoLayerId;
@@ -248,7 +250,7 @@ LutData,MAX_NAME_LENGTH);
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
 	#endif
-
+    GUI::Layout* layout = new GUI::Layout;
 	return true;
 }
 

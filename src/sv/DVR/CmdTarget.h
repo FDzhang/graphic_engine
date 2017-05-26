@@ -1,7 +1,9 @@
-/*------------------------------------------------------------------------------------------
- * FILE: LayoutElement.cpp
+#ifndef _CMD_TARGET_H_ /* { */
+#define _CMD_TARGET_H_
+/*------------------------------------------------------------------------------------------*\
+ * FILE: CmdTarget.h
  *==========================================================================================
- * Copyright 2017  O-Film Technologies, Inc., All Rights Reserved.
+ * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
  *
  * DESCRIPTION:
@@ -21,35 +23,21 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 13 5月 2017 dota2_black 
+ * VERSION: 26 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "IGUIElement.h"
+#include "reuse.h"
 
-namespace GUI
+class CCmdTarget
 {
-    int32_t IGUIElement::m_focus_id = 0;
-    void GPU_SetElementTexture(IGUIElement* element, const IGUITexture* array_texture, uint32_t array_size)
-    {
-        
-    }
-
-    void GPU_SetElementOpacity(IGUIElement* element, const uint32_t opacity)
-    {
-        
-    }
-
-    void GPU_SetElementEventEffect(IGUIElement* element, const uint32_t style)
-    {
-        
-    }
-
-    IMPLEMENT_DYNAMIC_BASE(IGUIElement)
-}
+public:
+    virtual void DispatchEvent(uint32_t layerId, uint32_t type) = 0; //消息分发接口
+};
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
- *==========================================================================================
+ *------------------------------------------------------------------------------------------
  *
- * Date             SCR                      user                              Description
- *==========================================================================================
+ * Date             SCR                   userid                   Description
+ * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
+#endif /* } _CMD_TARGET_H_ */

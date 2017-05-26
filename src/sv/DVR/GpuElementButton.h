@@ -38,12 +38,15 @@ namespace GUI
         GUI_BUTTON_EFFECT_TEXT,            /**设置按钮为文本式开关*/
         GUI_BUTTON_EFFECT_LOCK,            /**设置按钮为自锁式开关*/
     };
+
+
+    
     /**
      * \Author: dota2_black
      * \brief: CXrButton的事件机制(通过IActionTrigger注册操作方法进入CXrButton),将设置button属性和设置button的操作方法分离
      *         重写为合并的方法(创建不同videobutton的开发者需要同时负责button的属性以及功能, private IActionTrigger为适配
      *         CXrButton的绘制
-     * \param[in] name button text name
+     * \param[in] name button text naXme
      * 
      */
     class CGPUButton : public IGUIElement,  private CXrButton

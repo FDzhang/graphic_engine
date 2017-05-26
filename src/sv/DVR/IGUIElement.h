@@ -26,6 +26,7 @@
  * VERSION: 13 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "RuntimeClass.h"
+#include "CmdTarget.h"
 
 #ifndef OFILM_VIEW_ENGINE
 #include "XrCore/XrSrc/External/IUINode.h"
@@ -65,10 +66,10 @@ namespace GUI
     public:
         IGUIElement(const char* name = "GUIElement")
             :m_node(NULL)
+            ,m_id(-1)
             ,m_parent(0)
             ,m_elementName(name)
         {
-            m_id ++; //非线程安全, 不适用于多线程中动态创建GUI元素
         }
         virtual ~IGUIElement(){};
         void Attach(IGUINode* node, uint32_t parent = 0) {m_node = node; m_parent = parent;}
@@ -88,17 +89,25 @@ namespace GUI
          * \brief GUI Element特效设置接口
          */
         virtual void SetElementEffect(void* effect, long style) = 0;
+        /**
+         * \brief 获取Element ID, 目前该id由XrCore创建, 用于消息区分
+         */
+        const uint32_t GetElementId() const { return m_id;}
+
+        // 临时注册消息分发函数
+        void RegisterDispatch(CCmdTarget* cmdTarget) {m_cmdTarget = cmdTarget;};
     protected:
         const IGUINode* GetLayoutNode() const { return m_node;}
-        const uint32_t GetParent() const { return m_parent;}
+        const int32_t GetParent() const { return m_parent;}
+        void SetElementId(uint32_t id) { m_id = id;}
+        CCmdTarget* m_cmdTarget;
     private:
-        uint32_t m_id;              //每个Element的唯一标识ID
+        uint32_t m_id;     //唯一身份标志, 目前保存的是XrCore引擎库设置的身份标志
         uint32_t m_parent;
         IGUINode* m_node;
         const char* m_elementName;
-        
     private:
-        static uint32_t m_focus_id; //通过Element的ID 做焦点标志
+        static int32_t m_focus_id; //通过Element的ID 做焦点标志
         /**实现依据类名动态创建类对象的功能,声明动态基类特性*/
         DECLEAR_DYNAMIC_BASE(IGUIElement)
     };
