@@ -1,7 +1,7 @@
-#ifndef VIDEOPLAYBUTTON_H /* { */
-#define VIDEOPLAYBUTTON_H
+#ifndef _CMD_TARGET_H_ /* { */
+#define _CMD_TARGET_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: VideoPlayButton.h
+ * FILE: CmdTarget.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,27 +23,14 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 11 5月 2017 dota2_black 
+ * VERSION: 26 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "CVideoButton.h"
+#include "reuse.h"
 
-/** 创建video play button*/
-class VideoPlayButton : public CVideoButton
+class CCmdTarget
 {
 public:
-    VideoPlayButton()
-        :CVideoButton("play")
-    {
-    }
-    ~VideoPlayButton() {}
-    void InitNode(ILayoutNode* node)
-    {
-        CVideoButton::InitNode(node);
-        Init(1100, 500, 120, 120, 1, XR_RES_DVR"DVR_play.dds", XR_RES_DVR"DVR_pause.dds");
-    }
-protected:
-    Void OnPress(Int32 id) { DEBUG("button id is %d\n",id);}
-    Void OnRelease(Int32 id, Boolean isIn) { DEBUG("button id is %d\n",id);}
+    virtual void DispatchEvent(uint32_t layerId, uint32_t type) = 0; //消息分发接口
 };
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
@@ -53,4 +40,4 @@ protected:
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } VIDEOPLAYBUTTON_H */
+#endif /* } _CMD_TARGET_H_ */

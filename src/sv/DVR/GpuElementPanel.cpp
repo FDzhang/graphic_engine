@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------------------
- * FILE: LayoutElement.cpp
+ * FILE: GpuElementPanel.cpp
  *==========================================================================================
  * Copyright 2017  O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -21,38 +21,48 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 13 5月 2017 dota2_black 
+ * VERSION: 23 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "LayoutElement.h"
+#include "GpuElementPanel.h"
 
-IMPLEMENT_DYNAMIC(CLayoutElement, CObject)
-CLayoutElement::CLayoutElement()
-    :CObject()
+namespace GUI
 {
+    CGPUPanel::CGPUPanel()
+    {
+        m_panel = new CXrPanel(-1);
+    }
+
+    bool CGPUPanel::Create(const uint32_t pos_x, const uint32_t pos_y,
+                const uint32_t element_width, const uint32_t element_height)
+    {
+        m_layout_x = pos_x;
+        m_layout_y = pos_y;
+        m_panel_width = element_width;
+        m_panel_height = element_height;
+
+        const IUINode* node = GetLayoutNode();
+        if(node)
+        {
+            /** 调用XrCore的CXrButton,添加button node*/
+            m_panel->Add(node, -1, InsertFlag_Default, 100, 600, 1000, 180, 1, XR_RES"test.dds");
+            DEBUG("get the right layout node\n");
+        }
+        else
+        {
+            ERROR("plese point a layout node for it\n");
+        }
+        return true;
+    }
+
+    void CGPUPanel::SetElementEffect(void* effect, long style)
+    {
+        
+    }
+    CGPUPanel::~CGPUPanel()
+    {
     
-}
-
-CLayoutElement::~CLayoutElement()
-{
-}
-
-void CLayoutElement::InitElementNode(ILayoutNode* node)
-{
-     m_node = node;
-}
-void CLayoutElement::InvalidElementEffect()
-{
-    is_valid = false;
-}
-
-void CLayoutElement::ValidElementEffect()
-{
-    is_valid = true;
-}
-
-const ILayoutNode* CLayoutElement::GetLayoutNode() const
-{
-    return CLayoutElement::m_node;
+    }
+    IMPLEMENT_DYNAMIC_CLASS(CGPUPanel)
 }
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)

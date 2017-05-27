@@ -22,7 +22,7 @@ public:
 	
 	Void ReleaseUp();
 
-private:
+protected:
 	CXrPanel		m_base;
 	CXrPanel		m_hit;
 	IActionTrigger	*buttonAction;

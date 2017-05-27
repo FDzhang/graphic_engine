@@ -28,56 +28,67 @@
  * VERSION: 13 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include <string.h>
+#include <map>
 #include "reuse.h"
 #include "log/log.h"
 #include "utils/utils.h"
 
-struct CRuntimeClass;
-/** 为指定类声明动态类型特性: 定义一个名为class+类名的CRuntimeClass对象并返回该对象地址的虚函数*/
-#define DECLARE_DYNAMIC(class_name) \
+/** 指定类声明动态类型特性*/
+#define DECLEAR_DYNAMIC_BASE(CRuntimeClass) \
     public: \
-    /** 定义CRuntimeCalss成员变量*/ \
-    static const struct CRuntimeClass class##class_name; \
-    /** 获取CRuntimeClass变量的接口*/ \
-    virtual CRuntimeClass* GetRuntimeClass() const;
+    typedef CRuntimeClass* (*ClassGenerate)(); /** 声明函数指针*/ \
+    static std::map<std::string, ClassGenerate>* m_class_set; /** 存储子类信息*/ \
+    static CRuntimeClass* Create(const std::string& class_name) /**工厂函数*/ \
+    { \
+        std::map<std::string, ClassGenerate>::iterator iter = m_class_set->find(class_name); \
+        if(m_class_set->end() != iter) \
+        { \
+            return ((*iter).second)();         \
+        } \
+        else                                    \
+        { \
+            ERROR("Please Register %s as a Runtimeclass\n", class_name.c_str()); \
+        } \
+        return NULL; \
+    } \
+    protected: \
+    static void Register(const std::string& class_name, ClassGenerate class_generate) /** 注册函数*/ \
+    { \
+        if(!m_class_set) \
+        {                                                            \
+            m_class_set = new  std::map<std::string, ClassGenerate>; \
+        } \
+        m_class_set->insert(std::map<std::string, ClassGenerate>::value_type(class_name, class_generate)); \
+    }
 
 /** 实现指定类动态类型特性*/
-#define IMPLEMENT_DYNAMIC(class_name, base_class_name) \
-    IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, NULL)
-/** 完成对DECLARE_DYNAMIC宏声明的CRuntimeClass变量class##class_name的初始化,以及对GetRuntimeClass()函数的定义*/
-#define IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, wSchema, pfnNew) \
-    const CRuntimeClass class_name::class##class_name = { \
-        #class_name, sizeof(class class_name), wSchema, pfnNew, \
-        RUNTIME_CLASS(base_class_name), NULL};  \
-    CRuntimeClass* class_name::GetRuntimeClass() const \
-    { return RUNTIME_CLASS(class_name);}
-/** 对CRuntimeClass进行初始化，使之链接上存有类的信息链表*/
-#define RUNTIME_CLASS(class_name) ((CRuntimeClass*)(&class_name::class##class_name))
+#define IMPLEMENT_DYNAMIC_BASE(CRuntimeClass) \
+    std::map<std::string, CRuntimeClass::ClassGenerate>* CRuntimeClass::m_class_set;
 
-/** CObject类声明*/
-class CObject
-{
-public:
-    CObject();
-    virtual ~CObject();
-    virtual struct CRuntimeClass* GetRuntimeClass()   const;
-    bool IsKindOf(const struct CRuntimeClass* pClass) const;
-    static struct CRuntimeClass classCObject;
-};
 
-/** 动态类型信息结构体*/
-struct CRuntimeClass
-{
-    char*    m_className;    /** 保存类名称*/
-    int      m_ObjectSize;   /** 保存类的实例数据所占内存的的大小*/
-    unsigned int m_wSchema;  /** 分类编号(对不可分类的类, 该值为-1)*/
-    CObject* (*m_pfnCreateObject)();/** 指向函数的指针,这个函数返回一个CObject  */
-    CRuntimeClass* m_pBaseClass; /** 指向基类的运行时结构*/
-    CRuntimeClass* m_pNextClass; /** 组成运行时结构链表*/
-    //序列化支持 -- 备用,暂不实现
-    //void Store(CArchive& ar) const;
-    //static CRuntimeClass* Load(CArchive& ar, unsigned int pwSchemaNum);
-};
+#define DECLEAR_DYNAMIC_CLASS(CRuntimeClassDerived, CRuntimeClass) \
+    public: \
+    struct CRuntimeClassDerived##Register /**辅助类, 用于注册*/ \
+    { \
+        CRuntimeClassDerived##Register() \
+        { \
+            static bool bRegistered = false; \
+            if(!bRegistered) \
+            {   \
+                CRuntimeClass::Register(#CRuntimeClassDerived, CRuntimeClassDerived::Create); /**注册子类信息*/ \
+                bRegistered = true;  \
+            } \
+        } \
+    }; \
+    static CRuntimeClass* Create() /**工厂函数*/ \
+    { \
+        return new CRuntimeClassDerived; \
+    } \
+    static struct CRuntimeClassDerived##Register m_t##CRuntimeClassDerived##Register;
+
+
+#define IMPLEMENT_DYNAMIC_CLASS(CRuntimeClassDerived) \
+    static struct CRuntimeClassDerived::CRuntimeClassDerived##Register m_t##CRuntimeClassDerived##Register;
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
