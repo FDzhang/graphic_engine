@@ -81,7 +81,10 @@ namespace GUI
         }
         return true;
     }
-
+    void CGPUProcessbar::SetEnable(bool enable)
+    {
+        CXrSlideBar::SetEnable(enable);
+    }
     void CGPUProcessbar::SetElementEffect(void* effect, long style)
     {
         switch(style)
@@ -103,7 +106,8 @@ namespace GUI
 
     void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)
     {
-        float percent = current_time / whole_time;
+        float percent = (float)current_time / (float)whole_time;
+        DEBUG("whole_time %d current_time %d percent %f\n", whole_time, current_time, percent);
         CXrSlideBar::SetValue(percent);
     }
     

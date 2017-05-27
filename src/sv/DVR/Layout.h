@@ -52,9 +52,10 @@ namespace GUI
         Layout();
         ~Layout();
         void DispatchEvent(uint32_t layerId, uint32_t type);
+        void EnableLayout(int flag);
+        void SetValue(uint32_t whole_time, uint32_t cur_time); //整改
     protected:
         virtual void InitLayout();
-        seta();
     private:
         static IUINode* m_node;
         static struct ElementFuntionTable element_info[];

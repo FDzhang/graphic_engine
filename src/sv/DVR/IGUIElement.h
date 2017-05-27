@@ -93,7 +93,7 @@ namespace GUI
          * \brief 获取Element ID, 目前该id由XrCore创建, 用于消息区分
          */
         const uint32_t GetElementId() const { return m_id;}
-
+        virtual void SetEnable(bool enable) = 0;
         // 临时注册消息分发函数
         void RegisterDispatch(CCmdTarget* cmdTarget) {m_cmdTarget = cmdTarget;};
     protected:

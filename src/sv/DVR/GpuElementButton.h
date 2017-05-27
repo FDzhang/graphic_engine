@@ -59,6 +59,7 @@ namespace GUI
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
         void SetElementEffect(void* effect, long style);
+        void SetEnable(bool enable);
     private:
         Boolean OnTouchEvent(
             /* [in] */Int32 layerId,

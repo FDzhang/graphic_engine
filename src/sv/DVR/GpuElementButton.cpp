@@ -103,7 +103,10 @@ namespace GUI
             break;
         }
     }
-
+    void CGPUButton::SetEnable(bool enable)
+    {
+        CXrButton::SetEnable(enable);
+    }
     Boolean CGPUButton::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
         m_cmdTarget->DispatchEvent(layerId, type);

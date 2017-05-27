@@ -39,6 +39,7 @@ namespace GUI
                     const uint32_t element_width, const uint32_t element_height);
         void SetElementEffect(void* effect, long style);
         void SetValue(uint32_t whole_time, uint32_t current_time);
+        void SetEnable(bool enable);
     private:
         /** 重写OnTouchEvent, 添加事件自定义处理功能*/
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);

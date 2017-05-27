@@ -8,8 +8,7 @@
 #include "AVMData.h"
 #include "HMISource/HMITest.h"
 #include "GPU_Module_Interface.h"
-
-
+#include "DVR/Layout.h"
 //GlSVDemo* demo;
 XRSV app;
 //#define STATIC_TEXTURE_USE
@@ -35,11 +34,12 @@ extern char CAR2DICON[];
 extern char CARLIGHTON[];
 extern char CARLIGHTTEX[];
 extern char CARTEX[];
+GUI::Layout* dvrLayout = NULL; 
 extern void UpdateJ6VideoTexture(GLuint input[]);
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+  
 void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 {
 	int window_width = 1280;
@@ -61,7 +61,6 @@ void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 	g_APA_HMI_data.icon_num = 1;
 	pAdasMdlHmiHandle[HmiMdlNum++] = &g_APA_HMI_data;
 	app.initAdasMdlHmi(pAdasMdlHmiHandle,HmiMdlNum);
-
 }
 void TestCustomHMI(void)
 {
@@ -72,6 +71,19 @@ void TestCustomHMI(void)
 	//InitADASMdlHMI(pTestHMI,1);
 }
 
+void EnableDVRHMI(int flag)
+{
+    if(dvrLayout != NULL)
+    {
+        dvrLayout->EnableLayout(flag);
+    }
+}
+    
+void SetProcessbarValue(uint32_t whole_time, uint32_t cur_time)
+{
+    dvrLayout->SetValue(whole_time, cur_time);
+}
+    
 void TestAdasHMI(void)
 {
     int nodeId,temp;
@@ -265,7 +277,7 @@ void TestAdasHMI(void)
 
 
 }
-
+ 
 void UpdateCustomHMIData()
 {
 	float steer_angle;

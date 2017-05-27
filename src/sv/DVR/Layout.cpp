@@ -74,6 +74,16 @@ namespace GUI
             event(m_element_table[layerId].element, type);
         }
     }
+
+    void Layout::EnableLayout(int flag)
+    {
+        m_node->SetEnable(flag); 
+    }
+    CGPUProcessbar* bar;
+    void Layout::SetValue(uint32_t whole_time, uint32_t cur_time)
+    {
+        bar->SetValue(whole_time, cur_time);
+    }
     void Layout::InitLayout()
     {
         int maxId = 0 , element_id = 0;
@@ -101,7 +111,7 @@ namespace GUI
      */
     void Layout::InitMediaPlay(const IGUIElement* media_play_button)
     {
-        IGUITexture play_array_texture[] = { XR_RES_DVR"media_play.dds", XR_RES_DVR"media_pause.dds"};
+        IGUITexture play_array_texture[] = { XR_RES_DVR"media_pause.dds", XR_RES_DVR"media_play.dds"};
         media_play_button->Attach(m_node);
         media_play_button->SetElementEffect(play_array_texture, GUI::GPU_GUI_EFFECT_TEXTURE);
         uint32_t property = GUI::GUI_BUTTON_EFFECT_LOCK;
@@ -120,7 +130,7 @@ namespace GUI
         IGUITexture next_array_texture[] = { XR_RES_DVR"media_next.dds", XR_RES_DVR"BC64.dds"};
         media_next_button->Attach(m_node);
         media_next_button->SetElementEffect(next_array_texture, GUI::GPU_GUI_EFFECT_TEXTURE);
-        media_next_button->Create(100, 600, 50,50);
+        media_next_button->Create(210, 600, 50,50);
     }
     void Layout::OnMediaNextEvent(const IGUIElement* element, const uint32_t type)
     {
@@ -134,7 +144,7 @@ namespace GUI
          IGUITexture prev_array_texture[] = { XR_RES_DVR"media_prev.dds", XR_RES_DVR"BC64.dds"};
          media_prev_button->Attach(m_node);
          media_prev_button->SetElementEffect(prev_array_texture, GUI::GPU_GUI_EFFECT_TEXTURE);
-         media_prev_button->Create(210, 600, 50,50);
+         media_prev_button->Create(100, 600, 50,50);
     }
     void Layout::OnMediaPrevEvent(const IGUIElement* element, const uint32_t type)
     {
@@ -149,6 +159,7 @@ namespace GUI
         media_bar->Attach(m_node);
         media_bar->SetElementEffect(array_texture_bar, GUI::GPU_GUI_EFFECT_TEXTURE);
         media_bar->Create(270, 615, 800, 4);
+        bar = (CGPUProcessbar*)media_bar;
     }
     void Layout::OnMediaBarEvent(const IGUIElement* element, const uint32_t type)
     {
