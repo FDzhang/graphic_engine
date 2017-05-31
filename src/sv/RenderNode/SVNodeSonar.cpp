@@ -337,7 +337,7 @@ void SVNodeSonar::SetRadarPLDReslt()
     
 	pRadarPldRslt= GetSonarPLDDataPointer();
     //right park lot has higher priority
-    if(m_sonar_parking_lot[front_right_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)
+    if((m_sonar_parking_lot[front_right_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)&&m_sonar_parking_lot[front_right_side_sonar].show_flag==1)
     {
         pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type;
 		pRadarPldRslt->iParkLotNum = 1;
@@ -353,7 +353,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 
 		
     }
-	else if(m_sonar_parking_lot[front_left_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)
+	else if(m_sonar_parking_lot[front_left_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE&&m_sonar_parking_lot[front_left_side_sonar].show_flag==1)
 	{
 
     	pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_left_side_sonar].parking_lot_type;
@@ -362,7 +362,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		pRadarPldRslt->sGround_Points[0].x = m_sonar_parking_lot[front_left_side_sonar].lot_start_pos[0];
 		pRadarPldRslt->sGround_Points[0].y = m_sonar_parking_lot[front_left_side_sonar].lot_start_pos[1];	
 		pRadarPldRslt->sGround_Points[1].x = m_sonar_parking_lot[front_left_side_sonar].lot_start_pos[0];
-		pRadarPldRslt->sGround_Points[1].y = m_sonar_parking_lot[front_left_side_sonar].lot_start_pos[1]+m_sonar_parking_lot[front_right_side_sonar].lot_width;
+		pRadarPldRslt->sGround_Points[1].y = m_sonar_parking_lot[front_left_side_sonar].lot_start_pos[1]-m_sonar_parking_lot[front_left_side_sonar].lot_width;
 		pRadarPldRslt->sGround_Points[2].x = m_sonar_parking_lot[front_left_side_sonar].lot_end_pos[0];
 		pRadarPldRslt->sGround_Points[2].y = m_sonar_parking_lot[front_left_side_sonar].lot_end_pos[1];	
 		pRadarPldRslt->sGround_Points[3].x = pRadarPldRslt->sGround_Points[2].x ;
@@ -1142,7 +1142,7 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 		{
 			ProcessLotData(sonar_index, park_lot_index);
 		}
-		else
+		//else
 		AVMData::GetInstance()->m_p_can_data->ResetDriveDist();  	
 		idata=MAX_SONAR_OBJ_NUM+1;
 		
@@ -1704,7 +1704,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	    {
             ProcessSearchingSlot(2,obj_dist,front_left_side_sonar);
 	
-           // ProcessSearchingSlot(2,obj_dist,front_right_side_sonar);
+            ProcessSearchingSlot(2,obj_dist,front_right_side_sonar);
 	    }
 	}
 	else
