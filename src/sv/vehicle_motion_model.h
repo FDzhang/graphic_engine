@@ -10,7 +10,17 @@
 #include "DataStruct.h"
 #define CV_PI 3.1416926
 
+#define  MAXPOINTNUM 1
+#define FLT_MIN 1.1e-30f
 
+#ifndef ABS
+#define ABS(x) ((x) >= 0 ? (x):-(x))
+#endif
+
+#ifndef MAX
+#define MAX(x, y) ((x) >= (y)? (x):(y))
+#define MIN(x, y) ((x) > (y)?(y):(x))
+#endif
 /* constructs CvPoint2D32f structure. */
 inline  CvPoint2D32f  cvPoint2D32f(float32_t x, float32_t y)
 {
@@ -62,8 +72,17 @@ void Motion2KframePredictVCS(
 		float32_t m[9],
 		CvPoint2D32f &pointOut
 		);
+	void get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], COMMON_VEHICLE_DATA_SIMPLE * v_data, float g_PLD_time_Offset_in);
 private:
+	int get_driving_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data);
+	int get_turn_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data);
+		void steeringwheel_radius(
+			float str_whl_angle,
+			int shft_pos,
+			float &radius
+			);//convert from steering wheel angle to steering radius
 
+	float get_yawrate_from_curvature(COMMON_VEHICLE_DATA_SIMPLE * v_data);
 
 	
 

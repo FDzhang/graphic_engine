@@ -33,6 +33,7 @@ Float32* GenPlaneMeshV(Float32 sx, Float32 sy, Int32 dx, Int32 dy, class CMesh* 
 Float32* GenLineMeshV(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh* mesh, Region* roi);
 Float32* GenPlaneDynamicMeshV(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh* mesh, Region* roi);
 Float32* GenPlaneDynamicMeshH(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh* mesh, Region* roi);
+Float32* GenPlaneArcPlaneMeshV(Float32 r, Float32 s_a, Float32 e_a,  CMesh* mesh, Region* roi);
 
 xr_state GenLayerMesh(Int32 sx, Int32 sy, Float32 texScaleX, Float32 texScaleY, Int32 dx, Int32 dy, CMesh* mesh);
 xr_state Gen2DPath(float* inputData,int dataNum,int elemNum,float width,float midRoundRatio,float endRoundRatio,float deltaRad,float texScale,bool bLoop, CMesh* mesh);

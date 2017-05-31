@@ -71,6 +71,10 @@ struct FR_RigidVideoTexture_CB {
 struct FR_RigidBlend_CB {
 	XRMat4 TransformMatrix;
 };
+struct FR_ColorPlot_CB {
+	XRMat4 TransformMatrix;
+	XRVec3 WaveColor;	
+};
 struct FR_DynamicBlend_CB {
 	XRMat4 TransformMatrix;
 	Float32 TextureStep;
@@ -121,6 +125,7 @@ DeclareShaderParam(FR_GlossyColor)
 DeclareShaderParam(FR_Glass)
 DeclareShaderParam(FR_Glass_Alpha)
 DeclareShaderParam(FR_RigidBlend)
+DeclareShaderParam(FR_ColorPlot)
 DeclareShaderParam(FR_DynamicBlend)
 DeclareShaderParam(FR_RigidVideoTexture)
 

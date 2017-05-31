@@ -642,6 +642,13 @@ void AVM2DLUT::CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
 
 }
 
+void AVM2DLUT::CvtPointWorld2ImageUnitmm(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
+{
+
+	 pOutPoint->y = 1.0-(((InPoint.x)/(0.0-m_calib_para[POS_CALIB_PPMMX])+m_calib_para[POS_CALIB_CX])/240.0);
+	  pOutPoint->x =((InPoint.y)/m_calib_para[POS_CALIB_PPMMY]+m_calib_para[POS_CALIB_CY]-108.0)/108.0;
+
+}
 /*===========================================================================*\
  * External Function Definitions
 \*===========================================================================*/

@@ -165,10 +165,10 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	}
 
 	m_pAVMData->m_lumin_para->Init(LuminParafile);
-	//m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,carposefile,carposeadjustfile,calibfile);
+	m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,carposefile,carposeadjustfile,calibfile);
 	if(config.pSticherResult != NULL)
 	{
-	    m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,0,config.pSticherResult);
+	    //m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,0,config.pSticherResult);
     }
 	m_pAVMData->m_cam_source->Init(config.file_path);
 	m_pAVMData->m_p_can_data->Init();
@@ -238,14 +238,21 @@ void AVMData::cvtWorldPoint2ModelPoint3D(float *out_Model_Coord,float *in_world_
     out_Model_Coord[0] = m_pAVMData->m_calib_3d.model_scale*(in_world_coord[1]*1000);
 
 }
-void AVMData::cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord)
+void AVMData::cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord,unsigned char unitmm)
 {
 	CvPoint2D32f inPoint;
 	CvPoint2D32f outPoint;
 	inPoint.x = in_world_coord[0];
     inPoint.y = in_world_coord[1];
-
+    if(unitmm == 1)
+    {
+	    m_pAVMData->m_2D_lut->CvtPointWorld2ImageUnitmm(inPoint,&outPoint);
+        
+    }
+	else
+	{
     m_pAVMData->m_2D_lut->CvtPointWorld2Image(inPoint,&outPoint);
+	}
     out_stich_Coord[0] = outPoint.x;
 	out_stich_Coord[1] = outPoint.y;
 	out_stich_Coord[2] = 0.1;

@@ -138,6 +138,14 @@ CXrRenderEffect* CRenderManager::CreateEffect(MaterialType mtlType)
 			pEffect->InitShaderFromMemory(ShaderSource2Param(FR_RigidBlend));
 			pEffect->SetRenderDelegate(renderDelegate);
 			break;
+		case Material_Color_Plot:
+			pEffect->SetOpaque(TRUE);
+			renderDelegate = new RenderDelegate_Color_Plot();
+			
+			if (!renderDelegate) return 0;
+			pEffect->InitShaderFromMemory(ShaderSource2Param(FR_ColorPlot));
+			pEffect->SetRenderDelegate(renderDelegate);
+			break;			
 		case Material_Dynamic_Blend:
 			pEffect->SetOpaque(TRUE);
 			renderDelegate = new RenderDelegate_Dynamic_Blend();

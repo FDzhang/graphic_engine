@@ -283,3 +283,147 @@ void VehicleMotion::getPos2Kframe(
 	pointOut.x = m[0]*pointIn.x+m[1]*pointIn.y+m[2];
 	pointOut.y = m[3]*pointIn.x+m[4]*pointIn.y+m[5];
 }
+int VehicleMotion::get_driving_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data)
+{
+	return (v_data->shift_pos == 0x03 ? -1 : 1);
+}
+int VehicleMotion::get_turn_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data)
+{
+	int dir = get_driving_dir(v_data);
+	int sign = 1;
+	if (dir > 0)//forward,
+	{
+		if (v_data->steering_angle > 0) //left-turn
+			sign = -1;
+		else
+			sign = 1;
+	}
+	else//backward
+	{
+		if (v_data->steering_angle > 0)//
+			sign = 1;
+		else
+			sign = -1;
+	}
+	return sign;
+
+}
+
+void VehicleMotion::steeringwheel_radius(
+	float str_whl_angle,
+	int shft_pos,
+	float &radius
+	)//convert from steering wheel angle to steering radius
+{
+	enum{ _Forward_R = 0, _Forward_L, _Backward_R, _Backward_L };
+	float32_t H = 2.756f * 1000;
+	float32_t W = 1.839f * 1000;
+	float32_t _a[4], _b[4];
+#define COEFF_LINEAR_FR 0.056620
+#define COEFF_LINEAR_FL 0.056248
+#define COEFF_LINEAR_RR 0.047870
+#define COEFF_LINEAR_RL 0.065278
+
+#define COEFF_CONST_FR -0.029849
+#define COEFF_CONST_FL -0.023264
+#define COEFF_CONST_RR  2.981121
+#define COEFF_CONST_RL -3.054503
+	_a[0] = COEFF_LINEAR_FR;
+	_a[1] = COEFF_LINEAR_FL;
+	_a[2] = COEFF_LINEAR_RR;
+	_a[3] = COEFF_LINEAR_RL;
+
+	_b[0] = COEFF_CONST_FR;
+	_b[1] = COEFF_CONST_FL;
+	_b[2] = COEFF_CONST_RR;
+	_b[3] = COEFF_CONST_RL;
+	if (shft_pos == 2)
+	{
+		if (str_whl_angle < 0) // steering wheel turns clockwisely
+		{
+			radius = H / tan(ABS(_a[_Forward_R] * (-str_whl_angle) + FLT_MIN + _b[_Forward_R])*CV_PI / 180) - W / 2;
+		}
+		else
+		{
+			radius = H / tan(ABS(_a[_Forward_L] * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) - W / 2;
+		}
+	}
+	else
+	{
+		if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
+		{
+			radius = H / tan(ABS(_a[_Backward_R] * (-str_whl_angle) + FLT_MIN + _b[_Backward_R])*CV_PI / 180) - W / 2;
+		}
+		else
+		{
+			radius = H / tan(ABS(_a[_Backward_L] * str_whl_angle + FLT_MIN + _b[_Backward_L])*CV_PI / 180) - W / 2;
+		}
+	}
+}
+
+
+float VehicleMotion::get_yawrate_from_curvature(COMMON_VEHICLE_DATA_SIMPLE * v_data)
+{
+	unsigned char gear_state = v_data->shift_pos;
+	float steerAngle = v_data->steering_angle;
+	float Radius = 0;
+	steeringwheel_radius(steerAngle, gear_state, Radius);
+	Radius = fabs(Radius);
+
+	int shft_pos = v_data->shift_pos;
+	float str_whl_angle = v_data->steering_angle;
+	float speed;
+
+	speed =1000.0* (v_data->wheel_speed_rr + v_data->wheel_speed_rl) / 2.0f / 3.6f;
+
+
+
+	return fabs(speed) / Radius;
+}
+void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], COMMON_VEHICLE_DATA_SIMPLE * v_data, float g_PLD_time_Offset_in)
+{
+	int dri_sign = get_driving_dir(v_data);
+	int turn_sign = get_turn_dir(v_data);
+	float radius;
+	steeringwheel_radius(v_data->steering_angle, v_data->shift_pos, radius);
+	float theta_offset = turn_sign*get_yawrate_from_curvature(v_data)*g_PLD_time_Offset_in;
+
+	int shft_pos = v_data->shift_pos;
+	float str_whl_angle = v_data->steering_angle;
+
+	for (int i = 0; i < MAXPOINTNUM; i++)
+	{
+		Point2f point_src, point_dst;
+		point_src = pts[i];
+		if (shft_pos == 2)
+		{
+			if (str_whl_angle < 0)
+			{
+				point_dst.x = point_src.x*cos(ABS(theta_offset)) + point_src.y*sin(ABS(theta_offset)) - radius*sin(ABS(theta_offset));
+				point_dst.y = -point_src.x*sin(ABS(theta_offset)) + point_src.y*cos(ABS(theta_offset)) + radius*(1 - cos(ABS(theta_offset)));
+			}
+			else
+			{
+				point_dst.x = point_src.x*cos(ABS(theta_offset)) - point_src.y*sin(ABS(theta_offset)) - radius*sin(ABS(theta_offset));
+				point_dst.y = point_src.x*sin(ABS(theta_offset)) + point_src.y*cos(ABS(theta_offset)) - radius*(1 - cos(ABS(theta_offset)));
+			}
+		}
+		else
+		{
+			if (str_whl_angle < 0)
+			{
+				point_dst.x = point_src.x*cos(ABS(theta_offset)) - point_src.y*sin(ABS(theta_offset)) + radius*sin(ABS(theta_offset));
+				point_dst.y = point_src.x*sin(ABS(theta_offset)) + point_src.y*cos(ABS(theta_offset)) + radius*(1 - cos(ABS(theta_offset)));
+			}
+			else
+			{
+				point_dst.x = point_src.x*cos(ABS(theta_offset)) + point_src.y*sin(ABS(theta_offset)) + radius*sin(ABS(theta_offset));
+				point_dst.y = -point_src.x*sin(ABS(theta_offset)) + point_src.y*cos(ABS(theta_offset)) - radius*(1 - cos(ABS(theta_offset)));
+			}
+		}
+		pts[i] = point_dst;
+	}
+
+
+
+}
