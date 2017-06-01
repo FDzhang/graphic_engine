@@ -230,7 +230,7 @@ public:
 	int InitParkinglotRect(void);
     int ProcessPreviousParkingLot(COMMON_VEHICLE_DATA_SIMPLE vehicle_state);
 	void FiltObjData(int filter_num);
-	unsigned char  JudgeJumpPoint(int filter_num,int sonar_index,int *obj_id);
+	unsigned char  JudgeJumpPoint(int filter_num,int sonar_index,int *obj_id,float *slop=NULL);
 	void ProcessSearchingSlot(int filter_time,float *dist,int new_data_flag);
 	int FilterDistData(float *pNewPoint,int sonar_index);
 	void ResetParkSlotInfo(void);
@@ -244,7 +244,7 @@ public:
 	int InitSoarArc(void);
 	int UpdateSonarArc(float dist,sonar_index sonar_pos);
 	void SetRadarPLDReslt();
-
+	int TestVehicleMovment(void);
 private:
 
 	Sonar_Pos     m_sonar_pos[max_sonar_num];
@@ -263,7 +263,7 @@ private:
 	float32_t m_Move_Matrix[ 9 ];
     ISceneNode *m_pStichNode;
 	st_sonar_line_data_T m_sonar_data[max_sonar_num];
-
+	unsigned char pre_line_type[MAX_PARKING_LOT_NUM];
 	st_sonar_line_data_T m_sonar_arc_data[max_sonar_num];
 	sonar_parking_lot_t m_sonar_parking_lot[max_sonar_num];
      unsigned char m_parking_lot_pos;

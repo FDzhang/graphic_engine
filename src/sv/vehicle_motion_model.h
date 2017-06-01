@@ -72,6 +72,8 @@ void Motion2KframePredictVCS(
 		float32_t m[9],
 		CvPoint2D32f &pointOut
 		);
+	
+	float get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data);
 	void get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], COMMON_VEHICLE_DATA_SIMPLE * v_data, float g_PLD_time_Offset_in);
 private:
 	int get_driving_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data);

@@ -24,7 +24,10 @@ typedef struct COMMON_VEHICLE_DATA_SIMPLE_T
     unsigned char left_turn_sig;  
     unsigned char right_turn_sig; 
          unsigned char brake_act_flag;
+		 
          unsigned char reserved;
+		 unsigned short wheel_pulse[4];
+		 unsigned short pre_wheel_pulse[4];
 }COMMON_VEHICLE_DATA_SIMPLE;
 
 #include <math.h>
