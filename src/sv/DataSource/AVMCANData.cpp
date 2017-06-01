@@ -53,6 +53,7 @@ void AVMCANData::Init( void)
 void AVMCANData::UpdateCANData(CAN_DATA in_can_data)
 {
     m_CAN_Data = in_can_data;
+	
 }
 void AVMCANData::Get_Vehicle_Speed(float * Vehicle_Speed)
 {
