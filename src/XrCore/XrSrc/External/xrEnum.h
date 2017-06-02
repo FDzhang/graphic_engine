@@ -121,6 +121,7 @@ enum MaterialType {
 	Material_SkyBox							= 0x00000015,	
 	Material_Rigid_Blend					= 0x00000020,
 	Material_Dynamic_Blend					= 0x00000030,	
+	Material_Color_Plot                     = 0x00000070,
 	Material_Custom							= 0x10000000,
 };
 
@@ -130,6 +131,7 @@ enum ModelType {
 	ModelType_Plane_Dynamic					= 0x00000002,   //plane with special curve
 	ModelType_Plane 						= 0x00000004,
 	ModelType_ArrowPath 					= 0x00000005,
+	ModelType_Plane_ARC 						= 0x00000008,
 	ModelType_Line      					= 0x00000006,	
 	ModelType_Internal						= 0x000000FF,
 	ModelType_External						= 0x00000100,	//load from file

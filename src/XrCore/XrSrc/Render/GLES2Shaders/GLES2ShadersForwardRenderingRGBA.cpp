@@ -222,6 +222,7 @@ void main()\
 	ReflectRatio = 0.5 * f1 * f1 * (1.0 + f2 * f2);\
 	ReflectCoord = normalize(reflect(eyeDirection, normal)).xy * 0.5;\
 	TexCoord = myUV;\
+    gl_PointSize = 10.0;\n\
 }";
 
 const char* FR_Glossy_fs = "\
@@ -409,6 +410,40 @@ XRVertexLayout FR_RigidBlend_layout_index = XR_VERTEX_LAYOUT_PNT;
 
 
 UInt32 FR_RigidBlend_render_state =  XR_CULLMODE_NONE| XR_BLEND_DEFAULT| XR_FRONTFACE_CCW ;
+const char* FR_ColorPlot = "FR_ColorPlot";
+/////////////////// 001 Shader_GhostImage /////////////////////
+const char* FR_ColorPlot_vs = "\
+attribute highp vec4 VertexPos;\n\
+attribute highp vec4 VertexNormal;\n\
+attribute highp vec2 InTexCood;\n\
+uniform highp mat4 ViewProjMatrix;\n\
+uniform lowp vec3 WaveColor;\n\
+varying highp vec3  Normal;\n\
+varying highp vec2 TexCoord;\n\
+varying lowp vec3 MaterialColor;\n\
+void main(void)\n\
+{\n\
+	gl_Position = ViewProjMatrix * VertexPos;\n\
+	Normal = VertexNormal.xyz;\n\
+	TexCoord = InTexCood;\n\
+	gl_PointSize = 3.0;\n\
+    MaterialColor = WaveColor;\n\
+}";
+
+const char* FR_ColorPlot_fs = "\
+uniform highp sampler2D samplerText;\n\
+uniform highp sampler2D samplerAlpha;\n\
+varying highp vec3  Normal;\n\
+varying highp vec2 TexCoord;\n\
+varying lowp vec3 MaterialColor;\n\
+void main (void)\n\
+{\n\
+    gl_FragColor.rgb= MaterialColor;\n\
+		gl_FragColor.a= 1.0;\n\
+}";
+
+XRVertexLayout FR_ColorPlot_layout_index = XR_VERTEX_LAYOUT_PNT;
+UInt32 FR_ColorPlot_render_state =  XR_CULLMODE_NONE| XR_BLEND_DEFAULT| XR_FRONTFACE_CCW ;
 const char* FR_DynamicBlend = "FR_DynamicBlend";
 /////////////////// 001 Shader_GhostImage /////////////////////
 const char* FR_DynamicBlend_vs = "\
