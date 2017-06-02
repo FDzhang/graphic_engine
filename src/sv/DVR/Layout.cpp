@@ -77,6 +77,10 @@ namespace GUI
 
     void Layout::EnableLayout(int flag)
     {
+        for(int i = 0; i < m_element_table_size; i++)
+        {
+            element_info[i].element->Reset();
+        }
         m_node->SetEnable(flag); 
     }
     CGPUProcessbar* bar;

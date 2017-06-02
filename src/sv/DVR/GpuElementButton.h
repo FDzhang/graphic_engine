@@ -58,8 +58,9 @@ namespace GUI
     
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
-        void SetElementEffect(void* effect, long style);
+        void SetElementEffect(void* effect,long style);
         void SetEnable(bool enable);
+        void Reset() ;
     private:
         Boolean OnTouchEvent(
             /* [in] */Int32 layerId,
@@ -75,6 +76,8 @@ namespace GUI
 
         uint32_t m_button_opacity;
         uint32_t m_button_property;
+        uint32_t m_baseOpacity;
+        uint32_t m_hitOpacity;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUButton, IGUIElement)
     };

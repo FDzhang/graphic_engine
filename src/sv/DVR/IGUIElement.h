@@ -94,6 +94,7 @@ namespace GUI
          */
         const uint32_t GetElementId() const { return m_id;}
         virtual void SetEnable(bool enable) = 0;
+        virtual void Reset() {};
         // 临时注册消息分发函数
         void RegisterDispatch(CCmdTarget* cmdTarget) {m_cmdTarget = cmdTarget;};
     protected:
