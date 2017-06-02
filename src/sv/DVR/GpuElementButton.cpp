@@ -77,7 +77,7 @@ namespace GUI
                            m_button_opacity,
                            m_base_texture,
                            m_hit_texture);
-            IGUIElement::SetElementId(m_rootId);
+            IGUIElement::SetElementId(CXrButton::GetRootId());
         }
         else
         {
@@ -118,6 +118,7 @@ namespace GUI
     }
     Boolean CGPUButton::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
+        Log_Error("%d event", layerId);
         m_cmdTarget->DispatchEvent(layerId, type);
         if(m_button_property == GUI_BUTTON_EFFECT_LOCK )
         {
