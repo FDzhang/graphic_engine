@@ -830,28 +830,90 @@ void SVNodeTestHMI::SetHMIParams()
 	m_test_hmi.pBSDRadar = m_BSDRadarData;
 }
 
-void SVNodeTestHMI::setIconStatus()
+void SVNodeTestHMI::HmiDisappear()
 {
+    for (int i=0;i<17;i++)
+    {
+        m_icon[i].show_flag = 0;
+    }
+    
+    for (int i=0;i<11;i++)
+    {
+        m_scroll[i].show_flag = 0;
+    }
+    
+    for (int i=0;i<8;i++)
+    {
+        m_text[i].show_flag = 0;
+    }
+}
+
+void SVNodeTestHMI::HmiReappear()
+{
+    for (int i=0;i<17;i++)
+    {
+        m_icon[i].show_flag = 1;
+    }
+    
+    for (int i=0;i<11;i++)
+    {
+        m_scroll[i].show_flag = 1;
+    }
+    
+    for (int i=0;i<8;i++)
+    {
+        m_text[i].show_flag = 1;
+    }
+}
+
+void SVNodeTestHMI::setIconStatus()
+{	
+	static uint32_t last_status = 0;
+	
 	if (demo_status == 0) // only algo
 	{
+		if (last_status == 1)
+		{
+			HmiReappear();
+			last_status = demo_status;
+		}
+		
 		m_icon[6].show_icon_num = 0;
 		m_icon[7].show_icon_num = 0;
 		m_icon[8].show_icon_num = 0;
 	}
 	else if (demo_status == 1) //playback 
 	{
-		m_icon[6].show_icon_num = 1;
-		m_icon[7].show_icon_num = 0;
-		m_icon[8].show_icon_num = 0;
+		if (last_status != demo_status)
+		{
+			HmiDisappear();
+			last_status = demo_status;
+		}
+
+		//m_icon[6].show_icon_num = 1;
+		//m_icon[7].show_icon_num = 0;
+		//m_icon[8].show_icon_num = 0;
 	}
 	else if (demo_status == 2) //record 
 	{
+		if (last_status == 1)
+		{
+			HmiReappear();
+			last_status = demo_status;
+		}
+		
 		m_icon[6].show_icon_num = 0;
 		m_icon[7].show_icon_num = 1;
 		m_icon[8].show_icon_num = 0;
 	}
 	else if (demo_status == 3) //mobile 
 	{
+		if (last_status == 1)
+		{
+			HmiReappear();
+			last_status = demo_status;
+		}
+		
 		m_icon[6].show_icon_num = 0;
 		m_icon[7].show_icon_num = 0;
 		m_icon[8].show_icon_num = 1;

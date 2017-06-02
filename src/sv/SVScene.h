@@ -403,7 +403,7 @@ private:
 	
     unsigned char m_turnlight_state;
     IMaterial* m_pstich_Mtl;
-	
+	class SVNodeSonar *m_pNodeSonar;
     class SVNodeAdasHMI *m_pAdasHmi;
 	GlSVLuminance  *m_luminance;
 	//for test

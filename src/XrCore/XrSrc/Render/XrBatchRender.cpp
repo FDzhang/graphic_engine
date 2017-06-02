@@ -59,6 +59,17 @@ Void CBatchRender::Draw(UInt32 mode)
 		XRDM->context()->SetIndexBuffer(m_pIB);
 		if(m_pMesh)
 		m_indexCount = m_pMesh->GetIndexCount();
+		if (m_pMesh)
+		{
+			if (m_pMesh->GetRenderPlot())
+			{
+				XRDM->context()->SetPrimitiveType(XRPT_TRIANGLE_POINT);
+			}
+			else
+			{
+				XRDM->context()->SetPrimitiveType(XRPT_TRIANGLE_LIST);
+			}
+		}
 		XRDM->context()->DrawIndexedPrimitive(m_indexCount,0,0);
 
 	}
@@ -68,6 +79,7 @@ Void CBatchRender::Draw(UInt32 mode)
 	    {
 	        m_vertexCount=m_pMesh->GetVertexCount();
 	    }
+		XRDM->context()->SetPrimitiveType(XRPT_TRIANGLE_LIST);
 		XRDM->context()->DrawPrimitive(m_vertexCount, 0);
 	}
 }

@@ -51,6 +51,10 @@ public:
 		/* [in] */ Int32 count)=0;
 	virtual unsigned char  GetEnable()=0;
 	virtual xr_state SetEnable(unsigned char enable)=0;
+	virtual void SetRenderPlot(unsigned char flag)=0;
+	virtual unsigned char GetRenderPlot(void)=0;
+	
+	virtual xr_state UpdateVertexNum(Int32 vertex_count)=0;
 };
 
 #endif  //__IMESH_H__

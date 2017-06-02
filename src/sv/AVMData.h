@@ -118,7 +118,7 @@ public:
 	void GetRearSingleViewRect(float *pData);
 	void GetVehicleParam(SV_VEHICLE_PARAM_T **pVehicleData);
 
-	void cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord);
+	void cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord,unsigned char unitmm=0);
 	
 	void cvtWorldPoint2ModelPoint3D(float *out_Model_Coord,float *in_world_coord);
 	
