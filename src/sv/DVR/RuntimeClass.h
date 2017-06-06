@@ -25,9 +25,9 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 13 5月 2017 dota2_black 
+ * VERSION: 13 5月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
-#include <string.h>
+#include <string>
 #include <map>
 #include "reuse.h"
 #include "log/log.h"

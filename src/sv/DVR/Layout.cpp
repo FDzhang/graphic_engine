@@ -34,11 +34,11 @@ namespace GUI
      */
     struct Layout::ElementFuntionTable Layout::element_info[] =
     {
-        { "CGPUButton", "Media_Play", 0, NULL, (PFCreateElement)(&Layout::InitMediaPlay), (PFOnEvent)&Layout::OnMediaPlayEvent},
-        { "CGPUButton", "Media_Next", 0, NULL, (PFCreateElement)(&Layout::InitMediaNext), (PFOnEvent)&Layout::OnMediaNextEvent},
-        { "CGPUButton", "Media_Prev", 0, NULL, (PFCreateElement)(&Layout::InitMediaPrev), (PFOnEvent)&Layout::OnMediaPrevEvent},
-        { "CGPUProcessbar", "Media_Bar", 0, NULL, (PFCreateElement)(&Layout::InitMediaBar), (PFOnEvent)&Layout::OnMediaBarEvent},
-        { "NULL", "NULL", 0, NULL, NULL, (PFOnEvent)&Layout::OnDefault},
+        { "CGPUButton", "Media_Play", 0, NULL, Layout::InitMediaPlay, Layout::OnMediaPlayEvent},
+        { "CGPUButton", "Media_Next", 0, NULL, Layout::InitMediaNext, Layout::OnMediaNextEvent},
+        { "CGPUButton", "Media_Prev", 0, NULL, Layout::InitMediaPrev, Layout::OnMediaPrevEvent},
+        { "CGPUProcessbar", "Media_Bar", 0, NULL, Layout::InitMediaBar, Layout::OnMediaBarEvent},
+        { "NULL", "NULL", 0, NULL, NULL, Layout::OnDefault},
     };
 
     
@@ -71,12 +71,17 @@ namespace GUI
         PFOnEvent event = m_element_table[layerId].OnEvent;
         if(event != NULL)
         {
+            Log_Debug("layerId is %d   %p", layerId, event);
             event(m_element_table[layerId].element, type);
         }
     }
 
     void Layout::EnableLayout(int flag)
     {
+        for(int i = 0; i < m_element_table_size; i++)
+        {
+            element_info[i].element->Reset();
+        }
         m_node->SetEnable(flag); 
     }
     CGPUProcessbar* bar;
@@ -95,17 +100,23 @@ namespace GUI
             element_info[i].CreateElement(element_info[i].element); //回调注册的对象初始化函数
             element_info[i].element->RegisterDispatch(this);
             int element_id =element_info[i].element ->GetElementId(); //获取layout id
+            element_info[i].layerId = element_id;
+            Log_Debug("element_info[%d] layerId is %d, function is %p %p\n", i, element_id, element_info[i].CreateElement, element_info[i].OnEvent);
             if(maxId < element_id) maxId = element_id; //获取layout中id的最大值
         }
-        DEBUG(" max layerId is %d\n", maxId);
+        
         /**第二步: 分配最大layout id的数组存储控件元素,对element_info重排序*/
-        m_element_table = new ElementFuntionTable[maxId];
+        m_element_table = new ElementFuntionTable[maxId + 1];
         for( int i = 0; i < m_element_table_size; i++)
         {
             memcpy(&m_element_table[element_info[i].layerId], &(element_info[i]), sizeof(ElementFuntionTable));
+            Log_Debug("m_element_table[%d] layerId is %d, function is %p %p\n", element_info[i].layerId,
+                      m_element_table[element_info[i].layerId].layerId,
+                      m_element_table[element_info[i].layerId].CreateElement,
+                      m_element_table[element_info[i].layerId].OnEvent);
         }
     }
-
+    IGUIElement* play = NULL;
     /*--------------------------------------------------------------------------------
      * \brief DVR MEDIA PLAY BUTTON REFRENCE
      */
@@ -117,10 +128,11 @@ namespace GUI
         uint32_t property = GUI::GUI_BUTTON_EFFECT_LOCK;
         media_play_button->SetElementEffect(&property, GUI::GUI_EFFECT_BUTTON_PROPERTY);
         media_play_button->Create(155, 600, 50,50);
+        play = media_play_button;
     }
     void Layout::OnMediaPlayEvent(const IGUIElement* element, const uint32_t type)
     {
-        DEBUG("%s\n", __func__);
+        Log_Debug("%s event", __func__);
     }
     /*--------------------------------------------------------------------------------
      * \brief DVR MEDIA NEXT BUTTON REFRENCE
@@ -134,7 +146,11 @@ namespace GUI
     }
     void Layout::OnMediaNextEvent(const IGUIElement* element, const uint32_t type)
     {
-        DEBUG("%s\n", __func__);
+        Log_Debug("%s event", __func__);
+        if(type == TouchEvent_Down)
+        {
+            play->Reset();
+        }
     }
     /*--------------------------------------------------------------------------------
      * \brief DVR MEDIA PREV BUTTON REFRENCE
@@ -148,7 +164,11 @@ namespace GUI
     }
     void Layout::OnMediaPrevEvent(const IGUIElement* element, const uint32_t type)
     {
-        DEBUG("%s\n", __func__);
+        Log_Debug("%s event", __func__);
+        if(type == TouchEvent_Down)
+        {
+            play->Reset();
+        }
     }
     /*--------------------------------------------------------------------------------
      * \brief DVR MEDIA PROCESSBAR REFRENCE

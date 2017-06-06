@@ -37,14 +37,15 @@ void InitStaticLogctrls()
     config_read_file(&config, "app.cfg");
 
     //初始化全局
-//    UpdateNamedLogctrlFromConfig(&Gpu_Global_Logctrl_cfg, &config, global_debug_level);
+
+    UpdateNamedLogctrlFromConfig(&Gpu_Global_Logctrl_cfg, &config, global_debug_level);
     //注册全局
     RegisterLogctrlConfig(&Gpu_Global_Logctrl_cfg);
 
     LogCtrlConfig* cfg = GpuLogctrl_Start;
     while(cfg < GpuLogctrl_End)
     {
-//        UpdateNamedLogctrlFromConfig(cfg, &config, global_debug_level);
+        UpdateNamedLogctrlFromConfig(cfg, &config, global_debug_level);
         RegisterLogctrlConfig(cfg);
         cfg++;
     }

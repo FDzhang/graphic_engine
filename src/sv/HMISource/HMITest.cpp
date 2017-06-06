@@ -872,7 +872,7 @@ void SVNodeTestHMI::setIconStatus()
 	
 	if (demo_status == 0) // only algo
 	{
-		if (last_status == 1)
+		if (last_status == 4)
 		{
 			HmiReappear();
 			last_status = demo_status;
@@ -884,19 +884,19 @@ void SVNodeTestHMI::setIconStatus()
 	}
 	else if (demo_status == 1) //playback 
 	{
-		if (last_status != demo_status)
+		if (last_status == 4)
 		{
-			HmiDisappear();
+			HmiReappear();
 			last_status = demo_status;
 		}
-
-		//m_icon[6].show_icon_num = 1;
-		//m_icon[7].show_icon_num = 0;
-		//m_icon[8].show_icon_num = 0;
+        
+		m_icon[6].show_icon_num = 1;
+		m_icon[7].show_icon_num = 0;
+		m_icon[8].show_icon_num = 0;
 	}
 	else if (demo_status == 2) //record 
 	{
-		if (last_status == 1)
+		if (last_status == 4)
 		{
 			HmiReappear();
 			last_status = demo_status;
@@ -908,7 +908,7 @@ void SVNodeTestHMI::setIconStatus()
 	}
 	else if (demo_status == 3) //mobile 
 	{
-		if (last_status == 1)
+		if (last_status == 4)
 		{
 			HmiReappear();
 			last_status = demo_status;
@@ -917,6 +917,14 @@ void SVNodeTestHMI::setIconStatus()
 		m_icon[6].show_icon_num = 0;
 		m_icon[7].show_icon_num = 0;
 		m_icon[8].show_icon_num = 1;
+	}
+	else if (demo_status == 4) //playback 
+	{
+		if (last_status != demo_status)
+		{
+			HmiDisappear();
+			last_status = demo_status;
+		}
 	}
 
 	switch(alg_status)

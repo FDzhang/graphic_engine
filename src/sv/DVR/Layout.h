@@ -33,7 +33,8 @@
 
 namespace GUI
 {
-    typedef void (* PFCreateElement)(const IGUIElement*);
+    class Layout;
+    typedef void (*PFCreateElement)(const IGUIElement*);
     typedef void  (*PFOnEvent)(const IGUIElement*, const uint32_t type);
     class Layout : public CCmdTarget
     {

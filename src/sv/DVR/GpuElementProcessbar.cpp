@@ -73,7 +73,7 @@ namespace GUI
                 &barROI,
                 &sliderROI
                 );
-            SetElementId(m_baseLayerId);
+            SetElementId(m_sliderLayerId);
         }
         else
         {
