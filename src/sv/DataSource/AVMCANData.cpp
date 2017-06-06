@@ -131,6 +131,16 @@ void AVMCANData::ResetDriveDist(void)
 {
     m_drive_distance=0;
 }
+
+void AVMCANData::Get_Wheel_Pulse(unsigned short *pwheelpulse)
+{
+    for(int i =0;i<4;i++)
+    {
+        pwheelpulse[i]=m_CAN_Data.wheel_pls[i];
+    }
+
+}
+
 /*===========================================================================*\
  * External Object Definitions
 \*===========================================================================*/
