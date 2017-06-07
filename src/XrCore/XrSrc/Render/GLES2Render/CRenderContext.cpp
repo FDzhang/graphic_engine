@@ -251,6 +251,9 @@ xr_state CRenderContext::SetPrimitiveType(XRPrimitiveType type)
 	case XRPT_TRIANGLE_FAN:
 		m_primitiveTopology = GL_TRIANGLE_FAN;
 		break;
+	case XRPT_TRIANGLE_POINT:
+		m_primitiveTopology = GL_POINTS;
+		break;
 	default:
 		return XR_OK;
 	}

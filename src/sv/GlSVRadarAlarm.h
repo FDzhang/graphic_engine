@@ -7,7 +7,7 @@
 #include "../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
 #include "GlSVOverlayBase.h"
 
-//#define CHANGAN_HMI
+#define CHANGAN_HMI
 
 
 typedef struct RADAR_ALARM_CONFIG_T

@@ -59,17 +59,18 @@ public:
 
 	AVMCameraInternal();
 	~AVMCameraInternal();
-	
-	
-	/*Init from pose file ,file sotre camera pose index as front right rear left*/	
+
+
+	/*Init from pose file ,file sotre camera pose index as front right rear left*/
 	void Init( BEV_CONFIG_T pconfig);
 	void GetCameraWidth(float *width,int camera_index);
 	void GetCameraHeight(float *height,int camera_index);
 	void GetCameraInstrinct(Cam_Model_Intrinsic **matrix,int camera_index);
 	void MapCamRay2ImagePointGpu(float *pWld,float *pTex,int camera_index);
-	
-	void InitParamFromSysConfig(CAMERA_CFG *cam_model,Smc_Cal_T *p_sys_config);
-	
+
+	void InitParamFromSysConfig(CAMERA_CFG *cam_model, Camera_Param_T *p_sys_config, Smc_Cal_T *pSMC);
+
+	void Init(Camera_Param_T *p_Int_Cam,Smc_Cal_T* pIntParam);
 	void Init(Smc_Cal_T *pIntParam);
 	void Init(Cam_Model_Intrinsic *pCamIntMdl);
 

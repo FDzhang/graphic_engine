@@ -86,19 +86,18 @@ DataExPosParam::DataExPosParam(float space_y_min,float space_scale)
 
 }
 
-/*Init from pose file ,file sotre camera pose index as front right rear left*/
+/*Init from pose file ,file sotre camera pose index as front right rear left*/	
 void DataExPosParam::Init(char *filename,float vehicle_length,float vehicle_rear_wheel_to_bumper,char *filenameAdjust)
 {
 	float input[24];
 	int i,j,k =0;
-	XRVec4 tmp(0,m_space_scale*m_space_y_min,
+	m_offsetIner2Global  =XRVec4::XRVec4(0,m_space_scale*m_space_y_min,
 		-(vehicle_length/2-vehicle_rear_wheel_to_bumper)*SCALE_3D_TO_2D_Y,0.0);
-    m_offsetIner2Global  =  tmp;
 		m_scale[0]= SCALE_3D_TO_2D_X;
 		m_scale[1]= SCALE_3D_TO_2D_Y;
 		m_scale[2]= SCALE_3D_TO_2D_Z;
 
-
+        
 
 	ReadFloatSpaceTxtFile(filename,input,24);
 	if(filenameAdjust == NULL)
@@ -106,12 +105,12 @@ void DataExPosParam::Init(char *filename,float vehicle_length,float vehicle_rear
 	    memset(m_adjust_exparam,0,24*sizeof(float));
 	}
 	else
-	{
+	{	    
 		ReadFloatSpaceTxtFile(filenameAdjust,m_adjust_exparam,24);
-	}
+	}	
 	ImprotCalibResultFromBuffer(input,m_pos_angle,m_pos_trans);
 	InitModleTransformMatrix(m_ModelTransform);
-	Calc3DAVMTransform(m_ModelTransform,m_pos_angle,m_pos_trans,m_offsetIner2Global,m_scale);
+	Calc3DAVMTransform(m_ModelTransform,m_pos_angle,m_pos_trans,m_offsetIner2Global,m_scale);	 
 
 
 }
@@ -125,35 +124,35 @@ void DataExPosParam::Init(str_avm_pose_t *pPose,float vehicle_length,float vehic
     	m_scale[0]= SCALE_3D_TO_2D_X;
     	m_scale[1]= SCALE_3D_TO_2D_Y;
     	m_scale[2]= SCALE_3D_TO_2D_Z;
-
-
+    
+    
     ImprotCalibResultFromConfigFile(pPose,m_pos_angle,m_pos_trans);
-
+    
     if(filenameAdjust == NULL)
     {
     	memset(m_adjust_exparam,0,24*sizeof(float));
     }
     else
-    {
+    {		
     	ReadFloatSpaceTxtFile(filenameAdjust,m_adjust_exparam,24);
-    }
-
-
+    }	
+    
+    	
     InitModleTransformMatrix(m_ModelTransform);
-    Calc3DAVMTransform(m_ModelTransform,m_pos_angle,m_pos_trans,m_offsetIner2Global,m_scale);
+    Calc3DAVMTransform(m_ModelTransform,m_pos_angle,m_pos_trans,m_offsetIner2Global,m_scale);	 
 
 
 }
 
 void DataExPosParam::GetCameraPos(float *pos,int camera_index)
 {
-
+    
     memcpy(pos,&(m_pos_trans[3*camera_index]),3*sizeof(float));
 
 }
 void DataExPosParam::GetTransformMatrix(XRMat4 **matrix,int camera_index)
 {
-
+    
     *matrix=&(m_uvTransform[camera_index]);
 
 }
@@ -185,10 +184,10 @@ void DataExPosParam::InitModleTransformMatrix(XRMat4 *pModelTransform)
 				pModelTransform[Index] = XRMat4::RotationY(3.1415926*(0));
 			break;
 			case rear_camera_index:
-			case left_camera_index:
+			case left_camera_index: 			
 				pModelTransform[Index] = XRMat4::RotationY(3.1415926*(1));
-			break;
-		}
+			break;		
+		}	
 	}
 
 
@@ -197,40 +196,40 @@ void DataExPosParam::InitModleTransformMatrix(XRMat4 *pModelTransform)
 void DataExPosParam::Calc3DAVMTransform(XRMat4 *modle,float *Rot, float *intrans,XRVec4 offset,float *scale)
 {
 	XRVec4 offsetIner2Global  =XRVec4::XRVec4(offset.x,offset.y, offset.z,0.0);
-
+	
 	//convert matrix from input2D coorinate system to 3D coordinate system
 	XRMat4 InputCam2InnerCam= XRMat4::XRMat4(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
-	//convert matrix from input2D coorinate system to 3D coordinate system
+	//convert matrix from input2D coorinate system to 3D coordinate system		
 	XRMat4 InnerGlobal2InputGlobal = XRMat4::XRMat4(0.0,1.0,0.0,0.0,0.0,0.0,-1.0,0.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0);
 	XRMat4 InnerR=	XRMat4::Scale(1.0, 1.0, 1.0);
 	XRVec4 InnerT=XRVec4::XRVec4(0,0,0,0);
 	XRMat4 ScaleInner2Global = XRMat4::Scale(1.0/scale[0],1.0/scale[1],1.0/scale[2]);
 
 	int i;
-	for (i=0; i<4; i++)
+	for (i=0; i<4; i++) 
 	{
 		m_uvTransform[i] = XRMat4::Scale(1.0, 1.0, 1.0);
-
+		
 		float r[9],a[3],trans[3];
 		for(int j = 0; j < 3; j++)
 		{
 			a[j] = Rot[3*i+j];//*deg2rad;
 			trans[j] = intrans[3*i+j];
 		}
-
-		Cvt_Angles_To_Rotation(r,a);
+		
+		Cvt_Angles_To_Rotation(r,a);	
 
 		//step1: InnerR
 		XRMat4 InputR = XRMat4::XRMat4(r[0],r[1],r[2],0.0,r[3],r[4],r[5],0.0,r[6],r[7],r[8],0,0.0,0.0,0.0,1.0);
 		InnerR = InputCam2InnerCam*InputR*InnerGlobal2InputGlobal*ScaleInner2Global*(modle[i].inverse());
-
+		
 		//step2: InnerT
 		InnerT = InnerR.inverse()*(InputCam2InnerCam*InputR*InnerGlobal2InputGlobal*ScaleInner2Global*offsetIner2Global-InputCam2InnerCam*InputR*XRVec4::XRVec4(trans[0], trans[1], trans[2], 0));
-
+					
 		 m_uvTransform[i] = InnerR;
-		m_trans_inner_model[3*i] = InnerT.x;
-		m_trans_inner_model[3*i+1] = InnerT.y;
-		m_trans_inner_model[3*i+2] = InnerT.z;
+		m_trans_inner_model[3*i] = InnerT.x;			 
+		m_trans_inner_model[3*i+1] = InnerT.y;	
+		m_trans_inner_model[3*i+2] = InnerT.z;	
 		m_uvTransform[i] = XRMat4::RotationX(m_adjust_exparam[i*6])* m_uvTransform[i];
 		m_uvTransform[i] = XRMat4::RotationY(m_adjust_exparam[i*6+1])* m_uvTransform[i];
 		m_uvTransform[i] = XRMat4::RotationZ(m_adjust_exparam[i*6+2])* m_uvTransform[i];
@@ -242,7 +241,7 @@ void DataExPosParam::Calc3DAVMTransform(XRMat4 *modle,float *Rot, float *intrans
 
 
 }
-
+	
 void DataExPosParam::UpdateExParamCalibRslt(float *pose)
 {
 	float PoseAngle[12],PoseTrans[12];
@@ -251,7 +250,7 @@ void DataExPosParam::UpdateExParamCalibRslt(float *pose)
 }
 
 
-	//this function is for index changing
+	//this function is for index changing 
 int DataExPosParam::ConvertCameraIndex(int input2DIndex)
 {
 	int output3DIndex;
@@ -268,28 +267,28 @@ int DataExPosParam::ConvertCameraIndex(int input2DIndex)
 		break;
 		case 3:
 			output3DIndex=left_camera_index;
-		break;
+		break;		
 	}
 	return output3DIndex;
 
 }
-
+	
 void DataExPosParam::ImprotCalibResultFromBuffer(float *inputpos, float *rot, float *trans)
 {
 
-
+  
 	int i,j,k =0;
 
 	for(j=0;j<4;j++)
 	{
 		k=ConvertCameraIndex(j);
-
+		
 		for(i=0;i<3;i++)
 		{
 			rot[k*3+i] = inputpos[j*6+i];
-			trans[k*3+i] = inputpos[j*6+3+i];
+			trans[k*3+i] = inputpos[j*6+3+i];		
 		}
-
+		
 	}
 
 }
@@ -303,7 +302,7 @@ void DataExPosParam::ImprotCalibResultFromConfigFile(str_avm_pose_t *pPose, floa
 
 	for(j=0;j<3;j++)
 	{
-
+	
 	    rot[3*front_camera_index+j]=pPose->_pose_front[j];
 		trans[3*front_camera_index+j]=pPose->_pose_front[3+j];
 	    rot[3*rear_camera_index+j]=pPose->_pose_rear[j];
@@ -313,7 +312,7 @@ void DataExPosParam::ImprotCalibResultFromConfigFile(str_avm_pose_t *pPose, floa
 	    rot[3*right_camera_index+j]=pPose->_pose_right[j];
 		trans[3*right_camera_index+j]=pPose->_pose_right[3+j];
 
-
+		
 	}
 
 }

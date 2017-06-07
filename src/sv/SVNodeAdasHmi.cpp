@@ -123,4 +123,8 @@ int SVNodeAdasHMI::Update(void)
 	m_pBSDRadarIcon->Update();
 	return 0;
 }
+void SVNodeAdasHMI::SetEnable(unsigned char flag)
+{
+     m_AdasHMINode->SetEnable(flag);
+}
 

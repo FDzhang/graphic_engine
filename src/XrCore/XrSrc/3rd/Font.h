@@ -40,7 +40,7 @@ public:
 	void SaveTexFontInfo(FT_GlyphSlot slot, int id);
 
 	void SetColor(float R, float G, float B);
-
+	
 	void DrawFont2Tex(FT_Bitmap* bitmap, int x, int y, unsigned int color);
 	int AddText(float x, float y, float size, char* text, float* vBuffer, unsigned short* iBuffer, int* vCount, int* iCount, float* color);
 	int MeasureText(char* text, float size, float* w, float* h);

@@ -1,3 +1,4 @@
+#include "GPU_Module_Interface.h"
 #include "../Render/GLES2Render/CSwapChain.h"
 
 
@@ -24,13 +25,21 @@ bool TestEGLError(HWND hWnd, char* pszLocation)
 	return true;
 }
 #endif
-#ifdef LINUX_J6
+//#ifdef LINUX_J6
+//{
+static EGLDisplay my_display;
+static EGLContext my_context;
+static EGLSurface my_surf;
 
-extern EGLDisplay my_display;
-extern EGLContext my_context;
-extern EGLSurface my_surf;
-
-#endif
+//}
+void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf)
+{
+    my_display = display;
+	my_context = context;
+	my_surf = surf;
+	return;
+}
+//#endif
 #ifdef WIN_32
 bool XrCreateDeviceContextAndSwapChain(int width, int height, int context, CRenderContext** ppCContext, CRenderDevice** ppCDevice, CSwapChain** ppCSwapChain, int type)
 {

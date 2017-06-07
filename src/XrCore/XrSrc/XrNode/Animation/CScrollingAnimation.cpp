@@ -12,7 +12,7 @@ CScrollingAnimation::CScrollingAnimation():
 	m_active = 0;
 	m_dx = 0;
 	m_from = 0;
-	m_rewardDuration = 500;//ms
+	m_rewardDuration = 2000;//ms
 }
 
 Boolean CScrollingAnimation::Update(UInt32 timeStamp)

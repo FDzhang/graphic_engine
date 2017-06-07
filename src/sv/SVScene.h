@@ -121,7 +121,8 @@ typedef enum RightViewType {
 	BOSH_FRONT_VIEW_TOP,	
 	BOSH_REAR_VIEW_TOP,
 	LEFT_MIRROR_VIEW,
-	RIGHT_MIRROR_VIEW,
+	RIGHT_MIRROR_VIEW,	
+	CROSS_IMAGE_VIEW,			
 	TOTAL_VIEW_NUM,
 };
 
@@ -284,6 +285,7 @@ private:
 	ITextLayer* text;
     ITextLayer *Chinesetext;
 	IMesh*				m_planeCrossMesh[3];
+	class SVNodeCrossImage *m_crossImage;
 
 	IMesh*				m_planeMesh;
 	IMesh*				m_lisenceMesh;
@@ -401,7 +403,7 @@ private:
 	
     unsigned char m_turnlight_state;
     IMaterial* m_pstich_Mtl;
-	
+	class SVNodeSonar *m_pNodeSonar;
     class SVNodeAdasHMI *m_pAdasHmi;
 	GlSVLuminance  *m_luminance;
 	//for test

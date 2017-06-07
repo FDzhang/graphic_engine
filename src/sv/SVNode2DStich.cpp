@@ -18,7 +18,11 @@ extern IDeviceManager* rm;
 #define GROUND_NODE_HEIGHT 500
 //#define STICH_AERA_WIDTH 216
 //#define STICH_AERA_HEIGHT 480
-#define STICH_AERA_WIDTH   512	
+
+	
+
+#define STICH_AERA_WIDTH 512	
+
 #define STICH_AERA_HEIGHT 1280
 
 
@@ -672,24 +676,24 @@ int SVNode2DStich::Update(float steering_wheel_angle,float vehicle_speed,float l
 	UpdateGoundTextureCoord(m_Car_rect);	
 
 	
-	sprintf(gpu_debug_texbox.text_content[0],"left_wheel%f,",left_wheel_speed);
+	//sprintf(gpu_debug_texbox.text_content[0],"left_wheel%f,",left_wheel_speed);
 	
-	sprintf(gpu_debug_texbox.text_content[1],"right_wheel %f,",right_wheel_speed);
+	//sprintf(gpu_debug_texbox.text_content[1],"right_wheel %f,",right_wheel_speed);
 	//sprintf(gpu_debug_texbox.text_content[2],"time_offset %d",time_offset);
 	
-	sprintf(gpu_debug_texbox.text_content[3],"update_frame_time %d",update_time);
+	//sprintf(gpu_debug_texbox.text_content[3],"update_frame_time %d",update_time);
 	if(update_key_frame_sures != update_key_flag&&update_key_flag == 1)
 	{
 	    if(last_text_state == 0)
 	    {
 	    
 		    last_text_state = 1;
-	        sprintf(gpu_debug_texbox.text_content[4],"Key_frame_updated !");
+	        //sprintf(gpu_debug_texbox.text_content[4],"Key_frame_updated !");
 	    }
 		else
 		{
 		 
-	        sprintf(gpu_debug_texbox.text_content[4],"Key_frame_updated  again!");
+	        //sprintf(gpu_debug_texbox.text_content[4],"Key_frame_updated  again!");
 		    last_text_state = 0;
 		}
 	}

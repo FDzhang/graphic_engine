@@ -7,16 +7,20 @@ IF(NOT rootfs_FOUND)
 	FIND_PACKAGE(rootfs)
 ENDIF()
 
+if(NOT algorithm_FOUND AND NOT algorithm_SOURCE_FOUND)
+    find_package(algorithm)
+endif()
+
 IF(NOT algocomm_FOUND AND NOT algocomm_SOURCE_FOUND)
-	FIND_PACKAGE(algocomm)
+	FIND_PACKAGE(j6armcomm)
 ENDIF()
 
 IF(NOT rootfs_FOUND)
 	MESSAGE(FATAL_ERROR "No rootfs found!")
 ENDIF()
 
-IF(NOT algocomm_FOUND AND NOT algocomm_SOURCE_FOUND)
-	MESSAGE(FATAL_ERROR "No algocomm library found!")
+IF(NOT j6armcomm_FOUND AND NOT j6armcomm_SOURCE_FOUND)
+	MESSAGE(FATAL_ERROR "No j6armcomm library found!")
 ENDIF()
 
 

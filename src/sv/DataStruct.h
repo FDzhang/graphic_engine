@@ -34,7 +34,7 @@
 //#include "reuse.h"
 #include "bev_config.h"
 #include "DataStruct_IF.h"
-#include "GPU_Module_Interface.h"
+#include "gpu_public_data_struct.h"
 #include "smc.h"
 #include "commondef.h"
 /*===========================================================================*\
@@ -53,12 +53,12 @@
 /*===========================================================================*\
  * Exported Type Declarations
 \*===========================================================================*/
-	
+
 enum
 {
     front_camera_index=0,
 	rear_camera_index,
-	left_camera_index,	
+	left_camera_index,
 	right_camera_index,
 };
 #define TURN_LIGHT_OFF  0
@@ -92,7 +92,7 @@ enum{
 };
 
 enum{
-	
+
    rect_left,
    rect_top,
    rect_right,
@@ -112,7 +112,7 @@ enum{
 
 };
 
-typedef struct {	  
+typedef struct {
   float vehicle_length;
   float vehicle_width;
   float vehicle_rear_wheel_to_bumper;
@@ -122,11 +122,11 @@ typedef struct {
   float vehicle_tyre_width;
   float vehicle_max_steering_wheel[2];
   float vehicle_min_radius[4];
-	
+
 } SV_VEHICLE_PARAM_T;
 
 typedef enum{
-	
+
    PLATFORM_PC_IMAGE,
    PLATFORM_J5,
    PLATFORM_J6,
@@ -134,20 +134,20 @@ typedef enum{
    PLATFORM_PC_VIDEO_LIVE,
 }PLATFORM_CONFIG;
 typedef enum{
-	
+
    CFG_FROM_SYS,
-   CFG_FROM_FILE,   
+   CFG_FROM_FILE,
 }CFG_SOURCE;
 
 
 typedef enum{
-	
+
    SV_3D_VERTEX_SHADER,
    SV_3D_FRAGMENT_SHADER,
    SV_2D_VERTEX_SHADER,
    SV_2D_FRAGMENT_SHADER,
    SV_MIRROR_VERTEX_SHADER,
-   SV_MIRROR_FRAGMENT_SHADER,   
+   SV_MIRROR_FRAGMENT_SHADER,
 }SHADER_NAME_INDEX;
 // x y SAE coordinate system
 enum CALIB_INDEX
@@ -163,14 +163,14 @@ typedef struct CvPoint2D32f
 	float x;
 	float y;
 
-    //zhangzhijie: commment it,  as a interface struct, c++ version is not suitable
-	//CvPoint2D32f(float _x = 0, float _y = 0): x(_x), y(_y) {}
+
+	CvPoint2D32f(float _x = 0, float _y = 0): x(_x), y(_y) {}
+
 }
 CvPoint2D32f;
-
 typedef struct Vehicle_Param_T
 {
-    float vehicle_length;      //unit mm 
+    float vehicle_length;      //unit mm
 	float vehicle_width;
 	float vehicle_axis_length;
 	float vehicle_rear_wheel_to_bumper;
@@ -183,7 +183,7 @@ typedef struct Vehicle_Param_T
 }vehicle_param;
 
 
-typedef struct {	  
+typedef struct {
 	char file_path[MAX_NAME_LENGTH];
 	char exparam_file_name[MAX_NAME_LENGTH];
 	char exparam_adjust_file_name[MAX_NAME_LENGTH];
@@ -191,8 +191,8 @@ typedef struct {
     char lut_data_file_name[MAX_NAME_LENGTH];
 	char lut_index_file_name[MAX_NAME_LENGTH];
 	char lut_config_file_name[MAX_NAME_LENGTH];
-	char car_pose_file_name[MAX_NAME_LENGTH];	
-	char car_pose_adjust_file_name[MAX_NAME_LENGTH];	
+	char car_pose_file_name[MAX_NAME_LENGTH];
+	char car_pose_adjust_file_name[MAX_NAME_LENGTH];
 	char car_calib_name[MAX_NAME_LENGTH];
 	float front_single_view_rect[4];
 	float rear_single_view_rect[4];
@@ -200,12 +200,14 @@ typedef struct {
 	PLATFORM_CONFIG platform_config;
 	BEV_CONFIG_T bev_conig;
 	SV_VEHICLE_PARAM_T vehicle_para;
-	Smc_Cal_T *pSmc;	
+	Smc_Cal_T *pSmc;
+	Camera_Param_T *pCamParam;
 	str_avm_pose_t * pPose;
+	StitcherResult *pSticherResult;
 } SV_DATA_CONFIG_T;
 
 //world coordinate system x y
-typedef struct {	  
+typedef struct {
    float center_x;
    float center_y;
    float ppmm_x;

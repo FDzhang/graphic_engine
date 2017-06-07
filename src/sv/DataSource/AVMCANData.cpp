@@ -40,18 +40,20 @@
  * Local Preprocessor #define MACROS
 \*===========================================================================*/
 
-
+extern unsigned int Get_Frame_TimeStamp(void);
 /*===========================================================================*\
  * Local Type Declarations
 \*===========================================================================*/
 void AVMCANData::Init( void)
 {
+	m_drive_distance=0;
 
 
 }
 void AVMCANData::UpdateCANData(CAN_DATA in_can_data)
 {
     m_CAN_Data = in_can_data;
+	
 }
 void AVMCANData::Get_Vehicle_Speed(float * Vehicle_Speed)
 {
@@ -101,7 +103,43 @@ void AVMCANData::Get_PA_State(unsigned char pos,unsigned char Dist,unsigned char
 
 }
 	
+float * AVMCANData::Get_Sonar_dist_list(void)
+{
 
+	return m_CAN_Data.radar_dist;
+
+}
+		
+float AVMCANData::Get_Drive_Dist(void)
+{
+	return m_drive_distance;
+}
+void AVMCANData::CalcDriveDist(void)
+{
+   float speed = (m_CAN_Data.vehicle_speed+m_CAN_Data.left_wheel_speed+m_CAN_Data.right_wheel_speed)/3.0;
+   float delta_distance = speed*1000.0/3600.0*Get_Frame_TimeStamp()/1000.0;
+   if(GEAR_R == m_CAN_Data.gear_state)
+   {
+      m_drive_distance -= delta_distance;  
+   }
+   else
+   {
+      m_drive_distance += delta_distance;
+   }
+}
+void AVMCANData::ResetDriveDist(void)
+{
+    m_drive_distance=0;
+}
+
+void AVMCANData::Get_Wheel_Pulse(unsigned short *pwheelpulse)
+{
+    for(int i =0;i<4;i++)
+    {
+        pwheelpulse[i]=m_CAN_Data.wheel_pls[i];
+    }
+
+}
 
 /*===========================================================================*\
  * External Object Definitions

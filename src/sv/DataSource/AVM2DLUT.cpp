@@ -30,6 +30,7 @@
 #include "AVM2DLUT.h"
 #include "../fileloader.h"
 #include "../DataStruct.h"
+#include "sv/SurroundView.h"
 /*===========================================================================*\
  * Other Header Files
 \*===========================================================================*/
@@ -74,26 +75,26 @@ int AVM2DLUT::LoadConfigFile(char *pFileName,GLuint **pContent)
     fscanf( fp_table , "%d," , &tempUint);
     GLuint num = tempUint;
     *pContent = new GLuint[num+1];
-	
+
 	// buffer file %s,line %d",__FILE__,__LINE__);
     **pContent = tempUint;
     int i;
     for(i = 1;i < num+1  ;i ++)
     {
  	    fscanf( fp_table , "%d," , &tempUint);
-        	
+
         *(*pContent+i) = tempUint;
     }
 
     if(fp_table != NULL)
     {
         if(fileno(fp_table)>0)
-        {     
-            printf("\r\n fp_table = %d",fp_table);   
+        {
+            printf("\r\n fp_table = %d",fp_table);
             fclose(fp_table);
-        }        
+        }
 	    return false;
-    }	
+    }
 
     return false;
 
@@ -108,15 +109,15 @@ int AVM2DLUT::LoadDataFile(char *pFileName,GLfloat **pContent,int num)
 	    return true;
     }
     GLfloat tempUint;
-   
+
     int i;
     *pContent = new GLfloat[num];
-	
+
 	// buffer file %s,line %d",__FILE__,__LINE__);
     printf("\r\nstart to read file %s",pFileName);
     for(i = 0;i < num  ;i ++)
     {
- 	    fscanf( fp_table , "%f," , &tempUint);       	
+ 	    fscanf( fp_table , "%f," , &tempUint);
 		*(*pContent+i) = tempUint;
     }
     printf("\r\n read [%d] over",num);
@@ -124,12 +125,12 @@ int AVM2DLUT::LoadDataFile(char *pFileName,GLfloat **pContent,int num)
     if(fp_table != NULL)
     {
         if(fileno(fp_table)>0)
-        {     
-            printf("\r\n fp_table = %d",fp_table);   
+        {
+            printf("\r\n fp_table = %d",fp_table);
             fclose(fp_table);
-         }        
+         }
 	return 0;
-    }	
+    }
 
     return 0;
 
@@ -144,15 +145,15 @@ int AVM2DLUT::LoadDataFile(char *pFileName,GLfloat *pContent,int num)
 	    return true;
     }
     GLfloat tempUint;
-   
+
     int i;
     //*pContent = new GLfloat[num];
-	
+
 	// buffer file %s,line %d",__FILE__,__LINE__);
     printf("\r\nstart to read file %s",pFileName);
     for(i = 0;i < num  ;i ++)
     {
- 	    fscanf( fp_table , "%f," , &tempUint);       	
+ 	    fscanf( fp_table , "%f," , &tempUint);
 		*(pContent+i) = tempUint;
     }
     printf("\r\n read [%d] over",num);
@@ -160,12 +161,12 @@ int AVM2DLUT::LoadDataFile(char *pFileName,GLfloat *pContent,int num)
     if(fp_table != NULL)
     {
         if(fileno(fp_table)>0)
-        {     
-            printf("\r\n fp_table = %d",fp_table);   
+        {
+            printf("\r\n fp_table = %d",fp_table);
             fclose(fp_table);
-         }        
+         }
 	return 0;
-    }	
+    }
 
     return 0;
 
@@ -182,27 +183,27 @@ int AVM2DLUT::SaveTxtFile(char *pFileName,GLfloat *pBuf,int size)
     	return true;
     }
     GLfloat tempUint;
-    
+
     int i;
     for(i = 0;i < size  ;i ++)
     {
-    	fprintf( fp_table , "%f," , pBuf[i]);			
+    	fprintf( fp_table , "%f," , pBuf[i]);
 
 		if(i%7==6)
 		fprintf(fp_table, "\r\n");
     }
    // printf("\r\n read [%d] over",num);
-    
+
     if(fp_table != NULL)
     {
     	if(fileno(fp_table)>0)
-    	{	  
-    		printf("\r\n fp_table = %d",fp_table);	 
+    	{
+    		printf("\r\n fp_table = %d",fp_table);
     		fclose(fp_table);
-    	 }		  
+    	 }
     return 0;
-    }	
-    
+    }
+
 	return 0;
 
 }
@@ -217,27 +218,27 @@ int AVM2DLUT::SaveTxtFileShort(char *pFileName,GLushort *pBuf,int size)
     	return true;
     }
     GLfloat tempUint;
-    
+
     int i;
     for(i = 0;i < size  ;i ++)
     {
-    	fprintf( fp_table , "%d," , pBuf[i]);			
+    	fprintf( fp_table , "%d," , pBuf[i]);
 
 		if(i%20==19)
 		fprintf(fp_table, "\r\n");
     }
    // printf("\r\n read [%d] over",num);
-    
+
     if(fp_table != NULL)
     {
     	if(fileno(fp_table)>0)
-    	{	  
-    		printf("\r\n fp_table = %d",fp_table);	 
+    	{
+    		printf("\r\n fp_table = %d",fp_table);
     		fclose(fp_table);
-    	 }		  
+    	 }
     return 0;
-    }	
-    
+    }
+
 	return 0;
 
 }
@@ -258,7 +259,7 @@ int AVM2DLUT::LoadIndexFile(char *pFileName,GLushort **pContent,int num)
 	    return true;
     }
 	printf("\r\ncomplete step2");
-   
+
 
 
     *pContent = new GLushort[num];
@@ -274,73 +275,100 @@ int AVM2DLUT::LoadIndexFile(char *pFileName,GLushort **pContent,int num)
     if(fp_table != NULL)
     {
         if(fileno(fp_table)>0)
-        {     
+        {
             fclose(fp_table);
-         }        
+         }
 
 	    return false;
-    }	
+    }
 
     return false;
 
 }
-void AVM2DLUT::read_file_from_bin(void *pData,char *pName,int size)
+bool AVM2DLUT::read_file_from_bin(void *pData,char *pName,int size)
 {
-
     FILE *fp_table;
-   fp_table = fopen(pName,"rb");
-   if(fp_table == NULL)
-   {
-	   printf("\r\n can not find file %s",pName,size);
-	   return ;
-   }
+    bool ret = false;
 
-  fread(pData,size,1,fp_table); 
-  fclose(fp_table); 
-   return ;
+    fp_table = fopen(pName,"rb");
+    if(fp_table == NULL)
+    {
+	    printf("\r\n can not find file %s",pName);
+	    return false;
+    }
 
+    if(fread(pData,size,1,fp_table) > 0)
+    {
+        ret = true;
+    }
+    else
+    {
+        printf("read file[%s] failed, expected size[%d], please check it.\n", pName, size);
+    }
+    fclose(fp_table);
+    return ret;
 
 }
-void AVM2DLUT::LoadConfigBinFile( char *pName,unsigned int *pui_config)
+bool AVM2DLUT::LoadConfigBinFile( char *pName,unsigned int *pui_config)
 {
-    read_file_from_bin(pui_config,pName,eConfigEnd*4*sizeof(unsigned int));
-	
+    return read_file_from_bin(pui_config,pName,eConfigEnd*4*sizeof(unsigned int));
 }
-void AVM2DLUT::LoadDataBinFile(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd],float **pVertex)
+
+bool AVM2DLUT::LoadDataBinFile(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd],float **pVertex,  GLfloat* ext)
 {
     unsigned int vertex_num=0;
 	unsigned int IndexType,IndexNum;
 	unsigned int uiSize[16];
 	unsigned int previous_load=0;
+	bool ret = false;
 	//float *pInputData;
 
-	for(int i=0;i<16;i++)
-	{
-			IndexType = i/4;
-			IndexNum = i%4*2+1;
-			uiSize[i] = Config[IndexType][IndexNum]*7;
-	        vertex_num +=uiSize[i];			
-	}
+    for(int i=0;i<16;i++)
+    {
+        IndexType = i/4;
+        IndexNum = i%4*2+1;
+        uiSize[i] = Config[IndexType][IndexNum]*7;
+        vertex_num +=uiSize[i];
+    }
 
     *pInput = new GLfloat [vertex_num];
-	m_total_data_size = vertex_num;
-    read_file_from_bin(*pInput,pName,vertex_num*sizeof(float));
-	
+    m_total_data_size = vertex_num;
+
+    if(*pInput == NULL)
+    {
+        printf("AVM2DLUT::LoadDataBinFile: No memory to hold data binary data.\n");
+        return false;
+    }
+
+    if(ext == NULL)
+    {//一旦外部提供，就直接使用外部数据
+        ret = read_file_from_bin(*pInput,pName,vertex_num*sizeof(float));
+        if(ret != true)
+        {
+            return ret;
+        }
+    }
+    else
+    {
+        memcpy(*pInput, ext, vertex_num*sizeof(float));
+    }
+
 	for(int i=0;i<16;i++)
 	{
-			IndexType = i/4;
-			IndexNum = i%4*2+1;
-			pVertex[i] =   (*pInput)+previous_load;//  new float [Config[IndexType][IndexNum]*7];
+        IndexType = i/4;
+        IndexNum = i%4*2+1;
+        pVertex[i] =   (*pInput)+previous_load;//  new float [Config[IndexType][IndexNum]*7];
 			//memcpy((pVertex[i]),pInputData+previous_load,Config[IndexType][IndexNum]*7*sizeof(float));
-				
-			previous_load += Config[IndexType][IndexNum]*7;
+
+        previous_load += Config[IndexType][IndexNum]*7;
 	}
 
-	//delete [] pInputData;
-	
-}	
+	return true;
 
-void AVM2DLUT::LoadDataBinFileTotal(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd])
+
+}
+
+bool AVM2DLUT::LoadDataBinFileTotal(GLfloat**pInput, char *pName,unsigned int Config[][eConfigEnd])
 {
     unsigned int vertex_num=0;
 	unsigned int IndexType,IndexNum;
@@ -353,16 +381,16 @@ void AVM2DLUT::LoadDataBinFileTotal(GLfloat**pInput, char *pName,unsigned int Co
 			IndexType = i/4;
 			IndexNum = i%4*2+1;
 			uiSize[i] = Config[IndexType][IndexNum]*7;
-	        vertex_num +=uiSize[i];			
+	        vertex_num +=uiSize[i];
 	}
 
     *pInput = new GLfloat [vertex_num];
-    read_file_from_bin(*pInput,pName,vertex_num*sizeof(float));
-	
+    return read_file_from_bin(*pInput,pName,vertex_num*sizeof(float));
+
 	//delete [] pInputData;
-	
-}	
-void AVM2DLUT::LoadIndexBinFileTotal(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd])
+
+}
+bool AVM2DLUT::LoadIndexBinFileTotal(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd])
 {
     unsigned int vertex_num=0;
 	unsigned int IndexType,IndexNum;
@@ -375,45 +403,59 @@ void AVM2DLUT::LoadIndexBinFileTotal(GLushort **pInputIndex,char *pName,unsigned
 			IndexType = i/4;
 			IndexNum = i%4*2+2;
 			uiSize[i] = Config[IndexType][IndexNum];
-	        vertex_num +=uiSize[i];			
+	        vertex_num +=uiSize[i];
 	}
 
     *pInputIndex = new GLushort [vertex_num];
-    read_file_from_bin(*pInputIndex,pName,vertex_num*sizeof(GLushort));
-
-	
+    return read_file_from_bin(*pInputIndex,pName,vertex_num*sizeof(GLushort));
 }
 
-
-void AVM2DLUT::LoadIndexBinFile(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd],GLushort **pVertex)
+bool AVM2DLUT::LoadIndexBinFile(GLushort **pInputIndex,char *pName,unsigned int Config[][eConfigEnd],GLushort **pVertex, GLushort* ext)
 {
     unsigned int vertex_num=0;
 	unsigned int IndexType,IndexNum;
 	unsigned int uiSize[16];
 	unsigned int previous_load=0;
-	GLushort *pInputData;
+	//GLushort *pInputData;
 
 	for(int i=0;i<16;i++)
 	{
-			IndexType = i/4;
-			IndexNum = i%4*2+2;
-			uiSize[i] = Config[IndexType][IndexNum];
-	        vertex_num +=uiSize[i];			
+        IndexType = i/4;
+        IndexNum = i%4*2+2;
+        uiSize[i] = Config[IndexType][IndexNum];
+        vertex_num +=uiSize[i];
 	}
+
     *pInputIndex = new GLushort [vertex_num];
+    if(*pInputIndex == NULL)
+    {
+        printf("AVM2DLUT::LoadIndexBinFile: No memory to hold index binary data.");
+        return false;
+    }
 	m_total_index_size = vertex_num;
-    read_file_from_bin(*pInputIndex,pName,vertex_num*sizeof(GLushort));
+
+	if(ext == NULL)
+	{
+        if(read_file_from_bin(*pInputIndex,pName,vertex_num*sizeof(GLushort)) != true)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        memcpy(*pInputIndex, ext, vertex_num*sizeof(GLushort));
+    }
+
 	for(int i=0;i<16;i++)
 	{
 
-			pVertex[i] =(*pInputIndex)+ previous_load;
-				
-			previous_load += uiSize[i];
+        pVertex[i] =(*pInputIndex)+ previous_load;
+        previous_load += uiSize[i];
 	}
+	return true;
+
 
 }
-
-
 
 /*===========================================================================*\
  * Local Inline Function Definitions and Function-Like Macros
@@ -442,7 +484,7 @@ void AVM2DLUT::AdjustCarPose(float *car_pose,float width_adjust,float height_adj
 
 }
 
-/*Init from pose file ,file sotre camera pose index as front right rear left*/	
+/*Init from pose file ,file sotre camera pose index as front right rear left*/
 void AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilename,char *carposefile,char *carposeadjustfile,char *calibfile)
 {
 
@@ -453,11 +495,75 @@ void AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
 
 	LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex);
     LoadDataFile(carposefile,&(m_car_rect[0]),4);
-	
+
     LoadDataFile(carposeadjustfile,&(m_car_shadow_adjust_rect[0]),4);
 	LoadDataFile(calibfile,&(m_calib_para[0]),4);
 
 	AdjustCarPose(m_car_rect,0.005,0.01);
+}
+
+
+bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilename,char *carposefile,StitcherResult *pSticherReslt)
+{
+    unsigned int** out_config_store;
+    float* data_buffer;
+    short* gui_index_buffer;
+    str_avm_pose_t pose;
+    bool ret = false;
+
+    if(pSticherReslt != NULL)
+    {//当有可能从外部获取拼接数据时，即从外部获取
+        Gpu2dLutParam_T* param = pSticherReslt->gpu_2dlut_param;
+        m_pfDataTotal = param->gpu_lut_data;
+        m_pucIndexTotal = param->gpu_lut_index;
+        memcpy(m_uiConfigBin, param->gpu_lut_config, sizeof(m_uiConfigBin));
+
+        if(LoadDataBinFile(&m_pfDataTotal,datafilename,m_uiConfigBin,m_pfSrcData, param->gpu_lut_data))
+        {
+            if(LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex, (GLushort*)param->gpu_lut_index) == true)
+            {
+                //更新小车区域
+                m_car_rect[0] = -1.0+2.0*(float)pSticherReslt->car_Icon_Rect.x/(float)pSticherReslt->bev_img_width - 0.03;
+                m_car_rect[1] = 1.0-2.0*(float)pSticherReslt->car_Icon_Rect.y/(float)pSticherReslt->bev_img_height + 0.08;
+
+                m_car_rect[2] = -1.0+2.0*((float)pSticherReslt->car_Icon_Rect.x+(float)pSticherReslt->car_Icon_Rect.width)/(float)pSticherReslt->bev_img_width + 0.03;
+                m_car_rect[3] = 1.0-2.0*((float)pSticherReslt->car_Icon_Rect.y+(float)pSticherReslt->car_Icon_Rect.height)/(float)pSticherReslt->bev_img_height - 0.08;
+
+                //更新pgs
+                m_calib_para[0] = pSticherReslt->cx;
+                m_calib_para[1] = pSticherReslt->cy;
+                m_calib_para[2] = pSticherReslt->ppmmx;
+                m_calib_para[3] = pSticherReslt->ppmmy;
+
+                return true;
+            }
+            else
+            {//index加载失败，释放data
+                delete [] m_pfDataTotal;
+            }
+        }
+    }
+
+
+    m_pfDataTotal = NULL;
+    m_pucIndexTotal = NULL;
+
+    if(LoadConfigBinFile(pConfigfilename,&m_uiConfigBin[0][0]))
+    {
+        if(LoadDataBinFile(&m_pfDataTotal,datafilename,m_uiConfigBin,m_pfSrcData) == true)
+        {
+            if(LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex) == true)
+            {
+                ret = true;
+            }
+            else
+            {
+                delete [] m_pfDataTotal;
+            }
+        }
+    }
+
+    return ret;
 }
 
 void AVM2DLUT::GetLutData(float **pData,int index)
@@ -521,7 +627,7 @@ int  AVM2DLUT::GetIndexTotalCnt(void )
 {
 	return m_total_index_size;
 
-}	
+}
 void AVM2DLUT::CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
 {
      pOutPoint->x =  -((-InPoint.y*240+240)-m_calib_para[POS_CALIB_CX])*m_calib_para[POS_CALIB_PPMMX]/1000.0;
@@ -536,6 +642,13 @@ void AVM2DLUT::CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
 
 }
 
+void AVM2DLUT::CvtPointWorld2ImageUnitmm(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
+{
+
+	 pOutPoint->y = 1.0-(((InPoint.x)/(0.0-m_calib_para[POS_CALIB_PPMMX])+m_calib_para[POS_CALIB_CX])/240.0);
+	  pOutPoint->x =((InPoint.y)/m_calib_para[POS_CALIB_PPMMY]+m_calib_para[POS_CALIB_CY]-108.0)/108.0;
+
+}
 /*===========================================================================*\
  * External Function Definitions
 \*===========================================================================*/

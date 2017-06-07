@@ -18,6 +18,7 @@ CMesh::CMesh():
 	m_enable(1)
 {
 	m_self = (Void*)this;
+	m_plot_flag =0;
 
 }
 
@@ -177,9 +178,19 @@ xr_state CMesh::GenPrimitive(Float32 xs, Float32 ys, Float32 zs, ModelType type,
 		case ModelType_Plane_Dynamic:			
 			GenPlaneDynamicMeshH(400, 800, xs, ys, this, roi);
 			break;
+		case ModelType_Plane_ARC:			
+			GenPlaneArcPlaneMeshV(xs, ys,zs, this, roi);
+			break;			
 		default:
 			break;
 	} 
+	return XR_OK;
+}
+xr_state CMesh::UpdateVertexNum(Int32 vertex_count)
+{
+    m_vbo->size = vertex_count*m_vbo->vertexSize;
+	m_vertexCount = vertex_count;
+	m_indexCount =3*vertex_count-6;
 	return XR_OK;
 }
 

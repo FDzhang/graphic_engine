@@ -36,7 +36,7 @@
 /*===========================================================================*\
  * Other Header Files
 \*===========================================================================*/
-
+#include "luminb_result.h"
 
 #define CMV_MAX_BUF 1024
 
@@ -86,12 +86,12 @@ public:
 	void SetLuminanceUnNormalizeYUV(unsigned int *pLuminance);
 
 private:
+    void Reset();
 	void CalcLuminanceCof();
 	void MergeDataToAll(float *pCof,Lumin_para *pCofSeparate);
 	void Normalize(unsigned int *pInput,float *pOutput);
 	void ConvertRgb2Yuv(float *pLuminancergb,float *pYUV);
 	void ConvertRgb2YuvNorm(void);
-	void InitDefaultLuminanceParams();
 
 	int get_Lumin_para_from_file(Lumin_para *myLumin_para, char *filename);
 

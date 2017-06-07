@@ -20,9 +20,11 @@ char ArrowBackward[MAX_NAME_LENGTH] = "arror_backward.dds";
 char Scroll[MAX_NAME_LENGTH] = "scroll.dds";
 char Scroll_Backward[MAX_NAME_LENGTH] = "scroll_backward.dds";
 char ParkLot[MAX_NAME_LENGTH] = "park_lot.dds";
+char UnParkLot[MAX_NAME_LENGTH] = "lock_park_lot.dds";
 char ParkLotDetect[MAX_NAME_LENGTH] = "parking_lot_detection.dds";
 char OnlineEnable[MAX_NAME_LENGTH] = "online_calib_enable.dds";
 char OnlineAPAConflict[MAX_NAME_LENGTH] = "online_conflict.dds";
+char UnLockParkLot[MAX_NAME_LENGTH] = "unlock_park_lot.dds";
 
 #define CENTER_ICON_POS_X  0.0
 #define CENTER_ICON_POS_Y  -0.1
@@ -99,8 +101,10 @@ int GlSVOverlayAPA::Init(ISceneNode *pSeneNode,char *pFilePath,AVM_Calib_2D_T ca
 	sprintf(m_scroll_backward_texture,"%s%s",pFilePath,Scroll_Backward);
 	sprintf(m_parklot_texture,"%s%s",pFilePath,ParkLot);
 	
+	sprintf(m_parklot_unpark_texture,"%s%s",pFilePath,UnParkLot);
 	sprintf(m_parklotdetect_texture,"%s%s",pFilePath,ParkLotDetect);
 	
+	sprintf(m_parklot_unlockpark_texture,"%s%s",pFilePath,UnLockParkLot);
 	sprintf(m_online_enable_texture,"%s%s",pFilePath,OnlineEnable);
     sprintf(m_online_apa_conflict_texture,"%s%s",pFilePath,OnlineAPAConflict);	
 	InitRectNode(stop_sign_pose,&m_pSignNode,pSeneNode,m_stop_sign_texture,Material_Rigid_Blend,&TempBuffer);
@@ -112,7 +116,7 @@ int GlSVOverlayAPA::Init(ISceneNode *pSeneNode,char *pFilePath,AVM_Calib_2D_T ca
 	ProcessStopSign(m_APA_result.stop_sign_flag,m_APA_result.end_parking_sign_flag,m_APA_result.parking_lot_detect_flag,m_APA_result.online_detect_flag);
 	ProcessArrowSign(m_APA_result.drive_dirction_indicat);
 	ProcessScrollSign(m_APA_result.drive_dirction_indicat,m_APA_result.scroll_rate);
-	ProcessParkLotSign(m_APA_result.park_lot_flag,m_APA_result.pParkLotPos);
+	ProcessParkLotSign(m_APA_result.park_lot_flag,m_APA_result.pParkLotPos,m_APA_result.parking_lot_type);
 	m_calib_rslt = calib_rslt;
 
 	
@@ -164,7 +168,7 @@ int GlSVOverlayAPA::Update(APAOverlayStruct inOverlayResult)
 	ProcessStopSign(m_APA_result.stop_sign_flag,m_APA_result.end_parking_sign_flag,m_APA_result.parking_lot_detect_flag,m_APA_result.online_detect_flag);
 	ProcessArrowSign(m_APA_result.drive_dirction_indicat);	
 	ProcessScrollSign(m_APA_result.drive_dirction_indicat,m_APA_result.scroll_rate);
-	ProcessParkLotSign(m_APA_result.park_lot_flag,m_APA_result.pParkLotPos);
+	ProcessParkLotSign(m_APA_result.park_lot_flag,m_APA_result.pParkLotPos,m_APA_result.parking_lot_type);
 
 
 	return 0;
@@ -271,12 +275,14 @@ void GlSVOverlayAPA::ProcessScrollSign(int direct_indicate,float scroll_rate)
 	
 }
 
-void GlSVOverlayAPA::ProcessParkLotSign(int park_lot_flag,float *lot_pos)
+void GlSVOverlayAPA::ProcessParkLotSign(int park_lot_flag,float *lot_pos,unsigned char park_lot_type)
 {
     IMaterial *pTempMaterial;	
 	IMesh *pMeshTemp;
 	float pCoordImage[2];
     float pInput[4] = {ARROW_ICON_POS_X-SCROLL_WIDTH_HALF,ARROW_ICON_POS_Y+SCROLL_HEIGHT_HALF,ARROW_ICON_POS_X+SCROLL_WIDTH_HALF,ARROW_ICON_POS_Y-SCROLL_HEIGHT_HALF};
+	IMaterial *pNodeMtl;
+	static unsigned char pre_park_lot_type=PARKABLE_PARK_LOT;
 	if(park_lot_flag == NO_PARK_LOT)
 	{	    
 		m_pParkLotNode->SetEnable(0);
@@ -297,6 +303,25 @@ void GlSVOverlayAPA::ProcessParkLotSign(int park_lot_flag,float *lot_pos)
     m_pParkLotNode->GetMesh(&pMeshTemp);
 	pMeshTemp->UnLockData();
 
+   if(pre_park_lot_type != park_lot_type)
+   {
+       m_pParkLotNode->GetMaterial(&pNodeMtl);
+       if(park_lot_type == PARKABLE_PARK_LOT)
+       {
+           pNodeMtl->SetDiffuseMap(m_parklot_texture);
+       }
+	   else if(park_lot_type == UNPARKABLE_PORK_LOT)
+	   {
+           pNodeMtl->SetDiffuseMap(m_parklot_unpark_texture);
+	       
+	   }
+	   else
+	   {
+           pNodeMtl->SetDiffuseMap(m_parklot_unlockpark_texture);
+	   
+	   }
+   }
+   pre_park_lot_type = park_lot_type;
 	
 }
 

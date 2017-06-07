@@ -77,8 +77,18 @@ public:
 	void Get_PA_State(unsigned char pos,unsigned char Dist,unsigned char* objstate);
 
     void Get_Yaw_Rate(float *yaw_rate);
+	
+    void Get_Wheel_Pulse(unsigned short *pwheelpulse);
+	
+	float * Get_Sonar_dist_list(void);
+	float Get_Drive_Dist(void);
+	
+	void CalcDriveDist(void);
+	
+	void ResetDriveDist(void);
 
 	CAN_DATA m_CAN_Data;
+	float m_drive_distance;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

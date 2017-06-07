@@ -2,7 +2,7 @@
 #define __XR_OS_H__
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> 
+#include <string.h>
 #include <assert.h>
 #include "../External/xrTypes.h"
 
@@ -11,7 +11,7 @@
 #define XrMemcpy memcpy
 #define LINUX_J6
 UInt32 XrGetTime();
-#ifdef LINUX_J6|| #ifdef WIN_32
+#if defined(LINUX_J6) || defined(WIN_32)
 #define xrprintf //
 #endif
 #ifdef WIN_32

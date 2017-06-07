@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------------
 // File:        hdr_app.cpp
-// SDK Version: v10.10 
+// SDK Version: v10.10
 // Email:       jackh@nvidia.com
 // Site:        http://developer.nvidia.com/
 //
@@ -18,7 +18,6 @@
 //
 //
 //----------------------------------------------------------------------------------
-
 #include "SurroundView.h"
 #include "SVScene.h"
 #include "SVUI.h"
@@ -80,7 +79,7 @@ SVScene* svscn;
 char exAdjustFile[]	= XR_RES"ex_param_adj.bin";
 char exConfigFile[]	= XR_RES"camera_parameter.smc";
 char exConfigHMIFile[]	= XR_RES"sv_hmi.smc";
-typedef unsigned short index_type; 
+typedef unsigned short index_type;
 
 
 
@@ -131,11 +130,11 @@ CRenderContext* g_pXrRenderContext=0;
 CRenderTarget*	pFrame_buffer;
 extern float g_TextureStep;
 BEV_CONFIG_T sv_config;
- 
+
  extern GLuint uiConfigBin[4][9];
  extern GLfloat *pfDataTotal;
  extern GLushort *pucIndexTotal;
- 
+
  extern GLfloat *pfDataSecond;
  extern GLushort *pucIndexSecond;
 
@@ -156,6 +155,10 @@ void Set_Frame_TimeStamp(int time_frame_ms)
     g_frame_time = time_frame_ms*1000;
 	return;
 }
+
+PFUpdateJointParamCallback XRSV::UpdateJonintParam = NULL;
+
+
 bool XRSV::initVehicleParam(SV_VEHICLE_PARAM_T in_veh_param)
 {
 
@@ -169,7 +172,9 @@ void XRSV::initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 	m_adas_mdl_num = HmiMdlNum;
 
 }
-bool XRSV::init(int width, int height, Smc_Cal_T *pSmcCfg,str_avm_pose_t * pPose)
+#include "DVR/Layout.h"
+extern GUI::Layout* dvrLayout;
+bool XRSV::init(int width, int height, st_GPU_Init_Config_T& gpu_init_cfg)
 {
 	int i,logoMtlId,logoLayerId;
 	int temp =0;
@@ -195,7 +200,7 @@ bool XRSV::init(int width, int height, Smc_Cal_T *pSmcCfg,str_avm_pose_t * pPose
 	m_sv_data_config.rear_single_view_rect[rect_left]=REAR_SINGLE_LEFT;
 	m_sv_data_config.rear_single_view_rect[rect_top]=REAR_SINGLE_TOP;
 	m_sv_data_config.rear_single_view_rect[rect_right]=REAR_SINGLE_RIGHT;
-	m_sv_data_config.rear_single_view_rect[rect_bottom]=REAR_SINGLE_BOTTOM;	
+	m_sv_data_config.rear_single_view_rect[rect_bottom]=REAR_SINGLE_BOTTOM;
 
 	m_sv_data_config.platform_config = PLATFORM_J6;
 	m_sv_data_config.config_file_source = CFG_FROM_SYS;
@@ -204,35 +209,47 @@ bool XRSV::init(int width, int height, Smc_Cal_T *pSmcCfg,str_avm_pose_t * pPose
     memcpy(&(m_sv_data_config.bev_conig),&(sv_config),sizeof(BEV_CONFIG_T));
 	memcpy(m_sv_data_config.exparam_file_name,ex2DCalibResult,MAX_NAME_LENGTH);
 	memcpy(m_sv_data_config.exparam_adjust_file_name,exManualAdjustFile,MAX_NAME_LENGTH);
-	memcpy(m_sv_data_config.lumin_pos_file_name,c_bcParam,MAX_NAME_LENGTH);	
+	memcpy(m_sv_data_config.lumin_pos_file_name,c_bcParam,MAX_NAME_LENGTH);
 	memcpy(m_sv_data_config.lut_config_file_name,LutConfig,MAX_NAME_LENGTH);
 	memcpy(m_sv_data_config.lut_data_file_name,
 LutData,MAX_NAME_LENGTH);
 	memcpy(m_sv_data_config.lut_index_file_name,LutIndex,MAX_NAME_LENGTH);
-	
+
 	memcpy(m_sv_data_config.car_pose_file_name,CarPose,MAX_NAME_LENGTH);
-	
+
 	memcpy(m_sv_data_config.car_pose_adjust_file_name,CarPoseAdjust,MAX_NAME_LENGTH);
-	
+
 	memcpy(m_sv_data_config.car_calib_name,CarCalibFileName,MAX_NAME_LENGTH);
-	
+
 	strcpy(m_sv_data_config.file_path,XR_RES);
-    m_sv_data_config.pSmc = pSmcCfg;
-	m_sv_data_config.pPose = pPose;
+
+	//{modified by ke.zhonghua 2017/05/08 传入gpu初始化数据
+    m_sv_data_config.pSmc = gpu_init_cfg.pSys_SMC;
+	m_sv_data_config.pPose = gpu_init_cfg.pPose;
+    m_sv_data_config.pCamParam = gpu_init_cfg.camera_param;
+/*
+    gf_pgs_para = new float [4];
+    gf_pgs_para[0] = (float)gpu_init_cfg.sticher_result->cx;
+    gf_pgs_para[1] = (float)gpu_init_cfg.sticher_result->cy;
+    gf_pgs_para[2] = (float)gpu_init_cfg.sticher_result->ppmmx;
+    gf_pgs_para[3] = (float)gpu_init_cfg.sticher_result->ppmmy;*/
+
+    m_sv_data_config.pSticherResult = gpu_init_cfg.sticher_result;
+    //} add end ke.zhonghua
 
 	AVMData::GetInstance()->InitConfig(m_sv_data_config);
-	
+
 	svscn = new SVScene();
-	
+
 	svui = new SVUI();
-	
+
 	svui->svscn = svscn;
-	
+
 	temp = svscn->InitNode(sv_config,m_pAdasMdl,m_adas_mdl_num);
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
 	#endif
-
+    dvrLayout = new GUI::Layout;
 	return true;
 }
 
@@ -263,12 +280,12 @@ bool XRSV::update(unsigned int view_control_flag)
             if(cnt>= START_UP_TURN_TIME)
             {
                 bevSecTour[0]->Stop();
-    			bevSecTour[1]->Stop();            
+    			bevSecTour[1]->Stop();
 				//svscn->SwitchViewLogic(BOSH_FRONT_VIEW);
 				//svscn->SwitchViewLogic(REAR_SINGLE_VIEW);
 				svscn->SwitchViewLogic(FRONT_3D_VIEW);
 				init_flag =2;
-                
+
             }
         }
         if(init_flag==0)
@@ -276,7 +293,7 @@ bool XRSV::update(unsigned int view_control_flag)
             bevSecTour[0]->Start();
 			bevSecTour[1]->Start();
 			svscn->SwitchViewLogic(TOUR_VIEW);
-			
+
 			init_flag = 1;
         }
 #endif
@@ -289,15 +306,15 @@ bool XRSV::update(unsigned int view_control_flag)
 		if(temp%100==99)
 		{
 		    #if 0
-			printf("\r\nprepare cost=%d \n", timestamp1-start);		
-    		printf("\r\nupdate cost=%d \n", timestamp2 -timestamp1);	
-    		printf("\r\nrender cost=%d \n", end -timestamp2);					
+			printf("\r\nprepare cost=%d \n", timestamp1-start);
+    		printf("\r\nupdate cost=%d \n", timestamp2 -timestamp1);
+    		printf("\r\nrender cost=%d \n", end -timestamp2);
 			printf("\r\ntotally cost=%d \n", end -start);
 			printf("\r\nframe rame time = %d\n",start-endl);
 			#endif
 
 
-		
+
 		}
 
 		cnt++;
@@ -309,12 +326,12 @@ bool XRSV::update(unsigned int view_control_flag)
 }
 
 void XRSV::Update3DParam(float *pose)
-{	
+{
 	svscn->UpdateExternCalibReslt(pose);
 }
 
 void XRSV::Update2DParam(void *pdata,void *pIndex)
-{	
+{
     int data_size = 0;
 	int index_size = 0;
 	data_size = AVMData::GetInstance()->m_2D_lut->GetDataTotalCnt();
@@ -383,7 +400,7 @@ void XRSV::RightTouchUp(int x, int y)
 
 }
 void XRSV::RightTouchDown(int x, int y)
-{	
+{
 	m_adjust_eanble = 1;
 
 }
@@ -421,40 +438,40 @@ void XRSV::KeyDown(int x)
        break;
        case VK_LEFT:
 	   	  g_steering_wheel_angle += STEERING_WHEEL_TURN_STEP;
-		  
+
 		//  svscn->SwitchView();
 	   break;
 	   case VK_RIGHT:
-		  
+
 		  g_steering_wheel_angle -= STEERING_WHEEL_TURN_STEP;
-		  
+
 		  //svscn->SwitchView();
 
 	   break;
 	   case VK_UP:
            g_vehicle_speed +=10;
-		   
+
 		//   svscn->SwitchView();
 	   break;
 	   case VK_DOWN:
            g_vehicle_speed -= 10;
-		   
+
 		 //  svscn->SwitchView();
 	   break;
        case VK_Z:
 	   	  g_gear_pos = GEAR_P;
-		  
+
 		 // svscn->SwitchView();
 	   break;
 	   case VK_X:
 		   g_gear_pos = GEAR_R;
-		   
+
 		 //  svscn->SwitchView();
 
 	   break;
 	   case VK_C:
 		   g_gear_pos = GEAR_N;
-		   
+
 		 //  svscn->SwitchView();
 	   break;
 	   case VK_V:
@@ -463,18 +480,18 @@ void XRSV::KeyDown(int x)
 	   break;
 	   case VK_INSERT:
 	   	   g_turn_light = TURN_LIGHT_LEFT;
-		   
+
 		  // svscn->SwitchView();
 	   break;
 	   case VK_HOME:
 	   	   g_turn_light = TURN_LIGHT_OFF;
-		   
+
 		   //svscn->SwitchView();
-	   	
+
 	   break;
 	   case VK_PAGE_UP:
 	   	   g_turn_light = TURN_LIGHT_RIGHT;
-		   
+
 		 //  svscn->SwitchView();
 	   break;
 	   		case VK_SPACE:
@@ -482,19 +499,19 @@ void XRSV::KeyDown(int x)
 	   break;
 	   case VK_2:
 			svscn->UpdateExternCalibReslt(pos);
-		break;	
+		break;
 	   case VK_3:
 			svscn->UpdateExternCalibReslt(pos_correct);
-		break;	
+		break;
 	   case VK_4:
 			svscn->UpdateExternCalib2DReslt(pfDataThird,AVMData::GetInstance()->m_2D_lut->GetDataTotalCnt(),pucIndexThird,AVMData::GetInstance()->m_2D_lut->GetIndexTotalCnt());
-		break;	
+		break;
 	   case VK_5:
 			svscn->UpdateExternCalib2DReslt(pfDataSecond,AVMData::GetInstance()->m_2D_lut->GetDataTotalCnt(),pucIndexSecond,AVMData::GetInstance()->m_2D_lut->GetIndexTotalCnt());
-		break;	
+		break;
 	   case VK_6:
 			svscn->SwitchViewLogic(BOSH_FRONT_VIEW);
-		break;	
+		break;
 	   case VK_7:
 	   	    if(0==mirrorview)
 	   	    {
@@ -510,96 +527,96 @@ void XRSV::KeyDown(int x)
 	   	    {
 			svscn->SwitchViewLogic(FRONT_3D_VIEW);
 			mirrorview =0;
-	   	    }			
-			
-		break;	
+	   	    }
+
+		break;
 	   case VK_8:
 
 			svscn->SwitchViewLogic(BOSH_FRONT_VIEW_TOP);
-		
-			
-		break;	
+
+
+		break;
 	   case VK_A:
-            
+
 			g_object_state[0]++;
 		    if(g_object_state[0]>=5)
 		    {
 		         g_object_state[0]=0;
 		    }
-			
-		break;	
+
+		break;
 	   case VK_S:
-            
+
 			g_object_state[1]++;
 		    if(g_object_state[1]>=5)
 		    {
 		         g_object_state[1]=0;
 		    }
-			
+
 		break;
 	   case VK_D:
-            
+
 			g_object_state[2]++;
 		    if(g_object_state[2]>=5)
 		    {
 		         g_object_state[2]=0;
 		    }
-			
-		break;	
+
+		break;
 	   case VK_F:
-            
+
 			g_object_state[3]++;
 		    if(g_object_state[3]>=5)
 		    {
 		         g_object_state[3]=0;
 		    }
-			
-		break;		
+
+		break;
        case VK_G:
-            
+
 			g_object_state[4]++;
 		    if(g_object_state[4]>=5)
 		    {
 		         g_object_state[4]=0;
 		    }
-			
-		break;	
+
+		break;
 	   case VK_H:
-            
+
 			g_object_state[5]++;
 		    if(g_object_state[5]>=5)
 		    {
 		         g_object_state[5]=0;
 		    }
-			
+
 		break;
 	   case VK_J:
-            
+
 			g_object_state[6]++;
 		    if(g_object_state[6]>=5)
 		    {
 		         g_object_state[6]=0;
 		    }
-			
-		break;	
+
+		break;
 	   case VK_K:
-            
+
 			g_object_state[7]++;
 		    if(g_object_state[7]>=5)
 		    {
 		         g_object_state[7]=0;
 		    }
-			
-		break;				
+
+		break;
    }
-   
+
    i++;
 
 
 
     if(m_adjust_eanble == 0)
 		return;
-		
+
     switch(x)
     {
         case VK_1:
@@ -611,41 +628,41 @@ void XRSV::KeyDown(int x)
 			break;
 		case VK_A:
 			m_adjust->AdjustParam(ADJ_ROTX_NEG);
-		break;	
+		break;
 		case VK_D:
 			m_adjust->AdjustParam(ADJ_ROTX_POS);
-		break;	
+		break;
 		case VK_W:
 			m_adjust->AdjustParam(ADJ_ROTY_NEG);
-		break;	
+		break;
 		case VK_S:
 			m_adjust->AdjustParam(ADJ_ROTY_POS);
 		break;
 		case VK_Q:
 			m_adjust->AdjustParam(ADJ_ROTZ_NEG);
-		break;	
+		break;
 		case VK_E:
 			m_adjust->AdjustParam(ADJ_ROTZ_POS);
 		break;
 		case VK_H:
 			m_adjust->AdjustParam(ADJ_TRANSX_NEG);
-		break;	
+		break;
 		case VK_K:
 			m_adjust->AdjustParam(ADJ_TRANSX_POS);
-		break;	
+		break;
 		case VK_U:
 			m_adjust->AdjustParam(ADJ_TRANSY_NEG);
-		break;	
+		break;
 		case VK_J:
 			m_adjust->AdjustParam(ADJ_TRANSY_POS);
 		break;
 		case VK_Y:
 			m_adjust->AdjustParam(ADJ_TRANSZ_NEG);
-		break;	
+		break;
 		case VK_I:
 			m_adjust->AdjustParam(ADJ_TRANSZ_POS);
-		break;		
-	
+		break;
+
     }
 
 }
