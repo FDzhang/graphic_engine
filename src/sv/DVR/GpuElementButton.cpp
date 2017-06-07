@@ -60,7 +60,7 @@ namespace GUI
         {
             InsertFlag flag = InsertFlag_Child;
             int32_t parent = GetParent();
-            if(!parent)
+            if(parent < 0)
             {
                 //控件不存在父节点id
                 parent = -1;

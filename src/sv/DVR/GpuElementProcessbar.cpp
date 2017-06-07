@@ -29,7 +29,7 @@ namespace GUI
 {
     CGPUProcessbar::CGPUProcessbar()
         :IGUIElement()
-        ,CXrSlideBar(true)
+        ,CXrBaseView()
     {
     
     }
@@ -38,6 +38,7 @@ namespace GUI
     {
         
     }
+
     bool CGPUProcessbar::Create(const uint32_t pos_x, const uint32_t pos_y,
                                 const uint32_t element_width, const uint32_t element_height)
     {
@@ -45,35 +46,27 @@ namespace GUI
         processbar_y = pos_y;
         processbar_width =  element_width;
         processbar_height = element_height;
-    
-        m_barWidth =  8;
-        m_barHeight = 16;
-
-        
-        //m_barBaseLayerTexture = array_texture[1];
-        //m_barFinishedLayerTexture = array_texture[2];
-        //m_slideLayerTexture = array_texture[3];
 
         const IUINode* node = GetLayoutNode();
         if(node)
         {
             /** 第一步: 创建进度条的base Layer*/
-            Int32 baseLayerMtl = node->CreateUIMaterial(Material_UI_Spirit, m_baseLayerTexture);
-            Rect barROI(0, 1000, 0, 12);
-            Rect sliderROI(0, 1000, 0, 12);
-            CXrSlideBar::Add(
-                node,
-                -1,
-                InsertFlag_Default,
-                processbar_x,
-                processbar_y,
-                processbar_width,
-                processbar_height,
-                baseLayerMtl,
-                &barROI,
-                &sliderROI
-                );
-            SetElementId(m_sliderLayerId);
+            InsertFlag flag = InsertFlag_Child;
+            int32_t parent = GetParent();
+            if(parent < 0)
+            {
+                //控件不存在父节点id
+                parent = -1;
+                flag = InsertFlag_Default;
+            }
+#if 0
+            Int32 RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_baseLayerTexture);
+            Int32 baseLayerId = node->CreateSpirit(parent, flag, RTMtlId, 1.0, processbar_x, processbar_y, 0, processbar_width, processbar_height);
+            m_root = node->GetLayer(baseLayerId);
+            m_root->SetEventResponder(this);
+            Int32 scrollPanelId = node->CreateScrollPanel(baseLayerId, InsertFlag_Child, processbar_x, processbar_y, 100, 100, ScrollMode_X, 120);
+#endif
+            SetElementId(32);
         }
         else
         {
@@ -83,14 +76,13 @@ namespace GUI
     }
     void CGPUProcessbar::SetEnable(bool enable)
     {
-        CXrSlideBar::SetEnable(enable);
+        SetEnable(enable);
     }
     void CGPUProcessbar::SetElementEffect(void* effect, long style)
     {
         switch(style)
         {
         case GPU_GUI_EFFECT_TEXTURE:
-            
             m_baseLayerTexture = ((IGUITexture*)effect)[0];
             break;
         default:
@@ -99,16 +91,15 @@ namespace GUI
     }
     Boolean CGPUProcessbar::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        DEBUG("%d %d %d\n", m_baseLayerId, layerId, type);
         m_cmdTarget->DispatchEvent(layerId, type);
-        CXrSlideBar::OnTouchEvent(layerId, x, y, type);
+        //OnTouchEvent(layerId, x, y, type);
     }
 
     void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)
     {
         float percent = (float)current_time / (float)whole_time;
         DEBUG("whole_time %d current_time %d percent %f\n", whole_time, current_time, percent);
-        CXrSlideBar::SetValue(percent);
+        //CXrSlideBar::SetValue(percent);
     }
     
     IMPLEMENT_DYNAMIC_CLASS(CGPUProcessbar)

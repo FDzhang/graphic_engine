@@ -8,7 +8,6 @@
 #include "AVMData.h"
 #include "HMISource/HMITest.h"
 #include "GPU_Module_Interface.h"
-#include "DVR/Layout.h"
 //GlSVDemo* demo;
 XRSV app;
 //#define STATIC_TEXTURE_USE
@@ -34,7 +33,6 @@ extern char CAR2DICON[];
 extern char CARLIGHTON[];
 extern char CARLIGHTTEX[];
 extern char CARTEX[];
-GUI::Layout* dvrLayout = NULL; 
 extern void UpdateJ6VideoTexture(GLuint input[]);
 #ifdef __cplusplus
 extern "C" {
@@ -70,20 +68,7 @@ void TestCustomHMI(void)
 	//pTestHMI[0] = test_hmi.GetHMI();
 	//InitADASMdlHMI(pTestHMI,1);
 }
-
-void EnableDVRHMI(int flag)
-{
-    if(dvrLayout != NULL)
-    {
-        dvrLayout->EnableLayout(flag);
-    }
-}
-    
-void SetProcessbarValue(uint32_t whole_time, uint32_t cur_time)
-{
-    dvrLayout->SetValue(whole_time, cur_time);
-}
-    
+  
 void TestAdasHMI(void)
 {
     int nodeId,temp;

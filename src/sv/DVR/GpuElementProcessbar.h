@@ -26,11 +26,11 @@
  * VERSION: 15 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "IGUIElement.h"
-#include "XrCore/XrSrc/XrUILibrary/CXrSlideBar.h"
+#include "XrCore/XrSrc/XrUILibrary/CXrSlider.h"
 
 namespace GUI
 {
-    class CGPUProcessbar : public IGUIElement ,private CXrSlideBar
+    class CGPUProcessbar : public IGUIElement, private CXrBaseView
     {
     public:
         CGPUProcessbar();
@@ -45,10 +45,10 @@ namespace GUI
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);
 
     private:
-        IGUITexture m_baseLayerTexture, m_barBaseLayerTexture, m_barFinishedLayerTexture, m_slideLayerTexture;
+        IGUITexture m_baseLayerTexture, m_slideLayerTexture;
         uint32_t processbar_x, processbar_y;
         uint32_t processbar_width, processbar_height;
-        ILayer   *m_pbaseLayer, *m_pbarBaseLayer, *m_pbarFinshedLayer, *m_pSliderLayer;
+        ILayer   *m_pbaseLayer;
         uint32_t m_barWidth, m_barHeight;
 
     private:

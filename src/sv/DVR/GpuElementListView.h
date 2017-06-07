@@ -1,7 +1,7 @@
-#ifndef _GPU_ELEMENT_PANNEL_H_ /* { */
-#define _GPU_ELEMENT_PANNEL_H_
+#ifndef _GPUELEMENTLISTVIEW_H_ /* { */
+#define _GPUELEMENTLISTVIEW_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE:GpuElementPannel.h
+ * FILE: GpuElementListView.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,33 +23,24 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 23 5月 2017 dota2_black 
+ * VERSION: 01 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "IGUIElement.h"
-#include "XrCore/XrSrc/XrUILibrary/CXrPanel.h"
+#include "XrCore/XrSrc/XrUILibrary/CXrSelector.h"
 
-namespace GUI
+class GpuElementListView : private CXrSelector
 {
-    class CGPUPanel : public IGUIElement
-    {
-    
-    public:
-        CGPUPanel();
-        ~CGPUPanel();
-        bool Create(const uint32_t pos_x, const uint32_t pos_y,
-                    const uint32_t element_width, const uint32_t element_height);
-        void SetElementEffect(void* effect, long style);
-        void SetEnable(bool enable){};
-    private:
-        CXrPanel* m_panel;
-        uint32_t m_layout_x, m_layout_y;
-        uint32_t m_panel_width, m_panel_height;
+public:
+    GpuElementListView();
+    ~GpuElementListView();
 
-        IGUITexture m_baseLayerTexture;
-    private:
-        DECLEAR_DYNAMIC_CLASS(CGPUPanel, IGUIElement)
-    };
-}
+    bool Create(const uint32_t pos_x, const uint32_t pos_y,
+                const uint32_t element_width, element_height);
+    void SetElementEffect(void* effect, long style);
+private:
+    DECLEAR_DYNAMIC_CLASS(GpuElementListView, IGUIElement)
+};
+
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
@@ -58,4 +49,4 @@ namespace GUI
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _GPU_ELEMENT_PANEL_H_ */
+#endif /* } _GPUELEMENTLISTVIEW_H_ */

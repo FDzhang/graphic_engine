@@ -43,8 +43,17 @@ namespace GUI
         const IUINode* node = GetLayoutNode();
         if(node)
         {
+            InsertFlag flag = InsertFlag_Child;
+            int32_t parent = GetParent();
+            if(parent < 0)
+            {
+                //控件不存在父节点id
+                parent = -1;
+                flag = InsertFlag_Default;
+            }
             /** 调用XrCore的CXrButton,添加button node*/
-            m_panel->Add(node, -1, InsertFlag_Default, 100, 600, 1000, 180, 1, XR_RES"test.dds");
+            m_panel->Add(node, parent, flag, pos_x, pos_y, element_width, element_height, 1, m_baseLayerTexture);
+            IGUIElement::SetElementId(m_panel->GetRootId());
             DEBUG("get the right layout node\n");
         }
         else
@@ -56,7 +65,15 @@ namespace GUI
 
     void CGPUPanel::SetElementEffect(void* effect, long style)
     {
-        
+        switch(style)
+        {
+        case GPU_GUI_EFFECT_TEXTURE:
+            
+            m_baseLayerTexture = ((IGUITexture*)effect)[0];
+            break;
+        default:
+            break;
+        }
     }
     CGPUPanel::~CGPUPanel()
     {
