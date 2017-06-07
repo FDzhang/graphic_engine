@@ -18,7 +18,9 @@ extern IDeviceManager* rm;
 #define GROUND_NODE_HEIGHT 500
 //#define STICH_AERA_WIDTH 216
 //#define STICH_AERA_HEIGHT 480
+
 #define STICH_AERA_WIDTH 512	
+
 #define STICH_AERA_HEIGHT 1280
 
 

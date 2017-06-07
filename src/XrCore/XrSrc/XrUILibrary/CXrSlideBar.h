@@ -24,8 +24,8 @@ public:
 	}
 
 	Void SetValue(Float32 val);
-
-private:	
+    
+protected:	
 	Boolean		    m_isHorizontal;
 	Int32			m_barLayerId;
 	Int32			m_sliderLayerId;

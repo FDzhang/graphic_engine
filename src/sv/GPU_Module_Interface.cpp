@@ -8,8 +8,7 @@
 #include "AVMData.h"
 #include "HMISource/HMITest.h"
 #include "GPU_Module_Interface.h"
-
-
+#include "DVR/Layout.h"
 //GlSVDemo* demo;
 XRSV app;
 //#define STATIC_TEXTURE_USE
@@ -35,11 +34,12 @@ extern char CAR2DICON[];
 extern char CARLIGHTON[];
 extern char CARLIGHTTEX[];
 extern char CARTEX[];
+GUI::Layout* dvrLayout = NULL; 
 extern void UpdateJ6VideoTexture(GLuint input[]);
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+  
 void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 {
 	int window_width = 1280;
@@ -61,8 +61,9 @@ void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 	g_APA_HMI_data.icon_num = 1;
 	pAdasMdlHmiHandle[HmiMdlNum++] = &g_APA_HMI_data;
 	app.initAdasMdlHmi(pAdasMdlHmiHandle,HmiMdlNum);
-
 }
+//void GpuLogctrl_End(void){return};
+
 void TestCustomHMI(void)
 {
 	//test_hmi = new SVNodeTestHMI;
@@ -72,6 +73,19 @@ void TestCustomHMI(void)
 	//InitADASMdlHMI(pTestHMI,1);
 }
 
+void EnableDVRHMI(int flag)
+{
+    if(dvrLayout != NULL)
+    {
+        dvrLayout->EnableLayout(flag);
+    }
+}
+    
+void SetProcessbarValue(uint32_t whole_time, uint32_t cur_time)
+{
+    dvrLayout->SetValue(whole_time, cur_time);
+}
+    
 void TestAdasHMI(void)
 {
     int nodeId,temp;
@@ -265,7 +279,7 @@ void TestAdasHMI(void)
 
 
 }
-
+ 
 void UpdateCustomHMIData()
 {
 	float steer_angle;
@@ -477,11 +491,25 @@ void GetSonarPLDRslt(Radar_PLD_Result *pReslt)
 	 for(int i=0;i<4;i++)
 	 {
 	     pReslt->sFrontMarginGround_Points[i] = g_radar_pld_reslt.sFrontMarginGround_Points[i];
-         pReslt->sGround_Points[i] = g_radar_pld_reslt.sGround_Points[i];
+         pReslt->sGround_Points[i].x = g_radar_pld_reslt.sGround_Points[i].x/1000.0;
+		 
+         pReslt->sGround_Points[i].y = g_radar_pld_reslt.sGround_Points[i].y/1000.0;
 	     pReslt->sTruePLD_Points[i] = g_radar_pld_reslt.sTruePLD_Points[i];
          pReslt->sRearMarginGround_Points[i] = g_radar_pld_reslt.sRearMarginGround_Points[i];
 
 	 }
+	 pReslt->sGround_Points[0].x = g_radar_pld_reslt.sGround_Points[2].x/1000.0;
+	 
+	 pReslt->sGround_Points[0].y = g_radar_pld_reslt.sGround_Points[2].y/1000.0;
+
+pReslt->sGround_Points[1].x = g_radar_pld_reslt.sGround_Points[0].x/1000.0;
+
+pReslt->sGround_Points[1].y = g_radar_pld_reslt.sGround_Points[0].y/1000.0;
+pReslt->sGround_Points[2].x = g_radar_pld_reslt.sGround_Points[1].x/1000.0;
+
+pReslt->sGround_Points[2].y = g_radar_pld_reslt.sGround_Points[1].y/1000.0;
+
+	 
 }
 Radar_PLD_Result* GetSonarPLDDataPointer(void)
 {

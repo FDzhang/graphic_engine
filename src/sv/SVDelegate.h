@@ -768,7 +768,7 @@ switch(id)
                      //   printf("\r\n texture channel(%c),texture id(0x%x)",id,pMtl->GetDiffuseMap()->texid);
              break;
             case '9':
-						   
+						   XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
 						   AVMData::GetInstance()->m_cam_source->UseCameraTexture(channelId);
 							for(int i=0;i<3;i++)
                             {
@@ -781,17 +781,18 @@ switch(id)
 			case 's':
 				
 						//XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
-						
+						XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
 						mtl_id = pMtl->GetDiffuseMap()->texid;
 						for(camera_index=0;camera_index<4;camera_index++)
 						{
-						    if(mtl_id == AVMData::GetInstance()->m_cam_source->GetCameraSourceTextureId(camera_index))
+						    if(mtl_id == AVMData::GetInstance()->m_cam_source->GetCameraSourceTextureId(channelId))
 						    {
 						        break;
 						    }
-							
+			
 						}
-						AVMData::GetInstance()->m_cam_source->UseCameraTexture(camera_index);
+						AVMData::GetInstance()->m_cam_source->UseCameraTexture(channelId);
+                        
 							for(int i=0;i<3;i++)
                             {
 							    fLumCofL1[i]=1.0;
@@ -800,7 +801,7 @@ switch(id)
                             luminance_direct = 1.0; 
              break;
              default:
-			 	
+			 	XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
 						   AVMData::GetInstance()->m_cam_source->UseCameraTexture(channelId);
 							for(int i=0;i<3;i++)
                             {

@@ -53,6 +53,7 @@ void AVMCANData::Init( void)
 void AVMCANData::UpdateCANData(CAN_DATA in_can_data)
 {
     m_CAN_Data = in_can_data;
+	
 }
 void AVMCANData::Get_Vehicle_Speed(float * Vehicle_Speed)
 {
@@ -130,6 +131,16 @@ void AVMCANData::ResetDriveDist(void)
 {
     m_drive_distance=0;
 }
+
+void AVMCANData::Get_Wheel_Pulse(unsigned short *pwheelpulse)
+{
+    for(int i =0;i<4;i++)
+    {
+        pwheelpulse[i]=m_CAN_Data.wheel_pls[i];
+    }
+
+}
+
 /*===========================================================================*\
  * External Object Definitions
 \*===========================================================================*/

@@ -41,6 +41,8 @@ private:
 	void SetBSDRadarIcon();
 	void SetHMIScroll();
 	void SelectNextChainsStatus(int chains_mode);
+	void HmiReappear();
+	void HmiDisappear();
 
 private:
 	st_ADAS_Mdl_HMI_T m_test_hmi;

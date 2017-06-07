@@ -69,6 +69,16 @@ int SVNodeSonar::ProcessPreviousParkingLot(COMMON_VEHICLE_DATA_SIMPLE vehicle_st
         pParkinglot=&m_sonar_parking_lot[i];
         if(pParkinglot->show_flag)
         {
+            for(int j=0;j<4;j++)
+            {
+            
+                inPoint.x=pParkinglot->lot_point[2*j];
+    			inPoint.y=pParkinglot->lot_point[2*j+1];
+    	        m_vehicle_motion->get_new_point_from_Vhichle_data(&inPoint, &vehicle_state, (float)Get_Frame_TimeStamp() / 1000000.0);
+                pParkinglot->lot_point[2*j]= inPoint.x;
+                pParkinglot->lot_point[2*j+1]= inPoint.y;
+            }
+			#if 0
             inPoint.x=pParkinglot->lot_start_pos[0];
 			inPoint.y=pParkinglot->lot_start_pos[1];
 	        m_vehicle_motion->get_new_point_from_Vhichle_data(&inPoint, &vehicle_state, (float)Get_Frame_TimeStamp() / 1000000.0);
@@ -85,6 +95,7 @@ int SVNodeSonar::ProcessPreviousParkingLot(COMMON_VEHICLE_DATA_SIMPLE vehicle_st
 	        m_vehicle_motion->get_new_point_from_Vhichle_data(&inPoint, &vehicle_state, (float)Get_Frame_TimeStamp() / 1000000.0);
             pParkinglot->lot_end_pos[0]= inPoint.x;
             pParkinglot->lot_end_pos[1]= inPoint.y;
+			#endif
         }
     }
 	return 0;
@@ -306,7 +317,7 @@ void SVNodeSonar::DrawParkLot(void)
     {
         if(m_sonar_parking_lot[i].show_flag == 1)
         {
-        
+           // fprintf(stdout,"draw %d parklot",m_sonar_parking_lot[i].show_flag );
              GenerateParkLotRect(&m_sonar_parking_lot[i],m_sonar_parking_lot_hmi[i].pdatabuffer);
 
 			 m_sonar_parking_lot_hmi[i].pRectMesh->UnLockData();
@@ -341,7 +352,7 @@ void SVNodeSonar::SetRadarPLDReslt()
     {
         pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type;
 		pRadarPldRslt->iParkLotNum = 1;
-
+       #if 0
 		pRadarPldRslt->sGround_Points[0].x = m_sonar_parking_lot[front_right_side_sonar].lot_start_pos[0];
 		pRadarPldRslt->sGround_Points[0].y = m_sonar_parking_lot[front_right_side_sonar].lot_start_pos[1];	
 		pRadarPldRslt->sGround_Points[1].x = m_sonar_parking_lot[front_right_side_sonar].lot_start_pos[0];
@@ -351,8 +362,23 @@ void SVNodeSonar::SetRadarPLDReslt()
 		pRadarPldRslt->sGround_Points[3].x = pRadarPldRslt->sGround_Points[2].x ;
 		pRadarPldRslt->sGround_Points[3].y = pRadarPldRslt->sGround_Points[1].y;
 
+    #endif
+	
+    	pRadarPldRslt->sGround_Points[0].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_bottom];
+    	pRadarPldRslt->sGround_Points[0].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_bottom+1];	
+		
+    	pRadarPldRslt->sGround_Points[1].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_bottom];
+    	pRadarPldRslt->sGround_Points[1].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_bottom+1];
+		
+    	pRadarPldRslt->sGround_Points[2].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_top];
+    	pRadarPldRslt->sGround_Points[2].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_top+1];	
+		
+    	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top] ;
+    	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1];
+
 		
     }
+	#if 0
 	else if(m_sonar_parking_lot[front_left_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE&&m_sonar_parking_lot[front_left_side_sonar].show_flag==1)
 	{
 
@@ -371,6 +397,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 
 	
 	}
+	#endif
 	else
 	{
     	pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type;
@@ -386,6 +413,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		pRadarPldRslt->sGround_Points[3].y = 0.0;
 
 	}
+	
 	
 }
 void SVNodeSonar::GenerateParkLotRect(sonar_parking_lot_t *park_lot_state,float *pVertex)
@@ -406,17 +434,17 @@ void SVNodeSonar::GenerateParkLotRect(sonar_parking_lot_t *park_lot_state,float 
 	}
 
 	park_width = park_lot_state->lot_width;
-	park_lot_pos[0]=park_lot_state->lot_start_pos[0];	
-	park_lot_pos[1]=park_lot_state->lot_start_pos[1];
+	park_lot_pos[0]=park_lot_state->lot_point[2*rect_point_near_bottom];	
+	park_lot_pos[1]=park_lot_state->lot_point[2*rect_point_near_bottom+1];
 	
-	park_lot_pos[2]=park_lot_state->lot_start_pos[0]; 
-	park_lot_pos[3] = park_lot_state->lot_start_pos[1] + sign*park_width;
+	park_lot_pos[2]=park_lot_state->lot_point[2*rect_point_far_bottom]; 
+	park_lot_pos[3] = park_lot_state->lot_point[2*rect_point_far_bottom+1];
 	
-	park_lot_pos[4]=park_lot_state->lot_end_pos[0];
-	park_lot_pos[5]=park_lot_state->lot_end_pos[1];
+	park_lot_pos[4]=park_lot_state->lot_point[2*rect_point_near_top];
+	park_lot_pos[5]=park_lot_state->lot_point[2*rect_point_near_top+1];
 
-	park_lot_pos[6] = park_lot_state->lot_end_pos[0] ;
-	park_lot_pos[7] = park_lot_state->lot_end_pos[1] + sign*park_width;
+	park_lot_pos[6] = park_lot_state->lot_point[2*rect_point_far_top];
+	park_lot_pos[7] = park_lot_state->lot_point[2*rect_point_far_top+1];
 
 
     for(int i =0;i<4;i++)
@@ -470,7 +498,48 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 	 m_parking_lot_pos = 0;
 	 m_track_park_lot_flag=0;
 	 ResetParkSlotInfo();
+	 TestVehicleMovment();
 	 return 0;
+}
+int SVNodeSonar::TestVehicleMovment(void)
+{
+    return 0;
+	m_sonar_parking_lot[front_left_conor_sonar].show_flag = 1;
+     m_sonar_parking_lot[front_left_conor_sonar].parking_lot_type =PARKING_LOT_PARALLEL;
+
+	 m_sonar_parking_lot[front_left_conor_sonar].lot_length = 5000;
+	 m_sonar_parking_lot[front_left_conor_sonar].lot_width= 2000;
+	 m_sonar_parking_lot[front_left_conor_sonar].lot_end_pos[0]=3776;// m_sonar_parking_lot[front_left_conor_sonar].lot_start_pos[0]-;
+	 m_sonar_parking_lot[front_left_conor_sonar].lot_end_pos[1] = 1839/2.0+800;
+
+
+     m_sonar_parking_lot[front_left_conor_sonar].lot_start_pos[0] = m_sonar_parking_lot[front_left_conor_sonar].lot_end_pos[0]-m_sonar_parking_lot[front_left_conor_sonar].lot_length;
+     m_sonar_parking_lot[front_left_conor_sonar].lot_start_pos[1] =  m_sonar_parking_lot[front_left_conor_sonar].lot_end_pos[1];
+	// fprintf(stdout,"testtesttestprint");
+	int park_lot_index=front_left_conor_sonar;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_top]=m_sonar_parking_lot[park_lot_index].lot_end_pos[0] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_top+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom]=m_sonar_parking_lot[park_lot_index].lot_start_pos[0] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom+1]=m_sonar_parking_lot[park_lot_index].lot_start_pos[1] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_top]=m_sonar_parking_lot[park_lot_index].lot_end_pos[0] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_bottom]=m_sonar_parking_lot[park_lot_index].lot_start_pos[0] ;
+
+	if(m_sonar_parking_lot[park_lot_index].lot_end_pos[0]>0)
+	{
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_top+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]+m_sonar_parking_lot[park_lot_index].lot_width ;
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_bottom+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]+m_sonar_parking_lot[park_lot_index].lot_width ;
+
+	}
+	else
+	{
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_top+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]-m_sonar_parking_lot[park_lot_index].lot_width ;
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_bottom+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]-m_sonar_parking_lot[park_lot_index].lot_width ;
+	   
+	}
+
+	 return 0;
+
+
 }
 int SVNodeSonar::InitSoarArc(void)
 {
@@ -817,16 +886,18 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 {
 
     unsigned char point_type=0;
-    static unsigned char pre_line_type[MAX_PARKING_LOT_NUM]={0,};
+    //static unsigned char pre_line_type[MAX_PARKING_LOT_NUM]={0,};
 	static unsigned char obstacle_appeared_flag[MAX_PARKING_LOT_NUM] = { 0, };
 	static unsigned char slot_ok_cnt[MAX_PARKING_LOT_NUM]={0,};
 	static float enter_top_bottom_dist[MAX_PARKING_LOT_NUM] = {0,};
 	static unsigned char pre_point_type[MAX_PARKING_LOT_NUM]={0,};
 	static unsigned char uc_no_top_bottom_turn_flag [MAX_PARKING_LOT_NUM]= {0,};
 	static unsigned char uc_top_no_bottom_last_empty_flag[MAX_PARKING_LOT_NUM] ={0,};
+	static unsigned char line_flag[MAX_PARKING_LOT_NUM]={0,};
 	unsigned char line_type;
 	unsigned char edge_type;
 	void *pSetData;
+	float slop=1.0;
 	float fdata;
 	int idata;
 	if(empty_flag == 1)
@@ -837,7 +908,7 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 	}
 	else if(m_new_obj_flag[sonar_index]==1)
 	{
-	    point_type = JudgeJumpPoint(filter_num,sonar_index,obj_id);
+	    point_type = JudgeJumpPoint(filter_num,sonar_index,obj_id,&slop);
 	}
 	else
 	{
@@ -1077,11 +1148,34 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
     	} 
     	else
     	{
-            if(slot_ok_cnt[park_lot_index] == 0)
-            {
-                enter_top_bottom_dist[park_lot_index] = AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist();
-            }
-    	    slot_ok_cnt[park_lot_index]++;
+    	    if(fabs(slop) < 0.1)
+    	    {
+    	        
+    			slot_ok_cnt[park_lot_index]++;
+				if(slot_ok_cnt[park_lot_index]>=3)
+				{
+    	            line_flag[park_lot_index] = 1;
+				}
+    	    }
+			else
+			{
+
+			    slot_ok_cnt[park_lot_index]=0;
+			}
+			if(line_flag[park_lot_index] ==1)
+			{
+               // if(slot_ok_cnt[park_lot_index] == 0)
+                //{
+                  //  enter_top_bottom_dist[park_lot_index] = AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist();
+                
+                //}
+			}
+			else
+			{
+			     //slot_ok_cnt[park_lot_index]=0;
+				 enter_top_bottom_dist[park_lot_index] = AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist();
+
+			}
 			
 			if(fabs(m_sonar_obj_list[sonar_index][2*(((*obj_id-1)+1)%MAX_SONAR_OBJ_NUM)+1])<fabs(m_slot_data[park_lot_index].dist_cross))
 			{
@@ -1107,11 +1201,13 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 
 	    if(line_type == EDGE_TYPE_TOP_BOTTOM)
 	    {
-		    slot_ok_cnt[park_lot_index]++;
+		    if(line_flag [park_lot_index]==1)
+			{
+    		    //slot_ok_cnt[park_lot_index]++;
 
 		
     		
-    		if(AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist()-enter_top_bottom_dist[park_lot_index]>500)
+        		if(AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist()-enter_top_bottom_dist[park_lot_index]>1000)
     		{
     			line_type = EDGE_TYPE_NO_TOP_BOTTOM;
     		}	
@@ -1121,7 +1217,7 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
     			line_type = pre_line_type[park_lot_index] ;
     		}	
 	
-
+		    }
 	    }
 
     }		
@@ -1141,6 +1237,7 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 		if (pre_line_type[park_lot_index] == EDGE_TYPE_TOP_BOTTOM)
 		{
 			ProcessLotData(sonar_index, park_lot_index);
+			line_flag[park_lot_index] =0;
 		}
 		//else
 		AVMData::GetInstance()->m_p_can_data->ResetDriveDist();  	
@@ -1185,17 +1282,25 @@ void SVNodeSonar::ResetParkSlotInfo(void)
     idata=MAX_SONAR_OBJ_NUM+1;
 	for (park_lot_index = 0; park_lot_index < MAX_PARKING_LOT_NUM; park_lot_index++)
 	{
+	    if(park_lot_index == front_left_conor_sonar)
+	    {
+	        continue;
+	    }
 		SetParkSlotInfo(park_lot_index, park_lot_bottom_after_turn_id, (void *)&idata);
 		SetParkSlotInfo(park_lot_index, park_lot_bottom_before_turn_id, (void *)&idata);
 		SetParkSlotInfo(park_lot_index, park_lot_top_before_turn_id, (void *)&idata);
 		SetParkSlotInfo(park_lot_index, park_lot_top_after_turn_id, (void *)&idata);
 
+		m_sonar_parking_lot[park_lot_index].show_flag=0;
+		m_sonar_parking_lot[park_lot_index].parking_lot_type = PARKING_LOT_NOT_SIUTABLE;
 
-
+        pre_line_type[park_lot_index]= EDGE_TYPE_NO_TOP_BOTTOM;
 		fdata = EMPTY_POINT_DEFAULT_DIST;
-
+		m_sonar_obj_list_end[park_lot_index]=0;
+		m_sonar_obj_list_start[park_lot_index]=0;
 		SetParkSlotInfo(park_lot_index, park_lot_dist_width, (void *)&fdata);
 		SetParkSlotInfo(park_lot_index, park_lot_dist_cross, (void *)&fdata);
+		m_sonar_parking_lot[park_lot_index].show_flag = 0;
 	}
 }
 void SVNodeSonar::SetParkSlotInfo(int park_lot_index,park_lot_property property_index,void *pData)
@@ -1347,6 +1452,25 @@ void SVNodeSonar::ProcessLotData(int sonar_index,int park_lot_index)
     m_sonar_parking_lot[park_lot_index].show_flag=1;
 
     CheckParkinglotSizewithType(&m_sonar_parking_lot[park_lot_index]);
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_top]=m_sonar_parking_lot[park_lot_index].lot_end_pos[0] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_top+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom]=m_sonar_parking_lot[park_lot_index].lot_start_pos[0] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom+1]=m_sonar_parking_lot[park_lot_index].lot_start_pos[1] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_top]=m_sonar_parking_lot[park_lot_index].lot_end_pos[0] ;
+	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_bottom]=m_sonar_parking_lot[park_lot_index].lot_start_pos[0] ;
+
+	if(m_sonar_parking_lot[park_lot_index].lot_end_pos[1]>0)
+	{
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_top+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]+m_sonar_parking_lot[park_lot_index].lot_width ;
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_bottom+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]+m_sonar_parking_lot[park_lot_index].lot_width ;
+
+	}
+	else
+	{
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_top+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]-m_sonar_parking_lot[park_lot_index].lot_width ;
+	    m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_bottom+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1]-m_sonar_parking_lot[park_lot_index].lot_width ;
+	   
+	}
 
 }
 
@@ -1405,7 +1529,7 @@ void SVNodeSonar::FiltObjData(int filter_num)
 }
 float g_debug_slop=0;
 extern int g_debug_index;
-unsigned char  SVNodeSonar::JudgeJumpPoint(int filter_num,int sonar_index,int *obj_id)
+unsigned char  SVNodeSonar::JudgeJumpPoint(int filter_num,int sonar_index,int *obj_id,float *slop)
 {
     int sonar_loop = front_right_side_sonar;
 	int obj_index=0;
@@ -1430,6 +1554,11 @@ unsigned char  SVNodeSonar::JudgeJumpPoint(int filter_num,int sonar_index,int *o
 	{
 	   //point not enough
 	   *obj_id=m_sonar_obj_list_end[sonar_index]-2;
+	   if(slop != NULL)
+	   {
+	       slop =0;
+
+	   }
 	   return point_type;
 	}
 	point_type = JUMP_POINT_NON;
@@ -1452,6 +1581,17 @@ unsigned char  SVNodeSonar::JudgeJumpPoint(int filter_num,int sonar_index,int *o
     	else if(k_slop>K_SLOP_GATE)
     	{
             point_type = JUMP_POINT_TOP_EDGE;	
+    	}
+	}
+	if(slop != NULL)
+	{
+	    if(current_point[0]-last_point[0]!=0)
+	    {
+	        *slop = (fabs(current_point[1])-fabs(last_point[1]))/(current_point[0]-last_point[0]);
+	    }
+		else
+		{
+		    *slop = 1000;
     	}
 	}
    *obj_id=obj_index;
@@ -1565,7 +1705,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
     float pTemp[8]={0.2,0.2,0.8,0.2,0.2,1.0,0.8,1.0};
 	unsigned char update_key_flag=0;
 	static unsigned char update_key_frame_sures = 0;
-	COMMON_VEHICLE_DATA_SIMPLE vehicle_state;
+	static COMMON_VEHICLE_DATA_SIMPLE vehicle_state;
     float new_obj_pos[3];
 	unsigned char parking_lot_type;
 	static unsigned int testcnt=0;
@@ -1578,10 +1718,26 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	vehicle_state.wheel_speed_rr = right_wheel_speed;
 	vehicle_state.shift_pos = gear_state;
 	vehicle_state.yaw_rate = yaw_rate;
-	int new_store_obj_flag[max_sonar_num] = { 0,};
 	
+	int new_store_obj_flag[max_sonar_num] = { 0,};
+	static unsigned char pre_turn_light_state=TURN_LIGHT_OFF;
+    unsigned char turn_light_state;
+	AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light_state);
+	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Pulse(vehicle_state.wheel_pulse);
+	if(TURN_LIGHT_LEFT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
+	{
+	    ResetParkSlotInfo();
+		
+	    m_track_park_lot_flag =0;
+		TestVehicleMovment();
+	}	
+	if(TURN_LIGHT_OFF == turn_light_state&&pre_turn_light_state == TURN_LIGHT_RIGHT)
+	{
+	    m_track_park_lot_flag =1;
+	}
 	m_sonar_data[front_left_side_sonar].show_flag = 1;
 	m_sonar_data[front_right_side_sonar].show_flag = 1;
+	pre_turn_light_state = turn_light_state;
     //m_sonar_data[rear_left_conor_sonar].show_flag = 1;
 	//m_sonar_data[rear_right_conor_sonar].show_flag = 1;
 
@@ -1694,12 +1850,14 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	
 	}
 	//FiltObjData(2);
+
 	if(fabs(steering_wheel_angle)<SEACHING_SLOT_STEERING_GATE)
 	{
 		if (pre_track_flag == 1 && m_track_park_lot_flag == 0)
 		{
 			ResetParkSlotInfo();
 		}
+		
 	    if(m_track_park_lot_flag == 0)
 	    {
             ProcessSearchingSlot(2,obj_dist,front_left_side_sonar);
@@ -1709,8 +1867,11 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	}
 	else
 	{
-        ResetParkSlotInfo();
-
+	    if(m_track_park_lot_flag ==0)
+	    {
+            ResetParkSlotInfo();
+			
+	    }
 	}
 	pre_track_flag = m_track_park_lot_flag;
 		
@@ -1789,6 +1950,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	DrawParkLot();
 
 	SetRadarPLDReslt();
+	
     for(int i=0;i<max_sonar_num;i++)
     {
         for(int j=0;j<max_sonar_num;j++)
@@ -1796,6 +1958,18 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
             m_sonar_overlap_flag[i][j]=0;
         }
     }
+
+	for(int i=0;i<4;i++)
+	{
+	
+	    //fprintf(stdout,"\r\n pulse[%d]=%d,%d",i,vehicle_state.pre_wheel_pulse[i],vehicle_state.wheel_pulse[i]);
+	    vehicle_state.pre_wheel_pulse[i]= vehicle_state.wheel_pulse[i];
+		
+	}
+	if(m_track_park_lot_flag ==0 )
+	{
+	    TestVehicleMovment();
+	}
 	return 0;
 
 }

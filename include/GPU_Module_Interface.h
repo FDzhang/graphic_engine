@@ -89,7 +89,14 @@ DLL_PUBLIC void UpdateAPAResult(APAOverlayStruct *pAPAReslt);
 
 DLL_PUBLIC void setHMIAlgStatus(int alg_status_value);
 DLL_PUBLIC void setHMIChainsStatus(int demo_status_value);
+
+
+DLL_PUBLIC void InitDVRHMI();
+DLL_PUBLIC void EnableDVRHMI(int flag);
+DLL_PUBLIC void SetProcessbarValue(uint32_t whole_time, uint32_t cur_time);
+
 DLL_PUBLIC void GetSonarPLDRslt(Radar_PLD_Result *pReslt);
+
 
 /*------------------------------------------------------------------------------------------
  * Exported Inline Function Definitions and #define Function-Like Macros
