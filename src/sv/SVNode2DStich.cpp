@@ -19,7 +19,7 @@ extern IDeviceManager* rm;
 //#define STICH_AERA_WIDTH 216
 //#define STICH_AERA_HEIGHT 480
 #define STICH_AERA_WIDTH 512	
-#define STICH_AERA_HEIGHT 720
+#define STICH_AERA_HEIGHT 1280
 
 
 extern float *gf_pgs_para;
