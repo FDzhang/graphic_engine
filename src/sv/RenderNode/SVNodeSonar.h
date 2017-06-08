@@ -24,7 +24,7 @@
 #define K_SLOP_GATE    1
 
 #define FINAL_PARKING_LOT_PARALLEL_LENGTH  5300
-#define FINAL_PARKING_LOT_PARALLEL_WIDTH   1900
+#define FINAL_PARKING_LOT_PARALLEL_WIDTH   2100
 #define FINAL_PARKING_LOT_VERTICAL_LEGNTH  5000
 #define FINAL_PARKING_LOT_VERTICAL_WIDTH   2100
 #define SEACHING_SLOT_STEERING_GATE  180
@@ -89,6 +89,14 @@ typedef enum park_lot_property
 	park_lot_dist_width_avg,
 
 }park_lot_property;
+enum rect_point_index
+{
+    rect_point_near_top,
+	rect_point_far_top,
+	rect_point_near_bottom,
+	rect_point_far_bottom,
+
+};
 		
 /**************************************************************************
 conor_top_right    conor_top_left   conor_bottom_left   conor_bottom_right
@@ -123,6 +131,7 @@ typedef struct st_sonar_parking_lot_Tag
 	float lot_end_pos[2];
 	float lot_width;
 	float lot_length;
+	float lot_point[8];
 	bool show_flag;
 }sonar_parking_lot_t;
 #if 0

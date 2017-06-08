@@ -319,7 +319,7 @@ void VehicleMotion::steeringwheel_radius(
 	float32_t H = 2.756f * 1000;
 	float32_t W = 1.839f * 1000;
 	float32_t _a[4], _b[4];
-	#if 1
+	#if 0
 #define COEFF_LINEAR_FR 0.056620
 #define COEFF_LINEAR_FL 0.056248
 #define COEFF_LINEAR_RR 0.047870
@@ -332,15 +332,15 @@ void VehicleMotion::steeringwheel_radius(
 #else
 
 
-#define COEFF_LINEAR_FR 0.06215
-#define COEFF_LINEAR_FL 0.06011
-#define COEFF_LINEAR_RR 0.06042
-#define COEFF_LINEAR_RL 0.06263
+#define COEFF_LINEAR_FR 0.0643
+#define COEFF_LINEAR_FL 0.1098
+#define COEFF_LINEAR_RR 0.08407
+#define COEFF_LINEAR_RL 0.10503
 	
-#define COEFF_CONST_FR 0.172
-#define COEFF_CONST_FL 0.4169
-#define COEFF_CONST_RR  0.3349
-#define COEFF_CONST_RL -0.1307
+#define COEFF_CONST_FR 0.0
+#define COEFF_CONST_FL 0.0
+#define COEFF_CONST_RR  0.0
+#define COEFF_CONST_RL -0.0
 #endif
 	_a[0] = COEFF_LINEAR_FR;
 	_a[1] = COEFF_LINEAR_FL;
@@ -373,6 +373,67 @@ void VehicleMotion::steeringwheel_radius(
 			radius = H / tan(ABS(_a[_Backward_L] * str_whl_angle + FLT_MIN + _b[_Backward_L])*CV_PI / 180) - W / 2;
 		}
 	}
+#if 1
+_a[0] = COEFF_LINEAR_FR;
+_a[1] = COEFF_LINEAR_FL;
+_a[2] = COEFF_LINEAR_RR;
+_a[3] = COEFF_LINEAR_RL;
+
+_b[0] = COEFF_CONST_FR;
+_b[1] = COEFF_CONST_FL;
+_b[2] = COEFF_CONST_RR;
+_b[3] = COEFF_CONST_RL;
+if (shft_pos == 2)
+{
+	if (str_whl_angle < 0) // steering wheel turns clockwisely
+	{
+		radius = 3314 / tan(ABS(0.0643 * (-str_whl_angle) + FLT_MIN + _b[_Forward_R])*CV_PI / 180) - 365.5;
+	}
+	else
+	{
+		radius = 4967 / tan(ABS(_a[_Forward_L] * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) +855.8;
+	}
+}
+else
+{
+	if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
+	{
+		radius = 4048/ tan(ABS(_a[_Backward_R] * (-str_whl_angle) + FLT_MIN + _b[_Backward_R])*CV_PI / 180) +290.7;
+	}
+	else
+	{
+		radius = 4593 / tan(ABS(_a[_Backward_L] * str_whl_angle + FLT_MIN + _b[_Backward_L])*CV_PI / 180)+828.9;
+	}
+}
+
+
+#if 1
+if (shft_pos == 2)
+{
+	if (str_whl_angle < 0) // steering wheel turns clockwisely
+	{
+		radius = 2756 / tan(ABS(0.05907 * (-str_whl_angle) + FLT_MIN + _b[_Forward_R])*CV_PI / 180) - 919.5;
+	}
+	else
+	{
+		radius = 2756 / tan(ABS(0.06501 * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) + 919.5;
+	}
+}
+else
+{
+	if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
+	{
+		radius = 2756/ tan(ABS(0.06127 * (-str_whl_angle) + FLT_MIN + _b[_Backward_R])*CV_PI / 180) -919.5;
+	}
+	else
+	{
+		radius = 2756 / tan(ABS(0.06676 * str_whl_angle + FLT_MIN + _b[_Backward_L])*CV_PI / 180)+919.5;
+	}
+}
+
+#endif
+#endif
+	
 }
 
 
@@ -430,7 +491,7 @@ void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], CO
 	steeringwheel_radius(v_data->steering_angle, v_data->shift_pos, radius);
 	float theta_offset = turn_sign*get_yawrate_from_curvature(v_data)*g_PLD_time_Offset_in;
 
-    //theta_offset = turn_sign*get_distance_from_pulse(v_data)/radius;
+    theta_offset = 1000*turn_sign*get_distance_from_pulse(v_data)/radius;
 	int shft_pos = v_data->shift_pos;
 	float str_whl_angle = v_data->steering_angle;
 
