@@ -60,6 +60,7 @@ namespace GUI
     private:
         //暂停播放按钮
         void InitMediaPlay(const IGUIElement*, uint32_t parentId);
+        void OnPlayEvent(const  IGUIElement*, const uint32_t type);
         //下一曲按钮
         void InitMediaNext(const IGUIElement*, uint32_t parentId);
         //上一部按钮
@@ -85,7 +86,8 @@ namespace GUI
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
-
+        CGPUProcessbar* m_bar;
+        CGPUButton* m_media_play;
         static uint32_t m_media_panel_start_x, m_media_panel_start_y, m_media_panel_width, m_media_panel_height;
     };
 };

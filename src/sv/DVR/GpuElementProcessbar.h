@@ -45,12 +45,11 @@ namespace GUI
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);
 
     private:
-        IGUITexture m_baseLayerTexture, m_slideLayerTexture;
-        uint32_t processbar_x, processbar_y;
-        uint32_t processbar_width, processbar_height;
-        ILayer   *m_pbaseLayer;
-        uint32_t m_barWidth, m_barHeight;
-
+        IGUITexture m_barBaseTexture, m_barSlideTexture;
+        uint32_t m_processbar_x, m_processbar_y;
+        uint32_t m_processbar_width, m_processbar_height;
+        ILayer   *m_pbarBase, *m_pbarSlide;
+        float m_val;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUProcessbar, IGUIElement)
     };

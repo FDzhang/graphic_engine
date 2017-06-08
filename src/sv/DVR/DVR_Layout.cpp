@@ -37,8 +37,8 @@ namespace GUI
     { 
         { "CGPUPanel", "Media_Panel", 1, 0, NULL,    (PFCreateElement)(&DVR_Layout::InitMediaPanel),       (PFOnEvent)(&DVR_Layout::OnEvent), NULL},
         { "CGPUButton", "Media_Play", 2, 0, NULL,    (PFCreateElement)(&DVR_Layout::InitMediaPlay),        (PFOnEvent)(&DVR_Layout::OnEvent), NULL},
-        { "CGPUButton", "Media_Next", 2, 0, NULL,    (PFCreateElement)(&DVR_Layout::InitMediaNext),        (PFOnEvent)(&DVR_Layout::OnEvent), NULL},
-        { "CGPUButton", "Media_Prev", 2, 0, NULL,    (PFCreateElement)(&DVR_Layout::InitMediaPrev),        (PFOnEvent)(&DVR_Layout::OnEvent), NULL},
+        { "CGPUButton", "Media_Next", 2, 0, NULL,    (PFCreateElement)(&DVR_Layout::InitMediaNext),        (PFOnEvent)(&DVR_Layout::OnPlayEvent), NULL},
+        { "CGPUButton", "Media_Prev", 2, 0, NULL,    (PFCreateElement)(&DVR_Layout::InitMediaPrev),        (PFOnEvent)(&DVR_Layout::OnPlayEvent), NULL},
         { "CGPUButton", "Media_forward", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaForward),     (PFOnEvent)(&DVR_Layout::OnEvent), NULL},
         { "CGPUButton", "Media_rewind", 2, 0, NULL,  (PFCreateElement)(&DVR_Layout::InitMediaRewind),      (PFOnEvent)(&DVR_Layout::OnEvent), NULL},
         //{ "CGPUButton", "MediaScreenShot",1, 0, NULL,  (PFCreateElement)(&DVR_Layout::InitMediaScreenShot),  (PFOnEvent)(&DVR_Layout::OnEvent), NULL},
@@ -75,7 +75,7 @@ namespace GUI
     }
     void DVR_Layout::SetProcessbarValue(uint32_t whole_time, uint32_t cur_time)
     {
-        
+        m_bar->SetValue(whole_time, cur_time);
     }
     void DVR_Layout::InsertProcessbarKeyFrame(void* frame)
     {
@@ -95,33 +95,33 @@ namespace GUI
      */
     void DVR_Layout::StartPlay()
     {
-        OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2 - 50,
-                          m_media_panel_start_y + m_media_panel_height / 2 - 50);
+        OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2,
+                          m_media_panel_start_y + m_media_panel_height / 2);
     }
     void DVR_Layout::PausePlay()
     {
-        OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2 - 50,
-                          m_media_panel_start_y + m_media_panel_height / 2 - 50);
+        OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2,
+                          m_media_panel_start_y + m_media_panel_height / 2);
     }
     void DVR_Layout::NextPlay()
     {
         OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2 + 50,
-                          m_media_panel_start_y + m_media_panel_height / 2  - 24);
+                          m_media_panel_start_y + m_media_panel_height / 2);
     }
     void DVR_Layout::PrevPlay()
     {
         OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2 - 114,
-                          m_media_panel_start_y + m_media_panel_height / 2 - 24);
+                          m_media_panel_start_y + m_media_panel_height / 2);
     }
     void DVR_Layout::FastForwardPlay()
     {
         OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2 + 184,
-                          m_media_panel_start_y + m_media_panel_height / 2 - 24);
+                          m_media_panel_start_y + m_media_panel_height / 2);
     }
     void DVR_Layout::RewindPlay()
     {
         OnMouseSingleDown(m_media_panel_start_x + m_media_panel_width / 2 + 120,
-                          m_media_panel_start_y + m_media_panel_height / 2 - 24);
+                          m_media_panel_start_y + m_media_panel_height / 2);
     }
 
 
@@ -157,6 +157,8 @@ namespace GUI
                                   m_media_panel_height / 2 - 50,
                                   100,
                                   100);
+        IGUIElement* button = media_play_button;
+        m_media_play = dynamic_cast<CGPUButton*>(button);
     }
     void DVR_Layout::InitMediaNext(const GUI::IGUIElement* media_next_button, uint32_t parentId)
     {
@@ -199,14 +201,26 @@ namespace GUI
     }
     void DVR_Layout::InitMediaBar(const GUI::IGUIElement* media_bar, uint32_t parentId)
     {
-        IGUITexture array_texture_bar[] = { XR_RES_DVR"barBase.dds"};
+        IGUITexture array_texture_bar[] = { XR_RES_DVR"barBase.dds", XR_RES_DVR"barSlide.dds"};
         media_bar->Attach(m_node, parentId);
         media_bar->SetElementEffect(array_texture_bar, GUI::GPU_GUI_EFFECT_TEXTURE);
-        media_bar->Create(m_media_panel_start_x, 0, 573, 63);
+        media_bar->Create(m_media_panel_start_x, m_media_panel_start_y - 18, 1280, 20);
+        IGUIElement* bar = media_bar;
+        m_bar = dynamic_cast<CGPUProcessbar*>(bar);
     }
     void DVR_Layout::InitMediaFileListView(const IGUIElement*, uint32_t parentId)
     {
         
+    }
+
+    //临时添加(由于没有反馈事件传递机制)
+    void DVR_Layout::OnPlayEvent(const  IGUIElement* element, const uint32_t type)
+    {
+        if(type == TouchEvent_Down)
+        {
+            INFO("==============================\n");
+            m_media_play->Reset();
+        }
     }
 };
 
