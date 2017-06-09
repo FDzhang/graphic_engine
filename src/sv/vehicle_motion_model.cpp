@@ -3,6 +3,7 @@
 #include "vehicle_motion_model.h"
 #include <math.h>
 #include <stdlib.h>
+#include<stdio.h>
 void VehicleMotion::SteerWheel2Radius(
 	float32_t str_whl_angle,
 	int shft_pos,
@@ -412,28 +413,40 @@ if (shft_pos == 2)
 {
 	if (str_whl_angle < 0) // steering wheel turns clockwisely
 	{
-		radius = 2756 / tan(ABS(0.05907 * (-str_whl_angle) + FLT_MIN + _b[_Forward_R])*CV_PI / 180) - 919.5;
+		radius = 2756 / tan((3.269*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -2.488*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
+			+0.06131 * (-str_whl_angle) + 0.004912)*CV_PI / 180) - 919.5;
 	}
 	else
 	{
-		radius = 2756 / tan(ABS(0.06501 * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) + 919.5;
+		radius = 2756 / tan((3.446*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) +2.798*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
+			+0.05994 * (str_whl_angle) + 0.0446)*CV_PI / 180) + 919.5;
+
+		//radius = 2756 / tan(ABS(0.06501 * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) + 919.5;
 	}
 }
 else
 {
 	if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
 	{
-		radius = 2756/ tan(ABS(0.06127 * (-str_whl_angle) + FLT_MIN + _b[_Backward_R])*CV_PI / 180) -919.5;
+		radius = 2756 / tan((6.667*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -5.163*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
+			+0.06626 * (-str_whl_angle) + 0.007778)*CV_PI / 180) - 919.5;
 	}
 	else
 	{
-		radius = 2756 / tan(ABS(0.06676 * str_whl_angle + FLT_MIN + _b[_Backward_L])*CV_PI / 180)+919.5;
+		radius = 2756 / tan((8.628*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) -1.086*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
+			+0.06691 * (str_whl_angle) + 0.005639)*CV_PI / 180) + 919.5;
 	}
 }
 
 #endif
 #endif
-	
+static float pre_steering_wheel=0;
+   if(pre_steering_wheel != str_whl_angle)
+   {
+       fprintf(stdout,"\r\n gear[%d],steer[%f],radius[%f]",shft_pos,str_whl_angle,radius);
+       pre_steering_wheel = str_whl_angle;
+    }
+   
 }
 
 
@@ -449,8 +462,14 @@ float VehicleMotion::get_yawrate_from_curvature(COMMON_VEHICLE_DATA_SIMPLE * v_d
 	float str_whl_angle = v_data->steering_angle;
 	float speed;
 
-	speed =1000.0* (v_data->wheel_speed_rr + v_data->wheel_speed_rl) / 2.0f / 3.6f;
 
+	
+	speed =1000.0* (v_data->wheel_speed_rr + v_data->wheel_speed_rl) / 2.0f / 3.6f;
+    //if(steerAngle<0)
+	//speed =1000.0* ( v_data->wheel_speed_rl)  / 3.6f;
+
+   // else
+	//	speed =1000.0* (v_data->wheel_speed_rr ) / 3.6f;
 
 
 	return fabs(speed) / Radius;
@@ -490,8 +509,11 @@ void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], CO
 	float radius;
 	steeringwheel_radius(v_data->steering_angle, v_data->shift_pos, radius);
 	float theta_offset = turn_sign*get_yawrate_from_curvature(v_data)*g_PLD_time_Offset_in;
+    
+	//fprintf(stdout,"\r\n theta_offset wheel speed=%f",theta_offset);
+    //theta_offset = 1000*turn_sign*get_distance_from_pulse(v_data)/radius;
+	//fprintf(stdout,"\r\n theta_offset pulse speed=%f",theta_offset);
 
-    theta_offset = 1000*turn_sign*get_distance_from_pulse(v_data)/radius;
 	int shft_pos = v_data->shift_pos;
 	float str_whl_angle = v_data->steering_angle;
 

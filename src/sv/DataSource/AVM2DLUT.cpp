@@ -523,17 +523,18 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
             if(LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex, (GLushort*)param->gpu_lut_index) == true)
             {
                 //更新小车区域
-                m_car_rect[0] = -1.0+2.0*(float)pSticherReslt->car_Icon_Rect.x/(float)pSticherReslt->bev_img_width - 0.03;
-                m_car_rect[1] = 1.0-2.0*(float)pSticherReslt->car_Icon_Rect.y/(float)pSticherReslt->bev_img_height + 0.08;
+                m_car_rect[0] = -1.0+2.0*(float)pSticherReslt->car_Icon_Rect.x/(float)pSticherReslt->bev_img_width ;
+                m_car_rect[1] = 1.0-2.0*(float)pSticherReslt->car_Icon_Rect.y/(float)pSticherReslt->bev_img_height ;
 
-                m_car_rect[2] = -1.0+2.0*((float)pSticherReslt->car_Icon_Rect.x+(float)pSticherReslt->car_Icon_Rect.width)/(float)pSticherReslt->bev_img_width + 0.03;
-                m_car_rect[3] = 1.0-2.0*((float)pSticherReslt->car_Icon_Rect.y+(float)pSticherReslt->car_Icon_Rect.height)/(float)pSticherReslt->bev_img_height - 0.08;
+                m_car_rect[2] = -1.0+2.0*((float)pSticherReslt->car_Icon_Rect.x+(float)pSticherReslt->car_Icon_Rect.width)/(float)pSticherReslt->bev_img_width ;
+                m_car_rect[3] = 1.0-2.0*((float)pSticherReslt->car_Icon_Rect.y+(float)pSticherReslt->car_Icon_Rect.height)/(float)pSticherReslt->bev_img_height ;
 
                 //更新pgs
                 m_calib_para[0] = pSticherReslt->cx;
                 m_calib_para[1] = pSticherReslt->cy;
                 m_calib_para[2] = pSticherReslt->ppmmx;
                 m_calib_para[3] = pSticherReslt->ppmmy;
+				AdjustCarPose(m_car_rect,0.005,0.01);
 
                 return true;
             }
@@ -628,6 +629,18 @@ int  AVM2DLUT::GetIndexTotalCnt(void )
 	return m_total_index_size;
 
 }
+float  AVM2DLUT::GetCalibReslt(int index )
+{
+    if(index>POS_CALIB_PPMMY)
+    {
+         return 0;
+    }
+	else
+	{
+	    return m_calib_para[index];
+	}
+}
+
 void AVM2DLUT::CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
 {
      pOutPoint->x =  -((-InPoint.y*240+240)-m_calib_para[POS_CALIB_CX])*m_calib_para[POS_CALIB_PPMMX]/1000.0;

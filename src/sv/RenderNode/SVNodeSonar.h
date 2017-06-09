@@ -254,6 +254,7 @@ public:
 	int UpdateSonarArc(float dist,sonar_index sonar_pos);
 	void SetRadarPLDReslt();
 	int TestVehicleMovment(void);
+	void InitParkingLotTexture(int sonar_index,Float32 *pDataBuffer);
 private:
 
 	Sonar_Pos     m_sonar_pos[max_sonar_num];

@@ -165,10 +165,11 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	}
 
 	m_pAVMData->m_lumin_para->Init(LuminParafile);
-	m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,carposefile,carposeadjustfile,calibfile);
+	//m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,carposefile,carposeadjustfile,calibfile);
 	if(config.pSticherResult != NULL)
 	{
-	    //m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,0,config.pSticherResult);
+	    m_pAVMData->m_2D_lut->Init(configfile,indexfile,datafile,0,config.pSticherResult);
+		fprintf(stdout,"\r\n load config calibresult");
     }
 	m_pAVMData->m_cam_source->Init(config.file_path);
 	m_pAVMData->m_p_can_data->Init();

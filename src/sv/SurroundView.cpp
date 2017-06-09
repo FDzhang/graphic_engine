@@ -226,12 +226,7 @@ LutData,MAX_NAME_LENGTH);
     m_sv_data_config.pSmc = gpu_init_cfg.pSys_SMC;
 	m_sv_data_config.pPose = gpu_init_cfg.pPose;
     m_sv_data_config.pCamParam = gpu_init_cfg.camera_param;
-/*
-    gf_pgs_para = new float [4];
-    gf_pgs_para[0] = (float)gpu_init_cfg.sticher_result->cx;
-    gf_pgs_para[1] = (float)gpu_init_cfg.sticher_result->cy;
-    gf_pgs_para[2] = (float)gpu_init_cfg.sticher_result->ppmmx;
-    gf_pgs_para[3] = (float)gpu_init_cfg.sticher_result->ppmmy;*/
+
 
     m_sv_data_config.pSticherResult = gpu_init_cfg.sticher_result;
     //} add end ke.zhonghua
