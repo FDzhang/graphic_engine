@@ -2702,7 +2702,7 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 
 	    f_stich_ratio=0.35;
 		Stich2DReg.Set(0,XrGetScreenWidth()*f_stich_ratio,0+black_width,XrGetScreenHeight()-black_width);
-		RightReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.041,XrGetScreenHeight()-black_width);
+		RightReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.0,XrGetScreenHeight()-black_width);
 
 
 	#endif
