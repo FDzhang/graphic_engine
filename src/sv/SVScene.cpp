@@ -198,7 +198,6 @@ Region FadeLeftReg, CenterReg, FadeRightReg,MapPlateReg;
 //Region Stich2DReg, RightReg, RightTopFadeReg,RightBottomFadeReg,RightBottomSingleReg;
 Region Stich2DReg,SingleViewReg, UIControlReg,RightReg, RightTopFadeReg,RightBottomFadeReg;
 
-float *gf_pgs_para;
 
 //Local Definition
 IKeyAnimation* wheelRot=0;
@@ -274,10 +273,10 @@ void SVScene::InitOverlay(BEV_CONFIG_T pConfig , ISceneNode *pNode,IMesh **pMesh
 	Overlay_data_cfg_private.Vehicle_Min_Radius_Gear_R_Left_Turn_Rear_Axis_Cent = p_veh_param->vehicle_min_radius[left_turn_backward_radius];
 	Overlay_data_cfg_private.Vehicle_Min_Radius_Gear_R_Right_Turn_Rear_Axis_Cent = p_veh_param->vehicle_min_radius[right_turn_backward_radius];;
 	Overlay_data_cfg_private.overlay_length = 2000;
-    Overlay_data_cfg.m_calib_center_x = gf_pgs_para[1];
-	Overlay_data_cfg.m_calib_center_y = gf_pgs_para[0];
-	Overlay_data_cfg.m_calib_mmpp_x = gf_pgs_para[3];
-	Overlay_data_cfg.m_calib_mmpp_y = gf_pgs_para[2];
+    Overlay_data_cfg.m_calib_center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+	Overlay_data_cfg.m_calib_center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+	Overlay_data_cfg.m_calib_mmpp_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+	Overlay_data_cfg.m_calib_mmpp_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
 
 	AVMData::GetInstance()->m_exParam->GetCameraPos(Overlay_data_cfg.m_front_cam_pos_wld,front_camera_index);
  	Overlay_data_cfg.m_model_bottom = -m_bev_config.smc_hmi.SPACE_MODEL_Y_MIN*m_bev_config.smc_hmi.SPACE_MODEL_SCALE_SIZE;
@@ -1003,10 +1002,10 @@ void SVScene::InitRadarAlram(BEV_CONFIG_T  pConfig,ISceneNode* p_render_node,IMe
 	//memcpy(radar_data_cfg.m_rear_cam_pos_wld,&(PoseTrans[3*3]),3*sizeof(float));
 	AVMData::GetInstance()->m_exParam->GetCameraPos(radar_data_cfg.m_rear_cam_pos_wld,3);
 
-         radar_data_cfg.m_calib_center_x = gf_pgs_para[1];
-         radar_data_cfg.m_calib_center_y = gf_pgs_para[0];
-         radar_data_cfg.m_calib_mmpp_x = gf_pgs_para[3];
-         radar_data_cfg.m_calib_mmpp_y = gf_pgs_para[2];
+         radar_data_cfg.m_calib_center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+         radar_data_cfg.m_calib_center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+         radar_data_cfg.m_calib_mmpp_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+         radar_data_cfg.m_calib_mmpp_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
     	 radar_data_cfg.m_model_bottom = -m_bev_config.smc_hmi.SPACE_MODEL_Y_MIN*m_bev_config.smc_hmi.SPACE_MODEL_SCALE_SIZE;
     	 radar_data_cfg_private.obstacle_height = 200;
          radar_alarm[i].Init(radar_data_cfg);
@@ -2728,11 +2727,7 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	///////////////////////View Node/////////////////////////
     m_bev_config = pConfig;
 
-	if( LoadDataFile(_DATAPGSPARA_,&gf_pgs_para,4))
-	{
-		printf("\r\n Error loading %s",_DATAPGSPARA_);
-		return FALSE;
-	}
+
 	m_crossImage = new SVNodeCrossImage();
 	m_crossImage->Init(&CenterReg);
 
@@ -2755,10 +2750,12 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	InitObjectNode(pConfig);
 	InitViewNode();
 	AVM_Calib_2D_T result;
-	result.center_x = gf_pgs_para[0];
-	result.center_y = gf_pgs_para[1];
-	result.ppmm_x= gf_pgs_para[2];
-	result.ppmm_y= gf_pgs_para[3];
+	
+	
+	result.center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+	result.center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+	result.ppmm_x= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
+	result.ppmm_y= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
 
 
 	//m_crossImage = new SVNodeCrossImage();
@@ -4649,7 +4646,7 @@ int SVScene::Update(int view_control_flag, int param2)
 
 	#endif
 	float *pdist=	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
-	m_pNodeSonar->Update(steer_angle, speed, left_wheel_speed, left_wheel_speed, gear_state, time_interval, yaw_rate, pdist);
+	m_pNodeSonar->Update(steer_angle, speed, left_wheel_speed, right_wheel_speed, gear_state, time_interval, yaw_rate, pdist);
 	APAOverlayStruct pgs_result;
 
 
