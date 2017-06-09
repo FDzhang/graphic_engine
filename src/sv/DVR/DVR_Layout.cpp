@@ -200,7 +200,7 @@ namespace GUI
     }
     void DVR_Layout::InitMediaText(const IGUIElement* media_text, uint32_t parentId)
     {
-        IGUITexture array_texture_bar[] = {XR_RES"text_frame.dds", XR_RES"text_box.ttf"};
+        IGUITexture array_texture_bar[] = {XR_RES_DVR"BC64.dds", XR_RES"text_box.ttf"};
         media_text->Attach(m_node, parentId);
         media_text->SetTexture(array_texture_bar, 0);
         media_text->Create( m_media_panel_width / 2 - 400, m_media_panel_height / 2 - 20, 80, 40);

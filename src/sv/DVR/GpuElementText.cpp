@@ -76,7 +76,7 @@ namespace GUI
             int logoLayerId = node->CreateSpirit( rootId,
                                                   InsertFlag_Child,
                                                   m_back_mtl_id,
-                                                  1.0,
+                                                  0.0,
                                                   0,
                                                   0,
                                                   0,
