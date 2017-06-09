@@ -80,6 +80,7 @@ public:
 	void CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
 	void CvtPointWorld2ImageUnitmm(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
 	void CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
+	float  GetCalibReslt(int index );
 
 private:
 	void AdjustCarPose(float *car_pose,float width_adjust,float height_adjust);

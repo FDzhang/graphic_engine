@@ -19,14 +19,11 @@ extern IDeviceManager* rm;
 //#define STICH_AERA_WIDTH 216
 //#define STICH_AERA_HEIGHT 480
 
-	
-
 #define STICH_AERA_WIDTH 512	
 
 #define STICH_AERA_HEIGHT 1280
 
 
-extern float *gf_pgs_para;
 
 extern st_text_box_data_T gpu_debug_texbox;
 
@@ -630,7 +627,7 @@ int SVNode2DStich::Init()
 	 InitStichKeyFrameNodeRT(2);
      for(int i =0;i<4;i++)
      {
-         m_calib[i] = gf_pgs_para[i];
+         m_calib[i] = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(i);
      }
 	 for(int i =0;i<9;i++)
 	 {
