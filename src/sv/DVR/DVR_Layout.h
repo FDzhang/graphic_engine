@@ -41,7 +41,7 @@ namespace GUI
 
     public: /*IDVR要求的提供外部调用的接口实现*/
         //Layout初始化面板接口
-        void Init();
+        void Init() {};
         //Layout使能接口
         void Enable(bool flag);
         //进度条控件操作接口
@@ -73,21 +73,24 @@ namespace GUI
         void InitMediaScreenShot(const IGUIElement*, uint32_t parentId);
         //设置按钮
         void InitMediaSetting(const IGUIElement*, uint32_t parentId);
-        //视图切换按钮
-        void InitMediaSwitch(const IGUIElement*, uint32_t parentId);
         //进度条按钮
-        void InitMediaBar(const IGUIElement*, uint32_t parentI);
+        void InitMediaBar(const IGUIElement*, uint32_t parentId);
+        //时间文本控件
+        void InitMediaText(const IGUIElement*, uint32_t parentId);
         //文件列表
         void InitMediaFileListView(const IGUIElement*, uint32_t parentId);
         //状态图标
         void InitMediaStateIcon(const IGUIElement*, uint32_t parentId);
         //panel
         void InitMediaPanel(const IGUIElement*, uint32_t parentId);
+        //media_exit
+        void InitMediaExit(const IGUIElement*, uint32_t parentId);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
         CGPUProcessbar* m_bar;
         CGPUButton* m_media_play;
+        CGPUText*   m_bar_text;
         static uint32_t m_media_panel_start_x, m_media_panel_start_y, m_media_panel_width, m_media_panel_height;
     };
 };

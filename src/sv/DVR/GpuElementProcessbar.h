@@ -37,7 +37,7 @@ namespace GUI
         virtual ~CGPUProcessbar();
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
-        void SetElementEffect(void* effect, long style);
+        void SetTexture(const IGUITexture* effect, const long style);
         void SetValue(uint32_t whole_time, uint32_t current_time);
         void SetEnable(bool enable);
     private:

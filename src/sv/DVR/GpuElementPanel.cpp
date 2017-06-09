@@ -63,17 +63,9 @@ namespace GUI
         return true;
     }
 
-    void CGPUPanel::SetElementEffect(void* effect, long style)
+    void CGPUPanel::SetTexture(const IGUITexture* effect, const long style)
     {
-        switch(style)
-        {
-        case GPU_GUI_EFFECT_TEXTURE:
-            
-            m_baseLayerTexture = ((IGUITexture*)effect)[0];
-            break;
-        default:
-            break;
-        }
+        m_baseLayerTexture = ((IGUITexture*)effect)[0];
     }
     CGPUPanel::~CGPUPanel()
     {

@@ -28,6 +28,7 @@
 #include "GpuElementButton.h"
 #include "GpuElementProcessbar.h"
 #include "GpuElementPanel.h"
+#include "GpuElementText.h"
 
 namespace GUI
 {

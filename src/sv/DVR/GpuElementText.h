@@ -1,7 +1,7 @@
-#ifndef _GPU_ELEMENT_PANNEL_H_ /* { */
-#define _GPU_ELEMENT_PANNEL_H_
+#ifndef _GPUELEMENTTEXT_H_ /* { */
+#define _GPUELEMENTTEXT_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE:GpuElementPannel.h
+ * FILE: GpuElementText.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,33 +23,37 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 23 5月 2017 dota2_black 
+ * VERSION: 08 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "IGUIElement.h"
-#include "XrCore/XrSrc/XrUILibrary/CXrPanel.h"
+#include "XrCore/XrSrc/XrUILibrary/CXrTextLabel.h"
 
 namespace GUI
 {
-    class CGPUPanel : public IGUIElement
+    /**
+     * \brief CXrTextLable 对于text　label的区分不清(实现的是一个类似按钮的功能)
+     *　　　　一个text label应该分为文本标签／文本编辑框(需要支持键盘等外设，不实现)／(富文本编辑框　不实现), 
+     *　　　　因此重载CXrTextLable
+     */
+    class CGPUText : public IGUIElement
     {
-    
     public:
-        CGPUPanel();
-        ~CGPUPanel();
+        CGPUText();
+        ~CGPUText();
+        void SetTexture(const IGUITexture* effect, const long style);
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
-        void SetTexture(const IGUITexture* effect, const long style);
-        void SetEnable(bool enable){};
+        void SetText(char* text);
     private:
-        CXrPanel* m_panel;
-        uint32_t m_layout_x, m_layout_y;
-        uint32_t m_panel_width, m_panel_height;
 
-        IGUITexture m_baseLayerTexture;
+        uint32_t m_layout_x, m_layout_y;
+        uint32_t m_label_width, m_label_height;
+        IGUITexture m_base_texture, m_font_texture;
+        ITextLayer *m_pText;
     private:
-        DECLEAR_DYNAMIC_CLASS(CGPUPanel, IGUIElement)
+        DECLEAR_DYNAMIC_CLASS(CGPUText, IGUIElement)
     };
-}
+};
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
@@ -58,4 +62,4 @@ namespace GUI
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _GPU_ELEMENT_PANEL_H_ */
+#endif /* } _GPUELEMENTTEXT_H_ */

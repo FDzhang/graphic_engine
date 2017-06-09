@@ -39,10 +39,6 @@ namespace GUI
 
     CGPUButton::~CGPUButton()
     {
-        if(m_button)
-        {
-            delete m_button;
-        }
     }
 
     bool CGPUButton::Create(const uint32_t pos_x, const uint32_t pos_y,
@@ -86,24 +82,12 @@ namespace GUI
         return true;
     }
 
-    void CGPUButton::SetElementEffect(void* effect, long style)
+    void CGPUButton::SetTexture(const IGUITexture* effect, const long style)
     {
-        switch(style)
-        {
-        case GPU_GUI_EFFECT_TEXTURE:
-            //目前CXrButton 只支持两种纹理(底层纹理, 点击后的纹理), 检查纹理文件是否存在
-            m_base_texture = ((IGUITexture*)effect)[0];
-            m_hit_texture =  ((IGUITexture*)effect)[1];
-            break;
-        case GUI_EFFECT_OPACITY:
-            m_button_opacity = *((uint32_t*)effect);
-            break;
-        case GUI_EFFECT_BUTTON_PROPERTY:
-            m_button_property = *((uint32_t*)effect);
-            break;
-        default:
-            break;
-        }
+        //目前CXrButton 只支持两种纹理(底层纹理, 点击后的纹理), 检查纹理文件是否存在
+        m_base_texture = ((IGUITexture*)effect)[0];
+        m_hit_texture =  ((IGUITexture*)effect)[1];
+        m_button_property = style;
     }
     void CGPUButton::SetEnable(bool enable)
     {
@@ -118,7 +102,6 @@ namespace GUI
     }
     Boolean CGPUButton::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        Log_Error("%d event", layerId);
         m_cmdTarget->DispatchEvent(layerId, type);
         if(m_button_property == GUI_BUTTON_EFFECT_LOCK )
         {

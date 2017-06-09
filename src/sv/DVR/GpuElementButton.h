@@ -34,7 +34,7 @@ namespace GUI
     /**按钮属性设置*/
     enum
     {
-        GUI_BUTTON_EFFECT_DEFAULT = 0xff1, /**默认按钮属性*/
+        GUI_BUTTON_EFFECT_DEFAULT,         /**默认按钮属性*/
         GUI_BUTTON_EFFECT_TEXT,            /**设置按钮为文本式开关*/
         GUI_BUTTON_EFFECT_LOCK,            /**设置按钮为自锁式开关*/
     };
@@ -58,7 +58,7 @@ namespace GUI
     
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
-        void SetElementEffect(void* effect,long style);
+        void SetTexture(const IGUITexture* effect, const long style);
         void SetEnable(bool enable);
         void Reset() ;
     private:
@@ -70,7 +70,6 @@ namespace GUI
     private:
         uint32_t m_layout_x, m_layout_y;
         uint32_t m_button_width, m_button_height; 
-        CXrButton* m_button;
         IGUITexture m_base_texture;
         IGUITexture m_hit_texture;
 

@@ -81,17 +81,10 @@ namespace GUI
     {
         SetEnable(enable);
     }
-    void CGPUProcessbar::SetElementEffect(void* effect, long style)
+    void CGPUProcessbar::SetTexture(const IGUITexture* effect, const long style)
     {
-        switch(style)
-        {
-        case GPU_GUI_EFFECT_TEXTURE:
-            m_barBaseTexture = ((IGUITexture*)effect)[0];
-            m_barSlideTexture = ((IGUITexture*)effect)[1];
-            break;
-        default:
-            break;
-        }
+        m_barBaseTexture = ((IGUITexture*)effect)[0];
+        m_barSlideTexture = ((IGUITexture*)effect)[1];
     }
     Boolean CGPUProcessbar::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
