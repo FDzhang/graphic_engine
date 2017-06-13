@@ -116,8 +116,8 @@ float AVMCANData::Get_Drive_Dist(void)
 }
 void AVMCANData::CalcDriveDist(void)
 {
-   float speed = (m_CAN_Data.vehicle_speed+m_CAN_Data.left_wheel_speed+m_CAN_Data.right_wheel_speed)/3.0;
-   float delta_distance = speed*1000.0/3600.0*Get_Frame_TimeStamp()/1000.0;
+   float speed = (m_CAN_Data.left_wheel_speed+m_CAN_Data.right_wheel_speed)/2.0;
+   float delta_distance = speed/3600.0*Get_Frame_TimeStamp();
    if(GEAR_R == m_CAN_Data.gear_state)
    {
       m_drive_distance -= delta_distance;  
@@ -130,6 +130,11 @@ void AVMCANData::CalcDriveDist(void)
 void AVMCANData::ResetDriveDist(void)
 {
     m_drive_distance=0;
+}
+
+unsigned int AVMCANData::GetTimeStamp(void)
+{
+   return m_CAN_Data.frame_time;
 }
 
 void AVMCANData::Get_Wheel_Pulse(unsigned short *pwheelpulse)

@@ -4629,6 +4629,7 @@ int SVScene::Update(int view_control_flag, int param2)
 	{
 	    time_interval = time_now-time_pre;
 	}
+	time_interval=(int)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()/1000);
     #ifdef CAR_TRANSPARENT
 	static int keyframeupdate =0;
 	keyframeupdate++;
@@ -4666,6 +4667,7 @@ int SVScene::Update(int view_control_flag, int param2)
 		
 	    m_overlay_2d->SetEnable(1);
 	}
+
 
 		//m_Car->SetEnable(0);
 		//m_ground->SetEnable(0);

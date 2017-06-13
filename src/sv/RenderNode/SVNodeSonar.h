@@ -29,6 +29,7 @@
 #define FINAL_PARKING_LOT_VERTICAL_WIDTH   2100
 #define SEACHING_SLOT_STEERING_GATE  180
 #define MIN_VEHICLE_WIDTH 1650
+#define SINGLE_EDGE_PARKING_LOT_LENGTH  7000
 
 #define PARKING_LOT_PARALLEL  0
 #define PARKING_LOT_VERTICAL  1
@@ -85,6 +86,7 @@ typedef enum park_lot_property
 	park_lot_bottom_after_turn_id,
 	park_lot_width,
 	park_lot_length,
+	park_lot_drive_dist,
 	park_lot_dist_cross_avg,
 	park_lot_dist_width_avg,
 
@@ -119,6 +121,7 @@ typedef struct st_lot_data_Tag
 	int bottom_edge_flag;
 	float dist_cross;
 	float dist_width;
+	float drive_dist;
 	float park_lot_width;
 	float park_lot_length;
 	int park_lot_flag;
@@ -171,6 +174,7 @@ typedef enum sonar_index
 #define RIGHT_SONAR_MEAN_OBJ_INDEX  1
 
 #define SONAR_HALF_FOV 50.0
+#define CACHE_NUM  2
 enum
 {
 	JUMP_POINT,
@@ -244,7 +248,7 @@ public:
 	int FilterDistData(float *pNewPoint,int sonar_index);
 	void ResetParkSlotInfo(void);
 	unsigned char JudgeObjLine(int filter_num,int sonar_index,int *obj_id,int park_lot_index,int empty_flag);
-	void SetParkSlotInfo(int park_lot_index,park_lot_property property_index,void *pData);
+	void SetParkSlotInfo(int park_lot_index,park_lot_property property_index,void *pData,int active_flag=1);
 	unsigned char CheckParkinglotSizewithType(sonar_parking_lot_t *pParklotData);
 	void ProcessLotData(int sonar_index,int park_lot_index);
 	int CalcMultiSonarObj(float *pos, float *dist_list, sonar_index index);
@@ -281,11 +285,11 @@ private:
 	st_stich_rect_data_slot_T m_sonar_parking_lot_hmi[max_sonar_num];
 	float32_t m_obj_jump_point[2][4];
 	int m_obj_jump_point_index[2];
-	st_lot_data_T m_slot_data[max_sonar_num];
+	st_lot_data_T m_slot_data[CACHE_NUM][max_sonar_num];
 	bool m_sonar_overlap_flag[max_sonar_num][max_sonar_num];
     unsigned char m_track_park_lot_flag;
 	int m_filter_time;
-    	 
+    int m_active_buffer_index[max_sonar_num]; 
 };
 
 #endif //#ifndef __GL_SV_DEMO_H__

@@ -29,6 +29,7 @@
 //#include "XrCore\XrSrc\XrUILibrary\XrUILibrary.h"
 
 #include "SVAdjust.h"
+#include "gpu_log.h"
 
 SVUI* svui;
 SVScene* svscn;
@@ -150,9 +151,9 @@ unsigned int Get_Frame_TimeStamp(void)
     return g_frame_time;
 
 }
-void Set_Frame_TimeStamp(int time_frame_ms)
+void Set_Frame_TimeStamp(unsigned int time_frame_ms)
 {
-    g_frame_time = time_frame_ms*1000;
+    g_frame_time = time_frame_ms;//unit  us
 	return;
 }
 
@@ -264,7 +265,8 @@ bool XRSV::update(unsigned int view_control_flag)
 	static int init_flag = 0;
 	if (g_pIXrCore) {
 		start = XrGetTime();
-		Set_Frame_TimeStamp(start-pre_time_start);
+		//Set_Frame_TimeStamp(start-pre_time_start);
+		Set_Frame_TimeStamp(AVMData::GetInstance()->m_p_can_data->GetTimeStamp());
 		svscn->Update(view_control_flag,0);
 		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
@@ -317,6 +319,9 @@ bool XRSV::update(unsigned int view_control_flag)
 	endl = XrGetTime();
 	pre_time_start = start;
 	g_pXrSwapChain->Swap();
+	
+	endl = XrGetTime();
+	//Log_Debug("frame_process[%d]",endl-start);
 	return true;
 }
 

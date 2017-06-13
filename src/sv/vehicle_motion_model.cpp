@@ -49,7 +49,9 @@ void VehicleMotion::Motion2KframePredictVCS(
 	float32_t str_whl_angle = vhcl_can_data.steering_angle;
 	float32_t radius = 0;
 	float32_t track_offset = 0;
-	SteerWheel2Radius(str_whl_angle, shft_pos, radius);
+	//SteerWheel2Radius(str_whl_angle, shft_pos, radius);
+	steeringwheel_radius(str_whl_angle,shft_pos,radius);
+	radius=radius;
 
 
 	if (track>=thresh_dist_kframe)
@@ -175,8 +177,23 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	float32_t str_whl_angle = vhcl_can_data.steering_angle;
 	float32_t radius = 0;
 	float32_t track_offset = 0;
+	float dist_temp=0;
 	SteerWheel2Radius(str_whl_angle, shft_pos, radius);
-
+	
+    //fprintf(stdout,"\r\noldradius%f",radius);
+	steeringwheel_radius(str_whl_angle,shft_pos,radius);
+	
+    //fprintf(stdout,"\r\nnew radius%f",radius);
+	float theta_offset;
+	
+	int turn_sign = get_turn_dir(&vhcl_can_data);
+	
+	
+	radius = radius/1000.0;
+	dist_temp = -get_distance_from_pulse(&vhcl_can_data);
+    theta_offset = dist_temp/radius;
+    //fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
+	
 	if (fabs(track)>=thresh_dist_kframe)
 	{
 		flag = 1;
@@ -203,7 +220,9 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rr/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				//theta_offset = track_offset/radius;
+				
+				//fprintf(stdout,"\r\n 1 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = sin(theta_offset);
@@ -220,7 +239,9 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rl/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				
+				//theta_offset = track_offset/radius;
+				//fprintf(stdout,"\r\n 2 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = -sin(theta_offset);
@@ -240,7 +261,8 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rr/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				//theta_offset = track_offset/radius;
+				//fprintf(stdout,"\r\n 3 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = -sin(theta_offset);
@@ -257,7 +279,8 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rl/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				//theta_offset = track_offset/radius;
+				//fprintf(stdout,"\r\n 4 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = sin(theta_offset);
@@ -443,7 +466,7 @@ else
 static float pre_steering_wheel=0;
    if(pre_steering_wheel != str_whl_angle)
    {
-       fprintf(stdout,"\r\n gear[%d],steer[%f],radius[%f]",shft_pos,str_whl_angle,radius);
+      // fprintf(stdout,"\r\n gear[%d],steer[%f],radius[%f]",shft_pos,str_whl_angle,radius);
        pre_steering_wheel = str_whl_angle;
     }
    
@@ -511,7 +534,7 @@ void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], CO
 	float theta_offset = turn_sign*get_yawrate_from_curvature(v_data)*g_PLD_time_Offset_in;
     
 	//fprintf(stdout,"\r\n theta_offset wheel speed=%f",theta_offset);
-    //theta_offset = 1000*turn_sign*get_distance_from_pulse(v_data)/radius;
+    theta_offset = 1000*turn_sign*get_distance_from_pulse(v_data)/radius;
 	//fprintf(stdout,"\r\n theta_offset pulse speed=%f",theta_offset);
 
 	int shft_pos = v_data->shift_pos;
