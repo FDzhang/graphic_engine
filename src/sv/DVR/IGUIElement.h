@@ -38,23 +38,6 @@ namespace GUI
     typedef char*   IGUITexture; /**纹理类型 默认纹理即文件纹理, 暂不实现纹理的绑定操作方法,待代码重构*/
     typedef IUINode IGUINode; /**node的创建,关系到整个绘制引擎, 待架构优化实现*/
 
-    /**GUI特效设置*/
-
-    /** GPU通用特效设置*/
-    enum
-    {
-        GPU_GUI_EFFECT_TEXTURE,
-        GPU_GUI_EFFECT_UNKNOWN = 0xf,
-    };
-    /** GUI通用特效设置*/
-    enum
-    {
-        GUI_EFFECT_OPACITY = 0xf1,
-        GUI_EFFECT_BUTTON_PROPERTY,
-        GUI_EFFECT_PANEL_PROPERTY,
-        GUI_EFFECT_PROCESSBAR_PROPERTY,
-        GUI_EFFECT_UNKNOWN = 0xff,
-    };
     /** 
      *  \brief IGUIElement是所有GUI绘制元素的基类, 提供统一的GUI绘制元素对外操作接口
      *         IGUIElement的接口抽象关系到GUI 绘制的灵活性:
@@ -88,12 +71,14 @@ namespace GUI
         /**
          * \brief GUI Element特效设置接口
          */
-        virtual void SetElementEffect(void* effect, long style) = 0;
+        virtual void SetTexture(const IGUITexture* effect, long style) = 0;
+        virtual void SetOpacity(uint32_t opacity) {};
+        virtual void SetText(char* text){};
         /**
          * \brief 获取Element ID, 目前该id由XrCore创建, 用于消息区分
          */
         const uint32_t GetElementId() const { return m_id;}
-        virtual void SetEnable(bool enable) = 0;
+        virtual void SetEnable(bool enable){};
         virtual void Reset() {};
         // 临时注册消息分发函数
         void RegisterDispatch(CCmdTarget* cmdTarget) {m_cmdTarget = cmdTarget;};

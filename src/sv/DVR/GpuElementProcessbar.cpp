@@ -29,7 +29,10 @@ namespace GUI
 {
     CGPUProcessbar::CGPUProcessbar()
         :IGUIElement()
-        ,CXrSlideBar(true)
+        ,CXrBaseView()
+        ,m_processbar_x(0) , m_processbar_y(0)
+        ,m_processbar_width(0), m_processbar_height(0)
+        ,m_val(0.0)
     {
     
     }
@@ -38,42 +41,35 @@ namespace GUI
     {
         
     }
+
     bool CGPUProcessbar::Create(const uint32_t pos_x, const uint32_t pos_y,
                                 const uint32_t element_width, const uint32_t element_height)
     {
-        processbar_x = pos_x;
-        processbar_y = pos_y;
-        processbar_width =  element_width;
-        processbar_height = element_height;
-    
-        m_barWidth =  8;
-        m_barHeight = 16;
-
-        
-        //m_barBaseLayerTexture = array_texture[1];
-        //m_barFinishedLayerTexture = array_texture[2];
-        //m_slideLayerTexture = array_texture[3];
+        m_processbar_x = pos_x;
+        m_processbar_y = pos_y;
+        m_processbar_width =  element_width;
+        m_processbar_height = element_height;
 
         const IUINode* node = GetLayoutNode();
         if(node)
         {
             /** 第一步: 创建进度条的base Layer*/
-            Int32 baseLayerMtl = node->CreateUIMaterial(Material_UI_Spirit, m_baseLayerTexture);
-            Rect barROI(0, 1000, 0, 12);
-            Rect sliderROI(0, 1000, 0, 12);
-            CXrSlideBar::Add(
-                node,
-                -1,
-                InsertFlag_Default,
-                processbar_x,
-                processbar_y,
-                processbar_width,
-                processbar_height,
-                baseLayerMtl,
-                &barROI,
-                &sliderROI
-                );
-            SetElementId(m_sliderLayerId);
+            InsertFlag flag = InsertFlag_Child;
+            int32_t parent = GetParent();
+            if(parent < 0)
+            {
+                //控件不存在父节点id
+                parent = -1;
+                flag = InsertFlag_Default;
+            }
+            Int32 RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_barBaseTexture);
+            Int32 barBaseId = node->CreateSpirit(parent, flag, RTMtlId, 1.0, m_processbar_x, m_processbar_y, 0, m_processbar_width, m_processbar_height);
+            m_pbarBase = node->GetLayer(barBaseId);
+            m_pbarBase->SetEventResponder(this);
+            RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_barSlideTexture);
+            Int32 barSlideId = node->CreateSpirit(barBaseId, InsertFlag_Child, RTMtlId, 1.0, 0, 0, 0, m_processbar_width, m_processbar_height);
+            m_pbarSlide = node->GetLayer(barSlideId);
+            SetElementId(barBaseId);
         }
         else
         {
@@ -83,32 +79,29 @@ namespace GUI
     }
     void CGPUProcessbar::SetEnable(bool enable)
     {
-        CXrSlideBar::SetEnable(enable);
+        SetEnable(enable);
     }
-    void CGPUProcessbar::SetElementEffect(void* effect, long style)
+    void CGPUProcessbar::SetTexture(const IGUITexture* effect, const long style)
     {
-        switch(style)
-        {
-        case GPU_GUI_EFFECT_TEXTURE:
-            
-            m_baseLayerTexture = ((IGUITexture*)effect)[0];
-            break;
-        default:
-            break;
-        }
+        m_barBaseTexture = ((IGUITexture*)effect)[0];
+        m_barSlideTexture = ((IGUITexture*)effect)[1];
     }
     Boolean CGPUProcessbar::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        DEBUG("%d %d %d\n", m_baseLayerId, layerId, type);
         m_cmdTarget->DispatchEvent(layerId, type);
-        CXrSlideBar::OnTouchEvent(layerId, x, y, type);
+        Int32 PosX = x<0?0:x;
+        PosX = PosX>m_processbar_width?m_processbar_width:PosX;
+        m_pbarSlide->SetX(PosX);
+        m_val = Float32(PosX)/m_processbar_width;
     }
 
     void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)
     {
-        float percent = (float)current_time / (float)whole_time;
-        DEBUG("whole_time %d current_time %d percent %f\n", whole_time, current_time, percent);
-        CXrSlideBar::SetValue(percent);
+        float value = (float)current_time / (float)whole_time;
+        DEBUG("whole_time %d current_time %d percent %f\n", whole_time, current_time, value);
+        value = value>1.0?1.0:value;
+        m_pbarSlide->SetX(m_processbar_width*value);
+        m_val = value;
     }
     
     IMPLEMENT_DYNAMIC_CLASS(CGPUProcessbar)

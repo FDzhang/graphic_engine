@@ -28,53 +28,51 @@
 #include "GpuElementButton.h"
 #include "GpuElementProcessbar.h"
 #include "GpuElementPanel.h"
-
-#define DECLEAR_ELEMENT_EVENT
+#include "GpuElementText.h"
 
 namespace GUI
 {
-    class Layout;
-    typedef void (*PFCreateElement)(const IGUIElement*);
-    typedef void  (*PFOnEvent)(const IGUIElement*, const uint32_t type);
-    class Layout : public CCmdTarget
+    class ILayout : public CCmdTarget
     {
+    protected:
+        typedef void  (ILayout::*PFCreateElement)(const IGUIElement*, uint32_t parentId);
+        typedef void  (ILayout::*PFOnEvent)(const IGUIElement*, const uint32_t type);
+        typedef void  (ILayout::*PFDeCreateElement)(const IGUIElement*);
         struct ElementFuntionTable
         {
-            const char*  classname;    //element 的类名
-            const char*  element_name; //element 元素名
-            uint32_t     layerId;      //element 身份标识ID
-            IGUIElement* element;
-            //void  (*CreateElement)(const IGUIElement*);  //初始化element的函数指针
-            //void  (*OnEvent)(const IGUIElement*, const uint32_t type); //element 消息响应函数
-            PFCreateElement CreateElement;
-            PFOnEvent OnEvent;
+            const char*         classname;       //element 的类名
+            const char*         element_name;    //element 元素名
+            int32_t             element_level;   //控件等级
+            uint32_t            layerId;         //element 身份标识ID
+            IGUIElement*        element;         //控件对象
+            PFCreateElement     CreateElement;   //控件初始化方法
+            PFOnEvent           OnEvent;         //控件事件响应方法 (默认不实现，除非存在自定义事件响应)
+            PFDeCreateElement   DeCreateElement; //控件释放方法(默认不实现，除非存在自定义资源需要释放)
         };
     public:
-        Layout();
-        ~Layout();
+        ILayout(struct ElementFuntionTable* table, const uint32_t elementNum);
+        ~ILayout();
+        //! 控件事件分发， 静态表索引，抛出特定消息
         void DispatchEvent(uint32_t layerId, uint32_t type);
+        //! 使能layout(控制layout的绘制与否)
         void EnableLayout(int flag);
-        void SetValue(uint32_t whole_time, uint32_t cur_time); //整改
     protected:
-        virtual void InitLayout();
+        //! Layout的元素事件响应(将所有Layout 上的控件消息集中管理并发送)
+        void OnEvent(const IGUIElement*, uint32_t type);
     private:
-        static IUINode* m_node;
-        static struct ElementFuntionTable element_info[];
-        //控件消息响应内部接口
-        static void InitMediaPlay(const IGUIElement*);
-        static void OnMediaPlayEvent(const IGUIElement*, const uint32_t);
-        static void InitMediaNext(const IGUIElement*);
-        static void OnMediaNextEvent(const IGUIElement*, const uint32_t);
-        static void InitMediaPrev(const IGUIElement*);
-        static void OnMediaPrevEvent(const IGUIElement*, const uint32_t);
-        static void InitMediaBar(const IGUIElement*);
-        static void OnMediaBarEvent(const IGUIElement*, const uint32_t);
-        static void OnDefault(const IGUIElement*, const uint32_t);
+        //! 初始化控件布局
+        void InitLayout();
+    protected:
+        IUINode* m_node;  //Layout node (布局在Layout上的控件元素，都应该在此基础上进行绘制)
+        int      m_node_id;
     private:
-        struct ElementFuntionTable* m_element_table;
-        uint32_t m_element_table_size;
-
-        uint32_t a;
+        //! 控件事件索引表
+        struct ElementFuntionTable* m_index_element_table;
+        uint32_t m_index_table_size;
+        
+        //! 保存的原始控件表
+        struct ElementFuntionTable* m_origin_element_info;
+        uint32_t m_origin_table_size;
     };
 };
 /*------------------------------------------------------------------------------------------

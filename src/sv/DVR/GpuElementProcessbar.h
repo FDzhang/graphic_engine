@@ -26,18 +26,18 @@
  * VERSION: 15 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "IGUIElement.h"
-#include "XrCore/XrSrc/XrUILibrary/CXrSlideBar.h"
+#include "XrCore/XrSrc/XrUILibrary/CXrSlider.h"
 
 namespace GUI
 {
-    class CGPUProcessbar : public IGUIElement ,private CXrSlideBar
+    class CGPUProcessbar : public IGUIElement, private CXrBaseView
     {
     public:
         CGPUProcessbar();
         virtual ~CGPUProcessbar();
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
-        void SetElementEffect(void* effect, long style);
+        void SetTexture(const IGUITexture* effect, const long style);
         void SetValue(uint32_t whole_time, uint32_t current_time);
         void SetEnable(bool enable);
     private:
@@ -45,12 +45,11 @@ namespace GUI
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);
 
     private:
-        IGUITexture m_baseLayerTexture, m_barBaseLayerTexture, m_barFinishedLayerTexture, m_slideLayerTexture;
-        uint32_t processbar_x, processbar_y;
-        uint32_t processbar_width, processbar_height;
-        ILayer   *m_pbaseLayer, *m_pbarBaseLayer, *m_pbarFinshedLayer, *m_pSliderLayer;
-        uint32_t m_barWidth, m_barHeight;
-
+        IGUITexture m_barBaseTexture, m_barSlideTexture;
+        uint32_t m_processbar_x, m_processbar_y;
+        uint32_t m_processbar_width, m_processbar_height;
+        ILayer   *m_pbarBase, *m_pbarSlide;
+        float m_val;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUProcessbar, IGUIElement)
     };

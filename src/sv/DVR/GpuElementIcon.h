@@ -1,7 +1,7 @@
-#ifndef _GPU_ELEMENT_PANNEL_H_ /* { */
-#define _GPU_ELEMENT_PANNEL_H_
+#ifndef _GPUELEMENTICON_H_ /* { */
+#define _GPUELEMENTICON_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE:GpuElementPannel.h
+ * FILE: GpuElementIcon.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,33 +23,11 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 23 5月 2017 dota2_black 
+ * VERSION: 01 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "IGUIElement.h"
-#include "XrCore/XrSrc/XrUILibrary/CXrPanel.h"
+#include ""
 
-namespace GUI
-{
-    class CGPUPanel : public IGUIElement
-    {
-    
-    public:
-        CGPUPanel();
-        ~CGPUPanel();
-        bool Create(const uint32_t pos_x, const uint32_t pos_y,
-                    const uint32_t element_width, const uint32_t element_height);
-        void SetTexture(const IGUITexture* effect, const long style);
-        void SetEnable(bool enable){};
-    private:
-        CXrPanel* m_panel;
-        uint32_t m_layout_x, m_layout_y;
-        uint32_t m_panel_width, m_panel_height;
 
-        IGUITexture m_baseLayerTexture;
-    private:
-        DECLEAR_DYNAMIC_CLASS(CGPUPanel, IGUIElement)
-    };
-}
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
@@ -58,4 +36,4 @@ namespace GUI
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _GPU_ELEMENT_PANEL_H_ */
+#endif /* } _GPUELEMENTICON_H_ */
