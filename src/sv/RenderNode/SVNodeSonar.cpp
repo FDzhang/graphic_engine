@@ -922,6 +922,9 @@ unsigned char SVNodeSonar::CheckParkinglotSizewithType(sonar_parking_lot_t *pPar
 	{
 		pParklotData->parking_lot_type = PARKING_LOT_NOT_SIUTABLE;		    
 	}
+
+	
+	fprintf(stdout,"\r\n park_lot width(%f),height( %f)",pParklotData->lot_width,pParklotData->lot_length);
 	g_plot_size[0]=pParklotData->lot_width;
 	g_plot_size[1]=pParklotData->lot_length;
 	
@@ -1857,7 +1860,12 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	vehicle_state.wheel_speed_rr = right_wheel_speed;
 	vehicle_state.shift_pos = gear_state;
 	vehicle_state.yaw_rate = yaw_rate;
+	if(time_offset == 0)
+	{
 	
+       // fprintf(stdout,"\r\n timeoffset %d",time_offset);
+	    return 0;
+	}
 	int new_store_obj_flag[max_sonar_num] = { 0,};
 	static unsigned char pre_turn_light_state=TURN_LIGHT_OFF;
     unsigned char turn_light_state;
@@ -2112,7 +2120,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	    TestVehicleMovment();
 	}
 	float delta_wheel=vehicle_state.wheel_pulse[rear_left_whl]-vehicle_state.pre_wheel_pulse[rear_left_whl];
-   // fprintf(stdout,"\r\n timeoffset %d",time_offset);
+    //fprintf(stdout,"\r\n timeoffset %d",time_offset);
 	//fprintf(stdout,"\r\n wheelspeed[lr,rr]=%f,%f",left_wheel_speed,right_wheel_speed);
     //fprintf(stdout,"left_wheel_dist_pulse[%f],dist_speed[%f]",(float)delta_wheel*0.046,left_wheel_speed*time_offset/1000000.0/3.6);
 	//fprintf(stdout,"\r\n====================================");
