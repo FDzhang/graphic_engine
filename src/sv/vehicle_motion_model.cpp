@@ -189,7 +189,6 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	int turn_sign = get_turn_dir(&vhcl_can_data);
 	
 	
-	//radius = radius/1000.0;
 	//dist_temp = -get_distance_from_pulse(&vhcl_can_data);
     //theta_offset = dist_temp/radius;
     //fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
@@ -197,6 +196,7 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	theta_offset= -fabs(get_theta_from_multi_pulse(&vhcl_can_data,radius,turn_sign));
     //fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
 	
+	radius = radius/1000.0;
 	if (fabs(track)>=thresh_dist_kframe)
 	{
 		flag = 1;
