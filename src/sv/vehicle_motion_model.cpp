@@ -187,16 +187,16 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	float theta_offset;
 	
 	int turn_sign = get_turn_dir(&vhcl_can_data);
-	
-	
-	//dist_temp = -get_distance_from_pulse(&vhcl_can_data);
-    //theta_offset = dist_temp/radius;
-    //fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
-	
-	theta_offset= -fabs(get_theta_from_multi_pulse(&vhcl_can_data,radius,turn_sign));
-    //fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
-	
 	radius = radius/1000.0;
+	
+	dist_temp = -get_distance_from_pulse(&vhcl_can_data);
+    theta_offset = dist_temp/radius;
+    fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
+	
+	theta_offset= -fabs(get_theta_from_multi_pulse(&vhcl_can_data,radius*1000,turn_sign));
+    fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
+	
+	
 	if (fabs(track)>=thresh_dist_kframe)
 	{
 		flag = 1;
@@ -589,6 +589,9 @@ float VehicleMotion::get_theta_from_multi_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_d
 	{
 	    theta_offset_total=theta_offset_total/effective_num;
 	}
+	fprintf(stdout,"\r\nradius[%f,%f,%f,%f], radius_axis[%f]",radius_real[0],radius_real[1],radius_real[2],radius_real[3],radius);
+	fprintf(stdout,"\r\ndelta pulse[%d,%d,%d,%d]",pulse_delta[0],pulse_delta[1],pulse_delta[2],pulse_delta[3]);
+
     return theta_offset_total;
 	
 }
@@ -603,9 +606,9 @@ void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], CO
 	//float theta_offset = turn_sign*get_yawrate_from_curvature(v_data)*g_PLD_time_Offset_in;
     
 	//fprintf(stdout,"\r\n theta_offset wheel speed=%f",theta_offset);
-    // theta_offset= (1000*turn_sign*get_distance_from_pulse(v_data))/radius;
+     theta_offset= (1000*turn_sign*get_distance_from_pulse(v_data))/radius;
 	//fprintf(stdout,"\r\n theta_offset pulse speed=%f",theta_offset);
-	theta_offset= get_theta_from_multi_pulse(v_data,radius,turn_sign);
+	//theta_offset= get_theta_from_multi_pulse(v_data,radius,turn_sign);
 	//fprintf(stdout,"\r\n theta_offset multi pulse speed=%f",theta_offset);
 
 
