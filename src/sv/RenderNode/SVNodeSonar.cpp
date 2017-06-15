@@ -495,7 +495,7 @@ void SVNodeSonar::GenerateParkLotRect(sonar_parking_lot_t *park_lot_state,float 
 		AVMData::GetInstance()->cvtWorldPoint2Stich2DPoint(model_coord,&(park_lot_pos[2*i]),1);
 		pVertex[i*8+0]= model_coord[0];
 		pVertex[i*8+1]= model_coord[1];
-		pVertex[i*8+2]= model_coord[2];   
+		pVertex[i*8+2]= 0;   
 	}
 
 
