@@ -191,10 +191,10 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	
 	dist_temp = -get_distance_from_pulse(&vhcl_can_data);
     theta_offset = dist_temp/radius;
-    fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
+   // fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
 	
-	theta_offset= -fabs(get_theta_from_multi_pulse(&vhcl_can_data,radius*1000,turn_sign));
-    fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
+	//theta_offset= -fabs(get_theta_from_multi_pulse(&vhcl_can_data,radius*1000,turn_sign));
+    //fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
 	
 	
 	if (fabs(track)>=thresh_dist_kframe)
@@ -589,8 +589,8 @@ float VehicleMotion::get_theta_from_multi_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_d
 	{
 	    theta_offset_total=theta_offset_total/effective_num;
 	}
-	fprintf(stdout,"\r\nradius[%f,%f,%f,%f], radius_axis[%f]",radius_real[0],radius_real[1],radius_real[2],radius_real[3],radius);
-	fprintf(stdout,"\r\ndelta pulse[%d,%d,%d,%d]",pulse_delta[0],pulse_delta[1],pulse_delta[2],pulse_delta[3]);
+	//fprintf(stdout,"\r\nradius[%f,%f,%f,%f], radius_axis[%f]",radius_real[0],radius_real[1],radius_real[2],radius_real[3],radius);
+	//fprintf(stdout,"\r\ndelta pulse[%d,%d,%d,%d]",pulse_delta[0],pulse_delta[1],pulse_delta[2],pulse_delta[3]);
 
     return theta_offset_total;
 	

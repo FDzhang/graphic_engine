@@ -175,6 +175,7 @@ typedef enum sonar_index
 
 #define SONAR_HALF_FOV 50.0
 #define CACHE_NUM  2
+#define VEHICLE_STATE_BUFFER_NUM 5
 enum
 {
 	JUMP_POINT,
@@ -259,6 +260,9 @@ public:
 	void SetRadarPLDReslt();
 	int TestVehicleMovment(void);
 	void InitParkingLotTexture(int sonar_index,Float32 *pDataBuffer);
+	void AddNewVehicleState(COMMON_VEHICLE_DATA_SIMPLE vehicle_state);
+	int GetPreviousVehicleState(COMMON_VEHICLE_DATA_SIMPLE *vehicle_state,int previous_index);
+	void DelayPointProcess(int delay_frame,float *pos);
 private:
 
 	Sonar_Pos     m_sonar_pos[max_sonar_num];
@@ -290,6 +294,8 @@ private:
     unsigned char m_track_park_lot_flag;
 	int m_filter_time;
     int m_active_buffer_index[max_sonar_num]; 
+    COMMON_VEHICLE_DATA_SIMPLE m_vehcle_state_buffer[VEHICLE_STATE_BUFFER_NUM];
+	int m_vehicle_state_buffer_index;
 };
 
 #endif //#ifndef __GL_SV_DEMO_H__

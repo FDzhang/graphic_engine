@@ -544,6 +544,7 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 	 m_track=0;
 	 m_parking_lot_pos = 0;
 	 m_track_park_lot_flag=0;
+	 m_vehicle_state_buffer_index=0;
 	 ResetParkSlotInfo();
 	 TestVehicleMovment();
 
@@ -632,6 +633,7 @@ int  SVNodeSonar::CalcSonarObjPos(float *pos,float obj_dist,sonar_index index)
     pos[0]=m_sonar_pos[index].pos[0]+obj_dist*sin(rad_angle);
     pos[1]=m_sonar_pos[index].pos[1]+obj_dist*cos(rad_angle);    
     pos[2] = m_sonar_pos[index].pos[2];
+	DelayPointProcess(3,pos);
 
 	return 0;
 }
@@ -1841,6 +1843,45 @@ int SVNodeSonar::UpdateSonarArc(float dist,sonar_index sonar_pos)
 
 
 }
+void SVNodeSonar::AddNewVehicleState(COMMON_VEHICLE_DATA_SIMPLE vehicle_state)
+{
+    m_vehcle_state_buffer[m_vehicle_state_buffer_index] = vehicle_state;
+	m_vehicle_state_buffer_index++;
+	if(m_vehicle_state_buffer_index==VEHICLE_STATE_BUFFER_NUM)
+	{
+	    m_vehicle_state_buffer_index=0;
+	}
+
+}
+int SVNodeSonar::GetPreviousVehicleState(COMMON_VEHICLE_DATA_SIMPLE *vehicle_state,int previous_index)
+{
+    if(previous_index>VEHICLE_STATE_BUFFER_NUM)
+    {
+        return 1;
+    }
+
+	int index = (m_vehicle_state_buffer_index + VEHICLE_STATE_BUFFER_NUM - previous_index) % VEHICLE_STATE_BUFFER_NUM;
+
+	*vehicle_state = m_vehcle_state_buffer[index];
+}
+
+void SVNodeSonar::DelayPointProcess(int delay_frame,float *pos)
+{
+    int vehcle_state_index;
+	Point2f point_pos;
+	point_pos.x = pos[0];
+	point_pos.y = pos[1];
+    for(int i=0;i<delay_frame;i++)
+    {
+		vehcle_state_index = (m_vehicle_state_buffer_index - i + VEHICLE_STATE_BUFFER_NUM) % VEHICLE_STATE_BUFFER_NUM;
+	    m_vehicle_motion->get_new_point_from_Vhichle_data(&point_pos, &m_vehcle_state_buffer[vehcle_state_index], (float)Get_Frame_TimeStamp() / 1000000.0);
+
+    }
+
+	pos[0] = point_pos.x ;
+	pos[1] = point_pos.y ;
+
+}
 int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float left_wheel_speed,float right_wheel_speed,unsigned char gear_state,int time_offset,float yaw_rate,float *obj_dist)
 {
     static unsigned int cnt = 0;
@@ -1871,6 +1912,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
     unsigned char turn_light_state;
 	AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light_state);
 	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Pulse(vehicle_state.wheel_pulse);
+	AddNewVehicleState(vehicle_state);
 	if(TURN_LIGHT_LEFT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
 	{
 	    ResetParkSlotInfo();
@@ -1891,6 +1933,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	AVMData::GetInstance()->m_p_can_data->CalcDriveDist();
 
 	ProcessPreviousParkingLot(vehicle_state);
+	ProcessPreviousPos(vehicle_state);
 	for(unsigned char i=0;i<max_sonar_num;i++)
 	{
 	   m_sonar_data[i].show_flag = 1;
@@ -1997,7 +2040,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 		}
 	
 	}
-	ProcessPreviousPos(vehicle_state);
+	
 	//FiltObjData(2);
 
 	if(fabs(steering_wheel_angle)<SEACHING_SLOT_STEERING_GATE)
@@ -2111,7 +2154,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	for(int i=0;i<4;i++)
 	{
 	
-	  fprintf(stdout,"\r\n wheelpulse[%d]=%d,%d,%d,dist[%f]",i,vehicle_state.pre_wheel_pulse[i],vehicle_state.wheel_pulse[i],vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i],(vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i])*0.046);
+	//  fprintf(stdout,"\r\n wheelpulse[%d]=%d,%d,%d,dist[%f]",i,vehicle_state.pre_wheel_pulse[i],vehicle_state.wheel_pulse[i],vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i],(vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i])*0.046);
 	    vehicle_state.pre_wheel_pulse[i]= vehicle_state.wheel_pulse[i];
 		
 	}
