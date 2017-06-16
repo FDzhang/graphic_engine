@@ -485,7 +485,7 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 	vehicle_state.shift_pos = gear_state;
 	vehicle_state.yaw_rate = yaw_rate;
 	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Pulse(vehicle_state.wheel_pulse);
-
+    int frame_time_test = (int)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()/1000);
 	//m_vehicle_motion->revMotion2KframePredictVCS(vehicle_state,40000,m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.3);
 	if(init_flag ==0)
 	{

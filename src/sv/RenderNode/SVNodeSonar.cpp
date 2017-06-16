@@ -552,7 +552,7 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 }
 int SVNodeSonar::TestVehicleMovment(void)
 {
-    return 0;
+   // return 0;
 	m_sonar_parking_lot[front_left_conor_sonar].show_flag = 1;
      m_sonar_parking_lot[front_left_conor_sonar].parking_lot_type =PARKING_LOT_PARALLEL;
 
