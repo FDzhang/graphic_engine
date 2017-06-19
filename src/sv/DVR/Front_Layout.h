@@ -38,13 +38,19 @@ namespace GUI
         ~Front_Layout();
         static IFrontLayout* GetLayout();
         void Init() {};
-        void Enable(bool flag) ; 
+        void Enable(bool flag) ;
+
+        /*光标作为一个始终拥有焦点的控件，在目前架构中，需要特殊处理*/
+        void OnMouseMove(int x, int y);
+        void OnMouseUp(int x, int y);
+        void OnMouseDown(int x, int y);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
     private:
         void InitMouseCursor(IGUIElement* , const GUI_HANDLE_T);
     private:
+        CGPUIcon* m_cursor;
         static Front_Layout* m_layout;
     };
 };

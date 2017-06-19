@@ -32,6 +32,7 @@
 
 class IFrontLayout
 {
+public:
     /**
      * \brief 初始化Front Layout (目前不执行操作，由于目前GPU内部初始化序列混乱，待整改)
      */
@@ -41,6 +42,10 @@ class IFrontLayout
      * \param [IN] flag true则Layout显示
      */
     virtual void Enable(bool flag) = 0;
+    /*光标作为一个始终拥有焦点的控件，在目前架构中，需要特殊处理*/
+    virtual void OnMouseMove(int x, int y) = 0;
+    virtual void OnMouseUp(int x, int y) = 0;
+    virtual void OnMouseDown(int x, int y) = 0;
 };
 
 //! 接口函数

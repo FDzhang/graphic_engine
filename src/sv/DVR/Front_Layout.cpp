@@ -73,8 +73,21 @@ namespace GUI
                        0,
                        1280,
                        720);
+        m_cursor = dynamic_cast<CGPUIcon*>(cursor);
     }
-
+    void Front_Layout::OnMouseMove(int x, int y)
+    {
+        if(m_cursor)
+        {
+            m_cursor->OnTouchEvent(m_cursor->GetHwnd(), x, y, TouchEvent_Move);
+        }
+    }
+    void Front_Layout::OnMouseUp(int x, int y)
+    {
+    }
+    void Front_Layout::OnMouseDown(int x, int y)
+    {
+    }
     /**
      * 接口函数，操作Front_Layout
      */
