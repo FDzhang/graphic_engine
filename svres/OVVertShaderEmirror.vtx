@@ -1,0 +1,18 @@
+attribute highp vec4 myVertex;
+attribute highp vec4 myNormal;
+attribute mediump vec2 myUV;
+uniform mediump mat4 myPMVMatrix;
+uniform mediump mat4 uvPMVMatrix;
+varying mediump vec2 TexCoord;
+varying mediump vec2 Alpha;
+void main(void)
+{
+	gl_Position = myPMVMatrix * myVertex;
+
+	TexCoord.x = myUV.x;
+	TexCoord.y = myUV.y;
+        Alpha.x = myNormal.x;
+   
+	
+}
+

@@ -1,0 +1,15 @@
+attribute mediump vec4 myVertex;
+attribute mediump vec3 myNormal;
+attribute mediump vec2 myUV;
+attribute mediump float myAlpha;
+varying mediump vec2 varCoord;
+
+void main(void)
+{
+	gl_Position =  myVertex;
+
+	varCoord= myUV;
+
+	//mediump vec3 transNormal = myModelViewIT * myNormal;  //my modelviewIT is useless
+	//varDot =max( dot(transNormal, myLightDirection), 0.0 );
+}

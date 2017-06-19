@@ -1,0 +1,60 @@
+attribute highp vec4 myVertex;
+attribute mediump vec2 myUV; 
+attribute mediump float myAlpha;
+attribute mediump float myCofLinear;
+uniform mediump mat4 myPMVMatrix;
+uniform mediump vec3 InputCofL1;
+uniform mediump vec3 InputCofL2;
+uniform mediump vec2 PointTopLeft;
+uniform mediump vec2 PointBottomRight;
+uniform mediump float direction;
+uniform mediump float InputFlag;
+varying mediump vec2 varCoord;
+varying mediump float varAlpha;
+varying mediump vec3 cofLinear;
+varying mediump vec3 CofL1;
+varying mediump vec3 CofL2;
+varying mediump float Flag;
+void main(void)
+{
+    vec2 thres;
+    float key_pos,ratio;
+    gl_Position =  myVertex;
+
+    //0.0 means front &rear
+    if(direction < 0.2)
+    {
+        key_pos =myVertex.x;
+        thres.x = PointTopLeft.x;
+        thres.y = PointBottomRight.x; 
+    } 
+    else
+    {
+        key_pos =myVertex.y;
+        thres.y = PointTopLeft.y;
+        thres.x = PointBottomRight.y;     
+    }   
+    ratio = (key_pos-thres.x)/(thres.y-thres.x);
+    if(key_pos <= thres.x)
+    {
+        cofLinear = InputCofL1;
+       // cofLinear = vec3(1.0,0.0,1.0);
+    }
+    else if(key_pos >= thres.y)
+    {
+        cofLinear = InputCofL2;
+       // cofLinear = vec3(1.0,1.0,0.0);
+    }
+    else
+    { 
+        cofLinear = ratio*InputCofL2+(1.0-ratio)*InputCofL1;
+       // cofLinear = vec3(1.0,0.0,0.0);
+    }    
+
+    varCoord= myUV;
+    varAlpha = myAlpha;
+    CofL1 = myVertex.xyz;
+    CofL2 = InputCofL2; 
+    Flag =  InputFlag;
+
+}
