@@ -1,0 +1,73 @@
+attribute highp vec4 myVertex;
+attribute highp vec4 myNormal;
+attribute mediump vec2 myUV;
+uniform highp float coeff[24];
+uniform highp vec2 CP;
+uniform mediump mat4 myPMVMatrix;
+uniform mediump mat4 uvPMVMatrix;
+uniform float Nums;
+uniform highp vec3 Trans;
+uniform highp vec2 Bound;
+uniform float CPArrayHeight;
+uniform float CPArrayWidth;
+uniform float focal;
+uniform float width;
+uniform float height;
+uniform float CaptureWidth;
+uniform float CaptureHeight;
+uniform float pixel_size;
+uniform float flag_Lumin;
+uniform mediump vec3 Lumin_FL;
+uniform mediump vec3 Lumin_FR;
+uniform mediump vec3 Lumin_BL;
+uniform mediump vec3 Lumin_BR;
+uniform mediump vec3 Lumin_Point_TL;
+uniform mediump vec3 Lumin_Point_TR;
+uniform mediump vec3 Lumin_Point_BL;
+uniform mediump vec3 Lumin_Point_BR;
+varying mediump vec2 TexCoord;
+varying mediump vec2 TexCoord2;
+varying mediump vec3 Luminance;
+void main(void)
+{
+	gl_Position = myPMVMatrix * myVertex;
+
+	highp vec4 temp = myNormal;
+		float interpolate;
+	if (myNormal.y < Bound[0]) {
+		interpolate = (Bound[0]-myNormal.y)/Bound[1];
+	//	temp+=vec4(Trans, 0.0)*interpolate;
+	}
+	temp+=vec4(Trans, 0.0);
+	highp vec4 UV = uvPMVMatrix * temp;
+	float theta ;
+
+	float invnorm = 1.0/length(vec2(UV.xy));
+	theta = abs(atan(length(vec2(UV.xy))/(UV.z+0.001)));
+
+	TexCoord = UV.xy*invnorm*(theta)*focal/(pixel_size);
+       // TexCoord = UV.xy*invnorm*(theta)*1.05/(0.0056);
+        //TexCoord.x = TexCoord.x * 720.0/640.0;
+        //TexCoord.y = TexCoord.y * 576.0/480.0;
+	TexCoord.x = TexCoord.x * CaptureWidth/CPArrayWidth;
+	TexCoord.y = TexCoord.y * CaptureHeight/CPArrayHeight;
+	TexCoord = TexCoord + vec2(CP.x,CaptureHeight-CP.y);
+        //TexCoord = TexCoord + vec2(360.0,192.0);
+	TexCoord.x /= width;
+	TexCoord.y /= height; 
+	//TexCoord.x /= 720.0;
+	//TexCoord.y /= 480.0; 
+        TexCoord.y =1.0 - TexCoord.y;
+
+     
+        if(TexCoord.x<=0.0||TexCoord.x>=1.0||TexCoord.y>=1.0||TexCoord.y<=0.0)
+        {
+            Luminance = vec3(0.0,0.0,0.0);
+        }
+        else
+        {
+            Luminance = vec3(1.0,1.0,1.0);
+        }
+	TexCoord2 = myUV;
+}
+

@@ -1,0 +1,25 @@
+attribute highp vec4 myVertex;
+attribute mediump vec2 myUV; 
+attribute mediump float myAlpha;
+attribute mediump float myCofLinear;
+uniform mediump mat4 myPMVMatrix;
+uniform mediump vec3 InputCofL1;
+uniform mediump vec3 InputCofL2;
+uniform mediump float InputFlag;
+varying mediump vec2 varCoord;
+varying mediump float varAlpha;
+varying mediump float cofLinear;
+varying mediump vec3 CofL1;
+varying mediump vec3 CofL2;
+varying mediump float Flag;
+void main(void)
+{
+    //gl_Position =  myVertex;
+    gl_Position = myPMVMatrix * myVertex;
+    cofLinear = myCofLinear;
+    varCoord= myUV;
+    varAlpha = myAlpha;
+    CofL1 = InputCofL1;
+    CofL2 = InputCofL2; 
+    Flag =  InputFlag;
+}
