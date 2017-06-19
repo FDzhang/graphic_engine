@@ -78,8 +78,15 @@ namespace GUI
     void DVR_Layout::SetProcessbarValue(uint32_t whole_time, uint32_t cur_time)
     {
         m_bar->SetValue(whole_time, cur_time);
-        char time_text[24];
-        sprintf(time_text, "%u/%u", whole_time, cur_time);
+
+        whole_time /= 1000;
+        cur_time   /= 1000;
+        char time_text[32];
+        sprintf(time_text, "%u-%u-%u / %u-%u-%u",
+                cur_time / 3600, (cur_time / 60) % 60, cur_time % 60,
+                whole_time / 3600,(whole_time / 60) % 60, whole_time % 60
+                );
+        
         m_bar_text->SetText(time_text);
     }
     void DVR_Layout::InsertProcessbarKeyFrame(void* frame)
