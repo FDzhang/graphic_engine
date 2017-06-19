@@ -1,7 +1,7 @@
-#ifndef _GPUELEMENTICON_H_ /* { */
-#define _GPUELEMENTICON_H_
+#ifndef _IF_FRONT_H_ /* { */
+#define _IF_FRONT_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: GpuElementIcon.h
+ * FILE: IF_Front.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,31 +23,29 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 01 6月 2017 dota2_black 
+ * VERSION: 19 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "XrCore/XrSrc/XrUILibrary/CXrBaseView.h"
-#include "IGUIElement.h"
+#include <stdint.h>
 
-namespace GUI
+#define DLL_PUBLIC __attribute__ ((visibility ("default")))
+#define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+
+class IFrontLayout
 {
-    class CGPUIcon : public IGUIElement, private CXrBaseView
-    {
-    public:
-        CGPUIcon();
-        virtual ~CGPUIcon();
-        bool Create(const uint32_t pos_x, const uint32_t pos_y,
-                    const uint32_t element_width, const uint32_t element_height);
-        void SetTexture(const IGUITexture* effect, const long style);
-    private:
-        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
-    private:
-        IGUITexture* m_cursor_texture;
-        ILayer*      m_cursor_layer;
-        
-    private:
-        DECLEAR_DYNAMIC_CLASS(CGPUIcon, IGUIElement)
-    };
+    /**
+     * \brief 初始化Front Layout (目前不执行操作，由于目前GPU内部初始化序列混乱，待整改)
+     */
+    virtual void Init() = 0;
+    /**
+     * \brief 使能Front Layout的显示，Front Layout控制Front控件的内部更新逻辑，外部操作不涉及控件的更新逻辑
+     * \param [IN] flag true则Layout显示
+     */
+    virtual void Enable(bool flag) = 0;
 };
+
+//! 接口函数
+extern "C" DLL_PUBLIC IFrontLayout* NewFrontLayout(void);
+extern "C" DLL_PUBLIC void  DeleteFrontLayout(IFrontLayout* layout);
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
@@ -56,4 +54,4 @@ namespace GUI
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _GPUELEMENTICON_H_ */
+#endif /* } _IF_FRONT_H_ */

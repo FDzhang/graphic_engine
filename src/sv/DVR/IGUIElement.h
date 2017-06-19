@@ -124,6 +124,7 @@ namespace GUI
     private:
         static int32_t m_focus_id; //通过Element的ID 做焦点标志
         /**实现依据类名动态创建类对象的功能,声明动态基类特性*/
+    private:
         DECLEAR_DYNAMIC_BASE(IGUIElement)
     };
 

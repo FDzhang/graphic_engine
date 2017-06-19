@@ -1,7 +1,7 @@
-#ifndef _GPUELEMENTICON_H_ /* { */
-#define _GPUELEMENTICON_H_
+#ifndef _FRONT_LAYOUT_H_ /* { */
+#define _FRONT_LAYOUT_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: GpuElementIcon.h
+ * FILE: Front_Layout.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,29 +23,29 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 01 6月 2017 dota2_black 
+ * VERSION: 19 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "XrCore/XrSrc/XrUILibrary/CXrBaseView.h"
-#include "IGUIElement.h"
+#include "Layout.h"
+#include "GpuElementIcon.h"
+#include "IF_Front.h"
 
 namespace GUI
 {
-    class CGPUIcon : public IGUIElement, private CXrBaseView
+    class Front_Layout : public ILayout , public IFrontLayout
     {
     public:
-        CGPUIcon();
-        virtual ~CGPUIcon();
-        bool Create(const uint32_t pos_x, const uint32_t pos_y,
-                    const uint32_t element_width, const uint32_t element_height);
-        void SetTexture(const IGUITexture* effect, const long style);
+        Front_Layout();
+        ~Front_Layout();
+        static IFrontLayout* GetLayout();
+        void Init() {};
+        void Enable(bool flag) ; 
     private:
-        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
+        uint32_t m_element_size;
+        static struct ElementFuntionTable m_element_info[];
     private:
-        IGUITexture* m_cursor_texture;
-        ILayer*      m_cursor_layer;
-        
+        void InitMouseCursor(IGUIElement* , const GUI_HANDLE_T);
     private:
-        DECLEAR_DYNAMIC_CLASS(CGPUIcon, IGUIElement)
+        static Front_Layout* m_layout;
     };
 };
 /*------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ namespace GUI
  *------------------------------------------------------------------------------------------
  *
  * Date             SCR                   userid                   Description
- * -----------------------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _GPUELEMENTICON_H_ */
+#endif /* } _FRONT_LAYOUT_H_ */
