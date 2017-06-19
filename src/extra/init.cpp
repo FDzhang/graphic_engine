@@ -16,6 +16,8 @@
 #include <global/config.h>
 #include <utils/utils_func.h>
 #include <gpu_log.h>
+#include "../sv/DVR/Layout.h"
+#include "IF_Dvr.h"
 
 extern "C"
 {
@@ -52,4 +54,5 @@ void InitStaticLogctrls()
 void __attribute__((constructor)) setup(void)
 {
     InitStaticLogctrls();
+    GUI::ILayout::AttachEvent(DVRHMI_EVENT_NAME, sizeof(DVR_Event_Payload_T));
 }

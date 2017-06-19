@@ -45,7 +45,7 @@ namespace GUI
         uint32_t m_layout_x, m_layout_y;
         uint32_t m_panel_width, m_panel_height;
 
-        IGUITexture m_baseLayerTexture;
+        IGUITexture* m_baseLayerTexture;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUPanel, IGUIElement)
     };

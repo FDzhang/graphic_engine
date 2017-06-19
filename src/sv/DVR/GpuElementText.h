@@ -48,7 +48,7 @@ namespace GUI
 
         uint32_t m_layout_x, m_layout_y;
         uint32_t m_label_width, m_label_height;
-        IGUITexture m_base_texture, m_font_texture;
+        IGUITexture *m_base_texture,*m_font_texture;
         ITextLayer *m_pText;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUText, IGUIElement)

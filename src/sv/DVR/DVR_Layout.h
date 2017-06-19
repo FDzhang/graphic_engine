@@ -27,6 +27,11 @@
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
 #include "IF_Dvr.h"
+#include "GpuElementButton.h"
+#include "GpuElementProcessbar.h"
+#include "GpuElementPanel.h"
+#include "GpuElementText.h"
+#include "GpuElementListView.h"
 
 namespace GUI
 {
@@ -35,10 +40,10 @@ namespace GUI
      */
     class DVR_Layout : public ILayout , public IDVR
     {
-    public:
         DVR_Layout();
         ~DVR_Layout();
-
+    public:
+        static IDVR* GetLayout();
     public: /*IDVR要求的提供外部调用的接口实现*/
         //Layout初始化面板接口
         void Init() {};
@@ -50,6 +55,8 @@ namespace GUI
         //文本播放列表控件操作接口
         void SetPlaylist(const char* playlist);
         void AppendPlaylist(const char* playlist);
+        void NextItemInPlaylist();
+        void PrevItemInPlaylist();
         //媒体播放按钮控制
         void StartPlay();
         void PausePlay();
@@ -57,41 +64,53 @@ namespace GUI
         void PrevPlay();
         void FastForwardPlay();
         void RewindPlay();
+        void SetPlaylist();
     private:
         //暂停播放按钮
-        void InitMediaPlay(const IGUIElement*, uint32_t parentId);
-        void OnPlayEvent(const  IGUIElement*, const uint32_t type);
+        void InitMediaPlay(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnPlayEvent(IGUIElement*);
         //下一曲按钮
-        void InitMediaNext(const IGUIElement*, uint32_t parentId);
+        void InitMediaNext(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnNextEvent(IGUIElement*);
         //上一部按钮
-        void InitMediaPrev(const IGUIElement*, uint32_t parentId);
+        void InitMediaPrev(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnPrevEvent(IGUIElement*);
         //前进按钮
-        void InitMediaForward(const IGUIElement*, uint32_t parentId);
+        void InitMediaForward(IGUIElement*,const  GUI_HANDLE_T parentId);
+        void OnForwardEvent(IGUIElement*);
         //后退按钮
-        void InitMediaRewind(const IGUIElement*, uint32_t parentId);
+        void InitMediaRewind(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnRewindEvent(IGUIElement*);
         //截图按钮
-        void InitMediaScreenShot(const IGUIElement*, uint32_t parentId);
+        void InitMediaScreenShot(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnScreenShotEvent(IGUIElement*);
         //设置按钮
-        void InitMediaSetting(const IGUIElement*, uint32_t parentId);
+        void InitMediaSetting(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnSettingEvent(IGUIElement*);
         //进度条按钮
-        void InitMediaBar(const IGUIElement*, uint32_t parentId);
+        void InitMediaBar(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnBarEvent(IGUIElement*);
         //时间文本控件
-        void InitMediaText(const IGUIElement*, uint32_t parentId);
+        void InitMediaText(IGUIElement*, const GUI_HANDLE_T parentId);
         //文件列表
-        void InitMediaFileListView(const IGUIElement*, uint32_t parentId);
+        void InitMediaListView(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnListViewEvent(IGUIElement*);
         //状态图标
-        void InitMediaStateIcon(const IGUIElement*, uint32_t parentId);
+        void InitMediaStateIcon(IGUIElement*, const GUI_HANDLE_T parentId);
         //panel
-        void InitMediaPanel(const IGUIElement*, uint32_t parentId);
+        void InitMediaPanel(IGUIElement*, const GUI_HANDLE_T parentId);
         //media_exit
-        void InitMediaExit(const IGUIElement*, uint32_t parentId);
+        void InitMediaExit(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnExitEvent(IGUIElement*);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
         CGPUProcessbar* m_bar;
-        CGPUButton* m_media_play;
-        CGPUText*   m_bar_text;
-        static uint32_t m_media_panel_start_x, m_media_panel_start_y, m_media_panel_width, m_media_panel_height;
+        CGPUButton*     m_media_play;
+        CGPUText*       m_bar_text;
+        CGPUListView*   m_listview;
+    private:
+        static DVR_Layout* m_layout;
     };
 };
 /*------------------------------------------------------------------------------------------
