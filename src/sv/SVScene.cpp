@@ -1324,12 +1324,27 @@ void SVScene::Init2DStichAVMNode()
 	 InitOverlay(m_bev_config,m_2DAVMNode,&m_overlaymesh_2d,&m_overlay_2d,&m_overlay_data_2d,calib_2D_STICH,pos);
 
 	 //render car image
+	 m_pNodeSonar = new SVNodeSonar;
+	 m_pNodeSonar->Init(&m_bev_config,m_2DAVMNode);
 
 
+#if 0
 
+	 AVM_Calib_2D_T result;
+	 
+	 
+	 result.center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+	 result.center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+	 result.ppmm_x= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
+	 result.ppmm_y= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+	 
+	 
+	 
+	 m_APA_overlay = new GlSVOverlayAPA;
+	 m_APA_overlay->Init(m_2DAVMNode,XR_RES,result);
 			
 		
-		
+		#endif
 
 	
 
@@ -2749,20 +2764,6 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 
 	InitObjectNode(pConfig);
 	InitViewNode();
-	AVM_Calib_2D_T result;
-	
-	
-	result.center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
-	result.center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
-	result.ppmm_x= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
-	result.ppmm_y= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
-
-
-	//m_crossImage = new SVNodeCrossImage();
-	//m_crossImage->Init(&CenterReg);
-
-    m_APA_overlay = new GlSVOverlayAPA;
-	m_APA_overlay->Init(m_2DAVMNode,XR_RES,result);
 
 	//	InitSingleViewNode(m_SV2DData);
 
@@ -2777,10 +2778,26 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 #endif
     m_pAdasHmi = new SVNodeAdasHMI;
 	m_pAdasHmi->Init(pConfig,m_2DSingleViewNode,m_2DAVMNode,pAdasMdlHmiHandle,HmiMdlNum);
-	m_pNodeSonar = new SVNodeSonar;
-	m_pNodeSonar->Init(&pConfig,m_2DAVMNode);
 #if 1
 
+	//m_pNodeSonar = new SVNodeSonar;
+	//m_pNodeSonar->Init(&m_bev_config,m_2DAVMNode);
+	
+	
+	
+	AVM_Calib_2D_T result;
+	
+	
+	result.center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+	result.center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+	result.ppmm_x= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
+	result.ppmm_y= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+	
+	
+	
+	m_APA_overlay = new GlSVOverlayAPA;
+	m_APA_overlay->Init(m_2DAVMNode,XR_RES,result);
+		   
 
 	InitBevDisplayEffect();
     InitTourDisplayEffect();
@@ -4629,6 +4646,7 @@ int SVScene::Update(int view_control_flag, int param2)
 	{
 	    time_interval = time_now-time_pre;
 	}
+	time_interval=(int)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()/1000);
     #ifdef CAR_TRANSPARENT
 	static int keyframeupdate =0;
 	keyframeupdate++;
@@ -4666,6 +4684,7 @@ int SVScene::Update(int view_control_flag, int param2)
 		
 	    m_overlay_2d->SetEnable(1);
 	}
+
 
 		//m_Car->SetEnable(0);
 		//m_ground->SetEnable(0);

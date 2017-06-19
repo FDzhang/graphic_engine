@@ -49,7 +49,9 @@ void VehicleMotion::Motion2KframePredictVCS(
 	float32_t str_whl_angle = vhcl_can_data.steering_angle;
 	float32_t radius = 0;
 	float32_t track_offset = 0;
-	SteerWheel2Radius(str_whl_angle, shft_pos, radius);
+	//SteerWheel2Radius(str_whl_angle, shft_pos, radius);
+	steeringwheel_radius(str_whl_angle,shft_pos,radius);
+	radius=radius;
 
 
 	if (track>=thresh_dist_kframe)
@@ -175,8 +177,26 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	float32_t str_whl_angle = vhcl_can_data.steering_angle;
 	float32_t radius = 0;
 	float32_t track_offset = 0;
+	float dist_temp=0;
 	SteerWheel2Radius(str_whl_angle, shft_pos, radius);
-
+	
+    //fprintf(stdout,"\r\noldradius%f",radius);
+	steeringwheel_radius(str_whl_angle,shft_pos,radius);
+	
+    //fprintf(stdout,"\r\nnew radius%f",radius);
+	float theta_offset;
+	
+	int turn_sign = get_turn_dir(&vhcl_can_data);
+	radius = radius/1000.0;
+	
+	dist_temp = -get_distance_from_pulse(&vhcl_can_data);
+    theta_offset = dist_temp/radius;
+   // fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
+	
+	//theta_offset= -fabs(get_theta_from_multi_pulse(&vhcl_can_data,radius*1000,turn_sign));
+    //fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
+	float f_time_offset = time_offset;
+	//theta_offset = -get_theta_from_distance(&vhcl_can_data, radius*1000, turn_sign, f_time_offset);
 	if (fabs(track)>=thresh_dist_kframe)
 	{
 		flag = 1;
@@ -203,7 +223,9 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rr/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				//theta_offset = track_offset/radius;
+				
+				//fprintf(stdout,"\r\n 1 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = sin(theta_offset);
@@ -220,7 +242,9 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rl/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				
+				//theta_offset = track_offset/radius;
+				//fprintf(stdout,"\r\n 2 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = -sin(theta_offset);
@@ -240,7 +264,8 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rr/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				//theta_offset = track_offset/radius;
+				//fprintf(stdout,"\r\n 3 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = -sin(theta_offset);
@@ -257,7 +282,8 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				float speed = -vhcl_can_data.wheel_speed_rl/3.6f;
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
-				float theta_offset = track_offset/radius;
+				//theta_offset = track_offset/radius;
+				//fprintf(stdout,"\r\n 4 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
 				t[1] = sin(theta_offset);
@@ -443,7 +469,7 @@ else
 static float pre_steering_wheel=0;
    if(pre_steering_wheel != str_whl_angle)
    {
-       fprintf(stdout,"\r\n gear[%d],steer[%f],radius[%f]",shft_pos,str_whl_angle,radius);
+      // fprintf(stdout,"\r\n gear[%d],steer[%f],radius[%f]",shft_pos,str_whl_angle,radius);
        pre_steering_wheel = str_whl_angle;
     }
    
@@ -498,7 +524,75 @@ float VehicleMotion::get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data
 		
 		}
     }
-    return((pulse_delta[0] +pulse_delta[1] )*0.023);
+    return((pulse_delta[0] +pulse_delta[1] )*0.022905);
+	
+}
+float VehicleMotion::get_theta_from_multi_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data,float radius,int turn_sign)
+{
+    // unit  mm
+
+	float radius_real[4];
+    int16_t pulse_curent[2];
+	int16_t pulse_pre[2];
+	int16_t pulse_delta[4];
+    float half_wheel_width=793;
+	float axis_length = 2750;
+    float theta_offset[4];
+	float theta_offset_total;
+	theta_offset_total=0;
+	float effective_num=0;
+    if(v_data->steering_angle<0)//(turn_right)
+    {
+	    radius_real[front_left_whl] = sqrt((radius+half_wheel_width)*(radius+half_wheel_width)+axis_length*axis_length);
+	    radius_real[front_right_whl] = sqrt((radius-half_wheel_width)*(radius-half_wheel_width)+axis_length*axis_length);
+	    radius_real[rear_left_whl] = radius+half_wheel_width;
+	    radius_real[rear_right_whl] = radius-half_wheel_width;
+		
+    }
+	else
+	{
+	    radius_real[front_right_whl] = sqrt((radius+half_wheel_width)*(radius+half_wheel_width)+axis_length*axis_length);
+	    radius_real[front_left_whl] = sqrt((radius-half_wheel_width)*(radius-half_wheel_width)+axis_length*axis_length);
+	    radius_real[rear_right_whl] = radius+half_wheel_width;
+	    radius_real[rear_left_whl] = radius-half_wheel_width;
+	    
+	}
+	pulse_curent[0]=v_data->wheel_pulse[rear_left_whl];
+	pulse_pre[0]=v_data->pre_wheel_pulse[rear_left_whl];
+	pulse_curent[1]=v_data->wheel_pulse[rear_right_whl];
+	pulse_pre[1]=v_data->pre_wheel_pulse[rear_right_whl];
+
+    for(int i=0;i<4;i++)
+    {
+	    if(v_data->wheel_pulse[i]<v_data->pre_wheel_pulse[i])
+	    {
+	        pulse_delta[i] = -v_data->pre_wheel_pulse[i]+1024+v_data->wheel_pulse[i];
+	    }
+		else
+		{
+	        pulse_delta[i] = -v_data->pre_wheel_pulse[i]+v_data->wheel_pulse[i];
+		
+		}
+        if(pulse_delta[i]==0)
+        {
+            continue;
+        }
+		effective_num=effective_num+1.0;
+		theta_offset[i] = (1000*turn_sign*pulse_delta[i]*0.046)/radius_real[i];
+		theta_offset_total += theta_offset[i];	
+    }
+	if(effective_num == 0)
+	{
+	    theta_offset_total=0;
+	}
+	else
+	{
+	    theta_offset_total=theta_offset_total/effective_num;
+	}
+	//fprintf(stdout,"\r\nradius[%f,%f,%f,%f], radius_axis[%f]",radius_real[0],radius_real[1],radius_real[2],radius_real[3],radius);
+	//fprintf(stdout,"\r\ndelta pulse[%d,%d,%d,%d]",pulse_delta[0],pulse_delta[1],pulse_delta[2],pulse_delta[3]);
+
+    return theta_offset_total;
 	
 }
 
@@ -507,15 +601,20 @@ void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], CO
 	int dri_sign = get_driving_dir(v_data);
 	int turn_sign = get_turn_dir(v_data);
 	float radius;
+	float theta_offset;
 	steeringwheel_radius(v_data->steering_angle, v_data->shift_pos, radius);
-	float theta_offset = turn_sign*get_yawrate_from_curvature(v_data)*g_PLD_time_Offset_in;
+	//float theta_offset = turn_sign*get_yawrate_from_curvature(v_data)*g_PLD_time_Offset_in;
     
 	//fprintf(stdout,"\r\n theta_offset wheel speed=%f",theta_offset);
-    //theta_offset = 1000*turn_sign*get_distance_from_pulse(v_data)/radius;
+     theta_offset= (1000*turn_sign*get_distance_from_pulse(v_data))/radius;
 	//fprintf(stdout,"\r\n theta_offset pulse speed=%f",theta_offset);
+	//theta_offset= get_theta_from_multi_pulse(v_data,radius,turn_sign);
+	//fprintf(stdout,"\r\n theta_offset multi pulse speed=%f",theta_offset);
+
 
 	int shft_pos = v_data->shift_pos;
 	float str_whl_angle = v_data->steering_angle;
+	//theta_offset = get_theta_from_distance(v_data, radius, turn_sign,  g_PLD_time_Offset_in);
 
 	for (int i = 0; i < MAXPOINTNUM; i++)
 	{
@@ -552,6 +651,77 @@ void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], CO
 
 
 
+}
+float VehicleMotion::get_theta_from_distance(COMMON_VEHICLE_DATA_SIMPLE * v_data,float radius,int turn_sign, float g_PLD_time_Offset_in)
+{
+    // unit  mm
+   // Static int fffff=0;
+     
+       int16_t pulse_delta[2];
+    float half_wheel_width=794;
+       //float axis_length = 2750;
+    float theta_offset;
+       
+
+	int flag=1; 
+	int n1=0;
+	int n2=0;
+	float speed_down=1;//下限速度，km/h
+	float speed_up=4;//上限速度，km/h
+	float ratio=45.81;//脉冲距离
+
+
+    if(v_data->steering_angle<0)//(turn_right)
+    {
+           flag=-1;
+           
+    }
+       else
+       {
+           flag=1;
+           
+       }
+      
+
+    for(int i=0;i<2;i++)
+    {
+           if(v_data->wheel_pulse[i]<v_data->pre_wheel_pulse[i])
+          {
+               pulse_delta[i] = -v_data->pre_wheel_pulse[i]+1024+v_data->wheel_pulse[i];
+           }
+              else
+              {
+               pulse_delta[i] = -v_data->pre_wheel_pulse[i]+v_data->wheel_pulse[i];
+              
+              }
+	}
+	if (v_data->wheel_speed_rl<speed_up && v_data->wheel_speed_rl>speed_down)
+	{
+		n1=1;
+	}
+	else
+	{
+		n1=0;
+	}
+	if (v_data->wheel_speed_rr<speed_up && v_data->wheel_speed_rr>speed_down)
+	{
+		n2=1;
+	}
+	else
+	{
+		n2=0;
+	}
+	if (n1==0 && n2==0)
+	{
+		theta_offset=( pulse_delta[0]+ pulse_delta[1])*ratio/2.0/radius;
+	}
+	else
+	{
+		theta_offset = (n1* v_data->wheel_speed_rl / (radius + flag* half_wheel_width) + n2* v_data->wheel_speed_rr / (radius - flag* half_wheel_width))* g_PLD_time_Offset_in / (n1*1.0 + n2*1.0) * 1000 / 3.6;
+	}
+     
+    return theta_offset;
+       
 }
 
 #if 0

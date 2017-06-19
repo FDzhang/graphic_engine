@@ -460,7 +460,7 @@ void SVNode2DStich::InitStichKeyFrameNodeRT(int j)
 
 int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_speed,float left_wheel_speed, float right_wheel_speed,unsigned char gear_state,int time_offset,float yaw_rate)
 {
-    COMMON_VEHICLE_DATA_SIMPLE vehicle_state;
+    static COMMON_VEHICLE_DATA_SIMPLE vehicle_state;
 	float *pTransformMatrix;
 	float car_rect_image[4];
 	float car_rect_world[4];
@@ -484,6 +484,8 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 	vehicle_state.wheel_speed_rr = right_wheel_speed;
 	vehicle_state.shift_pos = gear_state;
 	vehicle_state.yaw_rate = yaw_rate;
+	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Pulse(vehicle_state.wheel_pulse);
+    int frame_time_test = (int)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()/1000);
 	//m_vehicle_motion->revMotion2KframePredictVCS(vehicle_state,40000,m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.3);
 	if(init_flag ==0)
 	{
@@ -530,7 +532,13 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 	    AVMData::GetInstance()->m_2D_lut->CvtPointWorld2Image(WorldOutPoint[i],&m_Car_rect[i]);
 
     }
-    
+   	for(int i=0;i<4;i++)
+	{
+	
+	  //fprintf(stdout,"\r\n wheelpulse[%d]=%d,%d,%d,dist[%f]",i,vehicle_state.pre_wheel_pulse[i],vehicle_state.wheel_pulse[i],vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i],(vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i])*0.046);
+	    vehicle_state.pre_wheel_pulse[i]= vehicle_state.wheel_pulse[i];
+		
+	} 
     return update_key_frame_flag;
 		
 }

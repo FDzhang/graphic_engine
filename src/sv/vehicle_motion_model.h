@@ -85,6 +85,8 @@ private:
 			);//convert from steering wheel angle to steering radius
 
 	float get_yawrate_from_curvature(COMMON_VEHICLE_DATA_SIMPLE * v_data);
+	float get_theta_from_multi_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data,float radius,int turn_sign);
+	float get_theta_from_distance(COMMON_VEHICLE_DATA_SIMPLE * v_data,float radius,int turn_sign, float g_PLD_time_Offset_in);
 
 	
 
