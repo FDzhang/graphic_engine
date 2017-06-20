@@ -273,7 +273,7 @@ namespace GUI
     {
         
         media_rewind_button->Attach(m_node, parentId);
-        media_rewind_button->SetTexture(prev_array_texture, 0);
+        media_rewind_button->SetTexture(rewind_array_texture, 0);
         media_rewind_button->Create(rewind_array_texture[0].pos_x,
                                     rewind_array_texture[0].pos_y,
                                     rewind_array_texture[0].element_width,
