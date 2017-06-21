@@ -89,11 +89,28 @@ namespace GUI
     }
     Boolean CGPUProcessbar::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        DispatchEvent(EventId(), type);
-        Int32 PosX = x<0?0:x;
-        PosX = PosX>m_processbar_width?m_processbar_width:PosX;
-        m_pbarSlide->SetX(PosX);
-        m_pos = PosX;
+        switch(type)
+        {
+        case TouchEvent_Down:
+            //设置焦点在进度条上
+            m_status = true;
+        case TouchEvent_Move:
+            //判断焦点是否被释放
+            if(m_status)
+            {
+                Int32 PosX = x<0?0:x;
+                PosX = PosX>m_processbar_width?m_processbar_width:PosX;
+                m_pbarSlide->SetX(PosX);
+                m_pos = PosX;
+            }
+            break;
+        case TouchEvent_Up:
+            //释放焦点
+            IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
+            m_status = false;
+        default:
+            Log_Error("attention: a unknown touch event is sent");
+        }
     }
 
     void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)

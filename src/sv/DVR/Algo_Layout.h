@@ -1,7 +1,7 @@
-#ifndef _GPU_ELEMENT_PROCESSBAR_H_ /* { */
-#define _GPU_ELEMENT_PROCESSBAR_H_
+#ifndef _ALGO_LAYOUT_H_ /* { */
+#define _ALGO_LAYOUT_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: LayoutProcessBar.h
+ * FILE: Algo_Layout.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,40 +23,38 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 15 5月 2017 dota2_black 
+ * VERSION: 21 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "IGUIElement.h"
-#include "XrCore/XrSrc/XrUILibrary/CXrSlider.h"
+#include "Layout.h"
+#include "GpuElementButton.h"
+#include "IF_Algo.h"
 
 namespace GUI
 {
-    class CGPUProcessbar : public IGUIElement, private CXrBaseView
+    class AlgoLayout : public ILayout , public IAlgoLayout
     {
+        AlgoLayout();
+        ~AlgoLayout();
     public:
-        CGPUProcessbar();
-        virtual ~CGPUProcessbar();
-        bool Create(const uint32_t pos_x, const uint32_t pos_y,
-                    const uint32_t element_width, const uint32_t element_height);
-        void SetTexture(const IGUITexture* effect, const long style);
-        void SetValue(uint32_t whole_time, uint32_t current_time);
-        void SetEnable(bool enable);
-        float GetPos() { return m_pos;}
+        static IAlgoLayout* GetLayout();
+        static void  SetAvmEventType(AvmEventType type) { m_event_type = type; }
+    public:
+        void Init() {};
+        void Enable(bool flag) ;
+    protected:
+        AvmEventType GetAttachEventType() {return m_event_type; }
     private:
-        /** 重写OnTouchEvent, 添加事件自定义处理功能*/
-        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);
-
+        uint32_t m_element_size;
+        static struct ElementFuntionTable m_element_info[];
     private:
-        IGUITexture* m_barBaseTexture,* m_barSlideTexture;
-        uint32_t m_processbar_x, m_processbar_y;
-        uint32_t m_processbar_width, m_processbar_height;
-        ILayer   *m_pbarBase, *m_pbarSlide;
-        float m_pos;
-
-        bool m_status;
+        void InitAlgoExit(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventExit(IGUIElement* play_button);
     private:
-        DECLEAR_DYNAMIC_CLASS(CGPUProcessbar, IGUIElement)
+        static AlgoLayout* m_layout;
+        static AvmEventType    m_event_type;
     };
-}
+};
+
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
@@ -65,4 +63,4 @@ namespace GUI
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _GPU_ELEMENT_PROCESSBAR_H_ */
+#endif /* } _ALGO_LAYOUT_H_ */

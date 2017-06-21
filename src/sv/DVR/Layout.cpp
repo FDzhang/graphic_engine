@@ -29,7 +29,6 @@
 
 namespace GUI
 {
-    AvmEventType ILayout::m_event_type = 0;
     ILayout::ILayout()
         :m_node(NULL), m_node_id(0)
         ,m_origin_element_info(NULL)
@@ -136,23 +135,23 @@ namespace GUI
 
     }
 
-    bool ILayout::AttachEvent(const char* name, uint32_t payload_size)
+    AvmEventType ILayout::AttachEvent( const char* name, uint32_t payload_size)
     {
         if( name == NULL || payload_size == 0)
         {
-            return false;
+            return AvmEvent::Invalid_Event_Type;
         }
-        m_event_type = AvmRegisterEvent(name, payload_size);
-        if ( AvmEvent::Invalid_Event_Type == m_event_type)
-        {
-            ERROR("failed to register event\n");
-            return false;
-        }
-        return true;
+        return( AvmRegisterEvent(name, payload_size));
     }
 
     AvmEvent* ILayout::RequestEvent(void** payload)
     {
+        AvmEventType m_event_type = GetAttachEventType();
+        if( m_event_type == AvmEvent::Invalid_Event_Type)
+        {
+            ERROR("not a right avm event type id");
+            return NULL;
+        }
         AvmEvent* avm_event = AvmRequestEvent(m_event_type);
         RawAvmEvent* raw_event = avm_event->GetRawEvent();
         *payload = raw_event->payload;

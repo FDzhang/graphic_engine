@@ -88,22 +88,23 @@ namespace GUI
     void Front_Layout::OnMouseDown(int x, int y)
     {
     }
-    /**
-     * 接口函数，操作Front_Layout
-     */
-    extern "C" DLL_PUBLIC IFrontLayout* NewFrontLayout()
-    {
-        return(GUI::Front_Layout::GetLayout());
-    }
-
-    extern "C" DLL_PUBLIC void DeleteFrontLayout(IFrontLayout* layout)
-    {
-        if(layout)
-        {
-            delete layout;
-        }
-    }
 };
+
+/**
+ * 接口函数，操作Front_Layout
+ */
+extern "C" DLL_PUBLIC IFrontLayout* NewFrontLayout()
+{
+    return(GUI::Front_Layout::GetLayout());
+}
+
+extern "C" DLL_PUBLIC void DeleteFrontLayout(IFrontLayout* layout)
+{
+    if(layout)
+    {
+        delete layout;
+    }
+}
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *==========================================================================================

@@ -17,7 +17,10 @@
 #include <utils/utils_func.h>
 #include <gpu_log.h>
 #include "../sv/DVR/Layout.h"
+#include "../sv/DVR/DVR_Layout.h"
+#include "../sv/DVR/Algo_Layout.h"
 #include "IF_Dvr.h"
+#include "IF_Algo.h"
 
 extern "C"
 {
@@ -54,5 +57,9 @@ void InitStaticLogctrls()
 void __attribute__((constructor)) setup(void)
 {
     InitStaticLogctrls();
-    GUI::ILayout::AttachEvent(DVRHMI_EVENT_NAME, sizeof(DVR_Event_Payload_T));
+    AvmEventType type;
+    type = GUI::ILayout::AttachEvent(ALGOHMI_EVENT_NAME, sizeof(Algo_Event_Header_T));
+    GUI::AlgoLayout::SetAvmEventType(type);
+    type = GUI::ILayout::AttachEvent(DVRHMI_EVENT_NAME, sizeof(DVR_Event_Payload_T));
+    GUI::DVR_Layout::SetAvmEventType(type);
 }

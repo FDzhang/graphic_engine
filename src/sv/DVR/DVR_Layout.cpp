@@ -30,7 +30,7 @@
 namespace GUI
 {
     DVR_Layout* DVR_Layout::m_layout = NULL;
-    
+    AvmEventType   DVR_Layout::m_event_type = AvmEvent::Invalid_Event_Type;
     IDVR* DVR_Layout::GetLayout()
     {
         if(m_layout == NULL)
@@ -39,6 +39,7 @@ namespace GUI
         }
         return m_layout;
     }
+
     /**
      * \beief gpu控件元素信息表, 记录控件消息事件响应操作 
      */    

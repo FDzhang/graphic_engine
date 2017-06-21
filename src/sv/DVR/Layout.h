@@ -56,7 +56,7 @@ namespace GUI
         //! 使能layout(控制layout的绘制与否)
         void EnableLayout(int flag);
         //! AttachEvent 注册SystemEvent消息
-        static bool AttachEvent(const char* name, uint32_t payload_size);
+        static AvmEventType AttachEvent(const char* name, uint32_t payload_size);
     protected:
         //! 初始化控件元素表
         void InitElementTable(struct ElementFuntionTable* table, const uint32_t elementNum);
@@ -67,8 +67,9 @@ namespace GUI
          */
         AvmEvent* RequestEvent(void** payload);
         static bool PostEvent(AvmEvent* avm_event);
+        //! 获取AvmEvent 默认是无效event type
+        virtual AvmEventType GetAttachEventType() {return AvmEvent::Invalid_Event_Type;}
         
-        static AvmEventType m_event_type;
     protected:
         //Layout node (布局在Layout上的控件元素，都应该在此基础上进行绘制)
         IGUINode* m_node;

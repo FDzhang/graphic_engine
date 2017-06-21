@@ -44,6 +44,7 @@ namespace GUI
         ~DVR_Layout();
     public:
         static IDVR* GetLayout();
+        static void  SetAvmEventType(AvmEventType type) { m_event_type = type; }
     public: /*IDVR要求的提供外部调用的接口实现*/
         //Layout初始化面板接口
         void Init() {};
@@ -65,6 +66,8 @@ namespace GUI
         void FastForwardPlay();
         void RewindPlay();
         void SetPlaylist();
+    protected:
+        AvmEventType GetAttachEventType() {return m_event_type; }
     private:
         //暂停播放按钮
         void InitMediaPlay(IGUIElement*, const GUI_HANDLE_T parentId);
@@ -112,6 +115,7 @@ namespace GUI
         CGPUButton*     m_media_play;
         CGPUText*       m_bar_text;
         CGPUListView*   m_listview;
+        static AvmEventType    m_event_type;
     private:
         static DVR_Layout* m_layout;
     };
