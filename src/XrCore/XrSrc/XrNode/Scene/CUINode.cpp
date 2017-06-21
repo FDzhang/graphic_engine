@@ -181,8 +181,10 @@ TouchPackage* CUINode::OnEvent(TouchPackage* package)
 			//m_hitedLayer = 0;
 		}
 	}
-	if (m_hitedLayer) return 0;
-	else return package;
+	//dota2_black :　导致只检测了一层ui node
+	//if (m_hitedLayer) return 0;
+	//lse return package;
+	return package;
 }
 
 xr_state CUINode::ProcessEventQueue()

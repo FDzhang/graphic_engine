@@ -102,6 +102,9 @@ namespace GUI
         //media_exit
         void InitMediaExit(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnExitEvent(IGUIElement*);
+
+        void InitMediaListviewPop(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnListViewPop(IGUIElement*);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];

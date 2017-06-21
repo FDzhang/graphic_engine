@@ -54,8 +54,9 @@ namespace GUI
         { "CGPUButton"     , "退出"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaExit)        , (PFOnEvent)(&DVR_Layout::OnExitEvent), NULL},
         { "CGPUButton"     , "截图"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaScreenShot)  , (PFOnEvent)(&DVR_Layout::OnScreenShotEvent), NULL},
         { "CGPUButton"     , "设置"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaSetting)     , (PFOnEvent)(&DVR_Layout::OnSettingEvent), NULL},
+        { "CGPUButton"    , "播放列表按钮", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewPop),(PFOnEvent)(&DVR_Layout::OnListViewPop), NULL},
         { "CGPUProcessbar" , "进度条"     , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaBar)         , (PFOnEvent)(&DVR_Layout::OnBarEvent), NULL},
-        { "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListView),(PFOnEvent)(&DVR_Layout::OnListViewEvent), NULL},
+        //{ "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListView),(PFOnEvent)(&DVR_Layout::OnListViewEvent), NULL},
         //{ "CGPUIcon"       , "指示灯"     , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaStateIcon), NULL, NULL},
     };
     
@@ -212,7 +213,7 @@ namespace GUI
 
     static IGUITexture listview_array_texture[] = {
         {XR_RES_DVR"media_listview_bg.dds", 0, 250, 602, 350},
-        {XR_RES_DVR"media_listview_thumbnail.bmp", 250, 0, 256,256}, //默认载入的bmp图片
+        {XR_RES_DVR"media_listview_thumbnail.dds", 250, 0, 256,256}, //默认载入的bmp图片
         {XR_RES_DVR"media_listview_itemPrev.dds", 16, 315, 33, 33},
         {XR_RES_DVR"media_listview_itemOk.dds", 111, 315, 33, 33},
         {XR_RES_DVR"media_listview_itemNext.dds", 206, 315, 33, 33},
@@ -220,7 +221,11 @@ namespace GUI
         {XR_RES_DVR"media_listview_itemSelected.dds",0, 0, 252, 35},
         {XR_RES"text_box.ttf", 0, 0, 0, 0}
     };
-        
+    static IGUITexture listviewpop_array_texture[] =
+    {
+        {XR_RES_DVR"media_listview_pop.dds",   24, 25, 48, 50},
+        {XR_RES_DVR"media_listview_poped.dds", 24, 25, 48, 50}
+    };
     void DVR_Layout::InitMediaPanel(IGUIElement* media_panel, const GUI_HANDLE_T parentId)
     {
         media_panel->Attach(m_node, parentId);
@@ -333,7 +338,15 @@ namespace GUI
                            exit_array_texture[0].element_width,
                            exit_array_texture[0].element_height);
     }
-
+    void DVR_Layout::InitMediaListviewPop(IGUIElement* media_listview_pop_button, const GUI_HANDLE_T parentId)
+    {
+        media_listview_pop_button->Attach(m_node, parentId);
+        media_listview_pop_button->SetTexture(listviewpop_array_texture, 0);
+        media_listview_pop_button->Create(listviewpop_array_texture[0].pos_x,
+                                          listviewpop_array_texture[0].pos_y,
+                                          listviewpop_array_texture[0].element_width,
+                                          listviewpop_array_texture[0].element_height);
+    }
     /**
      *  \brief DVR 控件元素事件响应
      */
@@ -345,7 +358,6 @@ namespace GUI
         //填充有效数据
         data->header.msg_id = DVR_MEDIA_PLAY_BUTTON;
         data->body.onlyNotify = true;
-        Log_Error("%d", m_event_type);
         PostEvent(event);
     }
     void DVR_Layout::OnNextEvent(IGUIElement* next_button)
@@ -441,7 +453,9 @@ namespace GUI
         data->body.onlyNotify = true;
         PostEvent(event);
     }
-    
+    void DVR_Layout::OnListViewPop(IGUIElement* listviewpop_button)
+    {
+    }
 };
 
 /**
