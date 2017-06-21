@@ -58,7 +58,10 @@ typedef struct Algo_Event_Payload
 typedef enum
 {
     ALGO_EXIT_BUTTON, /*算法退出按钮*/
-    
+    ALGO_LDW_BUTTON,
+    ALGO_BSD_BUTTON,
+    ALGO_ONLINE_BUTTON,
+    ALGO_APA_BUTTON,
 }ALGO_EVENT_ELEMENT_ID_T;
 
 /**

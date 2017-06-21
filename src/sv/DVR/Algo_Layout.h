@@ -49,6 +49,14 @@ namespace GUI
     private:
         void InitAlgoExit(IGUIElement* , const GUI_HANDLE_T);
         void OnEventExit(IGUIElement* play_button);
+        void InitAlgoLdw(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventLdw(IGUIElement* play_button);
+        void InitAlgoBsd(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventBsd(IGUIElement* play_button);
+        void InitAlgoOnline(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventOnline(IGUIElement* play_button);
+        void InitAlgoApa(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventApa(IGUIElement* play_button);
     private:
         static AlgoLayout* m_layout;
         static AvmEventType    m_event_type;
