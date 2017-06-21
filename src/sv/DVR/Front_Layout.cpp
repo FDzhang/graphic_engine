@@ -84,9 +84,17 @@ namespace GUI
     }
     void Front_Layout::OnMouseUp(int x, int y)
     {
+        if(m_cursor)
+        {
+            m_cursor->OnTouchEvent(m_cursor->GetHwnd(), x, y, TouchEvent_Up);
+        }
     }
     void Front_Layout::OnMouseDown(int x, int y)
     {
+        if(m_cursor)
+        {
+            m_cursor->OnTouchEvent(m_cursor->GetHwnd(), x, y, TouchEvent_Down);
+        }
     }
 };
 

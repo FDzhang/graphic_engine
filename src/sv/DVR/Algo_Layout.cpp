@@ -62,8 +62,8 @@ namespace GUI
 
     static IGUITexture exit_array_texture[] =
     {
-        {XR_RES_DVR"BC64.dds", 1014, 620, 74, 74},
-        {XR_RES_DVR"BC64.dds", 1014, 620, 74, 74},
+        {XR_RES_DVR"BC64.dds", 1014, 620, 100, 100},
+        {XR_RES_DVR"BC64.dds", 1014, 620, 100, 100},
     };
     
     void AlgoLayout::InitAlgoExit(IGUIElement* exit_button, const GUI_HANDLE_T parentId)

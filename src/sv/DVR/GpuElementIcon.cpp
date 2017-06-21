@@ -73,11 +73,8 @@ namespace GUI
 
     Boolean CGPUIcon::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        if( type == TouchEvent_Move)
-        {
-            m_cursor_layer->SetX(x);
-            m_cursor_layer->SetY(y);
-        }
+        m_cursor_layer->SetX(x);
+        m_cursor_layer->SetY(y);
     }
     IMPLEMENT_DYNAMIC_CLASS(CGPUIcon)
 };
