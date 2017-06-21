@@ -204,8 +204,8 @@ namespace GUI
         {XR_RES_DVR"barSlide.dds", 0, 602, 1280, 18}
     };
     static IGUITexture exit_array_texture[] = {
-        {XR_RES_DVR"media_on.dds", 1200, 10, 80, 80},
-        {XR_RES_DVR"media_off.dds", 1200, 10, 80, 80}
+        {XR_RES_DVR"media_on.dds",  1014, 0, 74, 74},
+        {XR_RES_DVR"media_off.dds", 1014, 0, 74, 74}
     };
     static IGUITexture text_array_texture[] = {
         {XR_RES_DVR"BC64.dds", 240, 30, 80, 40},
