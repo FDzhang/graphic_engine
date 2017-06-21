@@ -106,9 +106,9 @@ namespace GUI
         switch(m_button_property)
         {
         case GUI_BUTTON_EFFECT_LOCK:
-            IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
             if( type == TouchEvent_Down)
             {
+                IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
                 m_baseOpacity = ~m_baseOpacity;
                 m_hitOpacity = ~m_hitOpacity;
                 m_hit.SetOpacity(m_hitOpacity);
@@ -131,6 +131,8 @@ namespace GUI
             default:
                 break;
             }
+            break;
+        default:
             break;
         }
         return TRUE;
