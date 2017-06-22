@@ -91,7 +91,16 @@ namespace GUI
         {XR_RES_DVR"BC64.dds", 1014, 620, 78, 78},
         {XR_RES_DVR"BC64.dds", 1014, 620, 78, 78},
     };
-
+    static IGUITexture record_array_texture[] =
+    {
+        {XR_RES_DVR"BC64.dds", 1092, 620, 78, 78},
+        {XR_RES_DVR"BC64.dds", 1092, 620, 78, 78},
+    };
+    static IGUITexture wifi_array_texture[] =
+    {
+        {XR_RES_DVR"BC64.dds", 1170, 620, 78, 78},
+        {XR_RES_DVR"BC64.dds", 1170, 620, 78, 78},
+    };
     void AlgoLayout::InitAlgoLdw(IGUIElement* ldw_button, const GUI_HANDLE_T parentId)
     {
         ldw_button->Attach(m_node, parentId);
@@ -223,7 +232,7 @@ namespace GUI
                             wifi_array_texture[0].element_height
             );
     }
-    void AlgoLayout::OnEventAlgoWifi(IGUIElement*, const GUI_HANDLE_T)
+    void AlgoLayout::OnEventWifi(IGUIElement*, const GUI_HANDLE_T)
     {
         void* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);

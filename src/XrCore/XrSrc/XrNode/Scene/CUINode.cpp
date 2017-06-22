@@ -158,33 +158,37 @@ xr_state CUINode::OnUpdate()
 TouchPackage* CUINode::OnEvent(TouchPackage* package)
 {
 	CLayer* layer;
-
-	if (m_type == RenderNodeType_UI2D) {
-		if (package->touchEvent == TouchEvent_Down) {
-			layer = m_hitedLayer = TestLayerHit(package);
-			if (m_hitedLayer) {
-				while (!layer->OnTouch(package)) {
-					layer = layer->GetSuper();
-					if (!layer) {
-						layer = m_hitedLayer;
-						break;
-					}
-				}
-				m_hitedLayer = layer;
-			}
-		}
-		else if (package->touchEvent == TouchEvent_Move) {
-			if (m_hitedLayer) m_hitedLayer->OnTouch(package);
-		}
-		else if (package->touchEvent == TouchEvent_Up) {
-			if (m_hitedLayer) m_hitedLayer->OnTouch(package);
-			//m_hitedLayer = 0;
-		}
-	}
-	//dota2_black :　导致只检测了一层ui node
-	//if (m_hitedLayer) return 0;
-	//lse return package;
-	return package;
+    if (m_enable && m_type == RenderNodeType_UI2D)
+    {
+        if (package->touchEvent == TouchEvent_Down)
+        {
+            layer = m_hitedLayer = TestLayerHit(package);
+            if (m_hitedLayer)
+            {
+                while (!layer->OnTouch(package))
+                {
+                    layer = layer->GetSuper();
+                    if (!layer)
+                    {
+                        layer = m_hitedLayer;
+                        break;
+                    }
+                }
+                m_hitedLayer = layer;
+            }
+        }
+        else if (package->touchEvent == TouchEvent_Move)
+        {
+            if (m_hitedLayer) m_hitedLayer->OnTouch(package);
+        }
+        else if (package->touchEvent == TouchEvent_Up)
+        {
+            if (m_hitedLayer) m_hitedLayer->OnTouch(package);
+            //m_hitedLayer = 0;
+        }
+        return package;
+    }
+    return 0;
 }
 
 xr_state CUINode::ProcessEventQueue()

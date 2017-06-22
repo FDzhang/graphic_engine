@@ -60,7 +60,7 @@ namespace GUI
         void InitAlgoRecord(IGUIElement*, const GUI_HANDLE_T);
         void OnEventRecord(IGUIElement*);
         void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
-        void OnEventAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventWifi(IGUIElement*, const GUI_HANDLE_T);
     private:
         static AlgoLayout* m_layout;
         static AvmEventType    m_event_type;
