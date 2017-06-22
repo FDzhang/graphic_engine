@@ -535,7 +535,7 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
    	for(int i=0;i<4;i++)
 	{
 	
-	  //fprintf(stdout,"\r\n wheelpulse[%d]=%d,%d,%d,dist[%f]",i,vehicle_state.pre_wheel_pulse[i],vehicle_state.wheel_pulse[i],vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i],(vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i])*0.046);
+	   // fprintf(stdout,"\r\n [svnode2dstich]wheelpulse[%d]=%d,%d,%d,dist[%f]",i,vehicle_state.pre_wheel_pulse[i],vehicle_state.wheel_pulse[i],vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i],(vehicle_state.wheel_pulse[i]-vehicle_state.pre_wheel_pulse[i])*0.046);
 	    vehicle_state.pre_wheel_pulse[i]= vehicle_state.wheel_pulse[i];
 		
 	} 

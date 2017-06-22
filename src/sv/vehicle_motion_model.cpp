@@ -191,7 +191,8 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	
 	dist_temp = -get_distance_from_pulse(&vhcl_can_data);
     theta_offset = dist_temp/radius;
-   // fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
+	//if(theta_offset !=0)
+    //fprintf(stdout,"\r\nold theta %f,dist %f",theta_offset,dist_temp);
 	
 	//theta_offset= -fabs(get_theta_from_multi_pulse(&vhcl_can_data,radius*1000,turn_sign));
     //fprintf(stdout,"\r\nnew theta %f,dist %f",theta_offset,dist_temp);
@@ -224,7 +225,7 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
 				//theta_offset = track_offset/radius;
-				
+				//if(theta_offset!=0)
 				//fprintf(stdout,"\r\n 1 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
@@ -244,6 +245,7 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				track += track_offset;
 				
 				//theta_offset = track_offset/radius;
+				//if(theta_offset!=0)
 				//fprintf(stdout,"\r\n 2 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
@@ -265,6 +267,7 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
 				//theta_offset = track_offset/radius;
+				//if(theta_offset!=0)
 				//fprintf(stdout,"\r\n 3 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
@@ -283,6 +286,7 @@ void VehicleMotion::revMotion2KframePredictVCS(
 				track_offset = time_offset/1000000.0f*speed;
 				track += track_offset;
 				//theta_offset = track_offset/radius;
+				//if(theta_offset!=0)
 				//fprintf(stdout,"\r\n 4 old theta %f",theta_offset);
 
 				t[0] = cos(theta_offset);
