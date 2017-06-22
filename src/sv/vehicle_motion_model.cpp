@@ -443,12 +443,12 @@ if (shft_pos == 2)
 {
 	if (str_whl_angle < 0) // steering wheel turns clockwisely
 	{
-		radius = 2756 / tan((3.269*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -2.488*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
+		radius = 2750 / tan((3.269*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -2.488*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
 			+0.06131 * (-str_whl_angle) + 0.004912)*CV_PI / 180) - 919.5;
 	}
 	else
 	{
-		radius = 2756 / tan((3.446*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) +2.798*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
+		radius = 2750 / tan((3.466*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) +2.798*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
 			+0.05994 * (str_whl_angle) + 0.0446)*CV_PI / 180) + 919.5;
 
 		//radius = 2756 / tan(ABS(0.06501 * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) + 919.5;
@@ -458,12 +458,12 @@ else
 {
 	if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
 	{
-		radius = 2756 / tan((6.667*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -5.163*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
+		radius = 2750 / tan((6.667*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -5.163*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
 			+0.06626 * (-str_whl_angle) + 0.007778)*CV_PI / 180) - 919.5;
 	}
 	else
 	{
-		radius = 2756 / tan((8.628*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) -1.086*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
+		radius = 2750 / tan((8.628*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) -1.086*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
 			+0.06691 * (str_whl_angle) + 0.005639)*CV_PI / 180) + 919.5;
 	}
 }
