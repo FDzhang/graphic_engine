@@ -48,15 +48,19 @@ namespace GUI
         static struct ElementFuntionTable m_element_info[];
     private:
         void InitAlgoExit(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventExit(IGUIElement* play_button);
+        void OnEventExit(IGUIElement*);
         void InitAlgoLdw(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventLdw(IGUIElement* play_button);
+        void OnEventLdw(IGUIElement*);
         void InitAlgoBsd(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventBsd(IGUIElement* play_button);
+        void OnEventBsd(IGUIElement* );
         void InitAlgoOnline(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventOnline(IGUIElement* play_button);
+        void OnEventOnline(IGUIElement*);
         void InitAlgoApa(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventApa(IGUIElement* play_button);
+        void OnEventApa(IGUIElement*);
+        void InitAlgoRecord(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventRecord(IGUIElement*);
+        void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
     private:
         static AlgoLayout* m_layout;
         static AvmEventType    m_event_type;

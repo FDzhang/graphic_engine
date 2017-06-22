@@ -40,11 +40,13 @@ namespace GUI
     
     struct ILayout::ElementFuntionTable AlgoLayout::m_element_info[] =
     {
-        {"CGPUButton" , "开关回放模式" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoExit) , (PFOnEvent)(&AlgoLayout::OnEventExit), NULL},
         {"CGPUButton" , "ldw" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoLdw) , (PFOnEvent)(&AlgoLayout::OnEventLdw), NULL},
         {"CGPUButton" , "bsd" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoBsd) , (PFOnEvent)(&AlgoLayout::OnEventBsd), NULL},
         {"CGPUButton" , "online" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoOnline) , (PFOnEvent)(&AlgoLayout::OnEventOnline), NULL},
         {"CGPUButton" , "apa" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApa) , (PFOnEvent)(&AlgoLayout::OnEventApa), NULL},
+        {"CGPUButton" , "playback" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoExit) , (PFOnEvent)(&AlgoLayout::OnEventExit), NULL},
+        {"CGPUButton" , "record" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoRecord) , (PFOnEvent)(&AlgoLayout::OnEventRecord), NULL},
+        {"CGPUButton" , "wifi" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoWifi) , (PFOnEvent)(&AlgoLayout::OnEventWifi), NULL},
     };
 
     void AlgoLayout::Enable(bool flag)
@@ -188,6 +190,46 @@ namespace GUI
         Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
         data->header.msg_id = ALGO_EXIT_BUTTON;
+        data->body.onlyNotify = true;
+        PostEvent(event);
+    }
+    void AlgoLayout::InitAlgoRecord(IGUIElement* record_button, const GUI_HANDLE_T parentId)
+    {
+        record_button->Attach(m_node, parentId);
+        record_button->SetTexture(record_array_texture, 0);
+        record_button->Create(record_array_texture[0].pos_x,
+                              record_array_texture[0].pos_y,
+                              record_array_texture[0].element_width,
+                              record_array_texture[0].element_height
+            );
+    }
+    void AlgoLayout::OnEventRecord(IGUIElement*)
+    {
+        void* payload = NULL;
+        AvmEvent* event = RequestEvent(&payload);
+        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
+        //填充有效数据
+        data->header.msg_id = ALGO_RECORD_BUTTON;
+        data->body.onlyNotify = true;
+        PostEvent(event);
+    }
+    void AlgoLayout::InitAlgoWifi(IGUIElement* wifi_button, const GUI_HANDLE_T parentId)
+    {
+        wifi_button->Attach(m_node, parentId);
+        wifi_button->SetTexture(wifi_array_texture, 0);
+        wifi_button->Create(wifi_array_texture[0].pos_x,
+                            wifi_array_texture[0].pos_y,
+                            wifi_array_texture[0].element_width,
+                            wifi_array_texture[0].element_height
+            );
+    }
+    void AlgoLayout::OnEventAlgoWifi(IGUIElement*, const GUI_HANDLE_T)
+    {
+        void* payload = NULL;
+        AvmEvent* event = RequestEvent(&payload);
+        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
+        //填充有效数据
+        data->header.msg_id = ALGO_WIFI_BUTTON;
         data->body.onlyNotify = true;
         PostEvent(event);
     }
