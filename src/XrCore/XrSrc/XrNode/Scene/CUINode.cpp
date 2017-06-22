@@ -186,9 +186,8 @@ TouchPackage* CUINode::OnEvent(TouchPackage* package)
             if (m_hitedLayer) m_hitedLayer->OnTouch(package);
             //m_hitedLayer = 0;
         }
-        return package;
     }
-    return 0;
+    return package;
 }
 
 xr_state CUINode::ProcessEventQueue()
