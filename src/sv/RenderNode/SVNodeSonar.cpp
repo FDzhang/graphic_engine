@@ -421,7 +421,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 
 		
     }
-	#if 0
+	//#if 0
 	else if(m_sonar_parking_lot[front_left_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE&&m_sonar_parking_lot[front_left_side_sonar].show_flag==1)
 	{
 
@@ -440,7 +440,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 
 	
 	}
-	#endif
+	//#endif
 	else
 	{
     	pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type;
@@ -634,7 +634,7 @@ int  SVNodeSonar::CalcSonarObjPos(float *pos,float obj_dist,sonar_index index)
     pos[0]=m_sonar_pos[index].pos[0]+obj_dist*sin(rad_angle);
     pos[1]=m_sonar_pos[index].pos[1]+obj_dist*cos(rad_angle);    
     pos[2] = m_sonar_pos[index].pos[2];
-	DelayPointProcess(3,pos);
+	DelayPointProcess(5,pos);
 
 	return 0;
 }
