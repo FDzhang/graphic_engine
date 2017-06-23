@@ -448,6 +448,7 @@ namespace GUI
     }
     void DVR_Layout::OnExitEvent(IGUIElement* exit_button)
     {
+        m_media_play->Reset();
         void* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
         DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
