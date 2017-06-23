@@ -40,16 +40,19 @@ namespace GUI
         void SetTexture(const IGUITexture* effect, const long style);
         void SetValue(uint32_t whole_time, uint32_t current_time);
         void SetEnable(bool enable);
+        float GetPos() { return m_pos;}
     private:
         /** 重写OnTouchEvent, 添加事件自定义处理功能*/
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);
 
     private:
-        IGUITexture m_barBaseTexture, m_barSlideTexture;
+        IGUITexture* m_barBaseTexture,* m_barSlideTexture;
         uint32_t m_processbar_x, m_processbar_y;
         uint32_t m_processbar_width, m_processbar_height;
         ILayer   *m_pbarBase, *m_pbarSlide;
-        float m_val;
+        float m_pos;
+
+        bool m_status;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUProcessbar, IGUIElement)
     };

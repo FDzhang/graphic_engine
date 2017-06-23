@@ -28,19 +28,66 @@
 #include "IGUIElement.h"
 #include "XrCore/XrSrc/XrUILibrary/CXrSelector.h"
 
-class GpuElementListView : private CXrSelector
+namespace GUI
 {
-public:
-    GpuElementListView();
-    ~GpuElementListView();
+    class CGPUListView : public IGUIElement , private CXrBaseView
+    {
+    public:
+        CGPUListView();
+        ~CGPUListView();
 
-    bool Create(const uint32_t pos_x, const uint32_t pos_y,
-                const uint32_t element_width, element_height);
-    void SetElementEffect(void* effect, long style);
-private:
-    DECLEAR_DYNAMIC_CLASS(GpuElementListView, IGUIElement)
-};
+        bool Create(const uint32_t pos_x, const uint32_t pos_y,
+                    const uint32_t element_width, uint32_t element_height);
+        void SetTexture(const IGUITexture* effect, const long style);
+        /*添加文件列表item*/
+        void AddTextItem(const char* text);
+        /*清空文件列表内容*/
+        void Reset();
 
+        //获取当前选中的item
+        uint32_t GetCurrentIndex()  const { return m_current_item->index;}
+        uint32_t DeleteCurrentItem() {}
+    protected:
+        void OnBtnPrev(Int32 layerId, Int32 x, Int32 y, Int32 type);
+        void OnBtnNext(Int32 layerId, Int32 x, Int32 y, Int32 type);
+        void OnItemSelected(Int32 layerId, Int32 x, Int32 y, Int32 type);
+    private:
+        //重载事件响应
+        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
+    private:
+        const uint32_t m_itemNum;
+
+        IGUITexture* m_base_texture                 ;
+        IGUITexture* m_thumbnail_texture            ;
+        IGUITexture* m_listview_itemOk_texture      ;
+        IGUITexture* m_listview_itemPrev_texture    ;
+        IGUITexture* m_listview_itemNext_texture    ;
+        IGUITexture* m_listview_item_texture        ;
+        IGUITexture* m_listview_itemSelected_texture;
+        IGUITexture* m_listview_font_texture        ;
+
+        //目前暂定为固定数目的列表
+        struct
+        {
+            Int32 m_itemSpirtId;
+            ILayer* m_itemLayer;
+            ITextLayer* m_itemText; //文字绘制层
+            
+            uint32_t indexFile;     //对应的文件索引号
+            uint32_t index;         //item 序列号
+            EventResponder* responder;
+        }m_listview_item[9], *m_current_item;
+
+        //列表框下方的上/下翻页 上/下选择layer
+        struct
+        {
+            ILayer* layer;
+            EventResponder* responder;
+        }m_itemOk, m_itemPrev, m_itemNext, m_itemSelected;
+    private:
+        DECLEAR_DYNAMIC_CLASS(CGPUListView, IGUIElement)
+    };
+}
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------

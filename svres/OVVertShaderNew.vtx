@@ -1,0 +1,50 @@
+attribute highp vec4 myVertex;
+attribute highp vec4 myNormal;
+attribute mediump vec2 myUV;
+uniform mediump mat4 myPMVMatrix;
+uniform mediump mat4 uvPMVMatrix;
+uniform vec2 Point_Gate;
+uniform vec3 Pos_Select;
+uniform vec3 Lumin_Gate_Min;
+uniform vec3 Lumin_Gate_Max;
+varying mediump vec2 TexCoord;
+varying mediump vec2 TexCoord2;
+varying mediump vec3 Luminance;
+void main(void)
+{
+	gl_Position = myPMVMatrix * myVertex;
+    float ratio;
+    float pos;
+	TexCoord.x = myNormal.x;
+	TexCoord.y = myNormal.y;
+    
+    pos = myVertex.x*Pos_Select.x+myVertex.y*Pos_Select.y+myVertex.z*Pos_Select.z;
+    
+    ratio = (pos-Point_Gate.x)/(Point_Gate.y-Point_Gate.x);
+    
+    if(pos < Point_Gate.x)
+    {
+         Luminance = Lumin_Gate_Min;
+    }
+    else if(pos > Point_Gate.y)
+    {
+         Luminance = Lumin_Gate_Max;
+    }
+    else
+    {
+ 	      Luminance.xyz = ratio*Lumin_Gate_Max +(1.0-ratio)*Lumin_Gate_Min;   
+    } 
+
+        if(myVertex.y>=100.0)
+        {
+	    Luminance.y=1.0;
+	    Luminance.z=1.0;
+
+	}	
+
+
+	TexCoord2 = myUV;
+
+	
+}
+

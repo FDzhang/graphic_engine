@@ -62,16 +62,12 @@ namespace GUI
         void SetEnable(bool enable);
         void Reset() ;
     private:
-        Boolean OnTouchEvent(
-            /* [in] */Int32 layerId,
-            /* [in] */Int32 x,
-            /* [in] */Int32 y,
-            /* [in] */Int32 type);
+        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
     private:
         uint32_t m_layout_x, m_layout_y;
         uint32_t m_button_width, m_button_height; 
-        IGUITexture m_base_texture;
-        IGUITexture m_hit_texture;
+        IGUITexture* m_base_texture;
+        IGUITexture* m_hit_texture;
 
         uint32_t m_button_opacity;
         uint32_t m_button_property;

@@ -24,6 +24,7 @@
  * VERSION: 13 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "GpuElementButton.h"
+#include "Layout.h"
 
 namespace GUI
 {
@@ -71,9 +72,9 @@ namespace GUI
                            m_button_width,
                            m_button_height,
                            m_button_opacity,
-                           m_base_texture,
-                           m_hit_texture);
-            IGUIElement::SetElementId(CXrButton::GetRootId());
+                           m_base_texture->texName,
+                           m_hit_texture->texName);
+            IGUIElement::SetHwnd((GUI_HANDLE_T)CXrButton::GetRootId());
         }
         else
         {
@@ -85,8 +86,8 @@ namespace GUI
     void CGPUButton::SetTexture(const IGUITexture* effect, const long style)
     {
         //目前CXrButton 只支持两种纹理(底层纹理, 点击后的纹理), 检查纹理文件是否存在
-        m_base_texture = ((IGUITexture*)effect)[0];
-        m_hit_texture =  ((IGUITexture*)effect)[1];
+        m_base_texture = &(((IGUITexture*)effect)[0]);
+        m_hit_texture =  &(((IGUITexture*)effect)[1]);
         m_button_property = style;
     }
     void CGPUButton::SetEnable(bool enable)
@@ -102,28 +103,34 @@ namespace GUI
     }
     Boolean CGPUButton::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        m_cmdTarget->DispatchEvent(layerId, type);
-        if(m_button_property == GUI_BUTTON_EFFECT_LOCK )
+        switch(m_button_property)
         {
+        case GUI_BUTTON_EFFECT_LOCK:
             if( type == TouchEvent_Down)
             {
+                IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
                 m_baseOpacity = ~m_baseOpacity;
                 m_hitOpacity = ~m_hitOpacity;
                 m_hit.SetOpacity(m_hitOpacity);
                 m_base.SetOpacity(m_baseOpacity);
             }
-            return TRUE;
-        }
-        switch(type)
-        {
-        case TouchEvent_Down:
-            m_hit.SetOpacity(m_button_opacity);
-            m_base.SetOpacity(0);
             break;
-        case TouchEvent_Up:
-            
-            m_hit.SetOpacity(0.0);
-            m_base.SetOpacity(m_button_opacity);
+        case GUI_BUTTON_EFFECT_DEFAULT:
+            switch(type)
+            {
+            case TouchEvent_Down:
+                IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
+                m_hit.SetOpacity(m_button_opacity);
+                m_base.SetOpacity(0);
+                break;
+            case TouchEvent_Up:
+                
+                m_hit.SetOpacity(0.0);
+                m_base.SetOpacity(m_button_opacity);
+                break;
+            default:
+                break;
+            }
             break;
         default:
             break;

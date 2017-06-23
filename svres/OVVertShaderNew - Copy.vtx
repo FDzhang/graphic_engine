@@ -1,0 +1,124 @@
+attribute highp vec4 myVertex;
+attribute highp vec4 myNormal;
+attribute mediump vec2 myUV;
+uniform mediump mat4 myPMVMatrix;
+uniform mediump mat4 uvPMVMatrix;
+uniform float flag_Lumin;
+uniform vec3 Lumin_FL;
+uniform vec3 Lumin_FR;
+uniform vec3 Lumin_BL;
+uniform vec3 Lumin_BR;
+uniform vec3 Lumin_LF;
+uniform vec3 Lumin_RF;
+uniform vec3 Lumin_LB;
+uniform vec3 Lumin_RB;
+uniform vec2 Point_Gate;
+uniform vec3 Pos_Select;
+uniform vec3 Lumin_Point_TL;
+uniform vec3 Lumin_Point_TR;
+uniform vec3 Lumin_Point_RT;
+uniform vec3 Lumin_Point_RB;
+varying mediump vec2 TexCoord;
+varying mediump vec2 TexCoord2;
+varying mediump vec3 Luminance;
+void main(void)
+{
+	gl_Position = myPMVMatrix * myVertex;
+    float ratio;
+
+	TexCoord.x = myNormal.x;
+	TexCoord.y = myNormal.y;
+
+
+	if(TexCoord.x<=0.0||TexCoord.x>=1.0||TexCoord.y<=0.0||TexCoord.y>=1.0)
+	{
+       Luminance = vec3(1.0,1.0,1.0);
+	}
+	else
+    {
+       Luminance = vec3(1.0,1.0,1.0);	
+    }
+	if(0.0 == flag_Lumin)  //right image
+	{
+
+       ratio = (myVertex.z-Lumin_Point_RT.z)/(Lumin_Point_RB.z -Lumin_Point_RT.z);
+       if( myVertex.z <= Lumin_Point_RT.z )
+	   {
+	      Luminance.xyz = Lumin_RF.xyz;
+
+	   }else if( myVertex.z >= Lumin_Point_RB.z )
+	   {
+	      Luminance.xyz = Lumin_RB.xyz;
+
+	   }else
+	   {
+	      
+	      Luminance.xyz = ratio*Lumin_RB.xyz +(1.0-ratio)*Lumin_RF.xyz;
+	   }
+	
+	}else if(1.0 == flag_Lumin)  //left image
+	{
+       ratio = (myVertex.z-Lumin_Point_RT.z)/(Lumin_Point_RB.z -Lumin_Point_RT.z);
+       if( myVertex.z <= Lumin_Point_RT.z )
+	   {
+	      Luminance.xyz = Lumin_LB.xyz;
+
+	   }else if( myVertex.z >= Lumin_Point_RB.z )
+	   {
+	      Luminance.xyz = Lumin_LF.xyz;
+
+	   }else
+	   {
+	      
+	      Luminance.xyz = ratio*Lumin_LF.xyz +(1.0-ratio)*Lumin_LB.xyz;
+	   }
+	
+	}
+	else if(2.0 == flag_Lumin) //front image
+	{ 
+      
+       ratio = (myVertex.x-Lumin_Point_TL.x)/(Lumin_Point_TR.x -Lumin_Point_TL.x);
+       if( myVertex.x <= Lumin_Point_TL.x )
+	   {
+	      Luminance.xyz = Lumin_FL.xyz;
+
+	   }else if( myVertex.x >= Lumin_Point_TR.x )
+	   {
+	      Luminance.xyz = Lumin_FR.xyz;
+
+	   }else
+	   {
+	      
+	      Luminance.xyz = ratio*Lumin_FR.xyz +(1.0-ratio)*Lumin_FL.xyz;
+	   }
+	
+	
+	}
+	else if(3.0 == flag_Lumin) //front image
+	{ 
+      
+       ratio = (myVertex.x-Lumin_Point_TL.x)/(Lumin_Point_TR.x -Lumin_Point_TL.x);
+       if( myVertex.x <= Lumin_Point_TL.x )
+	   {
+	      Luminance.xyz = Lumin_BR.xyz;
+
+	   }else if( myVertex.x >= Lumin_Point_TR.x )
+	   {
+	      Luminance.xyz = Lumin_BL.xyz;
+
+	   }else
+	   {
+	      
+	      Luminance.xyz = ratio*Lumin_BL.xyz +(1.0-ratio)*Lumin_BR.xyz;
+	   }
+	
+	
+	}else
+	{
+	   Luminance.xyz = vec3(1.0,1.0,1.0);
+	}  
+	  
+    
+	TexCoord2 = myUV;
+}
+

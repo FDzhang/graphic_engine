@@ -24,10 +24,12 @@
  * VERSION: 23 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "GpuElementPanel.h"
+#include "Layout.h"
 
 namespace GUI
 {
     CGPUPanel::CGPUPanel()
+        :IGUIElement("CGPUPanel")
     {
         m_panel = new CXrPanel(-1);
     }
@@ -52,8 +54,8 @@ namespace GUI
                 flag = InsertFlag_Default;
             }
             /** 调用XrCore的CXrButton,添加button node*/
-            m_panel->Add(node, parent, flag, pos_x, pos_y, element_width, element_height, 1, m_baseLayerTexture);
-            IGUIElement::SetElementId(m_panel->GetRootId());
+            m_panel->Add(node, parent, flag, pos_x, pos_y, element_width, element_height, 1, const_cast<char*>(m_baseLayerTexture->texName));
+            IGUIElement::SetHwnd((GUI_HANDLE_T)m_panel->GetRootId());
             DEBUG("get the right layout node\n");
         }
         else
@@ -65,7 +67,7 @@ namespace GUI
 
     void CGPUPanel::SetTexture(const IGUITexture* effect, const long style)
     {
-        m_baseLayerTexture = ((IGUITexture*)effect)[0];
+        m_baseLayerTexture = &(((IGUITexture*)effect)[0]);
     }
     CGPUPanel::~CGPUPanel()
     {

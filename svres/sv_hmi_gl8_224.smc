@@ -1,0 +1,63 @@
+#3D BEV SMC File
+
+SMC_MAJOR_VERSION				: 1
+SMC_MINOR_VERSION				: 0
+
+
+
+############################################
+##Vehicle Paramter
+
+SPACE_MODEL_SCALE_SIZE                    3.5
+SPACE_MODEL_Y_MIN                         117
+VEHICLE_LENGTH                            5000.0
+VEHICLE_REARWHEEL_TO_REAR_BUMPER          1100.0
+
+
+
+############################################
+## CAR MODEL POSITION AND SIZE
+## 
+CAR_MODEL_POSITION_X                    :-40.0
+CAR_MODEL_POSITION_Y                    :-260.0
+CAR_MODEL_POSITION_Z                    : 65.0
+CAR_MODEL_SCALE_X                       : 0.6
+CAR_MODEL_SCALE_Y                       : 0.9
+CAR_MODEL_SCALE_Z                       : 0.85
+WHEEL_MODEL_SCALE                       : 49.0
+WHEEL_MODEL_OFFSET_FRONT                : 680.0
+WHEEL_MODEL_OFFSET_REAR                 : 730.0
+WHEEL_MODEL_OFFSET_WIDTH                : 380.0
+WHEEL_MODEL_OFFSET_UP                   : 30.0
+
+
+############################################
+## GROUND MODEL POSITION AND SIZE
+##
+GROUND_MODEL_WIDTH                      : 320.0    #450.0
+GROUND_MODEL_HEIGHT                     : 950.0    #750.0
+GROUND_MODEL_POS_X                      : -26.0       #-60.0 
+GROUND_MODEL_POS_Y                      : -409.0
+GROUND_MODEL_POS_Z                      : 26.0       #-50.0
+GROUND_MODEL_ENABLE                     : 1  # 1 ENABLE; 0 DISABLE
+
+
+############################################
+## UI SETUP
+## UNIT: PERCENTAGE OF SCREEN SIZE
+LEFT_PANEL_POSITION_X                   :0.0
+LEFT_PANEL_POSITION_Y                   :0.15
+LEFT_PANEL_WIDTH                        :0.11
+LEFT_PANEL_HEIGHT                       :0.89
+BOTTOM_PANEL_POSITION_X                 :0.215
+BOTTOM_PANEL_POSITION_Y                 :0.95
+BOTTOM_PANEL_WIDTH                      :0.65
+BOTTOM_PANEL_HEIGHT                     :0.04
+RIGHT_PANEL_POSITION_X                  :0.93
+RIGHT_PANEL_POSITION_Y                  :0.2083
+RIGHT_PANEL_WIDTH                       :0.06
+RIGHT_PANEL_HEIGHT                      :0.52 
+
+
+
+

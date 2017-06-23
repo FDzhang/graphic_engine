@@ -25,6 +25,7 @@
  *------------------------------------------------------------------------------------------*/
 #include "GpuElementText.h"
 #include "XrCore/XrSrc/XrNode/Scene/CUINode.h"
+#include "Layout.h"
 
 namespace GUI
 {
@@ -43,8 +44,8 @@ namespace GUI
 
     void CGPUText::SetTexture(const IGUITexture* effect, const long style)
     {
-        m_base_texture = ((IGUITexture*)effect)[0];
-        m_font_texture = ((IGUITexture*)effect)[1];
+        m_base_texture = &(((IGUITexture*)effect)[0]);
+        m_font_texture = &(((IGUITexture*)effect)[1]);
     }
     
     bool CGPUText::Create(const uint32_t pos_x, const uint32_t pos_y,
@@ -71,7 +72,7 @@ namespace GUI
             Int32 rootId = node->CreateSpirit(parent, flag, -1, 1.0, m_layout_x, m_layout_y, 0 , m_label_width, m_label_height);
             ILayer* m_root = node->GetLayer(rootId);
             
-            Int32 m_back_mtl_id= node->CreateUIMaterial(Material_UI_Spirit, XR_RES"BC64.dds"); 
+            Int32 m_back_mtl_id= node->CreateUIMaterial(Material_UI_Spirit, m_base_texture->texName); 
             
             int logoLayerId = node->CreateSpirit( rootId,
                                                   InsertFlag_Child,
@@ -83,7 +84,7 @@ namespace GUI
                                                   m_label_width,
                                                   m_label_height);
             float m_textSize = 0.6;
-            Int32 m_font_mtl_id = node->CreateUIFontMaterial(XR_RES"text_box.ttf", 0);
+            Int32 m_font_mtl_id = node->CreateUIFontMaterial(m_font_texture->texName, 0);
             node->CreateTextLayer(rootId,
                                   InsertFlag_Child,
                                   m_font_mtl_id,
@@ -97,7 +98,7 @@ namespace GUI
             m_pText->SetOpacity(1.0);
             m_pText->SetFontSize(20);
             m_pText->SetColor(0.88, 0.35, 0.71);
-            IGUIElement::SetElementId(logoLayerId);
+            IGUIElement::SetHwnd((GUI_HANDLE_T)logoLayerId);
         }
         else
         {

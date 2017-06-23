@@ -25,9 +25,28 @@
  *   None.
  * VERSION: 01 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include ""
+#include "XrCore/XrSrc/XrUILibrary/CXrBaseView.h"
+#include "IGUIElement.h"
 
-
+namespace GUI
+{
+    class CGPUIcon : public IGUIElement, private CXrBaseView
+    {
+    public:
+        CGPUIcon();
+        virtual ~CGPUIcon();
+        bool Create(const uint32_t pos_x, const uint32_t pos_y,
+                    const uint32_t element_width, const uint32_t element_height);
+        void SetTexture(const IGUITexture* effect, const long style);
+        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
+    private:
+        IGUITexture* m_cursor_texture;
+        ILayer*      m_cursor_layer;
+        
+    private:
+        DECLEAR_DYNAMIC_CLASS(CGPUIcon, IGUIElement)
+    };
+};
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------

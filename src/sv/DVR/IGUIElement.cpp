@@ -24,25 +24,29 @@
  * VERSION: 13 5月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "IGUIElement.h"
+#include "Layout.h"
 
 namespace GUI
 {
     int32_t IGUIElement::m_focus_id = 0;
-    void GPU_SetElementTexture(IGUIElement* element, const IGUITexture* array_texture, uint32_t array_size)
+    IGUIElement::IGUIElement(const char* name)
+        :m_id(-1), m_parent(0)
+        ,m_eventId(0), m_cmdTarget(NULL)
+        ,m_node(NULL)
+        ,m_elementName(name)
     {
-        
+    }
+    IGUIElement::~IGUIElement()
+    {
     }
 
-    void GPU_SetElementOpacity(IGUIElement* element, const uint32_t opacity)
+    void IGUIElement::DispatchEvent(const EVENT_HANDLE_T eventId, const uint32_t type)
     {
-        
+        //if(m_cmdTarget) /*不做判断处理, 用户控件必须做事件处理*/
+        {
+            m_cmdTarget->Dispatch(eventId, type);
+        }
     }
-
-    void GPU_SetElementEventEffect(IGUIElement* element, const uint32_t style)
-    {
-        
-    }
-
     IMPLEMENT_DYNAMIC_BASE(IGUIElement)
 }
 /*------------------------------------------------------------------------------------------

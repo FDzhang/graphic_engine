@@ -1184,10 +1184,10 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 						else
 						{
 							SetParkSlotInfo(park_lot_index, park_lot_bottom_after_turn_id, (void *)&idata);
-							if(fabs(m_sonar_obj_list[sonar_index][2*(*obj_id)])<fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_cross)
+							if(fabs(m_sonar_obj_list[sonar_index][2*(*obj_id)+1])<fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_cross)
 								&& (*obj_id != MAX_SONAR_OBJ_NUM+1))
 							{
-								fdata = m_sonar_obj_list[sonar_index][2*(*obj_id)];							    								SetParkSlotInfo(park_lot_index, park_lot_dist_cross, (void *)&fdata);
+								fdata = m_sonar_obj_list[sonar_index][2*(*obj_id)+1];							    								SetParkSlotInfo(park_lot_index, park_lot_dist_cross, (void *)&fdata);
 							}
 							line_type = EDGE_TYPE_TOP_BOTTOM;
 						}
@@ -1218,12 +1218,14 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 
 								}
 								line_type = EDGE_TYPE_TOP_BOTTOM;
+
 							}
 							else
 							{
 
 								line_type = EDGE_TYPE_NO_TOP_BOTTOM;
 							}
+
 
 						}
 					}  
@@ -1762,7 +1764,7 @@ unsigned char  SVNodeSonar::JudgeJumpPoint(int filter_num,int sonar_index,int *o
 				point_type = JUMP_POINT_BOTTOM_EDGE;
 			}
 		}
-		
+
 	}
 	if(slop != NULL)
 	{
