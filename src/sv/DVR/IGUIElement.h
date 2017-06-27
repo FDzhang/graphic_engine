@@ -127,8 +127,9 @@ namespace GUI
     private:
         DECLEAR_DYNAMIC_BASE(IGUIElement)
     };
-
-    typedef void  (IGUIElement::*Responder)(Int32 layerId, Int32 x, Int32 y, Int32 type);
+    
+    class EventResponder;
+    typedef void  (IGUIElement::*Responder)(EventResponder* responder, Int32 x, Int32 y, Int32 type);
     
     class EventResponder : public IEventResponder
     {
@@ -137,13 +138,17 @@ namespace GUI
             :IEventResponder()
             ,m_responder(event)
             ,m_element(element)
+            ,m_priv_data(NULL)
         {
         }
         ~EventResponder() { if(m_responder) m_responder = NULL;}
+        //设置私有数据,浅拷贝
+        void SetPrivateData(void* priv_data) {m_priv_data = priv_data;}
+        void* GetPrivateData() const { return m_priv_data;}
     private:
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
         {
-            (m_element->*m_responder)(layerId, x, y, type);
+            (m_element->*m_responder)(this, x, y, type);
         }
         String GetName(){} 
         Void SetName(String name){}; 
@@ -151,6 +156,7 @@ namespace GUI
     private:
         Responder m_responder;
         IGUIElement* m_element;
+        void* m_priv_data;
     };
 };
 /*------------------------------------------------------------------------------------------

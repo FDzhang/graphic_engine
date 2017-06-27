@@ -71,7 +71,6 @@ namespace GUI
 
         uint32_t m_button_opacity;
         uint32_t m_button_property;
-        uint32_t m_baseOpacity;
         uint32_t m_hitOpacity;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUButton, IGUIElement)

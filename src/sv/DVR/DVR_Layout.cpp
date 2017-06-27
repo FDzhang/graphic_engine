@@ -57,7 +57,7 @@ namespace GUI
         { "CGPUButton"     , "设置"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaSetting)     , (PFOnEvent)(&DVR_Layout::OnSettingEvent), NULL},
         { "CGPUButton"    , "播放列表按钮", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewPop),(PFOnEvent)(&DVR_Layout::OnListViewPop), NULL},
         { "CGPUProcessbar" , "进度条"     , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaBar)         , (PFOnEvent)(&DVR_Layout::OnBarEvent), NULL},
-        //{ "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListView),(PFOnEvent)(&DVR_Layout::OnListViewEvent), NULL},
+        { "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListView),(PFOnEvent)(&DVR_Layout::OnListViewEvent), NULL},
         //{ "CGPUIcon"       , "指示灯"     , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaStateIcon), NULL, NULL},
     };
     
@@ -342,7 +342,7 @@ namespace GUI
     void DVR_Layout::InitMediaListviewPop(IGUIElement* media_listview_pop_button, const GUI_HANDLE_T parentId)
     {
         media_listview_pop_button->Attach(m_node, parentId);
-        media_listview_pop_button->SetTexture(listviewpop_array_texture, 0);
+        media_listview_pop_button->SetTexture(listviewpop_array_texture, GUI::GUI_BUTTON_EFFECT_LOCK);
         media_listview_pop_button->Create(listviewpop_array_texture[0].pos_x,
                                           listviewpop_array_texture[0].pos_y,
                                           listviewpop_array_texture[0].element_width,
@@ -443,7 +443,6 @@ namespace GUI
         data->header.msg_id = DVR_MEDIA_BAR;
         data->body.listview_file.operation = 0x04;
         data->body.listview_file.method.file_play = dynamic_cast<CGPUListView*>(list_view)->GetCurrentIndex();
-        Log_Error("%u", data->body.listview_file.method.file_play);
         PostEvent(event);
     }
     void DVR_Layout::OnExitEvent(IGUIElement* exit_button)
@@ -459,6 +458,9 @@ namespace GUI
     }
     void DVR_Layout::OnListViewPop(IGUIElement* listviewpop_button)
     {
+        static bool flag = false;
+        m_listview->Enable(flag);
+        flag = !flag;
     }
 };
 

@@ -32,8 +32,10 @@ namespace GUI
         :IGUIElement("CGPUListView")
         ,CXrBaseView()
         ,m_itemNum(9)
+        ,m_listview_item(NULL)
+        ,m_current_item(NULL)
     {
-        
+        m_listview_item = new struct ListViewItem[m_itemNum];
     }
     CGPUListView::~CGPUListView()
     {
@@ -52,6 +54,7 @@ namespace GUI
             delete m_itemNext.responder;
             m_itemNext.responder = NULL;
         }
+        delete[] m_listview_item;
     }
     bool CGPUListView::Create(const uint32_t pos_x, const uint32_t pos_y,
                               const uint32_t element_width, const uint32_t element_height)
@@ -68,9 +71,9 @@ namespace GUI
                 flag = InsertFlag_Default;
             }
             //缩略图背景
-            IMaterial* m_thumbnailMtl = NULL;
-            Int32 thumbnailId = node->CreateMaterial(Material_Rigid_Texture, &m_thumbnailMtl);
-            m_thumbnailMtl->SetDiffuseMap(m_thumbnail_texture->texName);
+            //IMaterial* m_thumbnailMtl = NULL;
+            //Int32 thumbnailId = node->CreateMaterial(Material_Rigid_Texture, &m_thumbnailMtl);
+            //m_thumbnailMtl->SetDiffuseMap(m_thumbnail_texture->texName);
             //列表框背景
             Int32 bgId= node->CreateUIMaterial(Material_UI_Spirit, const_cast<char*>(m_base_texture->texName));
             //列表框选择按钮
@@ -106,6 +109,8 @@ namespace GUI
                 //为每个子控件注册触摸事件
                 m_listview_item[index].m_itemLayer = node->GetLayer(m_listview_item[index].m_itemSpirtId);
                 m_listview_item[index].responder = new EventResponder(this, (Responder)(&CGPUListView::OnItemSelected));
+                (m_listview_item[index].responder)->SetPrivateData(&(m_listview_item[index]));
+                (m_listview_item[index].m_itemLayer)->SetEventResponder(m_listview_item[index].responder);
             }
 
             for(int index = 0; index < m_itemNum; index++)
@@ -120,7 +125,6 @@ namespace GUI
                 m_listview_item[index].m_itemText->SetOpacity(1.0);
                 m_listview_item[index].m_itemText->SetFontSize(20);
                 m_listview_item[index].m_itemText->SetColor(1.0, 1.0, 1.0);
-                //m_listview_item[index].m_itemText->SetText("");
             }
             //添加列表框控制按钮(向上/向下/确认)
             Int32 btnOkId = node->CreateSpirit(rootId, InsertFlag_Child, itemOkId, 1.0,
@@ -159,19 +163,16 @@ namespace GUI
             m_itemSelected.layer = node->GetLayer(itemSelectedId);
 
             //缩略图背景框
-            Int32 thumbnaild = node->CreateSpirit(0, thumbnailId,
-                                                  rootId, InsertFlag_Child,
-                                                  1.0,
-                                                  m_thumbnail_texture->pos_x,
-                                                  m_thumbnail_texture->pos_y,
-                                                  0,
-                                                  m_thumbnail_texture->element_width,
-                                                  m_thumbnail_texture->element_height);
+            //Int32 thumbnaild = node->CreateSpirit(0, thumbnailId,
+            //                                      rootId, InsertFlag_Child,
+            //                                      1.0,
+            //                                      m_thumbnail_texture->pos_x,
+            //                                      m_thumbnail_texture->pos_y,
+            //                                      0,
+            //                                      m_thumbnail_texture->element_width,
+            //                                      m_thumbnail_texture->element_height);
             //初始化当前选中框
             m_current_item = &(m_listview_item[0]);
-            char index_text[24];
-            sprintf(index_text, "My God,I choose is %d", m_current_item->index);
-            m_current_item->m_itemText->SetText(index_text);
             IGUIElement::SetHwnd((GUI_HANDLE_T)rootId);
         }
     }
@@ -193,6 +194,15 @@ namespace GUI
         //打开文件预览框选取需要添加的列表媒体文件
         
     }
+    void CGPUListView::Enable(bool enable)
+    {
+        IGUINode* node = GetLayoutNode();
+        if(node)
+        {
+            ILayer* layer = node->GetLayer(GetHwnd());
+            layer->SetEnable(enable);
+        }
+    }
     /*清空文件列表内容*/
     void CGPUListView::Reset()
     {
@@ -209,10 +219,6 @@ namespace GUI
         case TouchEvent_Down:
             (m_itemOk.layer)->SetOpacity(0.0);
             IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
-            char index_text[24];
-            m_listview_item[(m_current_item->index - 1) % m_itemNum].m_itemText->SetText("");
-            sprintf(index_text, "choose is %d in %d", m_current_item->index, m_itemNum - 1);
-            m_current_item->m_itemText->SetText(index_text);
             break;
         case TouchEvent_Up:
             (m_itemOk.layer)->SetOpacity(1.0);
@@ -221,19 +227,21 @@ namespace GUI
             break;
         }
     }
-    void CGPUListView::OnItemSelected(Int32 layerId, Int32 x, Int32 y, Int32 type)
+    void CGPUListView::OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type)
     {
-        ILayer* item = GetLayoutNode()->GetLayer(layerId);
-        (m_itemSelected.layer)->SetY(item->GetY());
+        Log_Error("--------------");
+        struct ListViewItem* item =  (struct ListViewItem*)(responder->GetPrivateData());
+        (m_itemSelected.layer)->SetY((item->m_itemLayer)->GetY());
+        //IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
     }
     /*文件列表框选择下一个item*/
-    void CGPUListView::OnBtnPrev(Int32 layerId, Int32 x, Int32 y, Int32 type)
+    void CGPUListView::OnBtnPrev(EventResponder* responder, Int32 x, Int32 y, Int32 type)
     {
         switch(type)
         {
         case TouchEvent_Down:
             (m_itemPrev.layer)->SetOpacity(0.0); //单击状态下,　隐藏图标, up状态下图标恢复
-            m_current_item = &(m_listview_item[(m_current_item->index - 1) % m_itemNum]);
+            m_current_item = &(m_listview_item[(m_itemNum + m_current_item->index - 1) % m_itemNum]);
             (m_itemSelected.layer)->SetY(m_listview_item_texture->pos_y +
                                          m_current_item->index * m_listview_item_texture->element_height);
             break;
@@ -245,7 +253,7 @@ namespace GUI
         }
     }
     /**文件列表框选择上一个item*/
-    void CGPUListView::OnBtnNext(Int32 layerId, Int32 x, Int32 y, Int32 type)
+    void CGPUListView::OnBtnNext(EventResponder* responder, Int32 x, Int32 y, Int32 type)
     {
         switch(type)
         {

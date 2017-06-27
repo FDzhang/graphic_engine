@@ -33,7 +33,6 @@ namespace GUI
         ,CXrButton(-1)
         ,m_button_opacity(1)
         ,m_button_property(0)
-        ,m_baseOpacity(1)
         ,m_hitOpacity(0)
     {
     }
@@ -96,9 +95,9 @@ namespace GUI
     }
     void CGPUButton::Reset()
     {
-        m_baseOpacity = 1;
-        m_hitOpacity = 0;
-        m_base.SetOpacity(m_baseOpacity);
+        m_hitOpacity = 1;
+        m_base.SetOpacity(m_hitOpacity);
+        m_hitOpacity = !m_hitOpacity;
         m_hit.SetOpacity(m_hitOpacity);
     }
     Boolean CGPUButton::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
@@ -109,10 +108,9 @@ namespace GUI
             if( type == TouchEvent_Down)
             {
                 IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
-                m_baseOpacity = ~m_baseOpacity;
-                m_hitOpacity = ~m_hitOpacity;
+                m_base.SetOpacity(m_hitOpacity);
+                m_hitOpacity = !m_hitOpacity;
                 m_hit.SetOpacity(m_hitOpacity);
-                m_base.SetOpacity(m_baseOpacity);
             }
             break;
         case GUI_BUTTON_EFFECT_DEFAULT:

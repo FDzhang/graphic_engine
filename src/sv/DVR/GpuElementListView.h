@@ -43,14 +43,14 @@ namespace GUI
         void AddTextItem(const char* text);
         /*清空文件列表内容*/
         void Reset();
-
+        void Enable(bool enable);
         //获取当前选中的item
         uint32_t GetCurrentIndex()  const { return m_current_item->index;}
         uint32_t DeleteCurrentItem() {}
     protected:
-        void OnBtnPrev(Int32 layerId, Int32 x, Int32 y, Int32 type);
-        void OnBtnNext(Int32 layerId, Int32 x, Int32 y, Int32 type);
-        void OnItemSelected(Int32 layerId, Int32 x, Int32 y, Int32 type);
+        void OnBtnPrev(EventResponder* responder, Int32 x, Int32 y, Int32 type);
+        void OnBtnNext(EventResponder* responder, Int32 x, Int32 y, Int32 type);
+        void OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type);
     private:
         //重载事件响应
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
@@ -67,7 +67,7 @@ namespace GUI
         IGUITexture* m_listview_font_texture        ;
 
         //目前暂定为固定数目的列表
-        struct
+        struct ListViewItem
         {
             Int32 m_itemSpirtId;
             ILayer* m_itemLayer;
@@ -76,7 +76,7 @@ namespace GUI
             uint32_t indexFile;     //对应的文件索引号
             uint32_t index;         //item 序列号
             EventResponder* responder;
-        }m_listview_item[9], *m_current_item;
+        }*m_listview_item, *m_current_item;
 
         //列表框下方的上/下翻页 上/下选择layer
         struct
