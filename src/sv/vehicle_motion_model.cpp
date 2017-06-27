@@ -515,7 +515,7 @@ float VehicleMotion::get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data
 	pulse_pre[0]=v_data->pre_wheel_pulse[rear_left_whl];
 	pulse_curent[1]=v_data->wheel_pulse[rear_right_whl];
 	pulse_pre[1]=v_data->pre_wheel_pulse[rear_right_whl];
-
+	
     for(int i=0;i<2;i++)
     {
 	    if(pulse_curent[i]<pulse_pre[i])
@@ -528,6 +528,7 @@ float VehicleMotion::get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data
 		
 		}
     }
+
     return((pulse_delta[0] +pulse_delta[1] )*0.022905);
 	
 }

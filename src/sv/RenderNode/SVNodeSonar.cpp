@@ -1940,12 +1940,22 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	vehicle_state.wheel_speed_rr = right_wheel_speed;
 	vehicle_state.shift_pos = gear_state;
 	vehicle_state.yaw_rate = yaw_rate;
+	static int init_flag=0;
 	if(time_offset == 0)
 	{
 	
        // fprintf(stdout,"\r\n timeoffset %d",time_offset);
 	    return 0;
 	}
+	if(init_flag ==0)
+	{
+	  	for(int i=0;i<4;i++)
+	    {
+	         vehicle_state.pre_wheel_pulse[i]= vehicle_state.wheel_pulse[i];
+	    }  
+	    init_flag=1;
+	}
+	
 	int new_store_obj_flag[max_sonar_num] = { 0,};
 	static unsigned char pre_turn_light_state=TURN_LIGHT_OFF;
     unsigned char turn_light_state;

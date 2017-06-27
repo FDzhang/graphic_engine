@@ -471,7 +471,6 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 	int present_time=0;
 	CvPoint2D32f WorldInPoint[4];
 	CvPoint2D32f WorldOutPoint[4];
-	
 	int update_key_frame_flag;
 
     present_time = XrGetTime();
@@ -489,7 +488,12 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 	//m_vehicle_motion->revMotion2KframePredictVCS(vehicle_state,40000,m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.3);
 	if(init_flag ==0)
 	{
+		for(int i=0;i<4;i++)
+	    {
+	         vehicle_state.pre_wheel_pulse[i]= vehicle_state.wheel_pulse[i];
+	    }  
 	    m_vehicle_motion->revMotion2KframePredictVCS(vehicle_state,40000,m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.02);
+
 	}
     else
     {
