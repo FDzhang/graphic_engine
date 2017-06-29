@@ -32,7 +32,7 @@ namespace GUI
         ,CXrBaseView()
         ,m_processbar_x(0) , m_processbar_y(0)
         ,m_processbar_width(0), m_processbar_height(0)
-        ,m_pos(0)
+        ,m_touchDown(false)
     {
     
     }
@@ -92,11 +92,12 @@ namespace GUI
         switch(type)
         {
         case TouchEvent_Down:
-            //设置焦点在进度条上
-            m_status = true;
+            //触摸焦点在进度条上
+            Log_Error("%s: ---------begin to down GpuProcessbar-----------\n", __func__);
+            m_touchDown = true;
         case TouchEvent_Move:
-            //判断焦点是否被释放
-            if(m_status)
+            //触摸焦点在进度条，监听move事件， 移动进度条
+            if(m_touchDown)
             {
                 Int32 PosX = x<0?0:x;
                 PosX = PosX>m_processbar_width?m_processbar_width:PosX;
@@ -106,8 +107,10 @@ namespace GUI
             break;
         case TouchEvent_Up:
             //释放焦点
+            Log_Error("%s: ---------begin to up GpuProcessbar-----------\n", __func__);
             IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
-            m_status = false;
+            m_touchDown = false;
+            break;
         default:
             Log_Error("attention: a unknown touch event is sent");
         }
@@ -115,11 +118,14 @@ namespace GUI
 
     void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)
     {
-        current_time = current_time > whole_time? whole_time:current_time;
-        float value = (float)current_time / (float)whole_time;
-        DEBUG("whole_time %d current_time %d percent %f\n", whole_time, current_time, value);
-        m_pbarSlide->SetX(m_processbar_width*value);
-        m_pos = current_time;
+        if(!m_touchDown) //触摸按下，表示用户在修改进度条的值，不接受外部自动输入
+        {
+            current_time = current_time > whole_time? whole_time:current_time;
+            float value = (float)current_time / (float)whole_time;
+            DEBUG("whole_time %d current_time %d percent %f\n", whole_time, current_time, value);
+            m_pbarSlide->SetX(m_processbar_width*value);
+            m_pos = current_time;
+        }
     }
     
     IMPLEMENT_DYNAMIC_CLASS(CGPUProcessbar)

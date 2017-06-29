@@ -69,7 +69,7 @@ namespace GUI
         static bool PostEvent(AvmEvent* avm_event);
         //! 获取AvmEvent 默认是无效event type
         virtual AvmEventType GetAttachEventType() {return AvmEvent::Invalid_Event_Type;}
-        
+
     protected:
         //Layout node (布局在Layout上的控件元素，都应该在此基础上进行绘制)
         IGUINode* m_node;

@@ -32,6 +32,7 @@
 #include "GpuElementPanel.h"
 #include "GpuElementText.h"
 #include "GpuElementListView.h"
+#include "GpuElementImageStream.h"
 
 namespace GUI
 {
@@ -54,7 +55,8 @@ namespace GUI
         void SetProcessbarValue(uint32_t whole_time, uint32_t cur_time);
         void InsertProcessbarKeyFrame(void* frame);
         //文本播放列表控件操作接口
-        void SetPlaylist(const char* playlist);
+        PlaylistItemTable_T* GetPlaylistItemTable();
+        void SyncPlaylist();
         void AppendPlaylist(const char* playlist);
         void NextItemInPlaylist();
         void PrevItemInPlaylist();
@@ -95,9 +97,7 @@ namespace GUI
         void OnBarEvent(IGUIElement*);
         //时间文本控件
         void InitMediaText(IGUIElement*, const GUI_HANDLE_T parentId);
-        //文件列表
-        void InitMediaListView(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnListViewEvent(IGUIElement*);
+
         //状态图标
         void InitMediaStateIcon(IGUIElement*, const GUI_HANDLE_T parentId);
         //panel
@@ -105,9 +105,19 @@ namespace GUI
         //media_exit
         void InitMediaExit(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnExitEvent(IGUIElement*);
-
+        
+        //文件列表
+        void InitMediaListview(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnListviewEvent(IGUIElement*);
         void InitMediaListviewPop(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnListViewPop(IGUIElement*);
+        void OnListviewPop(IGUIElement*);
+        void InitMediaListviewThumbnail(IGUIElement*, const GUI_HANDLE_T parentId);
+        void InitMediaListviewPrev(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnListviewPrevEvent(IGUIElement*);
+        void InitMediaListviewNext(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnListviewNextEvent(IGUIElement*);
+        void InitMediaListviewOk(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnListviewOkEvent(IGUIElement*);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
@@ -115,6 +125,7 @@ namespace GUI
         CGPUButton*     m_media_play;
         CGPUText*       m_bar_text;
         CGPUListView*   m_listview;
+        CGPUImageStream* m_listview_thumbnail;
         static AvmEventType    m_event_type;
     private:
         static DVR_Layout* m_layout;

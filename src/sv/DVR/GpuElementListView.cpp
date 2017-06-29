@@ -25,6 +25,7 @@
  *------------------------------------------------------------------------------------------*/
 #include "GpuElementListView.h"
 #include "Layout.h"
+#include "XrCore/XrSrc/External/IXrCore.h"
 
 namespace GUI
 {
@@ -32,6 +33,8 @@ namespace GUI
         :IGUIElement("CGPUListView")
         ,CXrBaseView()
         ,m_itemNum(9)
+        ,m_pos_x(0), m_pos_y(0)
+        ,m_element_width(0), m_element_height(0)
         ,m_listview_item(NULL)
         ,m_current_item(NULL)
     {
@@ -59,6 +62,9 @@ namespace GUI
     bool CGPUListView::Create(const uint32_t pos_x, const uint32_t pos_y,
                               const uint32_t element_width, const uint32_t element_height)
     {
+        m_pos_x = pos_x; m_pos_y = pos_y;
+        m_element_width = element_width;
+        m_element_height = element_height;
         IGUINode* node = GetLayoutNode();
         if(node)
         {
@@ -70,19 +76,15 @@ namespace GUI
                 parent = -1;
                 flag = InsertFlag_Default;
             }
-            //缩略图背景
-            //IMaterial* m_thumbnailMtl = NULL;
-            //Int32 thumbnailId = node->CreateMaterial(Material_Rigid_Texture, &m_thumbnailMtl);
-            //m_thumbnailMtl->SetDiffuseMap(m_thumbnail_texture->texName);
             //列表框背景
             Int32 bgId= node->CreateUIMaterial(Material_UI_Spirit, const_cast<char*>(m_base_texture->texName));
             //列表框选择按钮
-            Int32 itemOkId= node->CreateUIMaterial(Material_UI_Spirit,
-                                                   const_cast<char*>(m_listview_itemOk_texture->texName));
-            Int32 itemPrevId= node->CreateUIMaterial(Material_UI_Spirit,
-                                                     const_cast<char*>(m_listview_itemPrev_texture->texName));
-            Int32 itemNextId= node->CreateUIMaterial(Material_UI_Spirit,
-                                                     const_cast<char*>(m_listview_itemNext_texture->texName));
+            //Int32 itemOkId= node->CreateUIMaterial(Material_UI_Spirit,
+            //                                       const_cast<char*>(m_listview_itemOk_texture->texName));
+            //Int32 itemPrevId= node->CreateUIMaterial(Material_UI_Spirit,
+            //                                         const_cast<char*>(m_listview_itemPrev_texture->texName));
+            //Int32 itemNextId= node->CreateUIMaterial(Material_UI_Spirit,
+            //                                         const_cast<char*>(m_listview_itemNext_texture->texName));
             //列表框文本项
             Int32 textItemId = node->CreateUIMaterial(Material_UI_Spirit,
                                                       const_cast<char*>(m_listview_item_texture->texName));
@@ -91,9 +93,9 @@ namespace GUI
             Int32 fontId = node->CreateUIFontMaterial(const_cast<char*>(m_listview_font_texture->texName), 0);
             
             Int32 rootId = node->CreateSpirit(parent, flag, bgId, 1.0,
-                                              m_base_texture->pos_x, m_base_texture->pos_y,
+                                              m_pos_x, m_pos_y,
                                               0,
-                                              m_base_texture->element_width, m_base_texture->element_height);
+                                              m_element_width, m_element_height);
             
             for(int index = 0; index < m_itemNum; index++)
             {
@@ -127,32 +129,32 @@ namespace GUI
                 m_listview_item[index].m_itemText->SetColor(1.0, 1.0, 1.0);
             }
             //添加列表框控制按钮(向上/向下/确认)
-            Int32 btnOkId = node->CreateSpirit(rootId, InsertFlag_Child, itemOkId, 1.0,
-                                               m_listview_itemOk_texture->pos_x,
-                                               m_listview_itemOk_texture->pos_y,
-                                               0,
-                                               m_listview_itemOk_texture->element_width,
-                                               m_listview_itemOk_texture->element_height);
-            m_itemOk.layer = node->GetLayer(btnOkId);
-            m_itemOk.layer -> SetEventResponder(this);
-            Int32 btnPrevId = node->CreateSpirit(rootId, InsertFlag_Child, itemPrevId, 1.0,
-                                                 m_listview_itemPrev_texture->pos_x, m_listview_itemPrev_texture->pos_y,
-                                                 0,
-                                                 m_listview_itemPrev_texture->element_width,
-                                                 m_listview_itemPrev_texture->element_height);
-            m_itemPrev.layer = node->GetLayer(btnPrevId);
-            m_itemPrev.responder = new EventResponder(this, (Responder)(&CGPUListView::OnBtnPrev));
-            (m_itemPrev.layer)->SetEventResponder(m_itemPrev.responder);
-            Int32 btnNextId = node->CreateSpirit(rootId, InsertFlag_Child, itemNextId, 1.0,
-                                                 m_listview_itemNext_texture->pos_x,
-                                                 m_listview_itemNext_texture->pos_y,
-                                                 0,
-                                                 m_listview_itemNext_texture->element_width,
-                                                 m_listview_itemNext_texture->element_height);
-            m_itemNext.layer = node->GetLayer(btnNextId);
-            m_itemNext.responder = new EventResponder(this, (Responder)(&CGPUListView::OnBtnNext));
-            (m_itemNext.layer)->SetEventResponder(m_itemNext.responder);
-            //选择框,不具有事件响应(对应的轴具有事件响应能力)
+            //Int32 btnOkId = node->CreateSpirit(rootId, InsertFlag_Child, itemOkId, 1.0,
+            //                                   m_listview_itemOk_texture->pos_x,
+            //                                   m_listview_itemOk_texture->pos_y,
+            //                                   0,
+            //                                   m_listview_itemOk_texture->element_width,
+            //                                   m_listview_itemOk_texture->element_height);
+            //m_itemOk.layer = node->GetLayer(btnOkId);
+            //m_itemOk.layer -> SetEventResponder(this);
+            //Int32 btnPrevId = node->CreateSpirit(rootId, InsertFlag_Child, itemPrevId, 1.0,
+            //                                     m_listview_itemPrev_texture->pos_x, m_listview_itemPrev_texture->pos_y,
+            //                                     0,
+            //                                     m_listview_itemPrev_texture->element_width,
+            //                                     m_listview_itemPrev_texture->element_height);
+            //m_itemPrev.layer = node->GetLayer(btnPrevId);
+            //m_itemPrev.responder = new EventResponder(this, (Responder)(&CGPUListView::OnBtnPrev));
+            //(m_itemPrev.layer)->SetEventResponder(m_itemPrev.responder);
+            //Int32 btnNextId = node->CreateSpirit(rootId, InsertFlag_Child, itemNextId, 1.0,
+            //                                     m_listview_itemNext_texture->pos_x,
+            //                                     m_listview_itemNext_texture->pos_y,
+            //                                     0,
+            //                                     m_listview_itemNext_texture->element_width,
+            //                                     m_listview_itemNext_texture->element_height);
+            // m_itemNext.layer = node->GetLayer(btnNextId);
+            //m_itemNext.responder = new EventResponder(this, (Responder)(&CGPUListView::OnBtnNext));
+            //(m_itemNext.layer)->SetEventResponder(m_itemNext.responder);
+            //选择框, 单击选择框表示选中进行播放
             Int32 itemSelectedId = node->CreateSpirit(rootId, InsertFlag_Child,
                                                       textSelectedItemId, 1.0,
                                                       m_listview_itemSelected_texture->pos_x,
@@ -161,16 +163,7 @@ namespace GUI
                                                       m_listview_itemSelected_texture->element_width,
                                                       m_listview_itemSelected_texture->element_height);
             m_itemSelected.layer = node->GetLayer(itemSelectedId);
-
-            //缩略图背景框
-            //Int32 thumbnaild = node->CreateSpirit(0, thumbnailId,
-            //                                      rootId, InsertFlag_Child,
-            //                                      1.0,
-            //                                      m_thumbnail_texture->pos_x,
-            //                                      m_thumbnail_texture->pos_y,
-            //                                      0,
-            //                                      m_thumbnail_texture->element_width,
-            //                                      m_thumbnail_texture->element_height);
+            m_itemSelected.layer -> SetEventResponder(this);
             //初始化当前选中框
             m_current_item = &(m_listview_item[0]);
             IGUIElement::SetHwnd((GUI_HANDLE_T)rootId);
@@ -180,13 +173,12 @@ namespace GUI
     void CGPUListView::SetTexture(const IGUITexture* effect, const long style)
     {
         m_base_texture                  = &(((IGUITexture*)effect)[0]);
-        m_thumbnail_texture             = &(((IGUITexture*)effect)[1]);
-        m_listview_itemPrev_texture     = &(((IGUITexture*)effect)[2]);
-        m_listview_itemOk_texture       = &(((IGUITexture*)effect)[3]);
-        m_listview_itemNext_texture     = &(((IGUITexture*)effect)[4]);
-        m_listview_item_texture         = &(((IGUITexture*)effect)[5]);
-        m_listview_itemSelected_texture = &(((IGUITexture*)effect)[6]);
-        m_listview_font_texture         = &(((IGUITexture*)effect)[7]);
+        //m_listview_itemPrev_texture     = &(((IGUITexture*)effect)[2]);
+        //m_listview_itemOk_texture       = &(((IGUITexture*)effect)[3]);
+        //m_listview_itemNext_texture     = &(((IGUITexture*)effect)[4]);
+        m_listview_item_texture         = &(((IGUITexture*)effect)[1]);
+        m_listview_itemSelected_texture = &(((IGUITexture*)effect)[2]);
+        m_listview_font_texture         = &(((IGUITexture*)effect)[3]);
     }
     /*添加文件列表item*/
     void CGPUListView::AddTextItem(const char* text)
@@ -217,23 +209,32 @@ namespace GUI
         switch(type)
         {
         case TouchEvent_Down:
-            (m_itemOk.layer)->SetOpacity(0.0);
+            //(m_itemOk.layer)->SetOpacity(0.0);
             IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
             break;
         case TouchEvent_Up:
-            (m_itemOk.layer)->SetOpacity(1.0);
+            //(m_itemOk.layer)->SetOpacity(1.0);
             break;
         default:
             break;
         }
     }
+
     void CGPUListView::OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type)
     {
-        Log_Error("--------------");
-        struct ListViewItem* item =  (struct ListViewItem*)(responder->GetPrivateData());
-        (m_itemSelected.layer)->SetY((item->m_itemLayer)->GetY());
-        //IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
+        switch(type)
+        {
+            case TouchEvent_Down:
+            {
+                struct ListViewItem* item =  (struct ListViewItem*)(responder->GetPrivateData());
+                (m_itemSelected.layer)->SetY((item->m_itemLayer)->GetY());
+                break;
+            }
+            default:
+                break;
+        }
     }
+#if 0
     /*文件列表框选择下一个item*/
     void CGPUListView::OnBtnPrev(EventResponder* responder, Int32 x, Int32 y, Int32 type)
     {
@@ -270,6 +271,7 @@ namespace GUI
             break;
         }
     }
+#endif
     IMPLEMENT_DYNAMIC_CLASS(CGPUListView)
 };
 /*------------------------------------------------------------------------------------------

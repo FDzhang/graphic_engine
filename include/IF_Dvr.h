@@ -67,6 +67,8 @@ typedef struct DVR_Event_Payload
                 uint32_t file_delete; //删除指定文件号的文件(file_delete 为file索引号)
                 uint32_t file_sync;   //同步播放列表
                 uint32_t file_play;   //播放指定文件号的文件
+                uint32_t file_pageUp; //向上翻页(基于当前选中行为末行进行更新)
+                uint32_t file_pageDown;//向下翻页(基于当前选中行为首行进行更行)
             }method;
         }listview_file; //暂定，需要文件列表访问方法
 
@@ -103,6 +105,21 @@ typedef enum
     DVR_MEDIA_MAX_NUM = 0xFFFFFFFF
 }EVENT_ELEMENT_ID_T;
 
+typedef struct
+{
+    //暂时固定itemNum, 后期可调
+    const uint32_t itemNum = 9;
+    struct
+    {
+        char* itemName;
+        union
+        {
+            char*    itemThumbnailAddr; //GraphicEngine申请的绑定纹理的buf
+            uint32_t surfaceTexId; //GpuTask绑定的surface texture
+        }addr;
+    }item[9];
+}PlaylistItemTable_T;
+
 /**
  * \brief IDVR 暴露操作DVR Layout的接口
  */
@@ -126,18 +143,25 @@ public:
      * \brief 在当前进度条的位置显示一帧图像
      */
     virtual void InsertProcessbarKeyFrame(void* frame) = 0;
+
     /**
-     * \brief 设置播放器列表控件内容(接口调用将清空播放列表并更新传入的列表内容)
-     * \param [IN] playlist　播放列表文件名(protocol+filename) 控件只显示文件名
+     * \brief 获取播放列表itemTable
+     * 
      */
-    virtual void SetPlaylist(const char* playlist) = 0;
+    virtual PlaylistItemTable_T* GetPlaylistItemTable() = 0;
+   /**
+     * \brief 同步播放器列表控件内容(接口调用将清空列表控件的item并更新itemTable至列表中)
+     * 
+     */
+    virtual void SyncPlaylist() = 0;
     /**
      * \brief 往播放器列表控件添加播放文件
      * \param [IN] playlist 播放器列表文件名(protocol+filename) 控件只显示添加的文件名
      */
-    virtual void AppendPlaylist(const char* playlist) = 0;
-    virtual void NextItemInPlaylist() = 0;
-    virtual void PrevItemInPlaylist() = 0;
+    //virtual void AppendPlaylist(const char* playlist) = 0;
+    //virtual void NextItemInPlaylist() = 0;
+    //virtual void PrevItemInPlaylist() = 0;
+    
     /**
      * \brief　媒体播放控制，　播放/暂停/上一部/下一部/快进/快退　播放 (debug调试使用)
      *         正常情况是不需要此操作接口(由触摸产生的坐标触发按钮事件响应完成状态更新并更新事件逻辑)

@@ -1,7 +1,7 @@
-#ifndef _GPU_ELEMENT_PROCESSBAR_H_ /* { */
-#define _GPU_ELEMENT_PROCESSBAR_H_
+#ifndef _GPUELEMENTIMAGESTREAM_H_ /* { */
+#define _GPUELEMENTIMAGESTREAM_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: LayoutProcessBar.h
+ * FILE: GpuElementImageStream.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,40 +23,42 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 15 5月 2017 dota2_black 
+ * VERSION: 28 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
 #include "IGUIElement.h"
-#include "XrCore/XrSrc/XrUILibrary/CXrSlider.h"
+#include "XrCore/XrSrc/XrUILibrary/CXrBaseView.h"
 
 namespace GUI
 {
-    class CGPUProcessbar : public IGUIElement, private CXrBaseView
+    /*
+     * \brief 图片流控件，动态可变image控件
+     */
+    class CGPUImageStream : public IGUIElement , private CXrBaseView
     {
     public:
-        CGPUProcessbar();
-        virtual ~CGPUProcessbar();
+        CGPUImageStream();
+        ~CGPUImageStream();
+
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
         void SetTexture(const IGUITexture* effect, const long style);
-        void SetValue(uint32_t whole_time, uint32_t current_time);
-        void SetEnable(bool enable);
-        float GetPos() { return m_pos;}
+        //! 获取image raw data, 返回CGPUImageStream 控件创建纹理buf, 用于数据更新
+        char* GetImageRawData(uint32_t* width, uint32_t* height);
+        //! 更新完image_raw_data, 调用接口更新图片数据
+        void  UpdateImage();
     private:
-        /** 重写OnTouchEvent, 添加事件自定义处理功能*/
-        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);
-
+        //重载事件响应
+        Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
     private:
-        IGUITexture* m_barBaseTexture,* m_barSlideTexture;
-        uint32_t m_processbar_x, m_processbar_y;
-        uint32_t m_processbar_width, m_processbar_height;
-        ILayer   *m_pbarBase, *m_pbarSlide;
-        float m_pos;
-
-        bool m_touchDown;
+        IGUITexture* m_thumbnail_texture;
+        IMaterial* m_thumbnailMtl;
+        char*      m_raw_image;      //image数据
+        IDeviceManager* m_pIdm;
     private:
-        DECLEAR_DYNAMIC_CLASS(CGPUProcessbar, IGUIElement)
+        DECLEAR_DYNAMIC_CLASS(CGPUImageStream, IGUIElement)
     };
-}
+};
+
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
@@ -65,4 +67,4 @@ namespace GUI
  * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _GPU_ELEMENT_PROCESSBAR_H_ */
+#endif /* } _GPUELEMENTIMAGESTREAM_H_ */

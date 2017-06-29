@@ -37,7 +37,7 @@ namespace GUI
         ~CGPUListView();
 
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
-                    const uint32_t element_width, uint32_t element_height);
+                    const uint32_t element_width, const uint32_t element_height);
         void SetTexture(const IGUITexture* effect, const long style);
         /*添加文件列表item*/
         void AddTextItem(const char* text);
@@ -48,15 +48,18 @@ namespace GUI
         uint32_t GetCurrentIndex()  const { return m_current_item->index;}
         uint32_t DeleteCurrentItem() {}
     protected:
-        void OnBtnPrev(EventResponder* responder, Int32 x, Int32 y, Int32 type);
-        void OnBtnNext(EventResponder* responder, Int32 x, Int32 y, Int32 type);
+
+        //void OnBtnPrev(EventResponder* responder, Int32 x, Int32 y, Int32 type);
+        //void OnBtnNext(EventResponder* responder, Int32 x, Int32 y, Int32 type);
         void OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type);
     private:
         //重载事件响应
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
     private:
         const uint32_t m_itemNum;
-
+        uint32_t m_pos_x, m_pos_y;
+        uint32_t m_element_width, m_element_height;
+        
         IGUITexture* m_base_texture                 ;
         IGUITexture* m_thumbnail_texture            ;
         IGUITexture* m_listview_itemOk_texture      ;
@@ -87,7 +90,7 @@ namespace GUI
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUListView, IGUIElement)
     };
-}
+};
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
