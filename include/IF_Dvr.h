@@ -108,7 +108,7 @@ typedef enum
 typedef struct
 {
     //暂时固定itemNum, 后期可调
-    const uint32_t maxItemNum = 9;
+    const uint32_t maxItemNum = 8;
     uint32_t itemNum = maxItemNum;
     struct
     {
@@ -117,11 +117,11 @@ typedef struct
         uint32_t thumbnail_width;
         uint32_t thumbnail_height;
         union
-        {
+        {        
             char*    itemThumbnailAddr; //GraphicEngine申请的绑定纹理的buf
             uint32_t surfaceTexId; //GpuTask绑定的surface texture
         }addr;
-    }item[9];
+    }item[8];
 }PlaylistItemTable_T;
 
 /**

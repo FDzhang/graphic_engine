@@ -20,6 +20,7 @@ public:
 
 	virtual xr_state SetText(
          /* [in] */ String text)=0;
+    virtual const char* GetText() = 0;
 	virtual xr_state SetText(
          /* [in] */ unsigned int index)=0;
 
@@ -31,7 +32,6 @@ public:
 	virtual xr_state GetTextWH(
 		/* [out] */ Float32* width,
 		/* [out] */ Float32* height)=0;
-
 	//virtual xr_state SetTextAlignment(
  //        /* [in] */ Int32 style)=0;
 };

@@ -49,6 +49,10 @@ xr_state CTextLayer::SetText(String text)
 	return XR_OK;
 }
 
+const char* CTextLayer::GetText()
+{
+    return m_text;
+}
 Int32 CTextLayer::OnAddMesh(Float32* vBuffer, UInt16* iBuffer, Float32 x, Float32 y, Float32 opacity, Int32* vCount, Int32* iCount)
 {
 	if (!m_stringLen || !m_font) return 0;

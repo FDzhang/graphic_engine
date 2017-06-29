@@ -58,7 +58,7 @@ namespace GUI
         { "CGPUButton"    , "播放列表按钮", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewPop),(PFOnEvent)(&DVR_Layout::OnListviewPop), NULL},
         { "CGPUProcessbar" , "进度条"     , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaBar)         , (PFOnEvent)(&DVR_Layout::OnBarEvent), NULL},
         { "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListview),(PFOnEvent)(&DVR_Layout::OnListviewEvent), NULL},
-        { "CGPUImageStream", "播放列表缩略图", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewThumbnail), NULL, NULL},
+        //{ "CGPUImageStream", "播放列表缩略图", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewThumbnail), NULL, NULL},
         { "CGPUButton", "播放列表下翻" , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewPrev), (PFOnEvent)(&DVR_Layout::OnListviewPrevEvent), NULL},
         { "CGPUButton", "播放列表上翻" , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewNext), (PFOnEvent)(&DVR_Layout::OnListviewNextEvent), NULL},
         { "CGPUButton", "播放列表确定" , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewOk), (PFOnEvent)(&DVR_Layout::OnListviewOkEvent), NULL},
@@ -109,6 +109,7 @@ namespace GUI
         {
             m_listview->SetItemText(table.item[index].itemName, index);
         }
+        m_listview->Sync();
     }
     void DVR_Layout::AppendPlaylist(const char* playlist)
     {
@@ -222,32 +223,32 @@ namespace GUI
         {XR_RES_DVR"BC64.dds", 240, 30, 80, 40},
         {XR_RES"text_box.ttf", 1200, 10, 80, 80}
     };
-
-    static IGUITexture listview_array_texture[] = {
-       {XR_RES_DVR"media_listview_bg.dds", 0, 250, 602, 348},
-       {XR_RES_DVR"media_listview_item.dds", 0, 0, 329, 35},
-       {XR_RES_DVR"media_listview_itemSelected.dds",0, 0, 329, 35},
-       {XR_RES"text_box.ttf", 0, 0, 0, 0}
-    };
-    static IGUITexture listview_pageprev_texture[] =
-    {
-        {XR_RES_DVR"media_listview_itemPrev.dds", 25, 315, 33, 33},
-        {XR_RES_DVR"BC64.dds", 25, 315, 33, 33},
-    };
-    static IGUITexture listview_itemok_texture[] =
-    {
-        {XR_RES_DVR"media_listview_itemOk.dds", 147, 315, 33, 33},
-        {XR_RES_DVR"BC64.dds", 147, 315, 33, 33},
-    };
-    static IGUITexture listview_pagenext_texture[] =
-    {
-        {XR_RES_DVR"media_listview_itemNext.dds", 270, 315, 33, 33},
-        {XR_RES_DVR"BC64.dds", 270, 315, 33, 33},
-    };
     static IGUITexture listviewpop_array_texture[] =
     {
         {XR_RES_DVR"media_listview_pop.dds",   24, 25, 48, 50},
         {XR_RES_DVR"media_listview_poped.dds", 24, 25, 48, 50}
+    };
+    static IGUITexture listview_array_texture[] = {
+       {XR_RES_DVR"media_listview_bg.dds", 0, 200, 637, 350},
+       {XR_RES_DVR"media_listview_itemPlay.dds",0, 33, 329, 35},
+       {XR_RES_DVR"media_listview_item.dds", 0, 68, 329, 35},
+       {XR_RES_DVR"media_listview_itemSelected.dds",0, 68, 329, 35},
+       {XR_RES"text_box.ttf", 0, 0, 0, 0}
+    };
+    static IGUITexture listview_pageprev_texture[] =
+    {
+        {XR_RES_DVR"media_listview_itemPrev.dds", 25, 0, 33, 33},
+        {XR_RES_DVR"BC64.dds", 25, 0, 33, 33},
+    };
+    static IGUITexture listview_itemok_texture[] =
+    {
+        {XR_RES_DVR"media_listview_itemOk.dds", 147, 0, 33, 33},
+        {XR_RES_DVR"BC64.dds", 147, 0, 33, 33},
+    };
+    static IGUITexture listview_pagenext_texture[] =
+    {
+        {XR_RES_DVR"media_listview_itemNext.dds", 270, 0, 33, 33},
+        {XR_RES_DVR"BC64.dds", 270, 0, 33, 33},
     };
     static IGUITexture listviewThumbnail_array_texture[] = {
         {XR_RES_DVR"media_listview_thumbnail.dds", 329, 0, 273, 348},
@@ -396,27 +397,27 @@ namespace GUI
         listviewPrev_button->Attach(m_node, parentId);
         listviewPrev_button->SetTexture(listview_pageprev_texture, 0);
         listviewPrev_button->Create(listview_pageprev_texture[0].pos_x,
-                                          listview_pageprev_texture[0].pos_y,
-                                          listview_pageprev_texture[0].element_width,
-                                          listview_pageprev_texture[0].element_height);
+                                    listview_pageprev_texture[0].pos_y,
+                                    listview_pageprev_texture[0].element_width,
+                                    listview_pageprev_texture[0].element_height);
     }
     void DVR_Layout::InitMediaListviewNext(IGUIElement* listviewNext_button, const GUI_HANDLE_T parentId)
     {
         listviewNext_button->Attach(m_node, parentId);
         listviewNext_button->SetTexture(listview_pagenext_texture, 0);
         listviewNext_button->Create(listview_pagenext_texture[0].pos_x,
-                                          listview_pagenext_texture[0].pos_y,
-                                          listview_pagenext_texture[0].element_width,
-                                          listview_pagenext_texture[0].element_height);
+                                    listview_pagenext_texture[0].pos_y,
+                                    listview_pagenext_texture[0].element_width,
+                                    listview_pagenext_texture[0].element_height);
     }
     void DVR_Layout::InitMediaListviewOk(IGUIElement* listviewOk_button, const GUI_HANDLE_T parentId)
     {
         listviewOk_button->Attach(m_node, parentId);
         listviewOk_button->SetTexture(listview_itemok_texture, 0);
         listviewOk_button->Create(listview_itemok_texture[0].pos_x,
-                                          listview_itemok_texture[0].pos_y,
-                                          listview_itemok_texture[0].element_width,
-                                          listview_itemok_texture[0].element_height);
+                                  listview_itemok_texture[0].pos_y,
+                                  listview_itemok_texture[0].element_width,
+                                  listview_itemok_texture[0].element_height);
     }
     /**
      *  \brief DVR 控件元素事件响应
@@ -540,7 +541,7 @@ namespace GUI
     void DVR_Layout::OnListviewEvent(IGUIElement* list_view)
     {
         //更新缩略图
-        m_listview_thumbnail->UpdateImage();
+        //m_listview_thumbnail->UpdateImage();
         
         void* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);

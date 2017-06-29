@@ -15,9 +15,10 @@ public:
 
 	virtual xr_state SetText(
          /* [in] */ String text);
+    virtual const char* GetText();
 	virtual xr_state SetText(
          /* [in] */ unsigned int index){return 0;};
-
+    
 	virtual xr_state SetFontSize(
          /* [in] */ Float32 size);
 

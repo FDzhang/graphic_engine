@@ -15,6 +15,7 @@ public:
 
 	virtual xr_state SetText(
          /* [in] */ String text){return 0;};
+    const char* GetText() { return NULL;}
 	virtual xr_state SetText(
          /* [in] */ unsigned int index);
 

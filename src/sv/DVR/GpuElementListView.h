@@ -50,32 +50,29 @@ namespace GUI
         //! 更新列表(更新列表文本的同时，更新itemNum)
         void SetText(const char* text[], uint32_t itemNum);
         //! 修改列表框对应index的文本(不更新itemNum)
-        void SetItemText(const char* text, uint32_t index);
+        void SetItemText(const char* text, int32_t index);
 
         //! 列表框向上移动，false表示越界, 选中框不移动
         bool PrevItem();
         //! 列表框向下移动，false表示越界, 选中框不移动
         bool NextItem();
-        
+        //! 同步列表框hmi status
+        void Sync();
     protected:
         void OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type);
     private:
         //重载事件响应
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
-        //! 同步列表框hmi status
-        void Sync();
+
     private:
         uint32_t m_itemNum;
         uint32_t m_pos_x, m_pos_y;
         uint32_t m_element_width, m_element_height;
         
         IGUITexture* m_base_texture                 ;
-        //IGUITexture* m_thumbnail_texture            ;
-        //IGUITexture* m_listview_itemOk_texture      ;
-        //IGUITexture* m_listview_itemPrev_texture    ;
-        //IGUITexture* m_listview_itemNext_texture    ;
         IGUITexture* m_listview_item_texture        ;
         IGUITexture* m_listview_itemSelected_texture;
+        IGUITexture* m_listview_itemOk_texture;
         IGUITexture* m_listview_font_texture        ;
 
         //目前暂定为固定数目的列表
@@ -92,11 +89,8 @@ namespace GUI
         }*m_listview_item, *m_current_item;
 
         //列表框下方的上/下翻页 上/下选择layer
-        struct
-        {
-            ILayer* layer;
-            EventResponder* responder;
-        }m_itemOk, m_itemPrev, m_itemNext, m_itemSelected;
+        ILayer* m_itemOkLayer, *m_itemSelectedLayer;
+        ITextLayer* m_itemOkTextLayer;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUListView, IGUIElement)
     };
