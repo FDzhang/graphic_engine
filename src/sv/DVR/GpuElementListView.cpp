@@ -272,6 +272,10 @@ namespace GUI
         }
     }
 #endif
+    void CGPUListView::SetItemText(const char* text, uint32_t index)
+    {
+        m_listview_item[index].m_itemText->SetText(const_cast<char*>(text));
+    }
     IMPLEMENT_DYNAMIC_CLASS(CGPUListView)
 };
 /*------------------------------------------------------------------------------------------

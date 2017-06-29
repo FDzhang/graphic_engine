@@ -127,6 +127,8 @@ namespace GUI
         CGPUListView*   m_listview;
         CGPUImageStream* m_listview_thumbnail;
         static AvmEventType    m_event_type;
+
+        PlaylistItemTable_T table;
     private:
         static DVR_Layout* m_layout;
     };

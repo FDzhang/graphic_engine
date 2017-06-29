@@ -47,6 +47,7 @@ namespace GUI
         //获取当前选中的item
         uint32_t GetCurrentIndex()  const { return m_current_item->index;}
         uint32_t DeleteCurrentItem() {}
+        void SetItemText(const char* text, uint32_t index);
     protected:
 
         //void OnBtnPrev(EventResponder* responder, Int32 x, Int32 y, Int32 type);
@@ -61,10 +62,10 @@ namespace GUI
         uint32_t m_element_width, m_element_height;
         
         IGUITexture* m_base_texture                 ;
-        IGUITexture* m_thumbnail_texture            ;
-        IGUITexture* m_listview_itemOk_texture      ;
-        IGUITexture* m_listview_itemPrev_texture    ;
-        IGUITexture* m_listview_itemNext_texture    ;
+        //IGUITexture* m_thumbnail_texture            ;
+        //IGUITexture* m_listview_itemOk_texture      ;
+        //IGUITexture* m_listview_itemPrev_texture    ;
+        //IGUITexture* m_listview_itemNext_texture    ;
         IGUITexture* m_listview_item_texture        ;
         IGUITexture* m_listview_itemSelected_texture;
         IGUITexture* m_listview_font_texture        ;

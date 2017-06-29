@@ -108,10 +108,11 @@ typedef enum
 typedef struct
 {
     //暂时固定itemNum, 后期可调
-    const uint32_t itemNum = 9;
+    const uint32_t maxItemNum = 9;
+    uint32_t itemNum = maxItemNum;
     struct
     {
-        char* itemName;
+        char* itemName = "";
         union
         {
             char*    itemThumbnailAddr; //GraphicEngine申请的绑定纹理的buf

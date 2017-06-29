@@ -101,11 +101,20 @@ namespace GUI
     }
     PlaylistItemTable_T* DVR_Layout::GetPlaylistItemTable()
     {
-        
+        return &table;
     }
     void DVR_Layout::SyncPlaylist()
     {
-        
+#if 0  //判断itemNum是否越界
+        if(itemNum > maxItemNum)
+        {
+            Log_Warning("%s: PlaylistItemTable_T.itemNum > maxItemNum\n");
+        }
+#endif
+        for( int index = 0; index < table.itemNum; index ++)
+        {
+            m_listview->SetItemText(table.item[index].itemName, index);
+        }
     }
     void DVR_Layout::AppendPlaylist(const char* playlist)
     {
@@ -337,6 +346,7 @@ namespace GUI
                                listview_array_texture[0].pos_y,
                                listview_array_texture[0].element_width,
                                listview_array_texture[0].element_height);
+
         m_listview = dynamic_cast<CGPUListView*>(media_listview);
     }
     void DVR_Layout::InitMediaStateIcon(IGUIElement*, const GUI_HANDLE_T parentId)
