@@ -229,7 +229,7 @@ namespace GUI
         {XR_RES_DVR"media_listview_poped.dds", 24, 25, 48, 50}
     };
     static IGUITexture listview_array_texture[] = {
-       {XR_RES_DVR"media_listview_bg.dds", 0, 200, 637, 350},
+       {XR_RES_DVR"media_listview_bg.dds", 0, 200, 602, 350},
        {XR_RES_DVR"media_listview_itemPlay.dds",0, 33, 329, 35},
        {XR_RES_DVR"media_listview_item.dds", 0, 68, 329, 35},
        {XR_RES_DVR"media_listview_itemSelected.dds",0, 68, 329, 35},
