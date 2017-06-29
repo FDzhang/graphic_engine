@@ -104,6 +104,7 @@ namespace GUI
     }
     void DVR_Layout::SyncPlaylist()
     {
+        m_listview->Reset();
         for(int index = 0; index < table.itemNum; index++)
         {
             m_listview->SetItemText(table.item[index].itemName, index);

@@ -89,14 +89,15 @@ namespace GUI
                                               m_pos_x, m_pos_y,
                                               0,
                                               m_element_width, m_element_height);
-            
+
+            uint32_t start_position =  m_listview_item_texture->pos_y + m_listview_item_texture->element_height * (m_itemNum - 1);
             for(int index = 0; index < m_itemNum; index++)
             {
                 //按要求创建指定数目的listview item子控件
                 m_listview_item[index].m_itemSpirtId =
                     node->CreateSpirit(rootId, InsertFlag_Child, textItemId, 1.0,
                                        m_listview_item_texture->pos_x,
-                                       m_listview_item_texture->pos_y + m_listview_item_texture->element_height* index,
+                                       start_position - m_listview_item_texture->element_height* index,
                                        0,
                                        m_listview_item_texture->element_width,
                                        m_listview_item_texture->element_height);
@@ -160,6 +161,7 @@ namespace GUI
         for(int index = 0; index < m_itemNum; index++)
         {
             m_listview_item[index].m_itemText->SetText("");
+            m_listview_item[index].m_itemLayer->SetEnable(false);
         }
     }
     void CGPUListView::OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type)

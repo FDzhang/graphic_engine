@@ -32,6 +32,7 @@ namespace GUI
         ,CXrBaseView()
         ,m_processbar_x(0) , m_processbar_y(0)
         ,m_processbar_width(0), m_processbar_height(0)
+        ,m_pos(0)
         ,m_touchDown(false)
         ,m_whole_time(0)
     {
@@ -93,28 +94,31 @@ namespace GUI
         switch(type)
         {
         case TouchEvent_Down:
+        {
             //触摸焦点在进度条上
-            Log_Error("%s: ---------begin to down GpuProcessbar-----------\n", __func__);
             m_touchDown = true;
+        }
         case TouchEvent_Move:
+        {
             //触摸焦点在进度条，监听move事件， 移动进度条
             if(m_touchDown)
             {
                 Int32 PosX = x<0?0:x;
                 PosX = PosX>m_processbar_width?m_processbar_width:PosX;
                 m_pbarSlide->SetX(PosX);
-                m_pos = (PosX / m_processbar_width)* m_whole_time;
+                m_pos = ((float)PosX / (float)m_processbar_width)* m_whole_time;
             }
             break;
+        }
         case TouchEvent_Up:
             //释放焦点
-            Log_Error("%s: ---------begin to up GpuProcessbar-----------\n", __func__);
             IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
             m_touchDown = false;
             break;
         default:
             Log_Error("attention: a unknown touch event is sent");
         }
+        return TRUE;
     }
 
     void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)
