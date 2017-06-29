@@ -112,7 +112,10 @@ typedef struct
     uint32_t itemNum = maxItemNum;
     struct
     {
+        //设置字符串名字地址
         char* itemName = "";
+        uint32_t thumbnail_width;
+        uint32_t thumbnail_height;
         union
         {
             char*    itemThumbnailAddr; //GraphicEngine申请的绑定纹理的buf

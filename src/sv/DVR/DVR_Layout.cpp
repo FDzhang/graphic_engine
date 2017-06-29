@@ -74,7 +74,6 @@ namespace GUI
 
     DVR_Layout::~DVR_Layout()
     {
-        
     }
     
     void DVR_Layout::Enable(bool flag)
@@ -105,13 +104,7 @@ namespace GUI
     }
     void DVR_Layout::SyncPlaylist()
     {
-#if 0  //判断itemNum是否越界
-        if(itemNum > maxItemNum)
-        {
-            Log_Warning("%s: PlaylistItemTable_T.itemNum > maxItemNum\n");
-        }
-#endif
-        for( int index = 0; index < table.itemNum; index ++)
+        for(int index = 0; index < table.itemNum; index++)
         {
             m_listview->SetItemText(table.item[index].itemName, index);
         }
@@ -221,8 +214,8 @@ namespace GUI
         {XR_RES_DVR"barSlide.dds", 0, 602, 1280, 18}
     };
     static IGUITexture exit_array_texture[] = {
-        {XR_RES_DVR"media_on.dds",  1014, 0, 74, 74},
-        {XR_RES_DVR"media_off.dds", 1014, 0, 74, 74}
+        {XR_RES_DVR"media_on.dds",  1200, 13, 74, 74},
+        {XR_RES_DVR"media_off.dds", 1200, 13, 74, 74}
     };
     static IGUITexture text_array_texture[] = {
         {XR_RES_DVR"BC64.dds", 240, 30, 80, 40},
@@ -230,25 +223,25 @@ namespace GUI
     };
 
     static IGUITexture listview_array_texture[] = {
-       {XR_RES_DVR"media_listview_bg.dds", 0, 250, 602, 350},
-       {XR_RES_DVR"media_listview_item.dds", 0, 0, 252, 35},
-       {XR_RES_DVR"media_listview_itemSelected.dds",0, 0, 252, 35},
+       {XR_RES_DVR"media_listview_bg.dds", 0, 250, 602, 348},
+       {XR_RES_DVR"media_listview_item.dds", 0, 0, 329, 35},
+       {XR_RES_DVR"media_listview_itemSelected.dds",0, 0, 329, 35},
        {XR_RES"text_box.ttf", 0, 0, 0, 0}
     };
     static IGUITexture listview_pageprev_texture[] =
     {
-        {XR_RES_DVR"media_listview_itemPrev.dds", 16, 315, 33, 33},
-        {XR_RES_DVR"BC64.dds", 16, 315, 33, 33},
+        {XR_RES_DVR"media_listview_itemPrev.dds", 25, 315, 33, 33},
+        {XR_RES_DVR"BC64.dds", 25, 315, 33, 33},
     };
     static IGUITexture listview_itemok_texture[] =
     {
-        {XR_RES_DVR"media_listview_itemOk.dds", 111, 315, 33, 33},
-        {XR_RES_DVR"BC64.dds", 16, 315, 33, 33},
+        {XR_RES_DVR"media_listview_itemOk.dds", 147, 315, 33, 33},
+        {XR_RES_DVR"BC64.dds", 147, 315, 33, 33},
     };
     static IGUITexture listview_pagenext_texture[] =
     {
-        {XR_RES_DVR"media_listview_itemNext.dds", 206, 315, 33, 33},
-        {XR_RES_DVR"BC64.dds", 16, 315, 33, 33},
+        {XR_RES_DVR"media_listview_itemNext.dds", 270, 315, 33, 33},
+        {XR_RES_DVR"BC64.dds", 270, 315, 33, 33},
     };
     static IGUITexture listviewpop_array_texture[] =
     {
@@ -256,7 +249,7 @@ namespace GUI
         {XR_RES_DVR"media_listview_poped.dds", 24, 25, 48, 50}
     };
     static IGUITexture listviewThumbnail_array_texture[] = {
-        {XR_RES_DVR"media_listview_thumbnail.dds", 250, 0, 350, 350},
+        {XR_RES_DVR"media_listview_thumbnail.dds", 329, 0, 273, 348},
     };
     void DVR_Layout::InitMediaPanel(IGUIElement* media_panel, const GUI_HANDLE_T parentId)
     {
@@ -346,7 +339,7 @@ namespace GUI
                                listview_array_texture[0].pos_y,
                                listview_array_texture[0].element_width,
                                listview_array_texture[0].element_height);
-
+        
         m_listview = dynamic_cast<CGPUListView*>(media_listview);
     }
     void DVR_Layout::InitMediaStateIcon(IGUIElement*, const GUI_HANDLE_T parentId)
@@ -389,6 +382,13 @@ namespace GUI
                                 listviewThumbnail_array_texture[0].element_width,
                                 listviewThumbnail_array_texture[0].element_height);
         m_listview_thumbnail = dynamic_cast<CGPUImageStream*>(media_thumbnail);
+        //初始化缩略图地址
+        for( int index = 0; index < table.itemNum; index ++)
+        {
+            table.item[index].addr.itemThumbnailAddr =
+                m_listview_thumbnail->GetImageRawData(&table.item[index].thumbnail_width,
+                                                      &table.item[index].thumbnail_height);
+        }
     }
     void DVR_Layout::InitMediaListviewPrev(IGUIElement* listviewPrev_button, const GUI_HANDLE_T parentId)
     {
@@ -436,9 +436,20 @@ namespace GUI
         void* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
         DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
-        //填充有效数据
-        data->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
-        data->body.onlyNotify = true;
+
+        if(m_listview->NextItem())
+        {
+            //填充有效数据
+            data->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
+            data->body.onlyNotify = true;
+        }
+        else
+        {
+            //!列表框下移越界，触发向下翻页命令
+            data->header.msg_id = DVR_MEDIA_LIST_VIEW;
+            data->body.listview_file.operation = 0x06;
+            data->body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+        }
         PostEvent(event);
     }
     void DVR_Layout::OnPrevEvent(IGUIElement* prev_button)
@@ -447,9 +458,20 @@ namespace GUI
         void* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
         DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
-        //填充有效数据
-        data->header.msg_id = DVR_MEDIA_PREVE_BUTTON;
-        data->body.onlyNotify = true;
+        
+        if(m_listview->PrevItem()) 
+        {
+            //填充有效数据
+            data->header.msg_id = DVR_MEDIA_PREVE_BUTTON;
+            data->body.onlyNotify = true;
+        }
+        else
+        {
+            //!列表框上移越界，触发向上翻页命令
+            data->header.msg_id = DVR_MEDIA_LIST_VIEW;
+            data->body.listview_file.operation = 0x05;
+            data->body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+        }
         PostEvent(event);
     }
     void DVR_Layout::OnForwardEvent(IGUIElement* forward_button)
@@ -517,12 +539,8 @@ namespace GUI
     void DVR_Layout::OnListviewEvent(IGUIElement* list_view)
     {
         //更新缩略图
-        static uint32_t index = 0; index += 10; index = index % 250;
-        uint32_t width = 0, height = 0;
-        char* raw_data = m_listview_thumbnail->GetImageRawData(&width, &height);
-        memset(raw_data, index, width * height * 3);
         m_listview_thumbnail->UpdateImage();
-
+        
         void* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
         DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);

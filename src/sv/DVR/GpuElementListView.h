@@ -39,25 +39,33 @@ namespace GUI
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
         void SetTexture(const IGUITexture* effect, const long style);
-        /*添加文件列表item*/
-        void AddTextItem(const char* text);
-        /*清空文件列表内容*/
-        void Reset();
+        //! 使能列表框(overwirte IGUIElement)
         void Enable(bool enable);
-        //获取当前选中的item
+        //! 清空文件列表内容
+        void Reset();
+        //! 获取当前选中的item
         uint32_t GetCurrentIndex()  const { return m_current_item->index;}
+        //! 删除当前选中的item,触发删除与更新列表操作
         uint32_t DeleteCurrentItem() {}
+        //! 更新列表(更新列表文本的同时，更新itemNum)
+        void SetText(const char* text[], uint32_t itemNum);
+        //! 修改列表框对应index的文本(不更新itemNum)
         void SetItemText(const char* text, uint32_t index);
-    protected:
 
-        //void OnBtnPrev(EventResponder* responder, Int32 x, Int32 y, Int32 type);
-        //void OnBtnNext(EventResponder* responder, Int32 x, Int32 y, Int32 type);
+        //! 列表框向上移动，false表示越界, 选中框不移动
+        bool PrevItem();
+        //! 列表框向下移动，false表示越界, 选中框不移动
+        bool NextItem();
+        
+    protected:
         void OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type);
     private:
         //重载事件响应
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
+        //! 同步列表框hmi status
+        void Sync();
     private:
-        const uint32_t m_itemNum;
+        uint32_t m_itemNum;
         uint32_t m_pos_x, m_pos_y;
         uint32_t m_element_width, m_element_height;
         
@@ -79,6 +87,7 @@ namespace GUI
             
             uint32_t indexFile;     //对应的文件索引号
             uint32_t index;         //item 序列号
+            bool valid;
             EventResponder* responder;
         }*m_listview_item, *m_current_item;
 

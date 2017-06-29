@@ -33,6 +33,7 @@ namespace GUI
         ,m_processbar_x(0) , m_processbar_y(0)
         ,m_processbar_width(0), m_processbar_height(0)
         ,m_touchDown(false)
+        ,m_whole_time(0)
     {
     
     }
@@ -102,7 +103,7 @@ namespace GUI
                 Int32 PosX = x<0?0:x;
                 PosX = PosX>m_processbar_width?m_processbar_width:PosX;
                 m_pbarSlide->SetX(PosX);
-                m_pos = PosX;
+                m_pos = (PosX / m_processbar_width)* m_whole_time;
             }
             break;
         case TouchEvent_Up:
@@ -118,6 +119,7 @@ namespace GUI
 
     void CGPUProcessbar::SetValue(uint32_t whole_time, uint32_t current_time)
     {
+        m_whole_time = whole_time;
         if(!m_touchDown) //触摸按下，表示用户在修改进度条的值，不接受外部自动输入
         {
             current_time = current_time > whole_time? whole_time:current_time;

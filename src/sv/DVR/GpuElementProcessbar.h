@@ -53,6 +53,7 @@ namespace GUI
         float m_pos;
 
         bool m_touchDown;
+        uint32_t m_whole_time;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUProcessbar, IGUIElement)
     };
