@@ -523,11 +523,11 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
             if(LoadIndexBinFile(&m_pucIndexTotal,pIndexfilename,m_uiConfigBin,m_puiIndex, (GLushort*)param->gpu_lut_index) == true)
             {
                 //更新小车区域
-                m_car_rect[0] = -1.0+2.0*(float)pSticherReslt->car_Icon_Rect.x/(float)pSticherReslt->bev_img_width ;
-                m_car_rect[1] = 1.0-2.0*(float)pSticherReslt->car_Icon_Rect.y/(float)pSticherReslt->bev_img_height ;
+                m_car_rect[0] = -1.0+2.0*(float)(pSticherReslt->car_Icon_Rect.x-1)/(float)pSticherReslt->bev_img_width ;
+                m_car_rect[1] = 1.0-2.0*(float)(pSticherReslt->car_Icon_Rect.y-1)/(float)pSticherReslt->bev_img_height ;
 
-                m_car_rect[2] = -1.0+2.0*((float)pSticherReslt->car_Icon_Rect.x+(float)pSticherReslt->car_Icon_Rect.width)/(float)pSticherReslt->bev_img_width ;
-                m_car_rect[3] = 1.0-2.0*((float)pSticherReslt->car_Icon_Rect.y+(float)pSticherReslt->car_Icon_Rect.height)/(float)pSticherReslt->bev_img_height ;
+                m_car_rect[2] = -1.0+2.0*((float)(pSticherReslt->car_Icon_Rect.x-1)+(float)pSticherReslt->car_Icon_Rect.width+2)/(float)pSticherReslt->bev_img_width ;
+                m_car_rect[3] = 1.0-2.0*((float)(pSticherReslt->car_Icon_Rect.y-1)+(float)pSticherReslt->car_Icon_Rect.height+2)/(float)pSticherReslt->bev_img_height ;
 
                 //更新pgs
                 m_calib_para[0] = pSticherReslt->cx;
@@ -535,6 +535,10 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
                 m_calib_para[2] = pSticherReslt->ppmmx;
                 m_calib_para[3] = pSticherReslt->ppmmy;
 				AdjustCarPose(m_car_rect,0.005,0.01);
+				m_car_shadow_adjust_rect[0] = -0.04;
+				m_car_shadow_adjust_rect[1]=0.08;
+				m_car_shadow_adjust_rect[2]=0.04;
+				m_car_shadow_adjust_rect[3]=-0.08;
 
                 return true;
             }
