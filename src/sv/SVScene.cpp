@@ -4911,6 +4911,12 @@ int SVScene::UpdateRadarAlarm(void)
 	    }
     #endif
 		AVMData::GetInstance()->m_p_can_data->Get_PA_State(i/4,i%4,&ucAlarm);
+
+		if (ucAlarm >= 4)
+		{
+		    continue;
+		}
+		
         if(i<4)
         {
             if((ucAlarm != 0)&&ucAlarm<=3)
@@ -4959,6 +4965,12 @@ int SVScene::UpdateRadarAlarm(void)
 	        continue;
 	    }
 		#endif
+
+		if (ucAlarm >= 4)
+		{
+		    continue;
+		}
+		
     	AVMData::GetInstance()->m_p_can_data->Get_PA_State(i/4,i%4,&ucAlarm);
 
     	ret = m_radar_alram_2d[i].Update(i,ucAlarm);
@@ -4984,6 +4996,10 @@ int SVScene::UpdateRadarAlarm(void)
 	        continue;
 	    }
 #endif
+		if (ucAlarm >= 4)
+		{
+		    continue;
+		}
 
     	AVMData::GetInstance()->m_p_can_data->Get_PA_State(i/4,i%4,&ucAlarm);
        if(i<4)
