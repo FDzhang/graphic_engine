@@ -3,3 +3,9 @@
 #*#
 build
 rootfs
+CMakeCache.txt
+CMakeFiles/
+*.o
+*.out
+*.so*
+*.la*
