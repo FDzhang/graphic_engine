@@ -262,6 +262,16 @@ namespace GUI
     void CGPUListView::Sync()
     {
         m_current_item = &(m_listview_item[0]);
+
+        
+        /*临时添加的在第一次sync列表框时，默认播放第一个文件*/
+        static bool first = true;
+        if(first)
+        {
+            m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
+            first = false;
+        }
+        
         //同步选中框状态，若itemSelected位置没有及时更新，则重新更新状态
         m_itemSelectedLayer->SetY(m_current_item->m_itemLayer->GetY());
     }
