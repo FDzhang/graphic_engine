@@ -21,19 +21,30 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 25 5月 2017 dota2_black 
+ * VERSION: 25 5月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
-#include "event/AvmEvent.h"
 #include "XrCore/XrSrc/External/IXrCore.h"
+#include "event/AvmEvent.h"
 
 namespace GUI
 {
-    ILayout::ILayout()
-        :m_node(NULL), m_node_id(0)
+    const char* LogName = "ILayout";
+    DEFINE_NAMED_STATIC_LOGCTRL_CONFIG(CAvmEventLayout_Logctl, 1, "ILayout", LogName);
+
+    ILayout::ILayout(const char* className)
+        :LogHelper<ILayout>(CAvmEventLayout_Logctl, LogName, &GetGlobalConfig())
+        ,m_node(NULL), m_node_id(0)
         ,m_origin_element_info(NULL)
         ,m_origin_table_size(0)
+        ,m_eventType(AvmEvent::Invalid_Event_Type)
+        ,m_className(className)
     {
+        //初始化注册AvmEvent
+        if(!AttachAvmEvent(m_className))
+        {
+            LOGERROR("Careful !!! AvmEvent register failed");
+        }
     }
 
     ILayout::~ILayout()
@@ -55,7 +66,7 @@ namespace GUI
             PFOnEvent event = m_origin_element_info[eventId].OnEvent;
             if(event != NULL)
             {
-               (this->*event)(m_origin_element_info[eventId].element);
+                (this->*event)(m_origin_element_info[eventId].element);
             }
         }
     }
@@ -68,10 +79,10 @@ namespace GUI
         }
         else
         {
-            DEBUG("Please InitLayout First\n");
+            LOGDEBUG("Please InitLayout First");
         }
     }
-    
+
     void ILayout::InitElementTable(struct ElementFuntionTable* table, const uint32_t elementNum)
     {
         if(table != NULL && elementNum > 0)
@@ -79,11 +90,11 @@ namespace GUI
             m_origin_table_size = elementNum;
             m_origin_element_info = table;
         }
-        DEBUG("Layout origin size is %d\n", m_origin_table_size);
-        
+        LOGDEBUG("Layout origin size is %d", m_origin_table_size);
+
         if(m_node != NULL)
         {
-            INFO("Layout has created , don't create it again\n");
+            LOGWARNING("Layout has created , don't create it again");
             return;
         }
         //! 第一步，获取控件最大深度
@@ -97,6 +108,11 @@ namespace GUI
             }
         }
         uint32_t* rootId = new uint32_t[maxId];
+        if(rootId == NULL)
+        {
+            LOGERROR("%s: new memory failed", __func__);
+            return;
+        }
         //root id 默认为-1
         rootId[0] = -1;
 
@@ -105,13 +121,13 @@ namespace GUI
         m_node_id = core->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_node);
         if(m_node == NULL)
         {
-            ERROR("failed to create ui node\n");
+            LOGERROR("failed to create ui node");
             return;
         }
-            
+
         for( int index = 0; index <m_origin_table_size; index++)
         {
-            DEBUG("%s:create %s element\n", __func__, m_origin_element_info[index].className);
+            LOGDEBUG("%s:create %s element", __func__, m_origin_element_info[index].className);
             //依据类名动态创建类对象
             m_origin_element_info[index].element = IGUIElement::Create(m_origin_element_info[index].className);
             //回调注册的对象初始化函数
@@ -125,39 +141,44 @@ namespace GUI
             m_origin_element_info[index].layerId = element_id;
             //更新子控件的rootId
             rootId[m_origin_element_info[index].elementLevel] = element_id;
-            DEBUG("current element rootId is %d, child element rootId is %d eventId is %d\n",
-                  rootId[m_origin_element_info[index].elementLevel - 1],
-                  rootId[m_origin_element_info[index].elementLevel],
-                  m_origin_element_info[index].element->EventId()
+            LOGDEBUG("current element rootId is %d, child element rootId is %d eventId is %d",
+                     rootId[m_origin_element_info[index].elementLevel - 1],
+                     rootId[m_origin_element_info[index].elementLevel],
+                     m_origin_element_info[index].element->EventId()
                 );
         }
         delete[] rootId; //释放rootId动态数组
 
     }
 
-    AvmEventType ILayout::AttachEvent( const char* name, uint32_t payload_size)
+    bool ILayout::AttachAvmEvent(const char* eventName)
     {
-        if( name == NULL || payload_size == 0)
+        if( eventName == NULL)
         {
-            return AvmEvent::Invalid_Event_Type;
+            return false;
         }
-        return( AvmRegisterEvent(name, payload_size));
+        //注册事件
+        m_eventType =  AvmRegisterEvent(eventName, sizeof(Layout_Event_Payload_T));
+        if(m_eventType == AvmEvent::Invalid_Event_Type)
+        {
+            LOGERROR("%s:Attention: Invalid Event type by %s, please check the exist", __func__, eventName);
+            return false;
+        }
     }
 
-    AvmEvent* ILayout::RequestEvent(void** payload)
+    AvmEvent* ILayout::RequestEvent(Layout_Event_Payload_T** payload)
     {
-        AvmEventType m_event_type = GetAttachEventType();
-        if( m_event_type == AvmEvent::Invalid_Event_Type)
+        if( m_eventType == AvmEvent::Invalid_Event_Type)
         {
-            ERROR("not a right avm event type id");
+            LOGWARNING("%s:not a right avm event type id", __func__);
             return NULL;
         }
-        AvmEvent* avm_event = AvmRequestEvent(m_event_type);
+        AvmEvent* avm_event = AvmRequestEvent(m_eventType);
         RawAvmEvent* raw_event = avm_event->GetRawEvent();
-        *payload = raw_event->payload;
+        *payload = (Layout_Event_Payload_T*)(raw_event->payload);
         return avm_event;
     }
-    
+
     bool ILayout::PostEvent(AvmEvent* avm_event)
     {
         if(avm_event != NULL)
@@ -168,7 +189,7 @@ namespace GUI
         }
         else
         {
-            ERROR("please make sure the avm_event is valid\n");
+            LOGERROR("%s: please make sure the avm_event is valid", __func__);
             return false;
         }
     }

@@ -21,7 +21,7 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 19 6月 2017 dota2_black 
+ * VERSION: 19 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "GpuElementIcon.h"
 
@@ -30,13 +30,14 @@ namespace GUI
     CGPUIcon::CGPUIcon()
         :IGUIElement("CGPUIcon")
         ,CXrBaseView()
-        ,m_cursor_texture(NULL),m_cursor_layer(NULL)
+        ,m_iconTexture(NULL),m_iconLayer(NULL)
+        ,m_iconStyle(0)
     {
     }
     CGPUIcon::~CGPUIcon()
     {
     }
-        bool CGPUIcon::Create(const uint32_t pos_x, const uint32_t pos_y,
+    bool CGPUIcon::Create(const uint32_t pos_x, const uint32_t pos_y,
                           const uint32_t element_width, const uint32_t element_height)
     {
         const IUINode* node = GetLayoutNode();
@@ -52,29 +53,34 @@ namespace GUI
                 flag = InsertFlag_Default;
             }
             Int32 m_baseLayerId = node->CreateSpirit(parent, flag, -1, 1.0, pos_x, pos_y, 0, element_width, element_height);
-            //ILayer* layer = node->GetLayer(m_baseLayerId);
-            //layer->SetEventResponder(this);
-            
-            Int32 cursorId = node->CreateUIMaterial(Material_UI_Spirit, m_cursor_texture->texName);
-            Int32 cursorSpiritId = node->CreateSpirit(m_baseLayerId, InsertFlag_Child,
-                                                      cursorId, 1.0,
-                                                      m_cursor_texture->pos_x,
-                                                      m_cursor_texture->pos_y, 0,
-                                                      m_cursor_texture->element_width,
-                                                      m_cursor_texture->element_height);
-            m_cursor_layer = node->GetLayer(cursorSpiritId);
+            ILayer* layer = node->GetLayer(m_baseLayerId);
+            layer->SetEventResponder(this);
+
+            Int32 iconId = node->CreateUIMaterial(Material_UI_Spirit, m_iconTexture->texName);
+            Int32 iconSpiritId = node->CreateSpirit(m_baseLayerId, InsertFlag_Child,
+                                                    iconId, 1.0,
+                                                    m_iconTexture->pos_x,
+                                                    m_iconTexture->pos_y, 0,
+                                                    m_iconTexture->element_width,
+                                                    m_iconTexture->element_height);
+            m_iconLayer = node->GetLayer(iconSpiritId);
             IGUIElement::SetHwnd((GUI_HANDLE_T)m_baseLayerId);
         }
     }
     void CGPUIcon::SetTexture(const IGUITexture* effect, const long style)
     {
-        m_cursor_texture = &(((IGUITexture*)effect)[0]);
+        m_iconTexture = &(((IGUITexture*)effect)[0]);
+        m_iconStyle = style;
     }
 
     Boolean CGPUIcon::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        m_cursor_layer->SetX(x);
-        m_cursor_layer->SetY(y);
+        if(m_iconStyle == GUI_ICON_MOVEABLE)
+        {
+            m_iconLayer->SetX(x);
+            m_iconLayer->SetY(y);
+        }
+        return TRUE;
     }
     IMPLEMENT_DYNAMIC_CLASS(CGPUIcon)
 };

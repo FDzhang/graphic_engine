@@ -23,15 +23,23 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 25 5月 2017 dota2_black 
+ * VERSION: 25 5月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "IGUIElement.h"
 #include "event/RawAvmEvent.h"
-#include "event/AvmEvent.h"
+#include "log/LogHelper.hpp"
+#include "global/config.h"
+#include "GpuAvmEvent.h"
+
+//前置申明
+class AvmEvent;
 
 namespace GUI
 {
-    class ILayout
+    /*
+     * \brief CGUILayout 集成了Gpu构建hmi的基础功能
+     */
+    class ILayout : public LogHelper<ILayout>
     {
     protected:
         typedef void  (ILayout::*PFCreateElement)(IGUIElement*, const GUI_HANDLE_T parentId);
@@ -49,35 +57,38 @@ namespace GUI
             PFDeCreateElement   DeCreateElement; //控件释放方法(默认不实现，除非存在自定义资源需要释放)
         };
     public:
-        ILayout();
+        ILayout(const char* className);
         virtual ~ILayout();
         //! 控件事件分发， 静态表索引，抛出特定消息
         void Dispatch(const EVENT_HANDLE_T eventId, const uint32_t type);
         //! 使能layout(控制layout的绘制与否)
         void EnableLayout(int flag);
-        //! AttachEvent 注册SystemEvent消息
-        static AvmEventType AttachEvent(const char* name, uint32_t payload_size);
     protected:
         //! 初始化控件元素表
         void InitElementTable(struct ElementFuntionTable* table, const uint32_t elementNum);
-        /* 
-         * \brief 请求event创建payload用于填充raw data
-         * [OUT] payload raw date pointer
-         * [return] AvmEvent* event数据对象，调用者无需关心
-         */
-        AvmEvent* RequestEvent(void** payload);
-        static bool PostEvent(AvmEvent* avm_event);
-        //! 获取AvmEvent 默认是无效event type
-        virtual AvmEventType GetAttachEventType() {return AvmEvent::Invalid_Event_Type;}
 
+        /*
+         * \brief 绑定AvmEvent
+         */
+        bool AttachAvmEvent(const char* eventName);
+        /*
+         * \brief 请求AvmEvent,分配event 对象，用于数据填充
+         */
+        AvmEvent* RequestEvent(Layout_Event_Payload_T** payload);
+        /*
+         * \brief 请求post 指定数据
+         */
+        bool  PostEvent(AvmEvent* avm_event);
     protected:
         //Layout node (布局在Layout上的控件元素，都应该在此基础上进行绘制)
         IGUINode* m_node;
-        int      m_node_id;
+        int       m_node_id;
     private:
         //! 保存的原始控件表
         struct ElementFuntionTable* m_origin_element_info;
         uint32_t m_origin_table_size;
+        AvmEventType m_eventType; //AvmEvent事件类型id
+        const char* m_className;  //Layout className
     };
 };
 /*------------------------------------------------------------------------------------------

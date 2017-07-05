@@ -21,7 +21,7 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 14 6月 2017 dota2_black 
+ * VERSION: 14 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "GpuElementListView.h"
 #include "Layout.h"
@@ -76,7 +76,7 @@ namespace GUI
             Int32 textOkItemId = node->CreateUIMaterial(Material_UI_Spirit,
                                                         const_cast<char*>(m_listview_itemOk_texture->texName));
             Int32 fontId = node->CreateUIFontMaterial(const_cast<char*>(m_listview_font_texture->texName), 0);
-            
+
             Int32 rootId = node->CreateSpirit(parent, flag, bgId, 1.0,
                                               m_pos_x, m_pos_y,
                                               0,
@@ -142,13 +142,13 @@ namespace GUI
             m_itemOkTextLayer->SetOpacity(1.0);
             m_itemOkTextLayer->SetFontSize(20);
             m_itemOkTextLayer->SetColor(1.0, 1.0, 0); //当前正在播放的文件为红色
-            
+
             //初始化当前选中框
             m_current_item = &(m_listview_item[0]);
             IGUIElement::SetHwnd((GUI_HANDLE_T)rootId);
         }
     }
-    
+
     void CGPUListView::SetTexture(const IGUITexture* effect, const long style)
     {
         m_base_texture                  = &(((IGUITexture*)effect)[0]);
@@ -248,14 +248,14 @@ namespace GUI
     {
         switch(type)
         {
-        case TouchEvent_Down:
-            m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
-            IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
-            break;
-        case TouchEvent_Up:
-            break;
-        default:
-            break;
+	    case TouchEvent_Down:
+                m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
+                IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
+                break;
+            case TouchEvent_Up:
+                break;
+            default:
+                break;
         }
         return TRUE;
     }
@@ -263,7 +263,7 @@ namespace GUI
     {
         m_current_item = &(m_listview_item[0]);
 
-        
+
         /*临时添加的在第一次sync列表框时，默认播放第一个文件*/
         static bool first = true;
         if(first)
@@ -271,7 +271,7 @@ namespace GUI
             m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
             first = false;
         }
-        
+
         //同步选中框状态，若itemSelected位置没有及时更新，则重新更新状态
         m_itemSelectedLayer->SetY(m_current_item->m_itemLayer->GetY());
     }

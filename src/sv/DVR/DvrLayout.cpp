@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------------------
- * FILE: DVR_Layout.cpp
+ * FILE: DvrLayout.cpp
  *==========================================================================================
  * Copyright 2017  O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -21,66 +21,66 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 31 5月 2017 dota2_black 
+ * VERSION: 31 5月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
-#include "DVR_Layout.h"
+#include "DvrLayout.h"
 #include "IGUIElement.h"
 #include "GPU_Module_Interface.h"
 
 namespace GUI
 {
-    DVR_Layout* DVR_Layout::m_layout = NULL;
-    AvmEventType   DVR_Layout::m_event_type = AvmEvent::Invalid_Event_Type;
-    IDVR* DVR_Layout::GetLayout()
+    DvrLayout* DvrLayout::m_layout = NULL;
+    IDvrLayout* DvrLayout::GetLayout()
     {
+        //! 线程安全性不保证
         if(m_layout == NULL)
         {
-            m_layout = new DVR_Layout;
+            m_layout = new DvrLayout;
         }
         return m_layout;
     }
 
     /**
-     * \beief gpu控件元素信息表, 记录控件消息事件响应操作 
-     */    
-    struct ILayout::ElementFuntionTable DVR_Layout::m_element_info[] = 
-    { 
-        { "CGPUPanel"      , "多媒体栏"   , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaPanel)       , NULL, NULL},
-        { "CGPUButton"     , "播放按钮"   , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaPlay)        , (PFOnEvent)(&DVR_Layout::OnPlayEvent), NULL},
-        { "CGPUButton"     , "上一曲"     , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaNext)        , (PFOnEvent)(&DVR_Layout::OnNextEvent), NULL},
-        { "CGPUButton"     , "下一曲"     , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaPrev)        , (PFOnEvent)(&DVR_Layout::OnPrevEvent), NULL},
-        { "CGPUButton"     , "快进"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaForward)     , (PFOnEvent)(&DVR_Layout::OnForwardEvent), NULL},
-        { "CGPUButton"     , "快退"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaRewind)      , (PFOnEvent)(&DVR_Layout::OnRewindEvent), NULL},
-        { "CGPUText"       , "进度条时间" , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaText)        , NULL, NULL},
-        { "CGPUButton"     , "退出"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaExit)        , (PFOnEvent)(&DVR_Layout::OnExitEvent), NULL},
-        { "CGPUButton"     , "截图"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaScreenShot)  , (PFOnEvent)(&DVR_Layout::OnScreenShotEvent), NULL},
-        { "CGPUButton"     , "设置"       , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaSetting)     , (PFOnEvent)(&DVR_Layout::OnSettingEvent), NULL},
-        { "CGPUButton"    , "播放列表按钮", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewPop),(PFOnEvent)(&DVR_Layout::OnListviewPop), NULL},
-        { "CGPUProcessbar" , "进度条"     , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaBar)         , (PFOnEvent)(&DVR_Layout::OnBarEvent), NULL},
-        { "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListview),(PFOnEvent)(&DVR_Layout::OnListviewEvent), NULL},
-        //{ "CGPUImageStream", "播放列表缩略图", 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewThumbnail), NULL, NULL},
-        { "CGPUButton", "播放列表下翻" , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewPrev), (PFOnEvent)(&DVR_Layout::OnListviewPrevEvent), NULL},
-        { "CGPUButton", "播放列表上翻" , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewNext), (PFOnEvent)(&DVR_Layout::OnListviewNextEvent), NULL},
-        { "CGPUButton", "播放列表确定" , 2, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaListviewOk), (PFOnEvent)(&DVR_Layout::OnListviewOkEvent), NULL},
-        //{ "CGPUIcon"       , "指示灯"     , 1, 0, NULL, (PFCreateElement)(&DVR_Layout::InitMediaStateIcon), NULL, NULL},
+     * \beief gpu控件元素信息表, 记录控件消息事件响应操作
+     */
+    struct DvrLayout::ElementFuntionTable DvrLayout::m_element_info[] =
+    {
+        { "CGPUPanel"      , "多媒体栏"   , 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaPanel)       , NULL, NULL},
+        { "CGPUButton"     , "播放按钮"   , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaPlay)        , (PFOnEvent)(&DvrLayout::OnPlayEvent), NULL},
+        { "CGPUButton"     , "上一曲"     , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaNext)        , (PFOnEvent)(&DvrLayout::OnNextEvent), NULL},
+        { "CGPUButton"     , "下一曲"     , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaPrev)        , (PFOnEvent)(&DvrLayout::OnPrevEvent), NULL},
+        { "CGPUButton"     , "快进"       , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaForward)     , (PFOnEvent)(&DvrLayout::OnForwardEvent), NULL},
+        { "CGPUButton"     , "快退"       , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaRewind)      , (PFOnEvent)(&DvrLayout::OnRewindEvent), NULL},
+        { "CGPUText"       , "进度条时间" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaText)        , NULL, NULL},
+        { "CGPUButton"     , "退出"       , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaExit)        , (PFOnEvent)(&DvrLayout::OnExitEvent), NULL},
+        { "CGPUButton"     , "截图"       , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaScreenShot)  , (PFOnEvent)(&DvrLayout::OnScreenShotEvent), NULL},
+        { "CGPUButton"     , "设置"       , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaSetting)     , (PFOnEvent)(&DvrLayout::OnSettingEvent), NULL},
+        { "CGPUButton"    , "播放列表按钮", 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewPop),(PFOnEvent)(&DvrLayout::OnListviewPop), NULL},
+        { "CGPUProcessbar" , "进度条"     , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaBar)         , (PFOnEvent)(&DvrLayout::OnBarEvent), NULL},
+        { "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListview),(PFOnEvent)(&DvrLayout::OnListviewEvent), NULL},
+        //{ "CGPUImageStream", "播放列表缩略图", 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewThumbnail), NULL, NULL},
+        { "CGPUButton", "播放列表下翻" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewPrev), (PFOnEvent)(&DvrLayout::OnListviewPrevEvent), NULL},
+        { "CGPUButton", "播放列表上翻" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewNext), (PFOnEvent)(&DvrLayout::OnListviewNextEvent), NULL},
+        { "CGPUButton", "播放列表确定" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewOk), (PFOnEvent)(&DvrLayout::OnListviewOkEvent), NULL},
+        //{ "CGPUIcon"       , "指示灯"     , 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaStateIcon), NULL, NULL},
     };
-    
-    DVR_Layout::DVR_Layout()
-        :ILayout()
+
+    DvrLayout::DvrLayout()
+        :ILayout(DVRHMI_EVENT_NAME)
         ,m_element_size(sizeof(m_element_info) / sizeof(struct ElementFuntionTable))
     {
         InitElementTable(m_element_info, m_element_size);
     }
 
-    DVR_Layout::~DVR_Layout()
+    DvrLayout::~DvrLayout()
     {
     }
-    
-    void DVR_Layout::Enable(bool flag)
+
+    void DvrLayout::Enable(bool flag)
     {
         ILayout::EnableLayout(flag);
     }
-    void DVR_Layout::SetProcessbarValue(uint32_t whole_time, uint32_t cur_time)
+    void DvrLayout::SetProcessbarValue(uint32_t whole_time, uint32_t cur_time)
     {
         m_bar->SetValue(whole_time, cur_time);
 
@@ -91,18 +91,18 @@ namespace GUI
                 cur_time / 3600, (cur_time / 60) % 60, cur_time % 60,
                 whole_time / 3600,(whole_time / 60) % 60, whole_time % 60
                 );
-        
+
         m_bar_text->SetText(time_text);
     }
-    void DVR_Layout::InsertProcessbarKeyFrame(void* frame)
+    void DvrLayout::InsertProcessbarKeyFrame(void* frame)
     {
-        
+
     }
-    PlaylistItemTable_T* DVR_Layout::GetPlaylistItemTable()
+    PlaylistItemTable_T* DvrLayout::GetPlaylistItemTable()
     {
         return &table;
     }
-    void DVR_Layout::SyncPlaylist()
+    void DvrLayout::SyncPlaylist()
     {
         m_listview->Reset();
         for(int index = 0; index < table.itemNum; index++)
@@ -111,11 +111,11 @@ namespace GUI
         }
         m_listview->Sync();
     }
-    void DVR_Layout::AppendPlaylist(const char* playlist)
+    void DvrLayout::AppendPlaylist(const char* playlist)
     {
-        
+
     }
-    void DVR_Layout::NextItemInPlaylist()
+    void DvrLayout::NextItemInPlaylist()
     {
         static bool down = true;
         if(down)
@@ -129,7 +129,7 @@ namespace GUI
             down = true;
         }
     }
-    void DVR_Layout::PrevItemInPlaylist()
+    void DvrLayout::PrevItemInPlaylist()
     {
         static bool down = true;
         if(down)
@@ -146,31 +146,31 @@ namespace GUI
     /**
      * \brief 内部测试专用接口,  实际采用触摸屏左边进行Layout的坐标响应操作
      */
-    void DVR_Layout::StartPlay()
+    void DvrLayout::StartPlay()
     {
         OnMouseSingleDown(640, 670);
     }
-    void DVR_Layout::PausePlay()
+    void DvrLayout::PausePlay()
     {
         OnMouseSingleDown(640, 670);
     }
-    void DVR_Layout::NextPlay()
+    void DvrLayout::NextPlay()
     {
         OnMouseSingleDown(690, 670);
     }
-    void DVR_Layout::PrevPlay()
+    void DvrLayout::PrevPlay()
     {
         OnMouseSingleDown(526, 670);
     }
-    void DVR_Layout::FastForwardPlay()
+    void DvrLayout::FastForwardPlay()
     {
         OnMouseSingleDown(456, 670);
     }
-    void DVR_Layout::RewindPlay()
+    void DvrLayout::RewindPlay()
     {
         OnMouseSingleDown(760, 670);
     }
-    void DVR_Layout::SetPlaylist()
+    void DvrLayout::SetPlaylist()
     {
         static bool down = true;
         if(down)
@@ -189,44 +189,44 @@ namespace GUI
      *　　　　主要涉及的是UI的绘制代码，private 不对外暴露实现细节
      */
     static IGUITexture panel_array_texture[] = {
-        {XR_RES_DVR"panel.dds", 0, 620, 1280, 100},
+        {XR_RES_DVR"panel.dds", 0, 600, 1280, 120},
     };
     static IGUITexture prev_array_texture[] =  {
-        {XR_RES_DVR"media_prev.dds", 526, 26, 64, 48},
-        {XR_RES_DVR"media_prev_rewind_hit.dds", 526, 26, 64, 48},
+        {XR_RES_DVR"media_prev.dds", 526, 46, 64, 48},
+        {XR_RES_DVR"media_prev_rewind_hit.dds", 526, 46, 64, 48},
     };
     static IGUITexture play_array_texture[] =  {
-        {XR_RES_DVR"media_pause.dds", 590, 0, 100, 100},
-        {XR_RES_DVR"media_play.dds", 590, 0, 100, 100}
+        {XR_RES_DVR"media_pause.dds", 590, 20, 100, 100},
+        {XR_RES_DVR"media_play.dds", 590, 20, 100, 100}
     };
     static IGUITexture next_array_texture[] = {
-        {XR_RES_DVR"media_next.dds", 690, 26, 64, 48},
-        {XR_RES_DVR"media_next_forward_hit.dds", 690, 26, 64, 48}
+        {XR_RES_DVR"media_next.dds", 690, 46, 64, 48},
+        {XR_RES_DVR"media_next_forward_hit.dds", 690, 46, 64, 48}
     };
     static IGUITexture forward_array_texture[] = {
-        {XR_RES_DVR"media_forward.dds", 824, 26, 64, 48},
-        {XR_RES_DVR"media_next_forward_hit.dds", 824, 26, 64, 48}
+        {XR_RES_DVR"media_forward.dds", 824, 46, 64, 48},
+        {XR_RES_DVR"media_next_forward_hit.dds", 824, 46, 64, 48}
     };
     static IGUITexture rewind_array_texture[] = {
-        {XR_RES_DVR"media_rewind.dds", 760, 26, 64, 48},
-        {XR_RES_DVR"media_prev_rewind_hit.dds", 760, 26, 64, 48}
+        {XR_RES_DVR"media_rewind.dds", 760, 46, 64, 48},
+        {XR_RES_DVR"media_prev_rewind_hit.dds", 760, 46, 64, 48}
     };
     static IGUITexture bar_array_texture[] = {
-        {XR_RES_DVR"barBase.dds", 0, 602, 1280, 18},
-        {XR_RES_DVR"barSlide.dds", 0, 602, 1280, 18}
+        {XR_RES_DVR"barBase.dds", 0, 0, 1280, 18},
+        {XR_RES_DVR"barSlide.dds", 0, 0, 1280, 18}
     };
     static IGUITexture exit_array_texture[] = {
-        {XR_RES_DVR"media_on.dds",  1200, 13, 74, 74},
-        {XR_RES_DVR"media_off.dds", 1200, 13, 74, 74}
+        {XR_RES_DVR"media_on.dds",  1200, 33, 74, 74},
+        {XR_RES_DVR"media_off.dds", 1200, 33, 74, 74}
     };
     static IGUITexture text_array_texture[] = {
-        {XR_RES_DVR"BC64.dds", 240, 30, 80, 40},
-        {XR_RES"text_box.ttf", 1200, 10, 80, 80}
+        {XR_RES_DVR"BC64.dds", 240, 50, 80, 40},
+        {XR_RES"text_box.ttf", 1200, 30, 80, 80}
     };
     static IGUITexture listviewpop_array_texture[] =
     {
-        {XR_RES_DVR"media_listview_pop.dds",   24, 25, 48, 50},
-        {XR_RES_DVR"media_listview_poped.dds", 24, 25, 48, 50}
+        {XR_RES_DVR"media_listview_pop.dds",   24, 45, 48, 50},
+        {XR_RES_DVR"media_listview_poped.dds", 24, 45, 48, 50}
     };
     static IGUITexture listview_array_texture[] = {
        {XR_RES_DVR"media_listview_bg.dds", 0, 200, 602, 350},
@@ -253,7 +253,7 @@ namespace GUI
     static IGUITexture listviewThumbnail_array_texture[] = {
         {XR_RES_DVR"media_listview_thumbnail.dds", 329, 0, 273, 348},
     };
-    void DVR_Layout::InitMediaPanel(IGUIElement* media_panel, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaPanel(IGUIElement* media_panel, const GUI_HANDLE_T parentId)
     {
         media_panel->Attach(m_node, parentId);
         media_panel->SetTexture(panel_array_texture, 0);
@@ -262,7 +262,7 @@ namespace GUI
                             panel_array_texture[0].element_width,
                             panel_array_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaPrev(IGUIElement* media_prev_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaPrev(IGUIElement* media_prev_button, const GUI_HANDLE_T parentId)
     {
         media_prev_button->Attach(m_node, parentId);
         media_prev_button->SetTexture(prev_array_texture, 0);
@@ -271,7 +271,7 @@ namespace GUI
                                   prev_array_texture[0].element_width,
                                   prev_array_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaPlay(IGUIElement* media_play_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaPlay(IGUIElement* media_play_button, const GUI_HANDLE_T parentId)
     {
         media_play_button->Attach(m_node, parentId);
         media_play_button->SetTexture(play_array_texture, GUI::GUI_BUTTON_EFFECT_LOCK);
@@ -282,7 +282,7 @@ namespace GUI
         IGUIElement* button = media_play_button;
         m_media_play = dynamic_cast<CGPUButton*>(button);
     }
-    void DVR_Layout::InitMediaNext(IGUIElement* media_next_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaNext(IGUIElement* media_next_button, const GUI_HANDLE_T parentId)
     {
         media_next_button->Attach(m_node, parentId);
         media_next_button->SetTexture(next_array_texture, 0);
@@ -291,7 +291,7 @@ namespace GUI
                                   next_array_texture[0].element_width,
                                   next_array_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaForward(IGUIElement* media_forward_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaForward(IGUIElement* media_forward_button, const GUI_HANDLE_T parentId)
     {
 
         media_forward_button->Attach(m_node, parentId);
@@ -301,9 +301,9 @@ namespace GUI
                                      forward_array_texture[0].element_width,
                                      forward_array_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaRewind(IGUIElement* media_rewind_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaRewind(IGUIElement* media_rewind_button, const GUI_HANDLE_T parentId)
     {
-        
+
         media_rewind_button->Attach(m_node, parentId);
         media_rewind_button->SetTexture(rewind_array_texture, 0);
         media_rewind_button->Create(rewind_array_texture[0].pos_x,
@@ -311,7 +311,7 @@ namespace GUI
                                     rewind_array_texture[0].element_width,
                                     rewind_array_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaBar(IGUIElement* media_bar, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaBar(IGUIElement* media_bar, const GUI_HANDLE_T parentId)
     {
         media_bar->Attach(m_node, parentId);
         media_bar->SetTexture(bar_array_texture, 0);
@@ -321,7 +321,7 @@ namespace GUI
                           bar_array_texture[0].element_height);
         m_bar = dynamic_cast<CGPUProcessbar*>(media_bar);
     }
-    void DVR_Layout::InitMediaText(IGUIElement* media_text, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaText(IGUIElement* media_text, const GUI_HANDLE_T parentId)
     {
         media_text->Attach(m_node, parentId);
         media_text->SetTexture(text_array_texture, 0);
@@ -332,8 +332,8 @@ namespace GUI
         media_text -> SetText("/");
         m_bar_text = dynamic_cast<CGPUText*>(media_text);
     }
-    
-    void DVR_Layout::InitMediaListview(IGUIElement* media_listview, const GUI_HANDLE_T parentId)
+
+    void DvrLayout::InitMediaListview(IGUIElement* media_listview, const GUI_HANDLE_T parentId)
     {
         media_listview->Attach(m_node, parentId);
         media_listview->SetTexture(listview_array_texture, 0);
@@ -341,24 +341,24 @@ namespace GUI
                                listview_array_texture[0].pos_y,
                                listview_array_texture[0].element_width,
                                listview_array_texture[0].element_height);
-        
+
         m_listview = dynamic_cast<CGPUListView*>(media_listview);
     }
-    void DVR_Layout::InitMediaStateIcon(IGUIElement*, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaStateIcon(IGUIElement*, const GUI_HANDLE_T parentId)
     {
-        
+
     }
-    void DVR_Layout::InitMediaSetting(IGUIElement* media_setting, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaSetting(IGUIElement* media_setting, const GUI_HANDLE_T parentId)
     {
-        
+
     }
-    void DVR_Layout::InitMediaScreenShot(IGUIElement* media_screenshot, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaScreenShot(IGUIElement* media_screenshot, const GUI_HANDLE_T parentId)
     {
-        
+
     }
-    void DVR_Layout::InitMediaExit(IGUIElement* media_exit, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaExit(IGUIElement* media_exit, const GUI_HANDLE_T parentId)
     {
-        
+
         media_exit->Attach(m_node, parentId);
         media_exit->SetTexture(exit_array_texture, 0);
         media_exit->Create(exit_array_texture[0].pos_x,
@@ -366,7 +366,7 @@ namespace GUI
                            exit_array_texture[0].element_width,
                            exit_array_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaListviewPop(IGUIElement* media_listview_pop_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaListviewPop(IGUIElement* media_listview_pop_button, const GUI_HANDLE_T parentId)
     {
         media_listview_pop_button->Attach(m_node, parentId);
         media_listview_pop_button->SetTexture(listviewpop_array_texture, GUI::GUI_BUTTON_EFFECT_LOCK);
@@ -375,7 +375,7 @@ namespace GUI
                                           listviewpop_array_texture[0].element_width,
                                           listviewpop_array_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaListviewThumbnail(IGUIElement* media_thumbnail, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaListviewThumbnail(IGUIElement* media_thumbnail, const GUI_HANDLE_T parentId)
     {
         media_thumbnail->Attach(m_node, parentId);
         media_thumbnail->SetTexture(listviewThumbnail_array_texture, 0);
@@ -392,7 +392,7 @@ namespace GUI
                                                       &table.item[index].thumbnail_height);
         }
     }
-    void DVR_Layout::InitMediaListviewPrev(IGUIElement* listviewPrev_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaListviewPrev(IGUIElement* listviewPrev_button, const GUI_HANDLE_T parentId)
     {
         listviewPrev_button->Attach(m_node, parentId);
         listviewPrev_button->SetTexture(listview_pageprev_texture, 0);
@@ -401,7 +401,7 @@ namespace GUI
                                     listview_pageprev_texture[0].element_width,
                                     listview_pageprev_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaListviewNext(IGUIElement* listviewNext_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaListviewNext(IGUIElement* listviewNext_button, const GUI_HANDLE_T parentId)
     {
         listviewNext_button->Attach(m_node, parentId);
         listviewNext_button->SetTexture(listview_pagenext_texture, 0);
@@ -410,7 +410,7 @@ namespace GUI
                                     listview_pagenext_texture[0].element_width,
                                     listview_pagenext_texture[0].element_height);
     }
-    void DVR_Layout::InitMediaListviewOk(IGUIElement* listviewOk_button, const GUI_HANDLE_T parentId)
+    void DvrLayout::InitMediaListviewOk(IGUIElement* listviewOk_button, const GUI_HANDLE_T parentId)
     {
         listviewOk_button->Attach(m_node, parentId);
         listviewOk_button->SetTexture(listview_itemok_texture, 0);
@@ -422,170 +422,155 @@ namespace GUI
     /**
      *  \brief DVR 控件元素事件响应
      */
-    void DVR_Layout::OnPlayEvent(IGUIElement* play_button)
+    void DvrLayout::OnPlayEvent(IGUIElement* play_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_PLAY_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = DVR_MEDIA_PLAY_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
-    void DVR_Layout::OnNextEvent(IGUIElement* next_button)
+    void DvrLayout::OnNextEvent(IGUIElement* next_button)
     {
         m_media_play->Reset();
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
-
         if(m_listview->NextItem())
         {
             //填充有效数据
-            data->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
-            data->body.onlyNotify = true;
+            payload->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
+            payload->body.onlyNotify = true;
         }
         else
         {
             //!列表框下移越界，触发向下翻页命令
-            data->header.msg_id = DVR_MEDIA_LIST_VIEW;
-            data->body.listview_file.operation = 0x06;
-            data->body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+            payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
+            payload->body.dvr_body.listview_file.operation = 0x06;
+            payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
         }
         PostEvent(event);
     }
-    void DVR_Layout::OnPrevEvent(IGUIElement* prev_button)
+    void DvrLayout::OnPrevEvent(IGUIElement* prev_button)
     {
         m_media_play->Reset();
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
-        
-        if(m_listview->PrevItem()) 
+        if(m_listview->PrevItem())
         {
             //填充有效数据
-            data->header.msg_id = DVR_MEDIA_PREVE_BUTTON;
-            data->body.onlyNotify = true;
+            payload->header.msg_id = DVR_MEDIA_PREVE_BUTTON;
+            payload->body.onlyNotify = true;
         }
         else
         {
             //!列表框上移越界，触发向上翻页命令
-            data->header.msg_id = DVR_MEDIA_LIST_VIEW;
-            data->body.listview_file.operation = 0x05;
-            data->body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+            payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
+            payload->body.dvr_body.listview_file.operation = 0x05;
+            payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
         }
         PostEvent(event);
     }
-    void DVR_Layout::OnForwardEvent(IGUIElement* forward_button)
+    void DvrLayout::OnForwardEvent(IGUIElement* forward_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_FORWARD_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = DVR_MEDIA_FORWARD_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
-    void DVR_Layout::OnRewindEvent(IGUIElement* rewind_button)
+    void DvrLayout::OnRewindEvent(IGUIElement* rewind_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_REWIND_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = DVR_MEDIA_REWIND_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
-    void DVR_Layout::OnScreenShotEvent(IGUIElement* screenshot_button)
+    void DvrLayout::OnScreenShotEvent(IGUIElement* screenshot_button)
     {
         void* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
+        Layout_Event_Payload_T* data = (Layout_Event_Payload_T*)(payload);
         //填充有效数据
         data->header.msg_id = DVR_MEDIA_SCREEN_SHOT_BUTTON;
         data->body.onlyNotify = true;
         PostEvent(event);
     }
-    void DVR_Layout::OnSettingEvent(IGUIElement* setting_button)
+    void DvrLayout::OnSettingEvent(IGUIElement* setting_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_SETTING_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = DVR_MEDIA_SETTING_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
-    void DVR_Layout::OnBarEvent(IGUIElement* bar_button)
+    void DvrLayout::OnBarEvent(IGUIElement* bar_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_BAR;
-        data->body.bar.operation = 0x01;
-        data->body.bar.method.jump_time = dynamic_cast<CGPUProcessbar*>(bar_button)->GetPos();
+        payload->header.msg_id = DVR_MEDIA_BAR;
+        payload->body.dvr_body.bar.operation = 0x01;
+        payload->body.dvr_body.bar.method.jump_time = dynamic_cast<CGPUProcessbar*>(bar_button)->GetPos();
         PostEvent(event);
     }
-    void DVR_Layout::OnExitEvent(IGUIElement* exit_button)
+    void DvrLayout::OnExitEvent(IGUIElement* exit_button)
     {
         m_media_play->Reset();
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_EXIT_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = DVR_MEDIA_EXIT_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
-    void DVR_Layout::OnListviewEvent(IGUIElement* list_view)
+    void DvrLayout::OnListviewEvent(IGUIElement* list_view)
     {
         //更新缩略图
         //m_listview_thumbnail->UpdateImage();
-        
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_LIST_VIEW;
-        data->body.listview_file.operation = 0x04;
-        data->body.listview_file.method.file_play = dynamic_cast<CGPUListView*>(list_view)->GetCurrentIndex();
+        payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
+        payload->body.dvr_body.listview_file.operation = 0x04;
+        payload->body.dvr_body.listview_file.method.file_play = dynamic_cast<CGPUListView*>(list_view)->GetCurrentIndex();
         PostEvent(event);
     }
-    void DVR_Layout::OnListviewPrevEvent(IGUIElement* listviewPrev_button)
+    void DvrLayout::OnListviewPrevEvent(IGUIElement* listviewPrev_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_LIST_VIEW;
-        data->body.listview_file.operation = 0x05;
-        data->body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+        payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
+        payload->body.dvr_body.listview_file.operation = 0x05;
+        payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
         PostEvent(event);
     }
-    void DVR_Layout::OnListviewNextEvent(IGUIElement* listviewNext_button)
+    void DvrLayout::OnListviewNextEvent(IGUIElement* listviewNext_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_LIST_VIEW;
-        data->body.listview_file.operation = 0x06;
-        data->body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+        payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
+        payload->body.dvr_body.listview_file.operation = 0x06;
+        payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
         PostEvent(event);
     }
-    void DVR_Layout::OnListviewOkEvent(IGUIElement* listviewOk_button)
+    void DvrLayout::OnListviewOkEvent(IGUIElement* listviewOk_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        DVR_Event_Payload_T* data = (DVR_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = DVR_MEDIA_BAR;
-        data->body.listview_file.operation = 0x05;
-        data->body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+        payload->header.msg_id = DVR_MEDIA_BAR;
+        payload->body.dvr_body.listview_file.operation = 0x05;
+        payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
         PostEvent(event);
     }
-    void DVR_Layout::OnListviewPop(IGUIElement* listviewpop_button)
+    void DvrLayout::OnListviewPop(IGUIElement* listviewpop_button)
     {
         static bool flag = false;
         m_listview->Enable(flag);
@@ -596,12 +581,12 @@ namespace GUI
 /**
  * 接口函数，操作Dvr_Layout
  */
-extern "C" DLL_PUBLIC IDVR* NewDvrLayout()
+extern "C" DLL_PUBLIC IDvrLayout* NewDvrLayout()
 {
-    return(GUI::DVR_Layout::GetLayout());
+    return(GUI::DvrLayout::GetLayout());
 }
 
-extern "C" DLL_PUBLIC void DeleteDvrLayout(IDVR* dvr)
+extern "C" DLL_PUBLIC void DeleteDvrLayout(IDvrLayout* dvr)
 {
     if(dvr)
     {

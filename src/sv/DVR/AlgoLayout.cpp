@@ -21,14 +21,13 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 21 6月 2017 dota2_black 
+ * VERSION: 21 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
-#include "Algo_Layout.h"
+#include "AlgoLayout.h"
 
 namespace GUI
 {
     AlgoLayout* AlgoLayout::m_layout = NULL;
-    AvmEventType   AlgoLayout::m_event_type = AvmEvent::Invalid_Event_Type;
     IAlgoLayout* AlgoLayout::GetLayout()
     {
         if(m_layout == NULL)
@@ -37,8 +36,8 @@ namespace GUI
         }
         return m_layout;
     }
-    
-    struct ILayout::ElementFuntionTable AlgoLayout::m_element_info[] =
+
+    struct AlgoLayout::ElementFuntionTable AlgoLayout::m_element_info[] =
     {
         {"CGPUButton" , "ldw" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoLdw) , (PFOnEvent)(&AlgoLayout::OnEventLdw), NULL},
         {"CGPUButton" , "bsd" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoBsd) , (PFOnEvent)(&AlgoLayout::OnEventBsd), NULL},
@@ -51,11 +50,11 @@ namespace GUI
 
     void AlgoLayout::Enable(bool flag)
     {
-        ILayout::EnableLayout(flag);
+        EnableLayout(flag);
     }
-    
+
     AlgoLayout::AlgoLayout()
-        :ILayout()
+        :ILayout(ALGOHMI_EVENT_NAME)
         ,IAlgoLayout()
         ,m_element_size(sizeof(m_element_info) / sizeof( struct ElementFuntionTable))
     {
@@ -113,12 +112,11 @@ namespace GUI
     }
     void AlgoLayout::OnEventLdw(IGUIElement* ldw_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = ALGO_LDW_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = ALGO_LDW_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
     void AlgoLayout::InitAlgoBsd(IGUIElement* bsd_button, const GUI_HANDLE_T parentId)
@@ -133,12 +131,11 @@ namespace GUI
     }
     void AlgoLayout::OnEventBsd(IGUIElement* bsd_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = ALGO_BSD_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = ALGO_BSD_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
     void AlgoLayout::InitAlgoOnline(IGUIElement* online_button, const GUI_HANDLE_T parentId)
@@ -153,12 +150,11 @@ namespace GUI
     }
     void AlgoLayout::OnEventOnline(IGUIElement* play_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = ALGO_ONLINE_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = ALGO_ONLINE_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
     void AlgoLayout::InitAlgoApa(IGUIElement* apa_button, const GUI_HANDLE_T parentId)
@@ -173,12 +169,11 @@ namespace GUI
     }
     void AlgoLayout::OnEventApa(IGUIElement* play_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = ALGO_APA_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = ALGO_APA_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
 
@@ -194,12 +189,11 @@ namespace GUI
     }
     void AlgoLayout::OnEventExit(IGUIElement* play_button)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = ALGO_EXIT_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = ALGO_EXIT_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
     void AlgoLayout::InitAlgoRecord(IGUIElement* record_button, const GUI_HANDLE_T parentId)
@@ -214,12 +208,11 @@ namespace GUI
     }
     void AlgoLayout::OnEventRecord(IGUIElement*)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = ALGO_RECORD_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = ALGO_RECORD_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
     void AlgoLayout::InitAlgoWifi(IGUIElement* wifi_button, const GUI_HANDLE_T parentId)
@@ -234,12 +227,11 @@ namespace GUI
     }
     void AlgoLayout::OnEventWifi(IGUIElement*, const GUI_HANDLE_T)
     {
-        void* payload = NULL;
+        Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        Algo_Event_Payload_T* data = (Algo_Event_Payload_T*)(payload);
         //填充有效数据
-        data->header.msg_id = ALGO_WIFI_BUTTON;
-        data->body.onlyNotify = true;
+        payload->header.msg_id = ALGO_WIFI_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
     /**
