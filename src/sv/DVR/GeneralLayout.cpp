@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------------------
- * FILE: Front_Layout.cpp
+ * FILE: GeneralLayout.cpp
  *==========================================================================================
  * Copyright 2017  O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -21,42 +21,42 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 19 6月 2017 dota2_black 
+ * VERSION: 19 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
-#include "Front_Layout.h"
+#include "GeneralLayout.h"
 
 namespace GUI
 {
-    Front_Layout* Front_Layout::m_layout = NULL;
-    
-    IFrontLayout* Front_Layout::GetLayout()
+    GeneralLayout* GeneralLayout::m_layout = NULL;
+
+    IGeneralLayout* GeneralLayout::GetLayout()
     {
         if(m_layout == NULL)
         {
-            m_layout = new Front_Layout;
+            m_layout = new GeneralLayout;
         }
         return m_layout;
     }
-    
-    struct ILayout::ElementFuntionTable Front_Layout::m_element_info[] =
+
+    struct ILayout::ElementFuntionTable GeneralLayout::m_element_info[] =
     {
-        {"CGPUIcon" , "鼠标光标" , 1, 0, NULL, (PFCreateElement)(&Front_Layout::InitMouseCursor) , NULL, NULL},
+        {"CGPUIcon" , "鼠标光标" , 1, 0, NULL, (PFCreateElement)(&GeneralLayout::InitMouseCursor) , NULL, NULL},
     };
 
-    void Front_Layout::Enable(bool flag)
+    void GeneralLayout::Enable(bool flag)
     {
         ILayout::EnableLayout(flag);
     }
-    
-    Front_Layout::Front_Layout()
-        :ILayout()
-        ,IFrontLayout()
+
+    GeneralLayout::GeneralLayout()
+        :ILayout("GeneralLayout")
+        ,IGeneralLayout()
         ,m_element_size(sizeof(m_element_info) / sizeof( struct ElementFuntionTable))
     {
         InitElementTable(m_element_info, m_element_size);
     }
 
-    Front_Layout::~Front_Layout()
+    GeneralLayout::~GeneralLayout()
     {
     }
 
@@ -64,32 +64,33 @@ namespace GUI
     {
         {XR_RES_FRONT"cursor.dds", 0, 0, 64, 64}
     };
-    
-    void Front_Layout::InitMouseCursor(IGUIElement* cursor, const GUI_HANDLE_T parentId)
+
+    void GeneralLayout::InitMouseCursor(IGUIElement* cursor, const GUI_HANDLE_T parentId)
     {
         cursor->Attach(m_node, parentId);
-        cursor->SetTexture(cursor_array_texture, 0);
+        cursor->SetTexture(cursor_array_texture, GUI::GUI_ICON_MOVEABLE);
         cursor->Create(0,
                        0,
                        1280,
                        720);
         m_cursor = dynamic_cast<CGPUIcon*>(cursor);
     }
-    void Front_Layout::OnMouseMove(int x, int y)
+
+    void GeneralLayout::OnMouseMove(int x, int y)
     {
         if(m_cursor)
         {
             m_cursor->OnTouchEvent(m_cursor->GetHwnd(), x, y, TouchEvent_Move);
         }
     }
-    void Front_Layout::OnMouseUp(int x, int y)
+    void GeneralLayout::OnMouseUp(int x, int y)
     {
         if(m_cursor)
         {
             m_cursor->OnTouchEvent(m_cursor->GetHwnd(), x, y, TouchEvent_Up);
         }
     }
-    void Front_Layout::OnMouseDown(int x, int y)
+    void GeneralLayout::OnMouseDown(int x, int y)
     {
         if(m_cursor)
         {
@@ -99,14 +100,14 @@ namespace GUI
 };
 
 /**
- * 接口函数，操作Front_Layout
+ * 接口函数，操作GeneralLayout
  */
-extern "C" DLL_PUBLIC IFrontLayout* NewFrontLayout()
+extern "C" DLL_PUBLIC IGeneralLayout* NewGeneralLayout()
 {
-    return(GUI::Front_Layout::GetLayout());
+    return(GUI::GeneralLayout::GetLayout());
 }
 
-extern "C" DLL_PUBLIC void DeleteFrontLayout(IFrontLayout* layout)
+extern "C" DLL_PUBLIC void DeleteGeneralLayout(IGeneralLayout* layout)
 {
     if(layout)
     {

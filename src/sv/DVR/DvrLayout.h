@@ -23,7 +23,7 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 31 5月 2017 dota2_black 
+ * VERSION: 31 5月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
 #include "IF_Dvr.h"
@@ -39,13 +39,12 @@ namespace GUI
     /** class DVR_Layout
      * \brief AVM DVR 播放layout类，　实现了DVR HMI的显示以及相应控件的切换逻辑与特效逻辑
      */
-    class DVR_Layout : public ILayout , public IDVR
+    class DvrLayout : public ILayout , public IDvrLayout
     {
-        DVR_Layout();
-        ~DVR_Layout();
+        DvrLayout();
+        ~DvrLayout();
     public:
-        static IDVR* GetLayout();
-        static void  SetAvmEventType(AvmEventType type) { m_event_type = type; }
+        static IDvrLayout* GetLayout();
     public: /*IDVR要求的提供外部调用的接口实现*/
         //Layout初始化面板接口
         void Init() {};
@@ -105,7 +104,7 @@ namespace GUI
         //media_exit
         void InitMediaExit(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnExitEvent(IGUIElement*);
-        
+
         //文件列表
         void InitMediaListview(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnListviewEvent(IGUIElement*);
@@ -126,11 +125,11 @@ namespace GUI
         CGPUText*       m_bar_text;
         CGPUListView*   m_listview;
         CGPUImageStream* m_listview_thumbnail;
-        static AvmEventType    m_event_type;
+        AvmEventType    m_event_type;
 
         PlaylistItemTable_T table;
     private:
-        static DVR_Layout* m_layout;
+        static DvrLayout* m_layout;
     };
 };
 /*------------------------------------------------------------------------------------------

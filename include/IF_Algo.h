@@ -23,48 +23,13 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 21 6月 2017 dota2_black 
+ * VERSION: 21 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include <stdint.h>
-
-#define DLL_PUBLIC __attribute__ ((visibility ("default")))
-#define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+#include "GpuAvmEvent.h"
 
 //! 事件
 #define ALGOHMI_EVENT_NAME "algo_hmi"
-
-//! copy from TcpProtocol.h, please careful the same between these files
-typedef struct Algo_Event_Header
-{
-    const uint32_t  magic;
-    uint16_t  msg_id;
-    //major.minor = 1.0
-    const uint8_t   revision_lsb;
-    const uint8_t   revision_msb;
-    uint16_t  payload_len;
-}
-Algo_Event_Header_T;
-
-
-typedef struct Algo_Event_Payload
-{
-    Algo_Event_Header_T header;
-    union
-    {
-        bool onlyNotify; //true　notify, 接收方不需要更多参数
-    }body;
-}Algo_Event_Payload_T;
-
-typedef enum
-{
-    ALGO_EXIT_BUTTON, /*算法退出按钮*/
-    ALGO_LDW_BUTTON,
-    ALGO_BSD_BUTTON,
-    ALGO_ONLINE_BUTTON,
-    ALGO_APA_BUTTON,
-    ALGO_RECORD_BUTTON,
-    ALGO_WIFI_BUTTON,
-}ALGO_EVENT_ELEMENT_ID_T;
 
 /**
  * \brief IDVR 暴露操作DVR Layout的接口

@@ -1,7 +1,7 @@
-#ifndef _ALGO_LAYOUT_H_ /* { */
-#define _ALGO_LAYOUT_H_
+#ifndef _GENERAL_LAYOUT_H_ /* { */
+#define _GENERAL_LAYOUT_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: Algo_Layout.h
+ * FILE: GeneralLayout.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,56 +23,43 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 21 6月 2017 dota2_black 
+ * VERSION: 19 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
-#include "GpuElementButton.h"
-#include "IF_Algo.h"
+#include "GpuElementIcon.h"
+#include "IF_General.h"
 
 namespace GUI
 {
-    class AlgoLayout : public ILayout , public IAlgoLayout
+    class GeneralLayout : public ILayout , public IGeneralLayout
     {
-        AlgoLayout();
-        ~AlgoLayout();
     public:
-        static IAlgoLayout* GetLayout();
-        static void  SetAvmEventType(AvmEventType type) { m_event_type = type; }
-    public:
+        GeneralLayout();
+        ~GeneralLayout();
+        static IGeneralLayout* GetLayout();
         void Init() {};
         void Enable(bool flag) ;
-    protected:
-        AvmEventType GetAttachEventType() {return m_event_type; }
+
+        /*光标作为一个始终拥有焦点的控件，在目前架构中，需要特殊处理*/
+        void OnMouseMove(int x, int y);
+        void OnMouseUp(int x, int y);
+        void OnMouseDown(int x, int y);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
     private:
-        void InitAlgoExit(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventExit(IGUIElement*);
-        void InitAlgoLdw(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventLdw(IGUIElement*);
-        void InitAlgoBsd(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventBsd(IGUIElement* );
-        void InitAlgoOnline(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventOnline(IGUIElement*);
-        void InitAlgoApa(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventApa(IGUIElement*);
-        void InitAlgoRecord(IGUIElement*, const GUI_HANDLE_T);
-        void OnEventRecord(IGUIElement*);
-        void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
-        void OnEventWifi(IGUIElement*, const GUI_HANDLE_T);
+        void InitMouseCursor(IGUIElement* , const GUI_HANDLE_T);
     private:
-        static AlgoLayout* m_layout;
-        static AvmEventType    m_event_type;
+        CGPUIcon* m_cursor;
+        static GeneralLayout* m_layout;
     };
 };
-
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
- *
+
  * Date             SCR                   userid                   Description
- * -----------------------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _ALGO_LAYOUT_H_ */
+#endif /* } _FRONT_LAYOUT_H_ */

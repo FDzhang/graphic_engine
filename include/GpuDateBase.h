@@ -1,7 +1,7 @@
-#ifndef _FRONT_LAYOUT_H_ /* { */
-#define _FRONT_LAYOUT_H_
+#ifndef _GPUDATEBASE_H_ /* { */
+#define _GPUDATEBASE_H_
 /*------------------------------------------------------------------------------------------*\
- * FILE: Front_Layout.h
+ * FILE: GpuDateBase.h
  *==========================================================================================
  * Copyright 2017   O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,43 +23,30 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 19 6月 2017 dota2_black 
+ * VERSION: 23 6月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "Layout.h"
-#include "GpuElementIcon.h"
-#include "IF_Front.h"
+#include <stdint.h>
 
-namespace GUI
+//! Gpu DataBase ,用于更新数据
+typedef struct
 {
-    class Front_Layout : public ILayout , public IFrontLayout
+    //!进度条设置
+    //! 列表框视图数据表
+    struct dvr_listview_item
     {
-    public:
-        Front_Layout();
-        ~Front_Layout();
-        static IFrontLayout* GetLayout();
-        void Init() {};
-        void Enable(bool flag) ;
+        const uint32_t   dvr_listview_item_num;
+        uint32_t*  dvr_listview_item;
+    }
+    //! 媒体播放数据
+    uint32_t   dvr_media_status;
 
-        /*光标作为一个始终拥有焦点的控件，在目前架构中，需要特殊处理*/
-        void OnMouseMove(int x, int y);
-        void OnMouseUp(int x, int y);
-        void OnMouseDown(int x, int y);
-    private:
-        uint32_t m_element_size;
-        static struct ElementFuntionTable m_element_info[];
-    private:
-        void InitMouseCursor(IGUIElement* , const GUI_HANDLE_T);
-    private:
-        CGPUIcon* m_cursor;
-        static Front_Layout* m_layout;
-    };
-};
+}GPU_DATABASE_T;
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------
  *
  * Date             SCR                   userid                   Description
- * ----------------------------------------------------------------------------------------
+ * -----------------------------------------------------------------------------------------
 
  *------------------------------------------------------------------------------------------*/
-#endif /* } _FRONT_LAYOUT_H_ */
+#endif /* } _GPUDATEBASE_H_ */

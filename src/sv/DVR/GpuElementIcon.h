@@ -23,13 +23,19 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 01 6月 2017 dota2_black 
+ * VERSION: 01 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "XrCore/XrSrc/XrUILibrary/CXrBaseView.h"
 #include "IGUIElement.h"
 
 namespace GUI
 {
+    enum
+    {
+        GUI_ICON_DEFAULT,
+        GUI_ICON_MOVEABLE,
+    };
+
     class CGPUIcon : public IGUIElement, private CXrBaseView
     {
     public:
@@ -40,9 +46,9 @@ namespace GUI
         void SetTexture(const IGUITexture* effect, const long style);
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
     private:
-        IGUITexture* m_cursor_texture;
-        ILayer*      m_cursor_layer;
-        
+        IGUITexture* m_iconTexture;
+        ILayer*      m_iconLayer;
+        long         m_iconStyle;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUIcon, IGUIElement)
     };
