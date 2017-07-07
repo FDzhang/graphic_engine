@@ -4549,7 +4549,15 @@ int SVScene::Update(int view_control_flag, int param2)
         unsigned char view_cmd = CROSS_IMAGE_VIEW;	
         if(view_cmd != m_last_view)
         {
-            SwitchViewLogic(view_cmd);
+            m_2DAVMNode->SetEnable(0);
+            m_pAdasHmi->SetEnable(0);
+            m_sceneNode ->SetEnable(0);
+            m_objectNode->SetEnable(0);
+            m_2DSingleViewNode->SetEnable(0);
+            m_stich_node->SetEnable(0);
+            m_viewNode->SetEnable(0);
+            //m_2DAVMNodeStich->SetEnable(0);
+            m_crossImage->SetEnable(1);
             m_last_view = view_cmd;
         }
         return 0;

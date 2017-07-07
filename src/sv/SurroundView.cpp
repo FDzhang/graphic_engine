@@ -269,6 +269,13 @@ bool XRSV::update(unsigned int view_control_flag)
 		svscn->Update(view_control_flag,0);
 		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
+        if(view_control_flag == 2)
+        {
+            g_pIXrCore->Update();
+            g_pIXrCore->Render();
+            g_pXrSwapChain->Swap();
+            return 0;
+        }
 		timestamp1 = XrGetTime();
 #ifndef EMIRROR
         if(init_flag ==1)

@@ -778,10 +778,11 @@ int SVNode2DStich::SetEnable(unsigned char flag)
 {
     if(flag ==0)
     {
+        m_StichAreaNode->SetEnable(0);
 	    m_StichNode[0]->SetEnable(0);
 		
 	    m_StichNode[1]->SetEnable(0);
-		
+		m_StichNode[2]->SetEnable(0);
 	    m_GroundNode->SetEnable(0);
     }
 	else
