@@ -211,11 +211,11 @@ class OnPlayFinished : public IVideoDelegate
 {
 public:
 	virtual void OnFinish()
-	{
-		if (wheelRot) {
-			//wheelRot->Start();
-		}
-	}
+        {
+            if (wheelRot) {
+                //wheelRot->Start();
+            }
+        }
 
 };
 #define OVERLAY_POINT_NUM  40
@@ -233,12 +233,12 @@ void SVScene::InitOverlay(BEV_CONFIG_T pConfig , ISceneNode *pNode,IMesh **pMesh
 	tempmaterialid = pNode->CreateMaterial(Material_Rigid_Blend, &tempcarmtl);
 	if(calib_mode == calib_2D_SINGLE)
 	{
-	tempcarmtl->SetDiffuseMap(OVLSINGLE);
+        tempcarmtl->SetDiffuseMap(OVLSINGLE);
 	}
 	else
 	{
 
-	tempcarmtl->SetDiffuseMap(OVERLAYTEX);
+        tempcarmtl->SetDiffuseMap(OVERLAYTEX);
 	}
 
 	//tempcarmtl->SetDiffuseMap(OVLSINGLE);
@@ -263,8 +263,8 @@ void SVScene::InitOverlay(BEV_CONFIG_T pConfig , ISceneNode *pNode,IMesh **pMesh
 	Overlay_data_cfg.model_scale = SCALE_3D_TO_2D_X;
 	for(int i=0;i<4;i++)
 	{
-	   // Overlay_data_cfg.vehicle_min_radius[i] = 4.68;
-	//	Overlay_data_cfg.vehicle_max_steering[i] = 588;
+        // Overlay_data_cfg.vehicle_min_radius[i] = 4.68;
+        //	Overlay_data_cfg.vehicle_max_steering[i] = 588;
 	}
 	Overlay_data_cfg_private.Vehicle_Max_Deg_Steering_Wheel_Left_Turn = p_veh_param->vehicle_max_steering_wheel[left_turn_max];
 	Overlay_data_cfg_private.Vehicle_Max_Deg_Steering_Wheel_Right_Turn =  p_veh_param->vehicle_max_steering_wheel[right_turn_max];
@@ -304,7 +304,7 @@ void SVScene::InitMirrorNode(BEV_CONFIG_T pConfig , ISceneNode *pNode,float *pPo
 	IMesh *pMesh;
 	IMaterial *pMtl;
 	int i =8;
-		//step 1. prepare for Material ,different camera input image
+    //step 1. prepare for Material ,different camera input image
 	IRenderEffect* pIEffect;
 	int SV2DMTL;
 
@@ -352,7 +352,7 @@ void SVScene::InitSceneNode(BEV_CONFIG_T  pConfig)
 
 	m_sceneNode->SetClear(TRUE, TRUE);
 #endif
-		//m_sceneNode->SetClearColor(1.0,1.0,0.0,0.5);
+    //m_sceneNode->SetClearColor(1.0,1.0,0.0,0.5);
 
 	m_sceneNode->SetClear(TRUE, TRUE);
     //m_sceneNode->SetRenderROI(&RightTopFadeReg);
@@ -361,7 +361,7 @@ void SVScene::InitSceneNode(BEV_CONFIG_T  pConfig)
 	//m_sceneNode->SetClearColor(1.0,1.0,0.0,0.5);
 
 	//InitVideo();
-	#if 0
+#if 0
 	ITextureDelegate* tdelegate[4];
 
 	for (int i=0;i<4;i++) {
@@ -370,7 +370,7 @@ void SVScene::InitSceneNode(BEV_CONFIG_T  pConfig)
 		// buffer file %s,line %d",__FILE__,__LINE__);
 		videoid[i] = rm->CreateStreamingTexture(640, 480, XR_R8G8B8, tdelegate[i]);
 	}
-	#endif
+#endif
 	//Int32 videomtlId = sceneNode->CreateMaterial(Material_Simple_Video, &videomtl[0]);
 	svdelegate = new RenderDelegateSV();
 
@@ -393,9 +393,9 @@ void SVScene::InitSceneNode(BEV_CONFIG_T  pConfig)
         pISVmtl->CreateMaterialEffect(&pIEffect);
     	AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(pISVmtl,i);
 		if(i!=1)
-    	pISVmtl->SetAmbientMap(OVERLAPMASK);
+            pISVmtl->SetAmbientMap(OVERLAPMASK);
 		else
-		pISVmtl->SetAmbientMap(OVERLAPMASKREAR);
+            pISVmtl->SetAmbientMap(OVERLAPMASKREAR);
 
     	AVMData::GetInstance()->m_cam_source->SetCameraSourceMask(pISVmtl->GetAmbientMap()->texid,i);
 
@@ -409,7 +409,7 @@ void SVScene::InitSceneNode(BEV_CONFIG_T  pConfig)
 #define SV_Y_POS 0
 	int modelId;
 	INode* pImdl;
-	#if 1
+#if 1
 	modelId = m_sceneNode->LoadModelFromFile(skyR ,SVMTL[3], -1, InsertFlag_Default, 0, SV_Y_POS, -0, pConfig.smc_hmi.SPACE_MODEL_SCALE_SIZE, &pImdl);
 
 	svdelegate->ProcessModel(pImdl, "3");
@@ -419,8 +419,8 @@ void SVScene::InitSceneNode(BEV_CONFIG_T  pConfig)
 	svdelegate->ProcessModel(pImdl, "2");
 
 	m_SkyNode[1]=pImdl;
-	#endif
-	#if 1
+#endif
+#if 1
 	modelId = m_sceneNode->LoadModelFromFile(skyF ,SVMTL[0], -1, InsertFlag_Default, 0, SV_Y_POS, -0, pConfig.smc_hmi.SPACE_MODEL_SCALE_SIZE, &pImdl);
 
 	svdelegate->ProcessModel(pImdl, "0");
@@ -454,7 +454,7 @@ void SVScene::InitSceneNode(BEV_CONFIG_T  pConfig)
 	pos[2] = 0;
 
 
-   // InitOverlay(m_bev_config,m_sceneNode,&m_overlaymesh,&m_overlay,&m_overlay_data,calib_3D,pos);
+    // InitOverlay(m_bev_config,m_sceneNode,&m_overlaymesh,&m_overlay,&m_overlay_data,calib_3D,pos);
     IMesh *pRadar;
 	INode *pRadaNode=NULL;
 	m_RadarAlarm_Mesh[0]=NULL;
@@ -562,8 +562,8 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	m_ground->SetMesh(lisenceMeshId);
 	m_ground->RotateDX(90);	
 	m_ground->SetEnable(pConfig.smc_hmi.GROUND_MODEL_ENABLE);
-	#endif
-		iCarLightMtlId = object_render_node->CreateMaterial(Material_RigidColor_Texture, &carlightmtl);
+#endif
+    iCarLightMtlId = object_render_node->CreateMaterial(Material_RigidColor_Texture, &carlightmtl);
 	carlightmtl->SetDiffuseMap(CARINTTEX);
 	carlightmtl->SetEnvironmentMap(CARENV);
 	carlightmtl->SetAmbientMap(CARTEXMASK);
@@ -603,7 +603,7 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 #endif
 #ifdef GWM_H7_CAR_MODEL
 	
-		door_offset_y = 14*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
+    door_offset_y = 14*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
 #endif
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORMODEL[0], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X-door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z-door_offset_y, 50, &m_CarDoor[0]); //envision
@@ -634,7 +634,7 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 #endif
 #ifdef GWM_H7_CAR_MODEL
 	
-		door_offset_y = 4*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
+    door_offset_y = 4*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
 #endif
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORMODEL[2], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X-door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z+door_offset_y, 50, &m_CarDoor[2]); //envision
@@ -684,7 +684,7 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 #endif
 #ifdef GWM_H7_CAR_MODEL
 	
-		door_offset_y = 14*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
+    door_offset_y = 14*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
 #endif
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORWINDOWMODEL[0], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X-door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z-door_offset_y, 50, &m_Car_Window[0]); //envision
@@ -715,7 +715,7 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 
 #ifdef GWM_H7_CAR_MODEL
 	
-		door_offset_y = 4*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
+    door_offset_y = 4*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
 #endif
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORWINDOWMODEL[2], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X-door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z+door_offset_y, 50, &m_Car_Window[2]); //envision
@@ -747,7 +747,7 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 
 	g_MaterialAlpha = 0.95;
 
-   // InitMirrorNode(m_bev_config,m_objectNode,pos,scale);
+    // InitMirrorNode(m_bev_config,m_objectNode,pos,scale);
 
 #ifdef CAR_MODEL
 
@@ -791,13 +791,13 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 #define WHEEL_Y_OFFSET 30
 #define WHEEL_ZF_OFFSET 680
 #define WHEEL_ZB_OFFSET 730
-IMesh *p_van_wheel;
+    IMesh *p_van_wheel;
 	IMesh *p_van_wheel_right;
 
 	int wheelMeshId = object_render_node->CreateMesh(ModelType_Null, 0,0,0,"wheel", &m_wheelMesh);
 	m_wheelMesh->LoadFromFile(WHEELMODEL, pConfig.smc_hmi.WHEEL_MODEL_SCALE, FALSE);
-	#if 0
-		int rightwheelMeshId = object_render_node->CreateMesh(ModelType_Null, 0,0,0,"wheel", &m_wheelMesh);
+#if 0
+    int rightwheelMeshId = object_render_node->CreateMesh(ModelType_Null, 0,0,0,"wheel", &m_wheelMesh);
 	m_wheelMesh->LoadFromFile(WHEELMODELRIGHT, pConfig.smc_hmi.WHEEL_MODEL_SCALE, FALSE);
 #endif
 #ifdef CAR_MODEL
@@ -821,74 +821,74 @@ IMesh *p_van_wheel;
 
 	m_wheel[2]->SetMesh(rightwheelMeshId);
 	m_wheel[3]->SetMesh(wheelMeshId);
-	#else
+#else
 	m_wheel[0]->SetMesh(wheelMeshId);
 	m_wheel[1]->SetMesh(wheelMeshId);
 
 	m_wheel[2]->SetMesh(wheelMeshId);
 	m_wheel[3]->SetMesh(wheelMeshId);
 
-	#endif
+#endif
 #ifdef CAR_MODEL
 #define SUV_WHEEL_X_OFFSET 520
 #define SUV_WHEEL_Y_OFFSET -280
 #define SUV_WHEEL_ZF_OFFSET 850
 #define SUV_WHEEL_ZB_OFFSET 1050
-		modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, -SUV_WHEEL_ZF_OFFSET, 2, &m_wheel[4]);
-		modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, -SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, -SUV_WHEEL_ZF_OFFSET, 2, &m_wheel[5]);
-		modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, SUV_WHEEL_ZB_OFFSET, 2, &m_wheel[6]);
-		modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, -SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, SUV_WHEEL_ZB_OFFSET,2, &m_wheel[7]);
-		m_wheel[4]->SetMesh(wheelMeshId);
-		m_wheel[5]->SetMesh(wheelMeshId);
-		m_wheel[6]->SetMesh(wheelMeshId);
-		m_wheel[7]->SetMesh(wheelMeshId);
+    modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, -SUV_WHEEL_ZF_OFFSET, 2, &m_wheel[4]);
+    modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, -SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, -SUV_WHEEL_ZF_OFFSET, 2, &m_wheel[5]);
+    modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, SUV_WHEEL_ZB_OFFSET, 2, &m_wheel[6]);
+    modelId = object_render_node->CreateModel(0, m_carmtlId, m_iSUVId, InsertFlag_Child, -SUV_WHEEL_X_OFFSET, SUV_WHEEL_Y_OFFSET, SUV_WHEEL_ZB_OFFSET,2, &m_wheel[7]);
+    m_wheel[4]->SetMesh(wheelMeshId);
+    m_wheel[5]->SetMesh(wheelMeshId);
+    m_wheel[6]->SetMesh(wheelMeshId);
+    m_wheel[7]->SetMesh(wheelMeshId);
 #define VAN_WHEEL_X_OFFSET 480
 #define VAN_WHEEL_Y_OFFSET -230
 #define VAN_WHEEL_ZF_OFFSET 720
 #define VAN_WHEEL_ZB_OFFSET 820
 #define VAN_WHEEL_ZBB_OFFSET 1320
 
-			modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, -VAN_WHEEL_ZF_OFFSET, 1.0, &m_wheel[8]);
-			modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, -VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, -VAN_WHEEL_ZF_OFFSET, 1.0, &m_wheel[9]);
-			modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZB_OFFSET, 1.0, &m_wheel[10]);
-			modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, -VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZB_OFFSET, 1.0, &m_wheel[11]);
-			modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZBB_OFFSET, 1.0, &m_wheel[12]);
-			modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, -VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZBB_OFFSET, 1.0, &m_wheel[13]);
+    modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, -VAN_WHEEL_ZF_OFFSET, 1.0, &m_wheel[8]);
+    modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, -VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, -VAN_WHEEL_ZF_OFFSET, 1.0, &m_wheel[9]);
+    modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZB_OFFSET, 1.0, &m_wheel[10]);
+    modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, -VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZB_OFFSET, 1.0, &m_wheel[11]);
+    modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZBB_OFFSET, 1.0, &m_wheel[12]);
+    modelId = object_render_node->CreateModel(0, iVanmtlId, m_iVanId, InsertFlag_Child, -VAN_WHEEL_X_OFFSET, VAN_WHEEL_Y_OFFSET, VAN_WHEEL_ZBB_OFFSET, 1.0, &m_wheel[13]);
 
-			m_wheel[8]->SetMesh(vanwheelMeshIdright);
-			m_wheel[9]->SetMesh(vanwheelMeshId);
-			m_wheel[10]->SetMesh(vanwheelMeshIdright);
-			m_wheel[11]->SetMesh(vanwheelMeshId);
-			m_wheel[12]->SetMesh(vanwheelMeshIdright);
-			m_wheel[13]->SetMesh(vanwheelMeshId);
-			#endif
+    m_wheel[8]->SetMesh(vanwheelMeshIdright);
+    m_wheel[9]->SetMesh(vanwheelMeshId);
+    m_wheel[10]->SetMesh(vanwheelMeshIdright);
+    m_wheel[11]->SetMesh(vanwheelMeshId);
+    m_wheel[12]->SetMesh(vanwheelMeshIdright);
+    m_wheel[13]->SetMesh(vanwheelMeshId);
+#endif
 #define	TURN_DEGREE 3.14/5
 	//init wheel rotation key
-		float key[]={
-			0,	   0,	0,
-			2.0,	0.07, 0,
-			6.0,	0.1, 0.1,
-			10.0,	 0.2,0,
-			20.0,	0.15,-0.1,
-			24.0,	0.0,0.0};
+    float key[]={
+        0,	   0,	0,
+        2.0,	0.07, 0,
+        6.0,	0.1, 0.1,
+        10.0,	 0.2,0,
+        20.0,	0.15,-0.1,
+        24.0,	0.0,0.0};
 
-		am->CreateKeyAnimation(key, sizeof(key)/12,2, &wheelRot);
+    am->CreateKeyAnimation(key, sizeof(key)/12,2, &wheelRot);
 
-		IAProperty* val=0;
-	#ifdef CAR_MODEL
-		for (int i=0;i<14;i++)
-	#else
-				for (int i=0;i<4;i++)
-	#endif
-			{
+    IAProperty* val=0;
+#ifdef CAR_MODEL
+    for (int i=0;i<14;i++)
+#else
+        for (int i=0;i<4;i++)
+#endif
+        {
 			m_wheel[i]->GetCAProperty(AP_RX, &val);
 			wheelRot->BindProperty(0, val);
 			if (i%4<2) {
-			m_wheel[i]->GetCAProperty(AP_RY, &val);
-			wheelRot->BindProperty(1, val);
+                m_wheel[i]->GetCAProperty(AP_RY, &val);
+                wheelRot->BindProperty(1, val);
 			}
 		}
-		wheelRot->SetDeltaUpdate(0);
+    wheelRot->SetDeltaUpdate(0);
 #ifdef CAR_MODEL
 	//wheelRot->Start();
 #define SCALE_CAR_MIDDLE  0.54
@@ -915,13 +915,13 @@ IMesh *p_van_wheel;
 
 #endif
 
-ScennodeAera = m_sceneNode->GetRenderROI();
-f_camera_aspect = (ScennodeAera->right-ScennodeAera->left)/(-ScennodeAera->top+ScennodeAera->bottom);
+    ScennodeAera = m_sceneNode->GetRenderROI();
+    f_camera_aspect = (ScennodeAera->right-ScennodeAera->left)/(-ScennodeAera->top+ScennodeAera->bottom);
 
-f_camera_aspect = 1.23265302;
+    f_camera_aspect = 1.23265302;
 #ifdef ALI
 	//int cameraId = object_render_node->CreateCamera(m_freeModeFOV, f_camera_aspect, 4.0f, 12000.0f, &m_objectCamera);
-int cameraId = object_render_node->CreateCamera(m_freeModeFOV, Float32(XrGetScreenWidth())/XrGetScreenHeight(), 4.0f, 12000.0f, &m_objectCamera);
+    int cameraId = object_render_node->CreateCamera(m_freeModeFOV, Float32(XrGetScreenWidth())/XrGetScreenHeight(), 4.0f, 12000.0f, &m_objectCamera);
 
 #else
 	int cameraId = object_render_node->CreateCamera(m_freeModeFOV, f_camera_aspect, 4.0f, 12000.0f, &m_objectCamera);
@@ -945,14 +945,14 @@ int cameraId = object_render_node->CreateCamera(m_freeModeFOV, Float32(XrGetScre
 	m_CarDoor[3]->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
 	m_Car_Window[4]->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
     for(int i =0;i<5;i++)
-	m_Car_Window[i]->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
+        m_Car_Window[i]->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
 
 	//m_objectCamera = m_sceneCamera;
-   //m_Car->SetEnable(0);
+    //m_Car->SetEnable(0);
 	//m_mirror[0]->SetScale(1000.0,1000.0,1000.0);
 	//m_SUV->SetScale(1.1,1.0,1.0);
 #ifdef EMIRROR
-m_objectNode->SetEnable(0);
+    m_objectNode->SetEnable(0);
 #endif
 
 }
@@ -988,29 +988,29 @@ void SVScene::InitRadarAlram(BEV_CONFIG_T  pConfig,ISceneNode* p_render_node,IMe
 
         pMesh[i]->LockData(&p_Overlay_Data,&data_format,&iSize);
 
-         radar_data_cfg.dynamic_overlay_point_num = RADAR_ALARM_POINT_NUM;
-         radar_data_cfg.vehicle_length = pConfig.smc_hmi.VEHICLE_LENGTH;
-         radar_data_cfg.vehicle_width = 1855;
-         radar_data_cfg.vehicle_axis_length = 2700;
-         radar_data_cfg.vehicle_front_wheel2bumper_length = 956;
-         radar_data_cfg.vehicle_rear_wheel2bumper_length = 889;
-         radar_data_cfg.model_scale = SCALE_3D_TO_2D_X;
+        radar_data_cfg.dynamic_overlay_point_num = RADAR_ALARM_POINT_NUM;
+        radar_data_cfg.vehicle_length = pConfig.smc_hmi.VEHICLE_LENGTH;
+        radar_data_cfg.vehicle_width = 1855;
+        radar_data_cfg.vehicle_axis_length = 2700;
+        radar_data_cfg.vehicle_front_wheel2bumper_length = 956;
+        radar_data_cfg.vehicle_rear_wheel2bumper_length = 889;
+        radar_data_cfg.model_scale = SCALE_3D_TO_2D_X;
 
-	AVMData::GetInstance()->m_exParam->GetCameraPos(radar_data_cfg.m_front_cam_pos_wld,2);
+        AVMData::GetInstance()->m_exParam->GetCameraPos(radar_data_cfg.m_front_cam_pos_wld,2);
 
-	radar_data_cfg.m_model_bottom = pConfig.smc_hmi.SPACE_MODEL_Y_MIN;
-	//memcpy(radar_data_cfg.m_rear_cam_pos_wld,&(PoseTrans[3*3]),3*sizeof(float));
-	AVMData::GetInstance()->m_exParam->GetCameraPos(radar_data_cfg.m_rear_cam_pos_wld,3);
+        radar_data_cfg.m_model_bottom = pConfig.smc_hmi.SPACE_MODEL_Y_MIN;
+        //memcpy(radar_data_cfg.m_rear_cam_pos_wld,&(PoseTrans[3*3]),3*sizeof(float));
+        AVMData::GetInstance()->m_exParam->GetCameraPos(radar_data_cfg.m_rear_cam_pos_wld,3);
 
-         radar_data_cfg.m_calib_center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
-         radar_data_cfg.m_calib_center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
-         radar_data_cfg.m_calib_mmpp_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
-         radar_data_cfg.m_calib_mmpp_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
-    	 radar_data_cfg.m_model_bottom = -m_bev_config.smc_hmi.SPACE_MODEL_Y_MIN*m_bev_config.smc_hmi.SPACE_MODEL_SCALE_SIZE;
-    	 radar_data_cfg_private.obstacle_height = 200;
-         radar_alarm[i].Init(radar_data_cfg);
-		 radar_alarm[i].InitPrivate(radar_data_cfg_private,i,0);
-         radar_alarm[i].SetUpBuffer(p_Overlay_Data,RADAR_ALARM_POINT_NUM,8,calib_mode);
+        radar_data_cfg.m_calib_center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+        radar_data_cfg.m_calib_center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+        radar_data_cfg.m_calib_mmpp_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+        radar_data_cfg.m_calib_mmpp_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
+        radar_data_cfg.m_model_bottom = -m_bev_config.smc_hmi.SPACE_MODEL_Y_MIN*m_bev_config.smc_hmi.SPACE_MODEL_SCALE_SIZE;
+        radar_data_cfg_private.obstacle_height = 200;
+        radar_alarm[i].Init(radar_data_cfg);
+        radar_alarm[i].InitPrivate(radar_data_cfg_private,i,0);
+        radar_alarm[i].SetUpBuffer(p_Overlay_Data,RADAR_ALARM_POINT_NUM,8,calib_mode);
 
     }
 
@@ -1136,10 +1136,10 @@ void SVScene::InitProductModel()
 	m_radarwave_bullet[0]->RotateDX(-90);
 	m_radarwave_bullet[0]->RotateDY(180);
 	m_radarwave_bullet[0]->RotateDZ(-1);
-		//float *key_move=0;
-		float dist_state[3]={1000,10,0.1};
-		float init_state[3];
-		float key_move[]={
+    //float *key_move=0;
+    float dist_state[3]={1000,10,0.1};
+    float init_state[3];
+    float key_move[]={
   	    0,     0,     0,0,
 	    TIME_INT,    1*DISTANCE_SCALE,    INIT_SCALE,  INIT_SCALE_Z,
 		TIME_INT*2,    4*DISTANCE_SCALE,    INIT_SCALE*4, INIT_SCALE_Z*4,
@@ -1149,48 +1149,48 @@ void SVScene::InitProductModel()
 		TIME_INT*5+0.01,   36*DISTANCE_SCALE,     INIT_SCALE*0, INIT_SCALE_Z*0
 
 
-			};
+    };
 
-		m_radarwave_bullet[0]->GetCAProperty(AP_Z, &val);
-		init_state[0] = val->Get();
-		m_radarwave_bullet[0]->SetScale(1.0,2.0,1.0);
-		m_radarwave_bullet[0]->GetCAProperty(AP_SX, &val);
+    m_radarwave_bullet[0]->GetCAProperty(AP_Z, &val);
+    init_state[0] = val->Get();
+    m_radarwave_bullet[0]->SetScale(1.0,2.0,1.0);
+    m_radarwave_bullet[0]->GetCAProperty(AP_SX, &val);
 
-		init_state[1] = val->Get();
-		init_state[2] = 0.6;
-		//GenerateRadarWaveAnimateKey(&key_move,5.0,dist_state,init_state,2,10);
-		am->CreateKeyAnimation(key_move, sizeof(key_move)/16, 3, &bulletrun,AnimationStyle_KeySimpleLinear);
+    init_state[1] = val->Get();
+    init_state[2] = 0.6;
+    //GenerateRadarWaveAnimateKey(&key_move,5.0,dist_state,init_state,2,10);
+    am->CreateKeyAnimation(key_move, sizeof(key_move)/16, 3, &bulletrun,AnimationStyle_KeySimpleLinear);
 
-			m_radarwave_bullet[0]->GetCAProperty(AP_Z, &val);
-			bulletrun->BindProperty(0, val);
-			m_radarwave_bullet[0]->GetCAProperty(AP_SZ, &val);
-			bulletrun->BindProperty(1, val);
-			m_radarwave_bullet[0]->GetCAProperty(AP_SX, &val);
-			bulletrun->BindProperty(2, val);
+    m_radarwave_bullet[0]->GetCAProperty(AP_Z, &val);
+    bulletrun->BindProperty(0, val);
+    m_radarwave_bullet[0]->GetCAProperty(AP_SZ, &val);
+    bulletrun->BindProperty(1, val);
+    m_radarwave_bullet[0]->GetCAProperty(AP_SX, &val);
+    bulletrun->BindProperty(2, val);
 
-		bulletrun->SetDeltaUpdate(0);
-		//bulletrun->Start();
-        //InitRadarWaveEffect();
-		tempmaterialid = m_objectNode->CreateMaterial(Material_Rigid_Blend, &tempcarmtl);
-		tempcarmtl->SetDiffuseMap(REDTEX);
-		tempcarmtl->SetEnvironmentMap(CARENV);
+    bulletrun->SetDeltaUpdate(0);
+    //bulletrun->Start();
+    //InitRadarWaveEffect();
+    tempmaterialid = m_objectNode->CreateMaterial(Material_Rigid_Blend, &tempcarmtl);
+    tempcarmtl->SetDiffuseMap(REDTEX);
+    tempcarmtl->SetEnvironmentMap(CARENV);
 
-		modelid = m_objectNode->LoadModelFromFile(RADARWAVEMODEL, tempmaterialid, -1, InsertFlag_Default, 0, -140, -160, 5, &m_radarwave[0]);
-		m_radarwave[0]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
-		m_radarwave[0]->SetEnable(0);
-		m_radarwave[0]->RotateDX(-90);
-		m_radarwave[0]->RotateDY(1);
-		m_radarwave[0]->RotateDZ(-1);
-		m_radarwave[0]->SetScale(3,6,2.0);
+    modelid = m_objectNode->LoadModelFromFile(RADARWAVEMODEL, tempmaterialid, -1, InsertFlag_Default, 0, -140, -160, 5, &m_radarwave[0]);
+    m_radarwave[0]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
+    m_radarwave[0]->SetEnable(0);
+    m_radarwave[0]->RotateDX(-90);
+    m_radarwave[0]->RotateDY(1);
+    m_radarwave[0]->RotateDZ(-1);
+    m_radarwave[0]->SetScale(3,6,2.0);
 
-	   color[0]=1.0;
-	   color[1]=0.0;
-	   color[2]=0.0;
-	   InitRadarWaveMesh(3000.0,1,10,60,0,&m_RadarWaveMesh,&m_RadarWavePlane[4],color,IFVWAVETEX,0.2);
-	   m_RadarWavePlane[4]->RotateDX(90);
-	   m_RadarWavePlane[4]->RotateDY(-60);
-	   m_RadarWavePlane[4]->SetPosition(0,-140,-120);
-	   m_RadarWavePlane[4]->SetEnable(0);
+    color[0]=1.0;
+    color[1]=0.0;
+    color[2]=0.0;
+    InitRadarWaveMesh(3000.0,1,10,60,0,&m_RadarWaveMesh,&m_RadarWavePlane[4],color,IFVWAVETEX,0.2);
+    m_RadarWavePlane[4]->RotateDX(90);
+    m_RadarWavePlane[4]->RotateDY(-60);
+    m_RadarWavePlane[4]->SetPosition(0,-140,-120);
+    m_RadarWavePlane[4]->SetEnable(0);
 
 
 
@@ -1201,8 +1201,8 @@ void SVScene::InitTourDisplayEffect()
 {
 	IAProperty* val=0;
 
-    #define fTransitionTime 4.0
-	#if 0
+#define fTransitionTime 4.0
+#if 0
 	float key[]={fTransitionTime ,0.0,20.0,
 	             10.0+fTransitionTime,180.0,0.0,
 	             18.0+fTransitionTime,360.0,20.0 ,
@@ -1213,7 +1213,7 @@ void SVScene::InitTourDisplayEffect()
 	             2,25,25,
 	             3,50,50.0,
 	             4,90,90.0};
-	#endif
+#endif
 
 	float key[]={0 ,0.0,30.0,
 	             2*fTransitionTime,180.0,90.0,
@@ -1221,11 +1221,11 @@ void SVScene::InitTourDisplayEffect()
 	             4*fTransitionTime,720.0,45.0};
 
 
-   am->CreateKeyAnimation(key, sizeof(key)/12, 2, &bevTour[0],AnimationStyle_KeySpline,0);
-   m_objectCamera->GetCAProperty(AP_RX,&val);
-   bevTour[0]->BindProperty(0, val);
-   m_objectCamera->GetCAProperty(AP_RY,&val);
-   bevTour[0]->BindProperty(1, val);
+    am->CreateKeyAnimation(key, sizeof(key)/12, 2, &bevTour[0],AnimationStyle_KeySpline,0);
+    m_objectCamera->GetCAProperty(AP_RX,&val);
+    bevTour[0]->BindProperty(0, val);
+    m_objectCamera->GetCAProperty(AP_RY,&val);
+    bevTour[0]->BindProperty(1, val);
 
 
     am->CreateKeyAnimation(key, sizeof(key)/12, 2, &bevTour[1],AnimationStyle_KeySpline,0);
@@ -1290,75 +1290,75 @@ void SVScene::Init2DStichAVMNode()
 
 	int  groundId = m_2DAVMNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default,0,0,0, 1.0, &pNode);
 
-		pMesh->LockData(&pVertexData,&data_format,&icount);
-		pVertexData[0]=-1.0;
-		pVertexData[1]=-1.0;
-		pVertexData[2]=0.0;
-		pVertexData[6]=0.0;
-		pVertexData[7]=0.0;
-		pVertexData[8]=1.0;
-		pVertexData[9]=-1.0;
-		pVertexData[10]=0.0;
-		pVertexData[14]=1.0;
-		pVertexData[15]=0.0;
-		pVertexData[16]=-1.0;
-		pVertexData[17]=1.0;
-		pVertexData[18]=0.0;
-		pVertexData[22]=0.0;
-		pVertexData[23]=1.0;		
-		pVertexData[24]=1.0;
-		pVertexData[25]=1.0;
-		pVertexData[26]=0.0;
-		pVertexData[30]=1.0;
-		pVertexData[31]=1.0;		
+    pMesh->LockData(&pVertexData,&data_format,&icount);
+    pVertexData[0]=-1.0;
+    pVertexData[1]=-1.0;
+    pVertexData[2]=0.0;
+    pVertexData[6]=0.0;
+    pVertexData[7]=0.0;
+    pVertexData[8]=1.0;
+    pVertexData[9]=-1.0;
+    pVertexData[10]=0.0;
+    pVertexData[14]=1.0;
+    pVertexData[15]=0.0;
+    pVertexData[16]=-1.0;
+    pVertexData[17]=1.0;
+    pVertexData[18]=0.0;
+    pVertexData[22]=0.0;
+    pVertexData[23]=1.0;		
+    pVertexData[24]=1.0;
+    pVertexData[25]=1.0;
+    pVertexData[26]=0.0;
+    pVertexData[30]=1.0;
+    pVertexData[31]=1.0;		
 
-		pMesh->UnLockData();
+    pMesh->UnLockData();
 
-		pNode->SetMesh(lisenceMeshId);
+    pNode->SetMesh(lisenceMeshId);
 
 //render overlay;
-	  pos[0] = 0;
-	  pos[1] = 0;
-	  pos[2] = 0;
+    pos[0] = 0;
+    pos[1] = 0;
+    pos[2] = 0;
 
-	 InitOverlay(m_bev_config,m_2DAVMNode,&m_overlaymesh_2d,&m_overlay_2d,&m_overlay_data_2d,calib_2D_STICH,pos);
+    InitOverlay(m_bev_config,m_2DAVMNode,&m_overlaymesh_2d,&m_overlay_2d,&m_overlay_data_2d,calib_2D_STICH,pos);
 
-	 //render car image
-	 m_pNodeSonar = new SVNodeSonar;
-	 m_pNodeSonar->Init(&m_bev_config,m_2DAVMNode);
+    //render car image
+    m_pNodeSonar = new SVNodeSonar;
+    m_pNodeSonar->Init(&m_bev_config,m_2DAVMNode);
 
 
 #if 0
 
-	 AVM_Calib_2D_T result;
+    AVM_Calib_2D_T result;
 	 
 	 
-	 result.center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
-	 result.center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
-	 result.ppmm_x= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
-	 result.ppmm_y= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+    result.center_x = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+    result.center_y = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+    result.ppmm_x= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
+    result.ppmm_y= AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
 	 
 	 
 	 
-	 m_APA_overlay = new GlSVOverlayAPA;
-	 m_APA_overlay->Init(m_2DAVMNode,XR_RES,result);
+    m_APA_overlay = new GlSVOverlayAPA;
+    m_APA_overlay->Init(m_2DAVMNode,XR_RES,result);
 			
 		
-		#endif
+#endif
 
 	
 
 	//step 2 prepare mesh for 2D stiching
-	  int i = eCarImageMesh;
+    int i = eCarImageMesh;
  	m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
  	meshid = m_2DAVMNode->CreateMesh(ModelType_Null, 0,0,0,MeshName, &m_planeMesh);
  	m_planeMesh->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
  	m_planeMesh->SetName(Model);
  	m_SV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);
  	m_planeMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
-	 SV2DMTL = m_2DAVMNode->CreateMaterial(Material_Custom, &m_SV2DMtl);
-	 m_SV2DMtl->CreateMaterialEffect(&pIEffect);
-	 pIEffect->InitShaderFromFile("Effect_SV2DCarImage", c_SV2DVertShaderSrcFileLUT, c_SV2DFragCarImageShaderSrcFile,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
+    SV2DMTL = m_2DAVMNode->CreateMaterial(Material_Custom, &m_SV2DMtl);
+    m_SV2DMtl->CreateMaterialEffect(&pIEffect);
+    pIEffect->InitShaderFromFile("Effect_SV2DCarImage", c_SV2DVertShaderSrcFileLUT, c_SV2DFragCarImageShaderSrcFile,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
 	pIEffect->SetRenderDelegate(sv2Ddelegate); 
 	
 	 
@@ -1434,13 +1434,13 @@ void SVScene::Init2DAVMNode()
     //step 1. prepare for Material ,different camera input image
 	IRenderEffect* pIEffect[Material_MAX];
     int SV2DMTL[Material_MAX];
-		float pos[3];
+    float pos[3];
 
 
 	for(int i=0;i<Material_MAX;i++)
 	{
     	SV2DMTL[i] = m_2DAVMNode->CreateMaterial(Material_Custom, &m_SV2DMtl);
-		    	m_SV2DMtl->CreateMaterialEffect(&pIEffect[i]);
+        m_SV2DMtl->CreateMaterialEffect(&pIEffect[i]);
 		if(i == 4)
 		{
 			pIEffect[i]->InitShaderFromFile("Effect_SV2DImage", c_SV2DVertShaderSrcFileLUT, c_SV2DFragStaticShaderSrcFile,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
@@ -1480,7 +1480,7 @@ void SVScene::Init2DAVMNode()
 		else
 		{
 
-		   AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_SV2DMtl,right_camera_index);
+            AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_SV2DMtl,right_camera_index);
 		}
 
 
@@ -1509,8 +1509,8 @@ void SVScene::Init2DAVMNode()
         }
 		else if(i == eFrontLeftMesh || i == eRearLeftMesh)
 		{
-		   materialID = 2;
-		   //Model[i] = "A";
+            materialID = 2;
+            //Model[i] = "A";
 
 		}
 		else if(i<= eRearRightMesh)
@@ -1548,12 +1548,12 @@ void SVScene::Init2DAVMNode()
 	pos[1] = 0;
 	pos[2] = 0;
 
-   InitOverlay(m_bev_config,m_2DAVMNode,&m_overlaymesh_2d,&m_overlay_2d,&m_overlay_data_2d,calib_2D_STICH,pos);
+    InitOverlay(m_bev_config,m_2DAVMNode,&m_overlaymesh_2d,&m_overlay_2d,&m_overlay_data_2d,calib_2D_STICH,pos);
 
 
 
 	int i=8;
-	 materialID =4;
+    materialID =4;
 	modelId = m_2DAVMNode->CreateModel(0, SV2DMTL[materialID], -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
 	m_SV2Dplane[i]->SetMesh(meshid[i]);
 	m_SV2Dplane[i]->SetName(Model[i]);
@@ -1593,59 +1593,59 @@ void SVScene::Init2DGroundNodeRT(int j)
 	IMesh *pGroundMesh;
     INode *pGroundNode;
 	int cameraId;
-   // float *pVertexData;
+    // float *pVertexData;
 	XRVertexLayout  data_format;
 	Int32 icount;
 	int i=0;
     float *pVertexData;
 
-   // for(int j =0;j<2;j++)
-   // {
-    	int ground_id = rm->CreateRenderTarget(XrGetScreenWidth()*0.3, XrGetScreenHeight(), XR_R8G8B8A8, XR_NONE, &m_groundRT[j]);
+    // for(int j =0;j<2;j++)
+    // {
+    int ground_id = rm->CreateRenderTarget(XrGetScreenWidth()*0.3, XrGetScreenHeight(), XR_R8G8B8A8, XR_NONE, &m_groundRT[j]);
 
 
-    	// Interleaved vertex data
-    	m_GroundNodeId = g_pIXrCore->CreateRenderNodeScene(ground_id, &m_GroundNode[j]);
+    // Interleaved vertex data
+    m_GroundNodeId = g_pIXrCore->CreateRenderNodeScene(ground_id, &m_GroundNode[j]);
 
 
 
 
-    	//create material
-    	tempmaterialid = m_GroundNode[j]->CreateMaterial(Material_Rigid_Texture, &m_ground_mtl[j]);
-    	//m_ground_mtl->SetDiffuseMap(m_lisenceRT->GetTextureId());
-         m_ground_mtl[j]->SetDiffuseMap(RADARALARMTEX[j]);
-    	int lisenceMeshId = m_GroundNode[j]->CreateMesh(ModelType_Plane_Dynamic,2,  2,0, "ground", &pGroundMesh);
-    	//int lisenceMeshId = m_GroundNode->CreateMesh(ModelType_Plane,1,  1,0, "ground", &pGroundMesh);
+    //create material
+    tempmaterialid = m_GroundNode[j]->CreateMaterial(Material_Rigid_Texture, &m_ground_mtl[j]);
+    //m_ground_mtl->SetDiffuseMap(m_lisenceRT->GetTextureId());
+    m_ground_mtl[j]->SetDiffuseMap(RADARALARMTEX[j]);
+    int lisenceMeshId = m_GroundNode[j]->CreateMesh(ModelType_Plane_Dynamic,2,  2,0, "ground", &pGroundMesh);
+    //int lisenceMeshId = m_GroundNode->CreateMesh(ModelType_Plane,1,  1,0, "ground", &pGroundMesh);
 
-    	//int lisenceMeshId = m_GroundNode->CreateMesh(ModelType_Plane,1,  1,0, "ground", &pGroundMesh);
-    	int groundId = m_GroundNode[j]->CreateModel(0, tempmaterialid, -1, InsertFlag_Default,0,0,0, 1.0, &pGroundNode);
-    	m_pMeshStichGround[j] = pGroundMesh;
+    //int lisenceMeshId = m_GroundNode->CreateMesh(ModelType_Plane,1,  1,0, "ground", &pGroundMesh);
+    int groundId = m_GroundNode[j]->CreateModel(0, tempmaterialid, -1, InsertFlag_Default,0,0,0, 1.0, &pGroundNode);
+    m_pMeshStichGround[j] = pGroundMesh;
 
-        m_pMeshStichGround[j]->LockData(&pVertexData,&data_format,&icount);
-    	pVertexData[0]=-1.0;
-    	pVertexData[1]=-1.0;
-    	pVertexData[2]=0.0;
-    	pVertexData[8]=1.0;
-    	pVertexData[9]=-1.0;
-        pVertexData[10]=0.0;
-    	pVertexData[16]=-1.0;
-    	pVertexData[17]=1.0;
-    	pVertexData[18]=0.0;
-    	pVertexData[24]=1.0;
-    	pVertexData[25]=1.0;
-    	pVertexData[26]=0.0;
+    m_pMeshStichGround[j]->LockData(&pVertexData,&data_format,&icount);
+    pVertexData[0]=-1.0;
+    pVertexData[1]=-1.0;
+    pVertexData[2]=0.0;
+    pVertexData[8]=1.0;
+    pVertexData[9]=-1.0;
+    pVertexData[10]=0.0;
+    pVertexData[16]=-1.0;
+    pVertexData[17]=1.0;
+    pVertexData[18]=0.0;
+    pVertexData[24]=1.0;
+    pVertexData[25]=1.0;
+    pVertexData[26]=0.0;
 
-        m_pMeshStichGround[j]->UnLockData();
+    m_pMeshStichGround[j]->UnLockData();
 
-    	cameraId = m_GroundNode[j]->CreateCamera(120, Float32(XrGetScreenWidth())/XrGetScreenHeight(), 10.0f, 16000.0f, &pCamera);
-    	pCamera->Set2DCamera(1);
-    	pCamera->SetPosition(0,0,OBJ_CAMERA_DEFAULT_HEIGHT);
-    	pCamera->LookAt(0.0,0.0,-0.0);
-    	pCamera->RotateAround(0,45);
-    	m_GroundNode[j]->SetCamera(cameraId);
+    cameraId = m_GroundNode[j]->CreateCamera(120, Float32(XrGetScreenWidth())/XrGetScreenHeight(), 10.0f, 16000.0f, &pCamera);
+    pCamera->Set2DCamera(1);
+    pCamera->SetPosition(0,0,OBJ_CAMERA_DEFAULT_HEIGHT);
+    pCamera->LookAt(0.0,0.0,-0.0);
+    pCamera->RotateAround(0,45);
+    m_GroundNode[j]->SetCamera(cameraId);
 
-        pGroundNode->SetMesh(lisenceMeshId);
-  // }
+    pGroundNode->SetMesh(lisenceMeshId);
+    // }
 }
 
 void SVScene::Init2DAVMNodeRT()
@@ -1685,7 +1685,7 @@ void SVScene::Init2DAVMNodeRT()
     //step 1. prepare for Material ,different camera input image
 	IRenderEffect* pIEffect[Material_MAX];
     int SV2DMTL[Material_MAX];
-		float pos[3];
+    float pos[3];
 
 
 	for(int i=0;i<Material_MAX;i++)
@@ -1732,7 +1732,7 @@ void SVScene::Init2DAVMNodeRT()
 
 
 		}
-					pIEffect[i]->SetRenderDelegate(sv2Ddelegate);
+        pIEffect[i]->SetRenderDelegate(sv2Ddelegate);
 	}
 	//Load 2D Lookup table
 	//SV2DData.Init();
@@ -1758,8 +1758,8 @@ void SVScene::Init2DAVMNodeRT()
         }
 		else if(i == eFrontLeftMesh || i == eRearLeftMesh)
 		{
-		   materialID = 2;
-		   //Model[i] = "A";
+            materialID = 2;
+            //Model[i] = "A";
 
 		}
 		else if(i<= eRearRightMesh)
@@ -1795,7 +1795,7 @@ void SVScene::Init2DAVMNodeRT()
 
 
 	int i=8;
-	 materialID =4;
+    materialID =4;
 	modelId = m_2DAVMNode->CreateModel(0, SV2DMTL[materialID], -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
 	m_SV2Dplane[i]->SetMesh(meshid[i]);
 	m_SV2Dplane[i]->SetName(Model[i]);
@@ -1826,7 +1826,7 @@ void SVScene::InitTourDisplaySecEffect()
 {
 	IAProperty* val=0;
 
-    #define fTransitionTime 5.0
+#define fTransitionTime 5.0
 #if 0
 	float key[]={0 ,0.0,30.0, 0,0,0,
 	             fTransitionTime ,180.0,90.0, 0,0,0,
@@ -1842,20 +1842,20 @@ void SVScene::InitTourDisplaySecEffect()
 	             2*fTransitionTime,360.0,30.0 ,0,0,0,
 		         2*fTransitionTime+1,360.0,45.0 ,0,0,0,
 		         2*fTransitionTime+2,360.0,45.0 ,0,0,0,
-};
+    };
 
 #endif
-   am->CreateKeyAnimation(key, sizeof(key)/24, 5, &bevSecTour[0],AnimationStyle_KeyLinear,0);
-   m_objectCamera->GetCAProperty(AP_RX,&val);
-   bevSecTour[0]->BindProperty(0, val);
-   m_objectCamera->GetCAProperty(AP_RY,&val);
-   bevSecTour[0]->BindProperty(1, val);
-   m_objectCamera->GetCAProperty(AP_CamAtX,&val);
-   bevSecTour[0]->BindProperty(2, val);
-   m_objectCamera->GetCAProperty(AP_CamAtY,&val);
-   bevSecTour[0]->BindProperty(3, val);
-   m_objectCamera->GetCAProperty(AP_CamAtZ,&val);
-   bevSecTour[0]->BindProperty(4, val);
+    am->CreateKeyAnimation(key, sizeof(key)/24, 5, &bevSecTour[0],AnimationStyle_KeyLinear,0);
+    m_objectCamera->GetCAProperty(AP_RX,&val);
+    bevSecTour[0]->BindProperty(0, val);
+    m_objectCamera->GetCAProperty(AP_RY,&val);
+    bevSecTour[0]->BindProperty(1, val);
+    m_objectCamera->GetCAProperty(AP_CamAtX,&val);
+    bevSecTour[0]->BindProperty(2, val);
+    m_objectCamera->GetCAProperty(AP_CamAtY,&val);
+    bevSecTour[0]->BindProperty(3, val);
+    m_objectCamera->GetCAProperty(AP_CamAtZ,&val);
+    bevSecTour[0]->BindProperty(4, val);
 
 
     am->CreateKeyAnimation(key, sizeof(key)/24, 5, &bevSecTour[1],AnimationStyle_KeyLinear,0);
@@ -1912,67 +1912,67 @@ void SVScene::InitBevDisplayEffect()
 #define BEV_TRAVEL_CAMERA_LOOKAT_Z  0
 
 
-		//float *key_move=0;
-		float dist_state[3]={1000,10,0.1};
-		float init_state[3];
-			float key_move[]={
-	    0,    0,  30,  OBJ_CAMERA_DEFAULT_HEIGHT, 	0,0,0,
+    //float *key_move=0;
+    float dist_state[3]={1000,10,0.1};
+    float init_state[3];
+    float key_move[]={
+    0,    0,  30,  OBJ_CAMERA_DEFAULT_HEIGHT, 	0,0,0,
 	    ANIMATE_START_TIME,    0,  REAR_VIEW_ANGLE_Y,  1500.0,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+ZOOM_IN_TIME,	 0,  REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_IN_DIST,REAR_CAMERA_LOOKAT_X,REAR_CAMERA_LOOKAT_Y,REAR_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+PAUSE_TIME,	 0,  REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_IN_DIST, REAR_CAMERA_LOOKAT_X,REAR_CAMERA_LOOKAT_Y,REAR_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+ZOOM_OUT_TIME,	 0,  REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_OUT_DIST, BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+ZOOM_OUT_PAUSE_TIME,  0, REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT,   130,    SIDE_VIEW_ANGLE_Y, 1500.0,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT+ZOOM_IN_TIME,	 130,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,LEFT_CAMERA_LOOKAT_X,LEFT_CAMERA_LOOKAT_Y,LEFT_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT+PAUSE_TIME,   130,	SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,LEFT_CAMERA_LOOKAT_X,LEFT_CAMERA_LOOKAT_Y,LEFT_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT+ZOOM_OUT_TIME,	 130,	SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST, BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT+ZOOM_OUT_PAUSE_TIME,	 130,	  SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*2,   180,    FRONT_VIEW_ANGLE_Y, 1500.0,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*2+ZOOM_IN_TIME,	 180,	  FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST,FRONT_CAMERA_LOOKAT_X,FRONT_CAMERA_LOOKAT_Y,FRONT_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*2+PAUSE_TIME,   180,	  FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST,FRONT_CAMERA_LOOKAT_X,FRONT_CAMERA_LOOKAT_Y,FRONT_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*2+ZOOM_OUT_TIME,	 180,	 FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST, BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*2+ZOOM_OUT_PAUSE_TIME,	 180,	  FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*3,   220,	 SIDE_VIEW_ANGLE_Y, 1500.0,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*3+ZOOM_IN_TIME,	 220,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,RIGHT_CAMERA_LOOKAT_X,RIGHT_CAMERA_LOOKAT_Y,RIGHT_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*3+PAUSE_TIME,	 220,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,	RIGHT_CAMERA_LOOKAT_X,RIGHT_CAMERA_LOOKAT_Y,RIGHT_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*3+ZOOM_OUT_TIME,	 220,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*3+ZOOM_OUT_PAUSE_TIME,	 220,	SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
-		ANIMATE_START_TIME+TIME_INT*4,    360,    0, 1500.0,0,0,0,
-		ANIMATE_START_TIME+TIME_INT*4+PAUSE_TIME,    360,    46,OBJ_CAMERA_DEFAULT_HEIGHT,	0,0,0,
-		//ANIMATE_START_TIME+TIME_INT*5,    360,    10, 3000.0,
+    ANIMATE_START_TIME+ZOOM_IN_TIME,	 0,  REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_IN_DIST,REAR_CAMERA_LOOKAT_X,REAR_CAMERA_LOOKAT_Y,REAR_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+PAUSE_TIME,	 0,  REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_IN_DIST, REAR_CAMERA_LOOKAT_X,REAR_CAMERA_LOOKAT_Y,REAR_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+ZOOM_OUT_TIME,	 0,  REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_OUT_DIST, BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+ZOOM_OUT_PAUSE_TIME,  0, REAR_VIEW_ANGLE_Y,  OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT,   130,    SIDE_VIEW_ANGLE_Y, 1500.0,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT+ZOOM_IN_TIME,	 130,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,LEFT_CAMERA_LOOKAT_X,LEFT_CAMERA_LOOKAT_Y,LEFT_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT+PAUSE_TIME,   130,	SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,LEFT_CAMERA_LOOKAT_X,LEFT_CAMERA_LOOKAT_Y,LEFT_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT+ZOOM_OUT_TIME,	 130,	SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST, BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT+ZOOM_OUT_PAUSE_TIME,	 130,	  SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*2,   180,    FRONT_VIEW_ANGLE_Y, 1500.0,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*2+ZOOM_IN_TIME,	 180,	  FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST,FRONT_CAMERA_LOOKAT_X,FRONT_CAMERA_LOOKAT_Y,FRONT_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*2+PAUSE_TIME,   180,	  FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST,FRONT_CAMERA_LOOKAT_X,FRONT_CAMERA_LOOKAT_Y,FRONT_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*2+ZOOM_OUT_TIME,	 180,	 FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST, BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*2+ZOOM_OUT_PAUSE_TIME,	 180,	  FRONT_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*3,   220,	 SIDE_VIEW_ANGLE_Y, 1500.0,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*3+ZOOM_IN_TIME,	 220,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,RIGHT_CAMERA_LOOKAT_X,RIGHT_CAMERA_LOOKAT_Y,RIGHT_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*3+PAUSE_TIME,	 220,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_IN_DIST_SIDE,	RIGHT_CAMERA_LOOKAT_X,RIGHT_CAMERA_LOOKAT_Y,RIGHT_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*3+ZOOM_OUT_TIME,	 220,	 SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*3+ZOOM_OUT_PAUSE_TIME,	 220,	SIDE_VIEW_ANGLE_Y, OBJ_ZOOM_OUT_DIST,BEV_TRAVEL_CAMERA_LOOKAT_X,BEV_TRAVEL_CAMERA_LOOKAT_Y,BEV_TRAVEL_CAMERA_LOOKAT_Z,
+    ANIMATE_START_TIME+TIME_INT*4,    360,    0, 1500.0,0,0,0,
+    ANIMATE_START_TIME+TIME_INT*4+PAUSE_TIME,    360,    46,OBJ_CAMERA_DEFAULT_HEIGHT,	0,0,0,
+    //ANIMATE_START_TIME+TIME_INT*5,    360,    10, 3000.0,
 
-			};
+    };
 //GenerateRadarWaveAnimateKey(&key_move,5.0,dist_state,init_state,2,10);
-		am->CreateKeyAnimation(key_move, sizeof(key_move)/28, 6, &bevdisplay[0],AnimationStyle_KeySimpleLinear,0);
+    am->CreateKeyAnimation(key_move, sizeof(key_move)/28, 6, &bevdisplay[0],AnimationStyle_KeySimpleLinear,0);
 
-			m_objectCamera->GetCAProperty(AP_RX,&val);
-			bevdisplay[0]->BindProperty(0, val);
-			m_objectCamera->GetCAProperty(AP_RY, &val);
-			bevdisplay[0]->BindProperty(1, val);
-			m_objectCamera->GetCAProperty(AP_Z, &val);
-			bevdisplay[0]->BindProperty(2, val);
-			m_objectCamera->GetCAProperty(AP_CamAtX,&val);
-			bevdisplay[0]->BindProperty(3, val);
-			m_objectCamera->GetCAProperty(AP_CamAtY, &val);
-			bevdisplay[0]->BindProperty(4, val);
-			m_objectCamera->GetCAProperty(AP_CamAtZ, &val);
-			bevdisplay[0]->BindProperty(5, val);
-		bevdisplay[0]->SetDeltaUpdate(0);
+    m_objectCamera->GetCAProperty(AP_RX,&val);
+    bevdisplay[0]->BindProperty(0, val);
+    m_objectCamera->GetCAProperty(AP_RY, &val);
+    bevdisplay[0]->BindProperty(1, val);
+    m_objectCamera->GetCAProperty(AP_Z, &val);
+    bevdisplay[0]->BindProperty(2, val);
+    m_objectCamera->GetCAProperty(AP_CamAtX,&val);
+    bevdisplay[0]->BindProperty(3, val);
+    m_objectCamera->GetCAProperty(AP_CamAtY, &val);
+    bevdisplay[0]->BindProperty(4, val);
+    m_objectCamera->GetCAProperty(AP_CamAtZ, &val);
+    bevdisplay[0]->BindProperty(5, val);
+    bevdisplay[0]->SetDeltaUpdate(0);
 
 	am->CreateKeyAnimation(key_move, sizeof(key_move)/28, 6, &bevdisplay[1],AnimationStyle_KeySimpleLinear,0);
 
-		m_sceneCamera->GetCAProperty(AP_RX,&val);
-		bevdisplay[1]->BindProperty(0, val);
-		m_sceneCamera->GetCAProperty(AP_RY, &val);
-		bevdisplay[1]->BindProperty(1, val);
-		m_sceneCamera->GetCAProperty(AP_Z, &val);
-		bevdisplay[1]->BindProperty(2, val);
-		m_sceneCamera->GetCAProperty(AP_CamAtX,&val);
-		bevdisplay[1]->BindProperty(3, val);
-		m_sceneCamera->GetCAProperty(AP_CamAtY, &val);
-		bevdisplay[1]->BindProperty(4, val);
-		m_sceneCamera->GetCAProperty(AP_CamAtZ, &val);
-		bevdisplay[1]->BindProperty(5, val);
+    m_sceneCamera->GetCAProperty(AP_RX,&val);
+    bevdisplay[1]->BindProperty(0, val);
+    m_sceneCamera->GetCAProperty(AP_RY, &val);
+    bevdisplay[1]->BindProperty(1, val);
+    m_sceneCamera->GetCAProperty(AP_Z, &val);
+    bevdisplay[1]->BindProperty(2, val);
+    m_sceneCamera->GetCAProperty(AP_CamAtX,&val);
+    bevdisplay[1]->BindProperty(3, val);
+    m_sceneCamera->GetCAProperty(AP_CamAtY, &val);
+    bevdisplay[1]->BindProperty(4, val);
+    m_sceneCamera->GetCAProperty(AP_CamAtZ, &val);
+    bevdisplay[1]->BindProperty(5, val);
 	bevdisplay[1]->SetDeltaUpdate(0);
 
 
@@ -2037,19 +2037,19 @@ void SVScene::SetupLisence()
 		m_lisence->SetMesh(lisenceMeshId);
 		m_lisence->SetScale(80,100,100);
 #ifdef CAR_MODEL
-	modelId = m_objectNode->CreateModel(0, m_lisencemtlId, m_iSUVId, InsertFlag_Child, -0, 50, 1698, 0.6, &m_lisence);
-	m_lisence->SetMesh(lisenceMeshId);
-	m_lisence->SetScale(60,90,90);
+        modelId = m_objectNode->CreateModel(0, m_lisencemtlId, m_iSUVId, InsertFlag_Child, -0, 50, 1698, 0.6, &m_lisence);
+        m_lisence->SetMesh(lisenceMeshId);
+        m_lisence->SetScale(60,90,90);
 
-	modelId = m_objectNode->CreateModel(0, m_lisencemtlId, m_iVanId, InsertFlag_Child, 0,-150, 1504, 1.0, &m_lisence);
-	m_lisence->SetMesh(lisenceMeshId);
-	m_lisence->SetScale(80,100,100);
+        modelId = m_objectNode->CreateModel(0, m_lisencemtlId, m_iVanId, InsertFlag_Child, 0,-150, 1504, 1.0, &m_lisence);
+        m_lisence->SetMesh(lisenceMeshId);
+        m_lisence->SetScale(80,100,100);
 
-	modelId = m_objectNode->CreateModel(0, m_lisencemtlId, m_iTruckId, InsertFlag_Child, -0, 50, 820, 1.0, &m_lisence);
-	m_lisence->SetMesh(lisenceMeshId);
-	m_lisence->SetScale(100,100,100);
-	#endif
-	m_lisence->SetEnable(1);
+        modelId = m_objectNode->CreateModel(0, m_lisencemtlId, m_iTruckId, InsertFlag_Child, -0, 50, 820, 1.0, &m_lisence);
+        m_lisence->SetMesh(lisenceMeshId);
+        m_lisence->SetScale(100,100,100);
+#endif
+        m_lisence->SetEnable(1);
 
 	}
 
@@ -2060,12 +2060,12 @@ void SVScene::SetupLisence()
 
 void SVScene::InitViewNode()
 {
-	#define PlaneScaleX 16000.0
-	#define PlaneScaleY 17000.0
-    #define PlaneScaleY_NEG  -17000.0
+#define PlaneScaleX 16000.0
+#define PlaneScaleY 17000.0
+#define PlaneScaleY_NEG  -17000.0
 
-	#define ROTATE_ANGLE 30
-	#define ROTATE_LENGTH 3000
+#define ROTATE_ANGLE 30
+#define ROTATE_LENGTH 3000
 	int m_meshWidth = 30;
 	int m_meshHeight = 30;
     float x_pos[2];
@@ -2120,14 +2120,14 @@ void SVScene::InitViewNode()
         slotId=0;
     	for (y=0; y<m_meshHeight; y++) {
     		for (x=0; x<m_meshWidth; x++) {
-				#if 0
+#if 0
     			afVertices[index][slotId*8] = (((float)x)/(m_meshWidth-1)-0.5)*2 * PlaneScaleX;
     			afVertices[index][slotId*8+1] = (((float)y)/(m_meshHeight-1)-0.5) *2 * PlaneScaleY;
     			afVertices[index][slotId*8+2] = UIZ1;
     			afVertices[index][slotId*8+3] = (((float)x)/(m_meshWidth-1)-0.5)*2* PlaneScaleX;
     			afVertices[index][slotId*8+4] = (((float)y)/(m_meshHeight-1)-0.5)*2* PlaneScaleY;
     			afVertices[index][slotId*8+5] = UIZ1;
-				#else
+#else
     			afVertices[index][slotId*8] =   x_pos[0]+x*(x_pos[1]-x_pos[0])/(m_meshWidth-1);//(((float)x)/(m_meshWidth-1)-0.5)*2 * PlaneScaleX;
     			afVertices[index][slotId*8+1] = PlaneScaleY_NEG +(PlaneScaleY-PlaneScaleY_NEG)*y/m_meshHeight; //(((float)y)/(m_meshHeight-1)-0.5) *2 * PlaneScaleY;
     			afVertices[index][slotId*8+2] = z_pos[0]+x*(z_pos[1]-z_pos[0])/(m_meshWidth-1);
@@ -2135,7 +2135,7 @@ void SVScene::InitViewNode()
     			afVertices[index][slotId*8+4] = PlaneScaleY_NEG +(PlaneScaleY-PlaneScaleY_NEG)*y/m_meshHeight;//(((float)y)/(m_meshHeight-1)-0.5)*2* PlaneScaleY;
     			afVertices[index][slotId*8+5] = z_pos[0]+x*(z_pos[1]-z_pos[0])/(m_meshWidth-1);
 
-				#endif
+#endif
     		    AVMData::GetInstance()->CalcUVTextureSV(&afVertices[index][slotId*8],&afVertices[index][slotId*8+3],2);
 
 
@@ -2266,7 +2266,7 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 	char *MeshName[]={"f","b","l","r"};
 
     float pos[3];
-		char VertexName[MAX_NAME_LENGTH];
+    char VertexName[MAX_NAME_LENGTH];
 	char FragShaderName[MAX_NAME_LENGTH];
     AVMData::GetInstance()->m_cam_source->GetShaderName(VertexName,SV_2D_VERTEX_SHADER);
     AVMData::GetInstance()->m_cam_source->GetShaderName(FragShaderName,SV_2D_FRAGMENT_SHADER);
@@ -2279,11 +2279,11 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 #else
 	m_2DSingleViewNode->SetRenderROI(&RightReg);
 #endif
-	#ifdef ALI
-		m_2DSingleViewNode->SetRenderROI(&RightReg);
-	#else
-		m_2DSingleViewNode->SetRenderROI(&RightReg);
-	#endif
+#ifdef ALI
+    m_2DSingleViewNode->SetRenderROI(&RightReg);
+#else
+    m_2DSingleViewNode->SetRenderROI(&RightReg);
+#endif
 
 	sv2Ddelegate = new RenderDelegateSV2D();
 	sv2Ddelegate->Init();
@@ -2303,28 +2303,28 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 
     for(int i = eFrontSingle;i<=eRightSingle;i++)
     {
-	//step 2 prepare mesh for 2D stiching
+        //step 2 prepare mesh for 2D stiching
 
-	pSV2DData->GetVertexBuffer(i,&pData,&BufferSize);
-	meshid = m_2DSingleViewNode->CreateMesh(ModelType_Null, 1,0,0,MeshName[i-eFrontSingle], &m_planeMesh);
-	m_planeMesh->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
-	pSV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);
-	m_planeMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
-
-
-	//step 3 combine mesh and material(video texture) together.
- 	materialID = 5;
+        pSV2DData->GetVertexBuffer(i,&pData,&BufferSize);
+        meshid = m_2DSingleViewNode->CreateMesh(ModelType_Null, 1,0,0,MeshName[i-eFrontSingle], &m_planeMesh);
+        m_planeMesh->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
+        pSV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);
+        m_planeMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
 
 
+        //step 3 combine mesh and material(video texture) together.
+        materialID = 5;
 
 
 
 
-	 modelId = m_2DSingleViewNode->CreateModel(0, SV2DMTL, -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
-	 m_SV2Dplane[i]->SetMesh(meshid);
-	 m_SV2Dplane[i]->SetName(MeshName[i-eFrontSingle]);
-	 m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
-	  m_SV2Dplane[i]->SetEnable(0);
+
+
+        modelId = m_2DSingleViewNode->CreateModel(0, SV2DMTL, -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
+        m_SV2Dplane[i]->SetMesh(meshid);
+        m_SV2Dplane[i]->SetName(MeshName[i-eFrontSingle]);
+        m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
+        m_SV2Dplane[i]->SetEnable(0);
 
     }
 	m_SV2Dplane[eFrontSingle]->SetEnable(0);
@@ -2370,7 +2370,7 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 	int cameraId = m_2DSingleViewNode->CreateCamera(120, Float32(XrGetScreenWidth())/XrGetScreenHeight(), 10.0f, 16000.0f, &m_viewCamera);
 #endif
 	m_2DSingleViewNode->SetCamera(cameraId);
-		//m_2DSingleViewNode->SetEnable(1);
+    //m_2DSingleViewNode->SetEnable(1);
 	m_viewCamera->Set2DCamera(1);
 	m_viewCamera->SetPosition(0,0,OBJ_CAMERA_DEFAULT_HEIGHT);
 	m_viewCamera->LookAt(0.0,0.0,-0.0);
@@ -2398,14 +2398,14 @@ void SVScene::InitAliControlViewNode(BEV_CONFIG_T bev_config)
 	// Interleaved vertex data
 	m_AliCtrlViewNodeId = g_pIXrCore->CreateRenderNodeScene(0, &m_AliCtrlViewNode);
 
-  m_AliCtrlViewNode->SetClear(TRUE,TRUE);
-  //m_AliCtrlViewNode->SetClearColor(1.0,0.0,0.0,0.5);
+    m_AliCtrlViewNode->SetClear(TRUE,TRUE);
+    //m_AliCtrlViewNode->SetClearColor(1.0,0.0,0.0,0.5);
 
-	#ifdef ALI
-		m_AliCtrlViewNode->SetRenderROI(&UIControlReg);
-	#else
-		m_AliCtrlViewNode->SetRenderROI(&RightReg);
-	#endif
+#ifdef ALI
+    m_AliCtrlViewNode->SetRenderROI(&UIControlReg);
+#else
+    m_AliCtrlViewNode->SetRenderROI(&RightReg);
+#endif
 
 
 
@@ -2461,7 +2461,7 @@ void SVScene::InitAliControlViewNode(BEV_CONFIG_T bev_config)
 	int cameraId = m_AliCtrlViewNode->CreateCamera(120, Float32(XrGetScreenWidth())/XrGetScreenHeight(), 10.0f, 16000.0f, &m_controlCamera);
 #endif
 	m_AliCtrlViewNode->SetCamera(cameraId);
-		//m_2DSingleViewNode->SetEnable(1);
+    //m_2DSingleViewNode->SetEnable(1);
 	m_controlCamera->Set2DCamera(1);
 	m_controlCamera->SetPosition(0,0,OBJ_CAMERA_DEFAULT_HEIGHT);
 	m_controlCamera->LookAt(0.0,0.0,-0.0);
@@ -2486,7 +2486,7 @@ void SVScene::Init2DAVMNodeRTDraw(int cameraId)
 	float pos[3];
     IMaterial* pMtl;
 	IMesh *pMesh;
-	    float *pVertexData;
+    float *pVertexData;
 	XRVertexLayout  data_format;
 	Int32 icount;
 	int lisenceMeshId,groundId;
@@ -2517,7 +2517,7 @@ void SVScene::Init2DAVMNodeRTDraw(int cameraId)
 	//m_ground_mtl->SetDiffuseMap(m_lisenceRT->GetTextureId());
 	pMtl->SetDiffuseMap(RADARALARMTEX[2]);
 
-	 lisenceMeshId = m_2DAVMNodeStich->CreateMesh(ModelType_Plane_Dynamic,2,	2,0, "ground", &pMesh);
+    lisenceMeshId = m_2DAVMNodeStich->CreateMesh(ModelType_Plane_Dynamic,2,	2,0, "ground", &pMesh);
 #if 0
 	m_SV2DData->GetVertexBuffer(eCarImageMesh,&pData,&BufferSize);
 	meshid[i] = m_2DAVMNode->CreateMesh(ModelType_Null, 0,0,0,"CarImage", &pMesh);
@@ -2534,7 +2534,7 @@ void SVScene::Init2DAVMNodeRTDraw(int cameraId)
 	//int lisenceMeshId = m_GroundNode->CreateMesh(ModelType_Plane,1,  1,0, "ground", &pGroundMesh);
 
 	//int lisenceMeshId = m_GroundNode->CreateMesh(ModelType_Plane,1,  1,0, "ground", &pGroundMesh);
-	 groundId = m_2DAVMNodeStich->CreateModel(0, tempmaterialid, -1, InsertFlag_Default,0,0,0, 1.0, &pNode);
+    groundId = m_2DAVMNodeStich->CreateModel(0, tempmaterialid, -1, InsertFlag_Default,0,0,0, 1.0, &pNode);
 
 	pMesh->LockData(&pVertexData,&data_format,&icount);
 	pVertexData[0]=car_rect[rect_left];
@@ -2576,8 +2576,8 @@ void SVScene::Init2DAVMNodeRTDraw(int cameraId)
 
 void SVScene::InitRadarWaveMesh(float radius, int mesh_longi,int mesh_lati,int angle,float point_z,IMesh **pMesh,INode **pNode,float wavecolor[],char tex[],float speed)
 {
-	#define PlaneScaleX 3000.0
-	#define PlaneScaleY 7000.0
+#define PlaneScaleX 3000.0
+#define PlaneScaleY 7000.0
 
 
 	IMaterial*			temp_material;
@@ -2595,50 +2595,50 @@ void SVScene::InitRadarWaveMesh(float radius, int mesh_longi,int mesh_lati,int a
 
 
 	for (y=0; y<mesh_longi; y++) {
-		    if(0==y)
-		    {
-		        radius_down = 0.01;
-				radius_up=radius*((y+1)/(float)mesh_longi);
-		    }
-			else
-			{
-		        radius_down = radius*((y)/(float)mesh_longi);
-				radius_up=radius*((y+1)/(float)mesh_longi);
-			}
-			if(y>mesh_longi/2)
-			{
-			    AlphaDegrade=2.0*(1.0-y/(float)(mesh_longi-1.0));
-			}
-			else
-			{
-			    AlphaDegrade=1.0;
-			}
+        if(0==y)
+        {
+            radius_down = 0.01;
+            radius_up=radius*((y+1)/(float)mesh_longi);
+        }
+        else
+        {
+            radius_down = radius*((y)/(float)mesh_longi);
+            radius_up=radius*((y+1)/(float)mesh_longi);
+        }
+        if(y>mesh_longi/2)
+        {
+            AlphaDegrade=2.0*(1.0-y/(float)(mesh_longi-1.0));
+        }
+        else
+        {
+            AlphaDegrade=1.0;
+        }
 		for (x=0; x<=mesh_lati; x++) {
 			theta_down= 3.14*(angle*x/mesh_lati)/180;
 
 
-    			afVertices[slotId*8] = radius_down*cos(theta_down);
-    			afVertices[slotId*8+1] = radius_down*sin(theta_down);
-    			afVertices[slotId*8+2] = point_z;
-    			afVertices[slotId*8+3] = radius_down*cos(theta_down);;
-    			afVertices[slotId*8+4] =  speed;
-    			afVertices[slotId*8+5] = AlphaDegrade;
+            afVertices[slotId*8] = radius_down*cos(theta_down);
+            afVertices[slotId*8+1] = radius_down*sin(theta_down);
+            afVertices[slotId*8+2] = point_z;
+            afVertices[slotId*8+3] = radius_down*cos(theta_down);;
+            afVertices[slotId*8+4] =  speed;
+            afVertices[slotId*8+5] = AlphaDegrade;
 
-    			afVertices[slotId*8+6] = ((float)x)/(mesh_lati);
-    			afVertices[slotId*8+7] = 0.0;
+            afVertices[slotId*8+6] = ((float)x)/(mesh_lati);
+            afVertices[slotId*8+7] = 0.0;
 
-    			slotId+=1;
-    			afVertices[slotId*8] = radius_up*cos(theta_down);
-    			afVertices[slotId*8+1] = radius_up*sin(theta_down);
-    			afVertices[slotId*8+2] = point_z;
-    			afVertices[slotId*8+3] = radius_up*cos(theta_down);;
-    			afVertices[slotId*8+4] =  speed;
-    			afVertices[slotId*8+5] = AlphaDegrade;
+            slotId+=1;
+            afVertices[slotId*8] = radius_up*cos(theta_down);
+            afVertices[slotId*8+1] = radius_up*sin(theta_down);
+            afVertices[slotId*8+2] = point_z;
+            afVertices[slotId*8+3] = radius_up*cos(theta_down);;
+            afVertices[slotId*8+4] =  speed;
+            afVertices[slotId*8+5] = AlphaDegrade;
 
-    			afVertices[slotId*8+6] = ((float)x)/(mesh_lati);
-    			afVertices[slotId*8+7] = 1.0;
+            afVertices[slotId*8+6] = ((float)x)/(mesh_lati);
+            afVertices[slotId*8+7] = 1.0;
 
-    			slotId+=1;
+            slotId+=1;
 
 		}
 	}
@@ -2691,12 +2691,12 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	///////////////////////////Scene Node///////////////////////////////
 	m_mode = SceneMode_Free;
 	m_topModeFOV = 160;
-	#ifdef ALI
+#ifdef ALI
 
 	m_freeModeFOV =90;
-	#else
+#else
 	m_freeModeFOV =35;
-	#endif
+#endif
 	m_camPos = CameraPosition_Free;
     m_zoomout=0;
 	m_lastclickfreeflag = 1;
@@ -2707,37 +2707,37 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	FadeLeftReg.Set(-XrGetScreenWidth()-FADE_BORDER, -FADE_BORDER, 0, XrGetScreenHeight());
 	CenterReg.Set(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
 	FadeRightReg.Set(XrGetScreenWidth()+FADE_BORDER, 2*XrGetScreenWidth()+FADE_BORDER, 0, XrGetScreenHeight());
-	#ifdef ALI
-		Stich2DReg.Set(XrGetScreenWidth()*f_stich_ratio,XrGetScreenWidth(),0,XrGetScreenHeight()* f_vertical_radio - CUT_LINE);
-		RightReg.Set(0,XrGetScreenWidth(),0,XrGetScreenHeight());
-		SingleViewReg.Set(0, XrGetScreenWidth(), 0, XrGetScreenHeight() * f_vertical_radio - CUT_LINE);
-		UIControlReg.Set(0,XrGetScreenWidth()*(f_stich_ratio),0,XrGetScreenHeight() * f_vertical_radio-CUT_LINE);
+#ifdef ALI
+    Stich2DReg.Set(XrGetScreenWidth()*f_stich_ratio,XrGetScreenWidth(),0,XrGetScreenHeight()* f_vertical_radio - CUT_LINE);
+    RightReg.Set(0,XrGetScreenWidth(),0,XrGetScreenHeight());
+    SingleViewReg.Set(0, XrGetScreenWidth(), 0, XrGetScreenHeight() * f_vertical_radio - CUT_LINE);
+    UIControlReg.Set(0,XrGetScreenWidth()*(f_stich_ratio),0,XrGetScreenHeight() * f_vertical_radio-CUT_LINE);
 
-	#else
+#else
 
-	    f_stich_ratio=0.35;
-		Stich2DReg.Set(0,XrGetScreenWidth()*f_stich_ratio,0+black_width,XrGetScreenHeight()-black_width);
-		RightReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.0,XrGetScreenHeight()-black_width);
+    f_stich_ratio=0.35;
+    Stich2DReg.Set(0,XrGetScreenWidth()*f_stich_ratio,0+black_width,XrGetScreenHeight()-black_width);
+    RightReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.0,XrGetScreenHeight()-black_width);
 
 
-	#endif
+#endif
 	RightTopFadeReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),XrGetScreenHeight(),XrGetScreenHeight()*2);
 	RightBottomFadeReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),-XrGetScreenHeight(),0);
-	#ifdef ALIBABA_HMI
+#ifdef ALIBABA_HMI
 	Stich2DReg.Set(0,XrGetScreenWidth()*f_stich_ratio,0,XrGetScreenHeight()/2-CUT_LINE);
 	RightReg.Set(0,XrGetScreenWidth(),XrGetScreenHeight()/2,XrGetScreenHeight());
 	RightBottomSingleReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0,XrGetScreenHeight()/2-CUT_LINE);
-    #endif
+#endif
 	m_turnlight_state = 0;
 
-   m_veh_param.max_steering_wheel_angle = 588.0;
-   m_veh_param.vehicle_axis_length = 2.700;
-   m_veh_param.vehicle_length = pConfig.smc_hmi.VEHICLE_LENGTH/1000.0;
-   m_veh_param.vehicle_rear_wheel_to_bumper = pConfig.smc_hmi.VEHICLE_REARWHEEL_TO_REAR_BUMPER/1000.0;
-   m_veh_param.vehicle_front_wheel_to_bumper =  m_veh_param.vehicle_length- m_veh_param.vehicle_axis_length-m_veh_param.vehicle_rear_wheel_to_bumper;
-   m_veh_param.vehicle_wheel_radius = 0.3;
-   m_veh_param.vehicle_wheel_width = 0.2;
-   m_veh_param.vehicle_width = 1.855;
+    m_veh_param.max_steering_wheel_angle = 588.0;
+    m_veh_param.vehicle_axis_length = 2.700;
+    m_veh_param.vehicle_length = pConfig.smc_hmi.VEHICLE_LENGTH/1000.0;
+    m_veh_param.vehicle_rear_wheel_to_bumper = pConfig.smc_hmi.VEHICLE_REARWHEEL_TO_REAR_BUMPER/1000.0;
+    m_veh_param.vehicle_front_wheel_to_bumper =  m_veh_param.vehicle_length- m_veh_param.vehicle_axis_length-m_veh_param.vehicle_rear_wheel_to_bumper;
+    m_veh_param.vehicle_wheel_radius = 0.3;
+    m_veh_param.vehicle_wheel_width = 0.2;
+    m_veh_param.vehicle_width = 1.855;
 
 	///////////////////////View Node/////////////////////////
     m_bev_config = pConfig;
@@ -2749,15 +2749,15 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	m_SV2DData = new GlSV2D;
 	m_SV2DData->Init();
 
-	#ifdef EMIRROR
+#ifdef EMIRROR
 	RightReg.Set(0,XrGetScreenWidth(),0,XrGetScreenHeight());
-		m_eMirror_node = new SVNodeEMirror();
-		m_eMirror_node->Init(1,RightReg,0.1,XR_RES);
+    m_eMirror_node = new SVNodeEMirror();
+    m_eMirror_node->Init(1,RightReg,0.1,XR_RES);
 #else
 
 	//InitAliControlViewNode(pConfig);
 #ifndef ALI
-		Init2DAVMNode();
+    Init2DAVMNode();
 #endif
 
 	InitSceneNode(pConfig);
@@ -2825,7 +2825,7 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	m_objectCamera->GetCAProperty(AP_Z, &posZ);
 	scrollX->Bind2ndTarget(rotX, 0, 1);
 	scrollY->Bind2ndTarget(rotY, 0, 1);
-  //  sliderX->Bind2ndTarget(posZ,0,1);
+    //  sliderX->Bind2ndTarget(posZ,0,1);
 	//m_mapplateCamera->GetCAProperty(AP_RX, &rotX);
     //m_mapplateCamera->GetCAProperty(AP_RY, &rotY);
 
@@ -2848,23 +2848,23 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
         m_show_product_flag[i]=0;
     }
 	m_position_active_product=0;
-	   // EnterTopView(3);
-	   #endif
-	 m_door_state =0;
+    // EnterTopView(3);
+#endif
+    m_door_state =0;
 //EnterFreeView(CameraPosition_Free);
 	m_luminance = new GlSVLuminance;
 
-		// buffer file %s,line %d",__FILE__,__LINE__);
+    // buffer file %s,line %d",__FILE__,__LINE__);
 	int  temp =  m_luminance->Init();
 	m_luminance->SetLuminance(&g_uiAverageIllum);
-	#endif
+#endif
 	return 0;
 }
 
 void SVScene::SetTopViewCrameraFov(Float32 fov) {
 	m_topModeFOV = fov;
 	float newScale = 3540.1/540.1/tan(Deg2Rad(fov
-		)/2)*1.1;
+                                          )/2)*1.1;
 	m_objectCamera->SetPosition(0, 0, 2000.0);
 	m_objectCamera->LookAt(0.0,0,-0.0);
 
@@ -2876,7 +2876,7 @@ void SVScene::SetTopViewCrameraFov(Float32 fov) {
     newScale = newScale*SCALE_CAR_MIDDLE;
 	m_Car->SetScale(SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*SCALE_CAR_MIDDLE_SPECIAL_Z*1.08);
     m_ground->SetScale(1.2,1.0,0.58);
-	#ifdef CAR_MODEL
+#ifdef CAR_MODEL
     m_SUV->SetScale(SCALE_CAR_MIDDLE*1.05,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*SCALE_CAR_MIDDLE_SPECIAL_Z*1.08);
     m_VAN->SetScale(SCALE_CAR_MIDDLE*1.05,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*SCALE_CAR_MIDDLE_SPECIAL_Z*1.08);
     m_TRUCK->SetScale(SCALE_CAR_MIDDLE*1.05,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*SCALE_CAR_MIDDLE_SPECIAL_Z*0.95);
@@ -2940,17 +2940,17 @@ void SVScene::SetProductVisible(unsigned char visibleflag) {
 void SVScene::SetCarEnable(Boolean flag)
 {
 
-		 m_CarLight->SetEnable(flag);
-		 m_CarInternal->SetEnable(flag);
-		 m_CarDoor[0]->SetEnable(flag);
-		 m_Car->SetEnable(flag);
-		 m_CarDoor[1]->SetEnable(flag);
+    m_CarLight->SetEnable(flag);
+    m_CarInternal->SetEnable(flag);
+    m_CarDoor[0]->SetEnable(flag);
+    m_Car->SetEnable(flag);
+    m_CarDoor[1]->SetEnable(flag);
 
-		 m_CarDoor[2]->SetEnable(flag);
-		 m_CarDoor[3]->SetEnable(flag);
-		 m_Car_Window[4]->SetEnable(flag);
-		 for(int i =0;i<5;i++)
-		 m_Car_Window[i]->SetEnable(flag);
+    m_CarDoor[2]->SetEnable(flag);
+    m_CarDoor[3]->SetEnable(flag);
+    m_Car_Window[4]->SetEnable(flag);
+    for(int i =0;i<5;i++)
+        m_Car_Window[i]->SetEnable(flag);
 
 
 }
@@ -2969,10 +2969,10 @@ void SVScene::ChangeCameraConfig(Int32 pos)
     	{
     	    if(change_delay >= DELAY_TIME)
     	    {
-               // m_objectNode->SetEnable(0);
+                // m_objectNode->SetEnable(0);
 				m_Car->SetEnable(0);
 				m_ground->SetEnable(0);
-						//m_overlay->SetEnable(1);
+                //m_overlay->SetEnable(1);
 
 				for(int i=0;i<4;i++)
 				{
@@ -2980,9 +2980,9 @@ void SVScene::ChangeCameraConfig(Int32 pos)
 				}
 				m_pPanaramaNode[0]->SetEnable(1);
 				m_pPanaramaNode[1]->SetEnable(1);
-			//m_sceneCamera->SetFOV(130);
+                //m_sceneCamera->SetFOV(130);
 
-		//	m_objectCamera->SetFOV(130);
+                //	m_objectCamera->SetFOV(130);
 
 
     	    }
@@ -2993,20 +2993,20 @@ void SVScene::ChangeCameraConfig(Int32 pos)
 	else
 	{
 
-	   // m_objectNode->SetEnable(1);
+        // m_objectNode->SetEnable(1);
 
-	   //m_Car->SetEnable(1);
+        //m_Car->SetEnable(1);
 		m_ground->SetEnable(1);
 		//m_overlay->SetEnable(1);
 		//m_sceneCamera->SetFOV(m_freeModeFOV);
 
 		//m_objectCamera->SetFOV(m_freeModeFOV);
-				for(int i=0;i<4;i++)
-				{
-				    m_SkyNode[i]->SetEnable(1);
-				}
-				m_pPanaramaNode[0]->SetEnable(0);
-				m_pPanaramaNode[1]->SetEnable(0);
+        for(int i=0;i<4;i++)
+        {
+            m_SkyNode[i]->SetEnable(1);
+        }
+        m_pPanaramaNode[0]->SetEnable(0);
+        m_pPanaramaNode[1]->SetEnable(0);
 
 		pre_pos = pos;
 		change_delay=0;
@@ -3045,14 +3045,14 @@ void SVScene::FrontViewTurnwithSteering(Int32 pos,float steeringwheel_angle,floa
 #define MIRROR_VIEW_FOV  60
 void SVScene::EnterMirrorView(Int32 pos)
 {
-   //because mirror view not only change camera position but fov so
-   //a sperate function is used.
-   if(pos == LEFT_MIRROR_VIEW)
-   {
+    //because mirror view not only change camera position but fov so
+    //a sperate function is used.
+    if(pos == LEFT_MIRROR_VIEW)
+    {
 
-   	#define AT_X -200.5
-	#define AT_Z -60
-	//#define AT_Z -20
+#define AT_X -200.5
+#define AT_Z -60
+        //#define AT_Z -20
 //	#define AT_Y 120
 
 #define AT_Y -40
@@ -3065,12 +3065,12 @@ void SVScene::EnterMirrorView(Int32 pos)
 		scrollX->DockToValue(0);
 		scrollY->DockToValue(0);
 
-       m_sceneCamera->SetFOV(MIRROR_VIEW_FOV);
-	   m_objectCamera->SetFOV(MIRROR_VIEW_FOV);
+        m_sceneCamera->SetFOV(MIRROR_VIEW_FOV);
+        m_objectCamera->SetFOV(MIRROR_VIEW_FOV);
 
 
    	}
-   else if(pos == RIGHT_MIRROR_VIEW)
+    else if(pos == RIGHT_MIRROR_VIEW)
    	{
 
 
@@ -3084,9 +3084,9 @@ void SVScene::EnterMirrorView(Int32 pos)
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(325, -60, -230);
         m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-       // m_objectCamera->LookAt(325, 100, -230);
+        // m_objectCamera->LookAt(325, 100, -230);
 
-	   m_objectCamera->LookAt(325, -60, -230);
+        m_objectCamera->LookAt(325, -60, -230);
         scrollX->DockToValue(0);
         scrollY->DockToValue(6);
 
@@ -3095,11 +3095,11 @@ void SVScene::EnterMirrorView(Int32 pos)
 
 
    	}
-   else
-   {
-       m_sceneCamera->SetFOV(m_freeModeFOV);
-	   m_objectCamera->SetFOV(m_freeModeFOV);
-   }
+    else
+    {
+        m_sceneCamera->SetFOV(m_freeModeFOV);
+        m_objectCamera->SetFOV(m_freeModeFOV);
+    }
 
 
 
@@ -3129,16 +3129,16 @@ void SVScene::EnterFreeView(Int32 pos)
 	if (pos == CameraPosition_Free) {
 		//if(m_lastclickfreeflag == 0)
 		//{
-    		m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-    		m_sceneCamera->LookAt(0.0,0,-0.0);
-    		m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-    		m_objectCamera->LookAt(0.0,0,-0.0);
-			m_zoomout = 0;
-			scrollX->DockToValue(0);
-			scrollY->DockToValue(25);
-			ResetStyleSetting();
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+        m_zoomout = 0;
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(25);
+        ResetStyleSetting();
 		//}
-		#if 0
+#if 0
 		else
 		{
 		    if(m_zoomout == 1)
@@ -3158,69 +3158,69 @@ void SVScene::EnterFreeView(Int32 pos)
     			m_zoomout = 1;
 			}
 		}
-		#endif
+#endif
 		m_lastclickfreeflag = 1;
 
 	}
 	else if (pos == CameraPosition_Back) {
-	#define AT_X 1900.0
-	#define AT_Z 1000
+#define AT_X 1900.0
+#define AT_Z 1000
 		m_sceneCamera->SetPosition(-AT_X, 0, AT_Z);
 		m_sceneCamera->LookAt(000.0, 0, AT_Z);
 		m_objectCamera->SetPosition(-AT_X, 0, AT_Z);
 		m_objectCamera->LookAt(000.0, 0, AT_Z);
 		m_lastclickfreeflag = 0;
-					scrollX->DockToValue(0);
-			scrollY->DockToValue(35);
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(35);
 		//text->SetText("AC-88888");
 	}
 	else if (pos == CameraPosition_Front) {
 
 #define AT_X 1900.0
 #define AT_Z -1000
-				m_sceneCamera->SetPosition(-AT_X, 0, AT_Z);
-				m_sceneCamera->LookAt(000.0, 0, AT_Z);
-				m_objectCamera->SetPosition(-AT_X, 0, AT_Z);
-				m_objectCamera->LookAt(000.0, 0, AT_Z);
-				m_lastclickfreeflag = 0;
-							scrollX->DockToValue(0);
-					scrollY->DockToValue(35);
+        m_sceneCamera->SetPosition(-AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(000.0, 0, AT_Z);
+        m_objectCamera->SetPosition(-AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(000.0, 0, AT_Z);
+        m_lastclickfreeflag = 0;
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(35);
 
 	}
 	else if (pos == CameraPosition_Left) {
-	#define AT_X -SIDE_POS_WIDTH
-	#define AT_Z SIDE_POS_FRONT
-	//#define AT_X -800.0
-	//#define AT_Z 1500
+#define AT_X -SIDE_POS_WIDTH
+#define AT_Z SIDE_POS_FRONT
+        //#define AT_X -800.0
+        //#define AT_Z 1500
 		m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
 		m_sceneCamera->LookAt(AT_X, AT_Y, 0);
 		m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
 		m_objectCamera->LookAt(AT_X, AT_Y, 0);
-					scrollX->DockToValue(0);
-			scrollY->DockToValue(TURN_LIGHT_ANGLE);
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(TURN_LIGHT_ANGLE);
 		m_lastclickfreeflag = 0;
 	}
 	else if (pos == CameraPosition_Right) {
-		#if 0
-	#define AT_X 800.0
-	#define AT_Z 1500
+#if 0
+#define AT_X 800.0
+#define AT_Z 1500
 		m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
 		m_sceneCamera->LookAt(AT_X, 0, 0);
 		m_objectCamera->SetPosition(AT_X, 0, AT_Z);
 		m_objectCamera->LookAt(AT_X, 0, 0);
 		m_lastclickfreeflag = 0;
-					scrollX->DockToValue(0);
-			scrollY->DockToValue(25);
-			#endif
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(25);
+#endif
 #define AT_X SIDE_POS_WIDTH
 #define AT_Z SIDE_POS_FRONT
-				m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-				m_sceneCamera->LookAt(AT_X, 0, 0);
-				m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-				m_objectCamera->LookAt(AT_X, 0, 0);
-				m_lastclickfreeflag = 0;
-							scrollX->DockToValue(0);
-					scrollY->DockToValue(TURN_LIGHT_ANGLE);
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(TURN_LIGHT_ANGLE);
 
 
 
@@ -3233,180 +3233,180 @@ void SVScene::EnterFreeView(Int32 pos)
 		m_objectCamera->SetPosition(AT_X, 0, AT_Z);
 		m_objectCamera->LookAt(AT_X, 0, 0);
 		m_lastclickfreeflag = 0;
-					scrollX->DockToValue(180);
-			scrollY->DockToValue(TURN_LIGHT_ANGLE);
+        scrollX->DockToValue(180);
+        scrollY->DockToValue(TURN_LIGHT_ANGLE);
 
 	}
-		else if (pos == CameraPosition_Right_Rear) {
+    else if (pos == CameraPosition_Right_Rear) {
 #define AT_X SIDE_POS_WIDTH
 #define AT_Z SIDE_POS_FRONT
-			m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-			m_sceneCamera->LookAt(AT_X, 0, 0);
-			m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-			m_objectCamera->LookAt(AT_X, 0, 0);
-			m_lastclickfreeflag = 0;
-						scrollX->DockToValue(180);
-				scrollY->DockToValue(TURN_LIGHT_ANGLE);
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
+        scrollX->DockToValue(180);
+        scrollY->DockToValue(TURN_LIGHT_ANGLE);
 
-		}
-			else if (pos == CameraPosition_Left_Front) {
+    }
+    else if (pos == CameraPosition_Left_Front) {
 #define AT_X -SIDE_POS_WIDTH
 #define AT_Z SIDE_POS_FRONT
-                #if 1
-				m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-				m_sceneCamera->LookAt(AT_X, 0, 0);
-				m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-				m_objectCamera->LookAt(AT_X, 0, 0);
-				m_lastclickfreeflag = 0;
-                #else
-                m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-				m_sceneCamera->LookAt(0.0,0,-0.0);
-				m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-				m_objectCamera->LookAt(0.0,0,-0.0);
-				#endif
-							scrollX->DockToValue(0);
-					scrollY->DockToValue(50);
+#if 1
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
+#else
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+#endif
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(50);
 
-			}
-				else if (pos == CameraPosition_Right_Front) {
+    }
+    else if (pos == CameraPosition_Right_Front) {
 #define AT_X SIDE_POS_WIDTH
 #define AT_Z SIDE_POS_FRONT
-                   #if 1
-					m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-					m_sceneCamera->LookAt(AT_X, 0, 0);
-					m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-					m_objectCamera->LookAt(AT_X, 0, 0);
-					m_lastclickfreeflag = 0;
-				    #else
-					m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-					m_sceneCamera->LookAt(0.0,0,-0.0);
-					m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-					m_objectCamera->LookAt(0.0,0,-0.0);
-					#endif
+#if 1
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
+#else
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+#endif
 
-								scrollX->DockToValue(0);
-						scrollY->DockToValue(50);
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(50);
 
-				}
-            else if (pos == CameraPosition_Left_Rear_Light) {
-                #define AT_X -SIDE_POS_WIDTH
-                #define AT_Z SIDE_POS_FRONT
-				#if 1
-                m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-                m_sceneCamera->LookAt(AT_X, 0, 0);
-                m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-                m_objectCamera->LookAt(AT_X, 0, 0);
-                m_lastclickfreeflag = 0;
+    }
+    else if (pos == CameraPosition_Left_Rear_Light) {
+#define AT_X -SIDE_POS_WIDTH
+#define AT_Z SIDE_POS_FRONT
+#if 1
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
 
-				#else
-				m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-				m_sceneCamera->LookAt(0.0,0,-0.0);
-				m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-				m_objectCamera->LookAt(0.0,0,-0.0);
-				#endif
-				scrollX->DockToValue(180);
-				scrollY->DockToValue(50);
+#else
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+#endif
+        scrollX->DockToValue(180);
+        scrollY->DockToValue(50);
 
-            }
-            else if (pos == CameraPosition_Right_Rear_Light) {
-                #define AT_X SIDE_POS_WIDTH
-                #define AT_Z SIDE_POS_FRONT
-				#if 1
-                m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-                m_sceneCamera->LookAt(AT_X, 0, 0);
-                m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-                m_objectCamera->LookAt(AT_X, 0, 0);
-                m_lastclickfreeflag = 0;
+    }
+    else if (pos == CameraPosition_Right_Rear_Light) {
+#define AT_X SIDE_POS_WIDTH
+#define AT_Z SIDE_POS_FRONT
+#if 1
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
 
-				#else
-				m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-				m_sceneCamera->LookAt(0.0,0,-0.0);
-				m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-				m_objectCamera->LookAt(0.0,0,-0.0);
-				#endif
-				scrollX->DockToValue(180);
-				scrollY->DockToValue(50);
+#else
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+#endif
+        scrollX->DockToValue(180);
+        scrollY->DockToValue(50);
 
-            }
-			else if(CameraPosition_Left_Front_Light == pos)
-			{
-				#define AT_X SIDE_POS_WIDTH
-                #define AT_Z SIDE_POS_FRONT_HIGH_SPEED
-				#if 1
-                m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-                m_sceneCamera->LookAt(AT_X, 0, 0);
-                m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-                m_objectCamera->LookAt(AT_X, 0, 0);
-                m_lastclickfreeflag = 0;
+    }
+    else if(CameraPosition_Left_Front_Light == pos)
+    {
+#define AT_X SIDE_POS_WIDTH
+#define AT_Z SIDE_POS_FRONT_HIGH_SPEED
+#if 1
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
 
-				#else
-				m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-				m_sceneCamera->LookAt(0.0,0,-0.0);
-				m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-				m_objectCamera->LookAt(0.0,0,-0.0);
-				#endif
-				scrollX->DockToValue(180);
-				scrollY->DockToValue(25);
-			}
-			else if(CameraPosition_Right_Front_Light == pos)
-			{
-				#define AT_X -SIDE_POS_WIDTH
-                #define AT_Z SIDE_POS_FRONT_HIGH_SPEED
-				#if 1
-                m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-                m_sceneCamera->LookAt(AT_X, 0, 0);
-                m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-                m_objectCamera->LookAt(AT_X, 0, 0);
-                m_lastclickfreeflag = 0;
+#else
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+#endif
+        scrollX->DockToValue(180);
+        scrollY->DockToValue(25);
+    }
+    else if(CameraPosition_Right_Front_Light == pos)
+    {
+#define AT_X -SIDE_POS_WIDTH
+#define AT_Z SIDE_POS_FRONT_HIGH_SPEED
+#if 1
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, 0);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, 0);
+        m_lastclickfreeflag = 0;
 
-				#else
-				m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-				m_sceneCamera->LookAt(0.0,0,-0.0);
-				m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-				m_objectCamera->LookAt(0.0,0,-0.0);
-				#endif
-				scrollX->DockToValue(180);
-				scrollY->DockToValue(25);
+#else
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+#endif
+        scrollX->DockToValue(180);
+        scrollY->DockToValue(25);
 
-			}
-			else if (pos == CameraPosition_BOSCH_Front) {
+    }
+    else if (pos == CameraPosition_BOSCH_Front) {
 
 #define AT_X 0.0
 #define AT_Z -20
 //				#define AT_Z -20
 #define AT_Y -500
-								m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
-								m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
-								m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-								m_objectCamera->LookAt(0, AT_Y, 2*AT_Z);
-								m_lastclickfreeflag = 0;
-											scrollX->DockToValue(0);
-									scrollY->DockToValue(0);
+        m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+        m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
+        m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+        m_objectCamera->LookAt(0, AT_Y, 2*AT_Z);
+        m_lastclickfreeflag = 0;
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(0);
 
-				#if 0
-                #define AT_X 100
-                #define AT_Z -100
-				#if 1
-                m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
-                m_sceneCamera->LookAt(AT_X, 0, AT_Z);
-                m_objectCamera->SetPosition(AT_X, 0, AT_Z);
-                m_objectCamera->LookAt(AT_X, 0, AT_Z);
-                m_lastclickfreeflag = 0;
+#if 0
+#define AT_X 100
+#define AT_Z -100
+#if 1
+        m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
+        m_sceneCamera->LookAt(AT_X, 0, AT_Z);
+        m_objectCamera->SetPosition(AT_X, 0, AT_Z);
+        m_objectCamera->LookAt(AT_X, 0, AT_Z);
+        m_lastclickfreeflag = 0;
 
-				#else
-				m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
-				m_sceneCamera->LookAt(0.0,0,-0.0);
-				m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
-				m_objectCamera->LookAt(0.0,0,-0.0);
-				#endif
-				#endif
-						//	scrollX->DockToValue(180);
+#else
+        m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+        m_sceneCamera->LookAt(0.0,0,-0.0);
+        m_objectCamera->SetPosition(0, 0, OBJ_CAMERA_DEFAULT_HEIGHT);
+        m_objectCamera->LookAt(0.0,0,-0.0);
+#endif
+#endif
+        //	scrollX->DockToValue(180);
 
-					//scrollX->DockToValue(0);
-				//	scrollY->DockToValue(0);
+        //scrollX->DockToValue(0);
+        //	scrollY->DockToValue(0);
 
-            }
-				else if (pos == CameraPosition_BOSCH_Front_Top) {
+    }
+    else if (pos == CameraPosition_BOSCH_Front_Top) {
 #if 0
 #define AT_X 0.0
 #define AT_Y -560
@@ -3416,32 +3416,32 @@ void SVScene::EnterFreeView(Int32 pos)
 #define AT_Z -520
 #define AT_Y 800
 #endif
-					            m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
-								m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
-								m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-								m_objectCamera->LookAt(0, AT_Y, 2*AT_Z);
-								m_lastclickfreeflag = 0;
-											scrollX->DockToValue(0);
-									scrollY->DockToValue(90);
+        m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+        m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
+        m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+        m_objectCamera->LookAt(0, AT_Y, 2*AT_Z);
+        m_lastclickfreeflag = 0;
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(90);
 
 
 
-            }
-            else if (pos == CameraPosition_BOSCH_Rear_Top_REVERSE) {
+    }
+    else if (pos == CameraPosition_BOSCH_Rear_Top_REVERSE) {
 
-            #define AT_X 0.0
-            #define AT_Z 560
-            #define AT_Y 400
-            								m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
-            								m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
-            								m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-            								m_objectCamera->LookAt(0, AT_Y, 2*AT_Z);
-            								m_lastclickfreeflag = 0;
-            								scrollX->DockToValue(0);
-            								scrollY->DockToValue(90);
+#define AT_X 0.0
+#define AT_Z 560
+#define AT_Y 400
+        m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+        m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
+        m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+        m_objectCamera->LookAt(0, AT_Y, 2*AT_Z);
+        m_lastclickfreeflag = 0;
+        scrollX->DockToValue(0);
+        scrollY->DockToValue(90);
 
 
-                        }
+    }
 
 
 	m_mode = SceneMode_Free;
@@ -3451,11 +3451,11 @@ void SVScene::EnterFreeView(Int32 pos)
 	//m_objectCamera->LookAt(0.0,0,-0.0);
 	//m_objectCamera->SetFOV(m_freeModeFOV);
 	m_Car->SetOpacity(1);
-	#ifdef CAR_MODEL
+#ifdef CAR_MODEL
 	m_SUV->SetOpacity(1);
 	m_VAN->SetOpacity(1);
 	m_TRUCK->SetOpacity(1);
-	#endif
+#endif
 	m_ground->SetOpacity(1);
 
 
@@ -3465,7 +3465,7 @@ void SVScene::EnterFreeView(Int32 pos)
 	//m_TRUCK->SetScale(SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*SCALE_CAR_MIDDLE_SPECIAL_Z);
 
     //m_ground->SetScale(1.0,1.0,1.0);
-   // SetProductVisible(1);
+    // SetProductVisible(1);
 
 
 }
@@ -3482,8 +3482,8 @@ void SVScene::EnterTopView(Int32 pos)
     bevSecTour[1]->Stop();
 	m_lastclickfreeflag = 0;
 	m_zoomout=0;
-		m_mode = SceneMode_Top;
-		scrollX->DockToValue(0);
+    m_mode = SceneMode_Top;
+    scrollX->DockToValue(0);
 	scrollY->DockToValue(90);
 	m_sceneCamera->SetPosition(0, 0, CAMERA_ZOOMIN_DEFAULT_HEIGHT-3000);
 	m_sceneCamera->LookAt(0.0,0,-0.0);
@@ -3508,7 +3508,7 @@ void SVScene::EnterCrossView(Int32 pos)
 {
 	FadeInView(1);
 
-		bevdisplay[0]->Stop();
+    bevdisplay[0]->Stop();
     bevdisplay[1]->Stop();
 	m_lastclickfreeflag = 0;
 
@@ -3517,30 +3517,30 @@ void SVScene::EnterCrossView(Int32 pos)
 	m_mode = SceneMode_Cross;
 	int i=0;
 	switch (pos) {
-	case CameraPosition_Front:
-		i=2;
+        case CameraPosition_Front:
+            i=2;
 
-		cvdelegate->SetChannel(i);
-		break;
-	case CameraPosition_Back:
-		i=3;
+            cvdelegate->SetChannel(i);
+            break;
+        case CameraPosition_Back:
+            i=3;
 
-		cvdelegate->SetChannel(i);
-		break;
-	case CameraPosition_Left:
-		i=1;
+            cvdelegate->SetChannel(i);
+            break;
+        case CameraPosition_Left:
+            i=1;
 
 
-		cvdelegate->SetChannel(i);
-		break;
-	case CameraPosition_Right:
-		i=0;
+            cvdelegate->SetChannel(i);
+            break;
+        case CameraPosition_Right:
+            i=0;
 
-		break;
-	default:
-		i=0;
+            break;
+        default:
+            i=0;
 
-		break;
+            break;
 	}
 
 	cvdelegate->SetChannel(i);
@@ -3551,7 +3551,7 @@ void SVScene::UpdateLisceseText(String textupdate,unsigned int ChineseIndex)
 	text->SetText(textupdate);
 	if(ChineseIndex==NONE_CHINESE_WORD)
 	{
-      // Chinesetext->SetFontSize(0);
+        // Chinesetext->SetFontSize(0);
 	}
 	else
 	{
@@ -3566,38 +3566,38 @@ void SVScene::EnterPanorama(Int32 pos)
     IMaterial *pMaterilTemp;
 	m_mode = SceneMode_Pano;
 
-		m_lastclickfreeflag = 0;
+    m_lastclickfreeflag = 0;
 
-		m_zoomout=0;
+    m_zoomout=0;
 	int i=0;
-	#if 0
+#if 0
 #if 0
 	m_SV2Dplane[eSingleViewMesh]->GetMaterial(&pMaterilTemp);
 	switch (pos) {
-	case CameraPosition_Front:
+        case CameraPosition_Front:
 
-		pMaterilTemp->SetDiffuseMap(ARROUNDVIEWFRONT);
-		i=0;
-		break;
-	case CameraPosition_Back:
+            pMaterilTemp->SetDiffuseMap(ARROUNDVIEWFRONT);
+            i=0;
+            break;
+        case CameraPosition_Back:
 
-		pMaterilTemp->SetDiffuseMap(ARROUNDVIEWREAR);
-		i=2;
-		break;
-	case CameraPosition_Left:
+            pMaterilTemp->SetDiffuseMap(ARROUNDVIEWREAR);
+            i=2;
+            break;
+        case CameraPosition_Left:
 
-		pMaterilTemp->SetDiffuseMap(ARROUNDVIEWLEFT);
-		i=3;
-		break;
-	case CameraPosition_Right:
+            pMaterilTemp->SetDiffuseMap(ARROUNDVIEWLEFT);
+            i=3;
+            break;
+        case CameraPosition_Right:
 
-		pMaterilTemp->SetDiffuseMap(ARROUNDVIEWRIGHT);
-		i=1;
-		break;
+            pMaterilTemp->SetDiffuseMap(ARROUNDVIEWRIGHT);
+            i=1;
+            break;
 	}
 #endif
 	FadeInView(2);
-	#else
+#else
 	scrollX->DockToValue(i*90);
 
 	m_sceneCamera->SetPosition(0, -400, 0);
@@ -3610,10 +3610,10 @@ void SVScene::EnterPanorama(Int32 pos)
 	scrollY->DockToValue(0);
 
 	FadeInView(0);
-	#endif
+#endif
 	m_Car->SetOpacity(0);
 	SetCarEnable(0);
-	#ifdef CAR_MODEL
+#ifdef CAR_MODEL
 	m_VAN->SetOpacity(0);
 	m_TRUCK->SetOpacity(0);
 	m_SUV->SetOpacity(0);
@@ -3631,10 +3631,10 @@ void SVScene::FadeInView(unsigned char  flag)
 	{
     	if (flag == 1) {
 
-        		m_sceneNode->SetRenderROI(&FadeLeftReg);
-        		m_objectNode->SetRenderROI(&FadeLeftReg);
-        		m_viewNode->SetRenderROI(&CenterReg);
-        		//m_2DAVMNode->SetRenderROI(&FadeLeftReg);
+            m_sceneNode->SetRenderROI(&FadeLeftReg);
+            m_objectNode->SetRenderROI(&FadeLeftReg);
+            m_viewNode->SetRenderROI(&CenterReg);
+            //m_2DAVMNode->SetRenderROI(&FadeLeftReg);
 
     	}
     	else if (flag == 2) {
@@ -3676,19 +3676,19 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 #ifndef ALI
     if(Input <= RIGHT_SINGLE_VIEW)
     {
-        #if 0
+#if 0
 		m_sceneNode->SetRenderROI(&RightTopFadeReg);
 		m_objectNode->SetRenderROI(&RightTopFadeReg);
         m_2DSingleViewNode->SetRenderROI(&RightReg);
-		#endif
+#endif
 		//#ifdef ALI
 	    //	m_sceneNode->SetEnable(1);
 		//#else
-			    m_2DAVMNode->SetEnable(1);
+        m_2DAVMNode->SetEnable(1);
 
 		m_pAdasHmi->SetEnable(1);
     	m_crossImage->SetEnable(0);
-			m_sceneNode->SetEnable(0);
+        m_sceneNode->SetEnable(0);
 		//#endif
 		m_objectNode->SetEnable(0);
         m_2DSingleViewNode->SetEnable(1);
@@ -3697,27 +3697,27 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
         switch (Input)
         {
             case FRONT_SINGLE_VIEW:
-	       // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWFRONT);
-			//m_SV2Dplane[eFrontSingle]->SetEnable(0);
-			sv2Ddelegate->SetChannel(front_camera_index);
-		   //m_overlay_2d_single->SetEnable(1);
-			break;
+                // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWFRONT);
+                //m_SV2Dplane[eFrontSingle]->SetEnable(0);
+                sv2Ddelegate->SetChannel(front_camera_index);
+                //m_overlay_2d_single->SetEnable(1);
+                break;
             case REAR_SINGLE_VIEW:
-	        //m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWREAR);
-			sv2Ddelegate->SetChannel(rear_camera_index);
-			 //m_overlay_2d_single->SetEnable(1);
-			break;
+                //m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWREAR);
+                sv2Ddelegate->SetChannel(rear_camera_index);
+                //m_overlay_2d_single->SetEnable(1);
+                break;
             case LEFT_SINGLE_VIEW:
-	       // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWLEFT);
-			sv2Ddelegate->SetChannel(left_camera_index);
-		    m_overlay_2d_single->SetEnable(0);
-			break;
+                // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWLEFT);
+                sv2Ddelegate->SetChannel(left_camera_index);
+                m_overlay_2d_single->SetEnable(0);
+                break;
             case RIGHT_SINGLE_VIEW:
-	       // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWRIGHT);
-			sv2Ddelegate->SetChannel(right_camera_index);
-		   m_overlay_2d_single->SetEnable(0);
+                // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWRIGHT);
+                sv2Ddelegate->SetChannel(right_camera_index);
+                m_overlay_2d_single->SetEnable(0);
 
-			break;
+                break;
         }
 
 
@@ -3734,12 +3734,12 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 	}
 	else
 	{
-        #if 0
+#if 0
     	m_sceneNode->SetRenderROI(&RightReg);
     	m_objectNode->SetRenderROI(&RightReg);
     	m_2DSingleViewNode->SetRenderROI(&RightBottomFadeReg);
-		#endif
-			    m_2DAVMNode->SetEnable(1);
+#endif
+        m_2DAVMNode->SetEnable(1);
 
 		m_pAdasHmi->SetEnable(1);
     	m_crossImage->SetEnable(0);
@@ -3747,14 +3747,14 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 
 		m_objectNode->SetEnable(1);
 #ifdef ALIBABA_HMI
-m_2DSingleViewNode->SetEnable(0);
+        m_2DSingleViewNode->SetEnable(0);
 
 #else
         m_2DSingleViewNode->SetEnable(0);
 #endif
 #endif
 #ifdef ALI
-     SetCarEnable(1);
+        SetCarEnable(1);
 #else
 		m_Car->SetEnable(1);
 #endif
@@ -3775,7 +3775,7 @@ m_2DSingleViewNode->SetEnable(0);
 				scrollX->DockToValue(0);
 				scrollY->DockToValue(25);
 				m_camPos = CameraPosition_Free;
-			break;
+                break;
             case REAR_3D_VIEW:
 				m_sceneCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
 				m_sceneCamera->LookAt(0.0,0,-0.0);
@@ -3786,69 +3786,69 @@ m_2DSingleViewNode->SetEnable(0);
 				scrollY->DockToValue(25);
 
 				m_camPos = CameraPosition_Free;
-			break;
+                break;
             case LEFT_FRONT_3D_VIEW:
-                 EnterFreeView(CameraPosition_Left);
-   			break;
+                EnterFreeView(CameraPosition_Left);
+                break;
             case RIGHT_FRONT_3D_VIEW:
 	            EnterFreeView(CameraPosition_Right);
-			break;
+                break;
             case RIGHT_REAR_3D_VIEW:
 				EnterFreeView(CameraPosition_Left_Rear);
-			break;
+                break;
             case LEFT_REAR_3D_VIEW:
 	            EnterFreeView(CameraPosition_Right_Rear);
-			break;
+                break;
             case LEFT_TURN_SIGNAL_3D_VIEW:
-                 EnterFreeView(CameraPosition_Left_Front);
-   			break;
+                EnterFreeView(CameraPosition_Left_Front);
+                break;
             case RIGHT_TURN_SIGNAL_3D_VIEW:
 	            EnterFreeView(CameraPosition_Right_Front);
-			break;
+                break;
             case LEFT_REAR_TURN_SIGNAL_3D_VIEW:
 				EnterFreeView(CameraPosition_Left_Rear_Light);
-			break;
+                break;
             case RIGHT_REAR_TURN_SIGNAL_3D_VIEW:
 	            EnterFreeView(CameraPosition_Right_Rear_Light);
-			break;
+                break;
 			case LEFT_HIGHT_SPEED_TURN_3D_VIEW:
 
 				EnterFreeView(CameraPosition_Left_Front_Light);
-			break;
+                break;
 			case RIGHT_HIGHT_SPEED_TURN_3D_VIEW:
 
 				EnterFreeView(CameraPosition_Right_Front_Light);
-			break;
+                break;
 
 			case BOSH_FRONT_VIEW:
 	            EnterFreeView(CameraPosition_BOSCH_Front);
-			break;
+                break;
 			case BOSH_FRONT_VIEW_TOP:
 	            EnterFreeView(CameraPosition_BOSCH_Front_Top);
-			break;
+                break;
 			case BOSH_REAR_VIEW_TOP:
 	            EnterFreeView(CameraPosition_BOSCH_Rear_Top_REVERSE);
-			break;
+                break;
 			default:
 				m_camPos = CameraPosition_Free;
-			break;
+                break;
 
         }
 		if(Input == REAR_3D_VIEW||Input == LEFT_HIGHT_SPEED_TURN_3D_VIEW||Input == RIGHT_HIGHT_SPEED_TURN_3D_VIEW
-			|RIGHT_REAR_3D_VIEW == Input|LEFT_REAR_3D_VIEW == Input)
+           |RIGHT_REAR_3D_VIEW == Input|LEFT_REAR_3D_VIEW == Input)
 		{
 		    svdelegate->SetMirrorFlipEnable(1);
 		}
 		else
 		{
-           svdelegate->SetMirrorFlipEnable(0);
+            svdelegate->SetMirrorFlipEnable(0);
 		}
 
     	//EnterMirrorView(Input);
 
 #ifndef ALI
 	}
-	#endif
+#endif
 
 	//LightUpCtrlIndicate(Input);
 	m_view_control = Input;
@@ -3859,75 +3859,75 @@ void SVScene::LightUpCtrlIndicate(unsigned char view_index)
 	static unsigned char pre_view_index=0;
 	if(pre_view_index != view_index)
 	{
-    switch(view_index)
-    {
+        switch(view_index)
+        {
 
-    	case FRONT_SINGLE_VIEW:
-    	case FRONT_3D_VIEW:
-    	case TOUR_VIEW:
-    	case BOSH_FRONT_VIEW:
-    	case BOSH_FRONT_VIEW_TOP:
-    		m_ControlMtl->SetDiffuseMap(CONTROLPANELFRONT);
-    	break;
-    	case REAR_SINGLE_VIEW:
-    	case REAR_3D_VIEW:
-    	case BOSH_REAR_VIEW_TOP:
-    	case LEFT_MIRROR_VIEW:
-    	case RIGHT_MIRROR_VIEW:
-    		m_ControlMtl->SetDiffuseMap(CONTROLPANELREAR);
-    	break;
-        case LEFT_SINGLE_VIEW:
-    	case LEFT_FRONT_3D_VIEW:
-    	case LEFT_REAR_3D_VIEW:
-    	case LEFT_TURN_SIGNAL_3D_VIEW:
-    	case LEFT_REAR_TURN_SIGNAL_3D_VIEW:
-    	case LEFT_HIGHT_SPEED_TURN_3D_VIEW:
-    		m_ControlMtl->SetDiffuseMap(CONTROLPANELLEFT);
-    	break;
-    	case RIGHT_SINGLE_VIEW:
-    	case RIGHT_FRONT_3D_VIEW:
-    	case RIGHT_REAR_3D_VIEW:
-    	case RIGHT_TURN_SIGNAL_3D_VIEW:
-    	case RIGHT_REAR_TURN_SIGNAL_3D_VIEW:
-    	case RIGHT_HIGHT_SPEED_TURN_3D_VIEW:
-    		m_ControlMtl->SetDiffuseMap(CONTROLPANELRIGHT);
-    	break;
+            case FRONT_SINGLE_VIEW:
+            case FRONT_3D_VIEW:
+            case TOUR_VIEW:
+            case BOSH_FRONT_VIEW:
+            case BOSH_FRONT_VIEW_TOP:
+                m_ControlMtl->SetDiffuseMap(CONTROLPANELFRONT);
+                break;
+            case REAR_SINGLE_VIEW:
+            case REAR_3D_VIEW:
+            case BOSH_REAR_VIEW_TOP:
+            case LEFT_MIRROR_VIEW:
+            case RIGHT_MIRROR_VIEW:
+                m_ControlMtl->SetDiffuseMap(CONTROLPANELREAR);
+                break;
+            case LEFT_SINGLE_VIEW:
+            case LEFT_FRONT_3D_VIEW:
+            case LEFT_REAR_3D_VIEW:
+            case LEFT_TURN_SIGNAL_3D_VIEW:
+            case LEFT_REAR_TURN_SIGNAL_3D_VIEW:
+            case LEFT_HIGHT_SPEED_TURN_3D_VIEW:
+                m_ControlMtl->SetDiffuseMap(CONTROLPANELLEFT);
+                break;
+            case RIGHT_SINGLE_VIEW:
+            case RIGHT_FRONT_3D_VIEW:
+            case RIGHT_REAR_3D_VIEW:
+            case RIGHT_TURN_SIGNAL_3D_VIEW:
+            case RIGHT_REAR_TURN_SIGNAL_3D_VIEW:
+            case RIGHT_HIGHT_SPEED_TURN_3D_VIEW:
+                m_ControlMtl->SetDiffuseMap(CONTROLPANELRIGHT);
+                break;
 
 
-    }
+        }
 	}
-pre_view_index = view_index;
+    pre_view_index = view_index;
 
 }
 void SVScene::SwitchCameraPosition(Int32 pos)
 {
 	if(bevdisplay[0] != 0)
 	{
-	bevdisplay[0]->Stop();
-    bevdisplay[1]->Stop();
-	bevSecTour[0]->Stop();
-    bevSecTour[1]->Stop();
+        bevdisplay[0]->Stop();
+        bevdisplay[1]->Stop();
+        bevSecTour[0]->Stop();
+        bevSecTour[1]->Stop();
 	}
 	switch (m_mode) {
-	case SceneMode_Free:
-		EnterFreeView(pos);
+        case SceneMode_Free:
+            EnterFreeView(pos);
 
 
-		break;
-	case SceneMode_Top:
-		EnterTopView(pos);
+            break;
+        case SceneMode_Top:
+            EnterTopView(pos);
 
 
-		break;
-	case SceneMode_Cross:
-		EnterCrossView(pos);
+            break;
+        case SceneMode_Cross:
+            EnterCrossView(pos);
 
 
-		break;
-	case SceneMode_Pano:
-		EnterPanorama(pos);
+            break;
+        case SceneMode_Pano:
+            EnterPanorama(pos);
 
-		break;
+            break;
 	}
 }
 #define ZOOM_MIN 1000
@@ -3943,145 +3943,145 @@ void SVScene::ZoomFunction(Int32 pos)
     static unsigned char switch_view=0;
 
 #define ZOOM_STEP 500
-if(SceneMode_Free == m_mode)
-{
-    if(ZOOM_IN == pos)
+    if(SceneMode_Free == m_mode)
     {
-       m_sceneCamera->GetCAProperty(AP_Z,&posZ);
-	   temp=posZ->Get();
-	  // if(temp > ZOOM_MIN)
-	  // {
-	       posZ->Set(temp-ZOOM_STEP);
-	       m_objectCamera->SetPosition(0,0,temp-ZOOM_STEP);
-	  // }
-      // m_sceneCamera->SetPosition(0.0,0.0,temp)
-    }
-	else if(ZOOM_OUT == pos)
-	{
-       m_sceneCamera->GetCAProperty(AP_Z,&posZ);
-	   temp=posZ->Get();
-	   if(temp < ZOOM_MAX)
-	   {
-	   posZ->Set(temp+ZOOM_STEP);
-	   m_objectCamera->SetPosition(0,0,temp+ZOOM_STEP);
-	   }
-	}
-	else if(ZOOM_TURN == pos)
-	{
-	#if 0
-	    if(si_turn_flag == 0)
-	    {
-	        si_turn_flag = 1;
-	    }
-		else
-		{
-            si_turn_flag = 0;
+        if(ZOOM_IN == pos)
+        {
+            m_sceneCamera->GetCAProperty(AP_Z,&posZ);
+            temp=posZ->Get();
+            // if(temp > ZOOM_MIN)
+            // {
+            posZ->Set(temp-ZOOM_STEP);
+            m_objectCamera->SetPosition(0,0,temp-ZOOM_STEP);
+            // }
+            // m_sceneCamera->SetPosition(0.0,0.0,temp)
         }
-		if(si_turn_flag == 1)
-    	{
-			bevSecTour[0]->Start();
-			bevSecTour[1]->Start();
-			m_pre_view_control = m_view_control;
+        else if(ZOOM_OUT == pos)
+        {
+            m_sceneCamera->GetCAProperty(AP_Z,&posZ);
+            temp=posZ->Get();
+            if(temp < ZOOM_MAX)
+            {
+                posZ->Set(temp+ZOOM_STEP);
+                m_objectCamera->SetPosition(0,0,temp+ZOOM_STEP);
+            }
+        }
+        else if(ZOOM_TURN == pos)
+        {
+#if 0
+            if(si_turn_flag == 0)
+            {
+                si_turn_flag = 1;
+            }
+            else
+            {
+                si_turn_flag = 0;
+            }
+            if(si_turn_flag == 1)
+            {
+                bevSecTour[0]->Start();
+                bevSecTour[1]->Start();
+                m_pre_view_control = m_view_control;
 
-			SwitchViewLogic(TOUR_VIEW);
+                SwitchViewLogic(TOUR_VIEW);
 
-    	}
-    	else
-    	{
-			bevSecTour[0]->Stop();
-			bevSecTour[1]->Stop();
-			SwitchViewLogic(m_pre_view_control);
+            }
+            else
+            {
+                bevSecTour[0]->Stop();
+                bevSecTour[1]->Stop();
+                SwitchViewLogic(m_pre_view_control);
 
-    	}
-		#endif
-		if(bevSecTour[0]->GetActiveState()==0)
+            }
+#endif
+            if(bevSecTour[0]->GetActiveState()==0)
+            {
+                bevSecTour[0]->Start();
+                bevSecTour[1]->Start();
+                m_pre_view_control = m_view_control;
+
+                SwitchViewLogic(TOUR_VIEW);
+            }
+
+
+        }
+        else if(ZOOM_TYRE == pos)
+        {
+            if (si_wheel_product == 0)
+                si_wheel_product = 1;
+            else
+                si_wheel_product = 0;
+            if(si_wheel_product == 1)
+            {
+
+                wheelRot->Start();
+
+            }
+            else
+            {
+                wheelRot->Stop();
+                for (int i=0;i<4;i++) {
+                    m_wheel[i]->RotateX(0);
+                    m_wheel[i]->RotateY(0);
+                }
+
+            }
+
+        }
+        else if(ZOOM_MODEL == pos)
+        {
+            si_car_model++;
+            if(si_car_model == 4)
+            {
+                si_car_model=0;
+            }
+
+
+            SwitchCarModel(si_car_model);
+
+        }
+        else if(ZOOM_COLOR == pos)
+        {
+
+            si_car_color++;
+            if(si_car_color == 4)
+            {
+                si_car_color=0;
+            }
+
+
+            SwitchCarColor(si_car_color);
+
+
+        }
+
+
+    }
+    else if(SceneMode_Top == m_mode)
+    {
+        if(ZOOM_IN == pos)
 		{
-			bevSecTour[0]->Start();
-			bevSecTour[1]->Start();
-			m_pre_view_control = m_view_control;
-
-			SwitchViewLogic(TOUR_VIEW);
-		}
-
-
-	}
-	else if(ZOOM_TYRE == pos)
-	{
-	    if (si_wheel_product == 0)
-			si_wheel_product = 1;
-		else
-			si_wheel_product = 0;
-    	if(si_wheel_product == 1)
-    	{
-
-    		wheelRot->Start();
-
-    	}
-    	else
-    	{
-    		wheelRot->Stop();
-    		for (int i=0;i<4;i++) {
-    			m_wheel[i]->RotateX(0);
-    			m_wheel[i]->RotateY(0);
-    		}
-
-    	}
-
-	}
-	else if(ZOOM_MODEL == pos)
-	{
-        si_car_model++;
-		if(si_car_model == 4)
-		{
-		    si_car_model=0;
-		}
-
-
-        SwitchCarModel(si_car_model);
-
-	}
-	else if(ZOOM_COLOR == pos)
-	{
-
-    	si_car_color++;
-    	if(si_car_color == 4)
-    	{
-    		si_car_color=0;
-    	}
-
-
-    	SwitchCarColor(si_car_color);
-
-
-	}
-
-
-}
-else if(SceneMode_Top == m_mode)
-{
-	if(ZOOM_IN == pos)
-		{
-		   m_sceneCamera->GetCAProperty(AP_Z,&posZ);
-		   temp=posZ->Get();
-		   posZ->Set(temp+ZOOM_STEP);
-		   m_objectCamera->GetCAProperty(AP_Z,&posZ);
-		   temp=posZ->Get();
-		   posZ->Set(temp-ZOOM_STEP);
-		  // m_objectCamera->SetPosition(0,0,temp-ZOOM_STEP);
-		  // m_sceneCamera->SetPosition(0.0,0.0,temp)
+            m_sceneCamera->GetCAProperty(AP_Z,&posZ);
+            temp=posZ->Get();
+            posZ->Set(temp+ZOOM_STEP);
+            m_objectCamera->GetCAProperty(AP_Z,&posZ);
+            temp=posZ->Get();
+            posZ->Set(temp-ZOOM_STEP);
+            // m_objectCamera->SetPosition(0,0,temp-ZOOM_STEP);
+            // m_sceneCamera->SetPosition(0.0,0.0,temp)
 		}
 		else if(ZOOM_OUT == pos)
 		{
-		   m_sceneCamera->GetCAProperty(AP_Z,&posZ);
-		   temp=posZ->Get();
-		   posZ->Set(temp-ZOOM_STEP);
-		   m_objectCamera->GetCAProperty(AP_Z,&posZ);
-		   temp=posZ->Get();
-		   posZ->Set(temp+ZOOM_STEP);
+            m_sceneCamera->GetCAProperty(AP_Z,&posZ);
+            temp=posZ->Get();
+            posZ->Set(temp-ZOOM_STEP);
+            m_objectCamera->GetCAProperty(AP_Z,&posZ);
+            temp=posZ->Get();
+            posZ->Set(temp+ZOOM_STEP);
 		}
 
 
-}
+    }
 
 
 }
@@ -4320,41 +4320,41 @@ void SVScene::AdjustProductPosition(Int32 pos)
     switch(pos)
     {
         case POS_X_POS:
-        m_position_active_product->SetDX(20);
-		break;
+            m_position_active_product->SetDX(20);
+            break;
         case POS_Y_POS:
-        m_position_active_product->SetDY(20);
-		break;
+            m_position_active_product->SetDY(20);
+            break;
         case POS_Z_POS:
-        m_position_active_product->SetDZ(20);
-		break;
+            m_position_active_product->SetDZ(20);
+            break;
         case POS_X_NEG:
-        m_position_active_product->SetDX(-20);
-		break;
+            m_position_active_product->SetDX(-20);
+            break;
         case POS_Y_NEG:
-        m_position_active_product->SetDY(-20);
-		break;
+            m_position_active_product->SetDY(-20);
+            break;
         case POS_Z_NEG:
-        m_position_active_product->SetDZ(-20);
-		break;
+            m_position_active_product->SetDZ(-20);
+            break;
 		case POS_ROTX_POS:
-        m_position_active_product->RotateDX(20);
-		break;
+            m_position_active_product->RotateDX(20);
+            break;
         case POS_ROTY_POS:
-        m_position_active_product->RotateDY(20);
-		break;
+            m_position_active_product->RotateDY(20);
+            break;
         case POS_ROTZ_POS:
-        m_position_active_product->RotateDZ(0.1);
-		break;
+            m_position_active_product->RotateDZ(0.1);
+            break;
         case POS_ROTX_NEG:
-        m_position_active_product->RotateDX(-20);
-		break;
+            m_position_active_product->RotateDX(-20);
+            break;
         case POS_ROTY_NEG:
-        m_position_active_product->RotateDY(-20);
-		break;
+            m_position_active_product->RotateDY(-20);
+            break;
         case POS_ROTZ_NEG:
-        m_position_active_product->RotateDZ(-0.1);
-		break;
+            m_position_active_product->RotateDZ(-0.1);
+            break;
     }
 
 }
@@ -4365,32 +4365,32 @@ void SVScene::SwitchCarColor(Int32 pos)
 {
 
 	switch (pos) {
-	case RED_CAR:
-		g_MaterialColor[0]=0.8;
-		g_MaterialColor[1]=0.0;
-		g_MaterialColor[2]=0.0;
-		break;
-	case GREEN_CAR:
-		g_MaterialColor[0]=0.0;
-		g_MaterialColor[1]=0.0;
-		g_MaterialColor[2]=0.0;
-		break;
-	case WHITE_CAR:
-		g_MaterialColor[0]=1.0;
-		g_MaterialColor[1]=1.0;
-		g_MaterialColor[2]=1.0;
-		break;
-	case GRAY_CAR:
-		g_MaterialColor[0]=0.51;
-		g_MaterialColor[1]=0.51;
-		g_MaterialColor[2]=0.51;
-		break;
+        case RED_CAR:
+            g_MaterialColor[0]=0.8;
+            g_MaterialColor[1]=0.0;
+            g_MaterialColor[2]=0.0;
+            break;
+        case GREEN_CAR:
+            g_MaterialColor[0]=0.0;
+            g_MaterialColor[1]=0.0;
+            g_MaterialColor[2]=0.0;
+            break;
+        case WHITE_CAR:
+            g_MaterialColor[0]=1.0;
+            g_MaterialColor[1]=1.0;
+            g_MaterialColor[2]=1.0;
+            break;
+        case GRAY_CAR:
+            g_MaterialColor[0]=0.51;
+            g_MaterialColor[1]=0.51;
+            g_MaterialColor[2]=0.51;
+            break;
 		case PINK_CAR:
 			g_MaterialColor[0]=0.9;
 			g_MaterialColor[1]=0.78;
 			g_MaterialColor[2]=0.12;
 
-		break;
+            break;
 	}
 }
 void SVScene::ResetStyleSetting(void)
@@ -4407,38 +4407,38 @@ void SVScene::SwitchCarModel(Int32 pos)
 {
 #ifdef CAR_MODEL
 	switch (pos) {
-	case CAR_CAR:
-		m_SUV->SetEnable(0);
-		m_Car->SetEnable(1);
-		m_VAN->SetEnable(0);
-		m_TRUCK->SetEnable(0);
-		SetCarEnable(1);
+        case CAR_CAR:
+            m_SUV->SetEnable(0);
+            m_Car->SetEnable(1);
+            m_VAN->SetEnable(0);
+            m_TRUCK->SetEnable(0);
+            SetCarEnable(1);
 
-		break;
-	case CAR_SUV:
-		m_SUV->SetEnable(1);
-		m_Car->SetEnable(0);
-		m_VAN->SetEnable(0);
-		m_TRUCK->SetEnable(0);
+            break;
+        case CAR_SUV:
+            m_SUV->SetEnable(1);
+            m_Car->SetEnable(0);
+            m_VAN->SetEnable(0);
+            m_TRUCK->SetEnable(0);
 
-		SetCarEnable(0);
-		break;
-	case CAR_VAN:
-		m_SUV->SetEnable(0);
-		m_Car->SetEnable(0);
-		m_VAN->SetEnable(1);
-		m_TRUCK->SetEnable(0);
+            SetCarEnable(0);
+            break;
+        case CAR_VAN:
+            m_SUV->SetEnable(0);
+            m_Car->SetEnable(0);
+            m_VAN->SetEnable(1);
+            m_TRUCK->SetEnable(0);
 
-		SetCarEnable(0);
-		break;
-	case CAR_TRUCK:
-		m_SUV->SetEnable(0);
-		m_Car->SetEnable(0);
-		m_VAN->SetEnable(0);
-		m_TRUCK->SetEnable(1);
+            SetCarEnable(0);
+            break;
+        case CAR_TRUCK:
+            m_SUV->SetEnable(0);
+            m_Car->SetEnable(0);
+            m_VAN->SetEnable(0);
+            m_TRUCK->SetEnable(1);
 
-		SetCarEnable(0);
-		break;
+            SetCarEnable(0);
+            break;
 	}
 #endif
 }
@@ -4463,7 +4463,7 @@ void GenerateTextureIndex(float *fTextureIndex)
     cnt++;
 	if(cnt ==600)
 	{
-	   cnt=0;
+        cnt=0;
 	}
 
 #if 0
@@ -4484,7 +4484,7 @@ void GenerateTextureIndex(float *fTextureIndex)
 	fTextureIndex[5]=0.5;
 	fTextureIndex[6]=0.4;
 	fTextureIndex[7]=1.0;
-	#endif
+#endif
 
 }
 void SVScene::Calc3DGroundTexture()
@@ -4541,153 +4541,162 @@ void SVScene::Calc3DGroundTexture()
 
 
 }
+
 int SVScene::Update(int view_control_flag, int param2)
 {
+    if(view_control_flag == 2)
+    {
+        unsigned char view_cmd = CROSS_IMAGE_VIEW;	
+        if(view_cmd != m_last_view)
+        {
+            SwitchViewLogic(view_cmd);
+            m_last_view = view_cmd;
+        }
+        return 0;
+    }
     float steer_angle;
     unsigned char gear_state,temp;
-	static int cnt = 0;
-	unsigned char enter_top_flag=0;
+    static int cnt = 0;
+    unsigned char enter_top_flag=0;
     float fTextureIndex[8];
-	static unsigned char pre_turn_light=0;
-	unsigned char turn_light_state;
-	float speed;
-	float left_wheel_speed=0,right_wheel_speed=0;
-	int time_now,time_interval = 0;
-	static int time_pre=0;
-	static unsigned char suc_init_flag =0;
-	static unsigned int temptemp=0;
-	temptemp ++;
-	unsigned char driver_door_state = 0;
-	unsigned char passenger_door_state = 0;
-	unsigned char rear_right_door_state = 0;
-	unsigned char rear_left_door_state = 0;
-	float yaw_rate;
-	    AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);	
-    	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
-		AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light_state);
-		AVMData::GetInstance()->m_p_can_data->Get_Left_Wheel_Speed(&left_wheel_speed);
-		AVMData::GetInstance()->m_p_can_data->Get_Right_Wheel_Speed(&right_wheel_speed);
+    static unsigned char pre_turn_light=0;
+    unsigned char turn_light_state;
+    float speed;
+    float left_wheel_speed=0,right_wheel_speed=0;
+    int time_now,time_interval = 0;
+    static int time_pre=0;
+    static unsigned char suc_init_flag =0;
+    static unsigned int temptemp=0;
+    temptemp ++;
+    unsigned char driver_door_state = 0;
+    unsigned char passenger_door_state = 0;
+    unsigned char rear_right_door_state = 0;
+    unsigned char rear_left_door_state = 0;
+    float yaw_rate;
+    AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);	
+    AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
+    AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light_state);
+    AVMData::GetInstance()->m_p_can_data->Get_Left_Wheel_Speed(&left_wheel_speed);
+    AVMData::GetInstance()->m_p_can_data->Get_Right_Wheel_Speed(&right_wheel_speed);
 		
-		AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
-		AVMData::GetInstance()->m_p_can_data->Get_Door_State(&driver_door_state, &passenger_door_state, &rear_right_door_state, &rear_left_door_state);
-		AVMData::GetInstance()->m_p_can_data->Get_Yaw_Rate(&yaw_rate);
+    AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
+    AVMData::GetInstance()->m_p_can_data->Get_Door_State(&driver_door_state, &passenger_door_state, &rear_right_door_state, &rear_left_door_state);
+    AVMData::GetInstance()->m_p_can_data->Get_Yaw_Rate(&yaw_rate);
 #ifdef EMIRROR
     m_eMirror_node->Update(steer_angle,speed,turn_light_state,gear_state);
 
 #else
 
-		GenerateTextureIndex(fTextureIndex);
+    GenerateTextureIndex(fTextureIndex);
 
-		m_pAdasHmi->Update();
+    m_pAdasHmi->Update();
 
-        if(gear_state == GEAR_R)
+    if(gear_state == GEAR_R)
+    {
+        temp= OLY_DIR_BACKWARD;
+    }
+    else
+    {
+        temp = OLY_DIR_FOWARD;
+    }
+
+    UpdateOverlayData(0.0-steer_angle,temp);
+    enter_top_flag = UpdateRadarAlarm();
+    //UpdateGoundTextureData(fTextureIndex);
+    if(pre_turn_light != turn_light_state)
+    {
+        if(turn_light_state == TURN_LIGHT_LEFT)
         {
-            temp= OLY_DIR_BACKWARD;
-        }
-    	else
-    	{
-    	    temp = OLY_DIR_FOWARD;
-    	}
 
-        UpdateOverlayData(0.0-steer_angle,temp);
-		enter_top_flag = UpdateRadarAlarm();
-		//UpdateGoundTextureData(fTextureIndex);
-        if(pre_turn_light != turn_light_state)
+            ///m_CarDoor[0]->RotateDY(40);
+        }
+        else if(turn_light_state == TURN_LIGHT_OFF)
         {
-    		if(turn_light_state == TURN_LIGHT_LEFT)
-            {
-
-    			///m_CarDoor[0]->RotateDY(40);
-            }
-    		else if(turn_light_state == TURN_LIGHT_OFF)
-    		{
-    		   // m_CarDoor[0]->RotateDY(-40);
-    		}
-
-    		pre_turn_light = turn_light_state;
+            // m_CarDoor[0]->RotateDY(-40);
         }
-    	ChangeCameraConfig(m_camPos);
-    	FrontViewTurnwithSteering(m_camPos,0.0-steer_angle,588,46);
 
-		ProcessDoorState(driver_door_state, passenger_door_state, rear_right_door_state, rear_left_door_state);
-		ProcessViewRot();
-		#ifdef ALI
-		ProcessTurnLight(m_turnlight_state);
-		#else
-		ProcessTurnLight(turn_light_state);
+        pre_turn_light = turn_light_state;
+    }
+    ChangeCameraConfig(m_camPos);
+    FrontViewTurnwithSteering(m_camPos,0.0-steer_angle,588,46);
 
-		#endif
+    ProcessDoorState(driver_door_state, passenger_door_state, rear_right_door_state, rear_left_door_state);
+    ProcessViewRot();
+#ifdef ALI
+    ProcessTurnLight(m_turnlight_state);
+#else
+    ProcessTurnLight(turn_light_state);
+
+#endif
 		
-	if(cnt > START_UP_TURN_TIME)
-	{
-	   if(bevSecTour[0]->GetActiveState()==0)
-	   {
+    if(cnt > START_UP_TURN_TIME)
+    {
+        if(bevSecTour[0]->GetActiveState()==0)
+        {
 
-    	SwitchView(enter_top_flag,view_control_flag);
-		//SwitchView2DOnly(enter_top_flag);
+            SwitchView(enter_top_flag,view_control_flag);
+            //SwitchView2DOnly(enter_top_flag);
 
-	   }
-	}
-	else
-	{
-	    cnt++;
-	}
+        }
+    }
+    else
+    {
+        cnt++;
+    }
 
-   // m_luminance->Update();
-	//AVMData::GetInstance()->m_lumin_para->SetLuminanceUnNormalizeRGB(g_uiAverageIllum);
-	time_now = XrGetTime();
-	if(suc_init_flag == 0)
-	{
-	    suc_init_flag =1;
-		time_interval = 0;
+    // m_luminance->Update();
+    //AVMData::GetInstance()->m_lumin_para->SetLuminanceUnNormalizeRGB(g_uiAverageIllum);
+    time_now = XrGetTime();
+    if(suc_init_flag == 0)
+    {
+        suc_init_flag =1;
+        time_interval = 0;
 
-	}
-	else
-	{
-	    time_interval = time_now-time_pre;
-	}
-	time_interval=(int)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()/1000);
-    #ifdef CAR_TRANSPARENT
-	static int keyframeupdate =0;
-	keyframeupdate++;
-	#if 0
-	speed=1;
-	left_wheel_speed=1;
-	right_wheel_speed=1;
+    }
+    else
+    {
+        time_interval = time_now-time_pre;
+    }
+    time_interval=(int)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()/1000);
+#ifdef CAR_TRANSPARENT
+    static int keyframeupdate =0;
+    keyframeupdate++;
+#if 0
+    speed=1;
+    left_wheel_speed=1;
+    right_wheel_speed=1;
 #endif
 
-	m_stich_node ->Update(steer_angle,speed,left_wheel_speed,right_wheel_speed,gear_state,time_interval,yaw_rate);
-	m_pstich_Mtl->SetDiffuseMap(m_stich_node->GetStichFrameTextureId());
+    m_stich_node ->Update(steer_angle,speed,left_wheel_speed,right_wheel_speed,gear_state,time_interval,yaw_rate);
+    m_pstich_Mtl->SetDiffuseMap(m_stich_node->GetStichFrameTextureId());
 
-	m_3d_ground_Mtl->SetDiffuseMap(m_stich_node->GetGroundTextureId());
-	m_stich_wheel->Update(steer_angle);
+    m_3d_ground_Mtl->SetDiffuseMap(m_stich_node->GetGroundTextureId());
+    m_stich_wheel->Update(steer_angle);
 
-	#endif
-	float *pdist=	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
-	m_pNodeSonar->Update(steer_angle, speed, left_wheel_speed, right_wheel_speed, gear_state, time_interval, yaw_rate, pdist);
-	APAOverlayStruct pgs_result;
+#endif
+    float *pdist=	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
+    m_pNodeSonar->Update(steer_angle, speed, left_wheel_speed, right_wheel_speed, gear_state, time_interval, yaw_rate, pdist);
+    APAOverlayStruct pgs_result;
 
 
-	m_APA_overlay->Update(g_APA_Result);
-	time_pre = time_now;
-	#endif
-	if(speed > SINGLE_VIEW_TO_3D_GATE-5)
-	{
-	    m_overlay_2d_single->SetEnable(0);
+    m_APA_overlay->Update(g_APA_Result);
+    time_pre = time_now;
+#endif
+    if(speed > SINGLE_VIEW_TO_3D_GATE-5)
+    {
+        m_overlay_2d_single->SetEnable(0);
 		
-	    m_overlay_2d->SetEnable(0);
-	}
-	else
-	{
+        m_overlay_2d->SetEnable(0);
+    }
+    else
+    {
 	
-	    m_overlay_2d_single->SetEnable(1);
+        m_overlay_2d_single->SetEnable(1);
 		
-	    m_overlay_2d->SetEnable(1);
-	}
-
-
-		//m_Car->SetEnable(0);
-		//m_ground->SetEnable(0);
+        m_overlay_2d->SetEnable(1);
+    }
+    //m_Car->SetEnable(0);
+    //m_ground->SetEnable(0);
 	return 0;
 }
 void SVScene::ProcessViewRot()
@@ -4813,9 +4822,9 @@ void SVScene::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
 
 	*pWidth = pModelPoint[3]-pModelPoint[0];
 	*pHeight = pModelPoint[2]-pModelPoint[5];
-	 pPose[0] = (pModelPoint[3]+pModelPoint[0])/2.0;
-     pPose[1] = pModelPoint[1];
-	 pPose[2] = (pModelPoint[2]+pModelPoint[5])/2.0;
+    pPose[0] = (pModelPoint[3]+pModelPoint[0])/2.0;
+    pPose[1] = pModelPoint[1];
+    pPose[2] = (pModelPoint[2]+pModelPoint[5])/2.0;
 
 }
 
@@ -4834,21 +4843,21 @@ void SVScene::UpdateOverlayData(float steeringwheel,unsigned char driveing_direc
 
 
 	if((pre_steeringwheel - steeringwheel)>0.1||(pre_steeringwheel - steeringwheel)<-0.1
-		||driveing_direct!=pre_driving_direct)
+       ||driveing_direct!=pre_driving_direct)
 	{
-  //  m_overlay_data.Update(steeringwheel,driveing_direct);
-	//m_overlaymesh->UnLockData();
-	#ifndef ALI
-    m_overlay_data_2d.Update(steeringwheel,driveing_direct);
-	m_overlaymesh_2d->UnLockData();
+        //  m_overlay_data.Update(steeringwheel,driveing_direct);
+        //m_overlaymesh->UnLockData();
+#ifndef ALI
+        m_overlay_data_2d.Update(steeringwheel,driveing_direct);
+        m_overlaymesh_2d->UnLockData();
 
 
 
-    m_overlay_data_2d_single.Update(steeringwheel,driveing_direct);
-    m_overlaymesh_2d_single->UnLockData();
-	#endif
-	pre_steeringwheel = steeringwheel;
-	pre_driving_direct = driveing_direct;
+        m_overlay_data_2d_single.Update(steeringwheel,driveing_direct);
+        m_overlaymesh_2d_single->UnLockData();
+#endif
+        pre_steeringwheel = steeringwheel;
+        pre_driving_direct = driveing_direct;
 	}
 
 
@@ -4876,7 +4885,7 @@ void SVScene::UpdateGoundTextureData(float *pTextureIndex)
 
 //	if(m_render_to_AVM_index == 1)
 	m_ground_mtl[1-m_render_to_AVM_index]->SetDiffuseMap(m_lisenceRT->GetTextureId());
-   // else
+    // else
 //	m_ground_mtl[1-m_render_to_AVM_index]->SetDiffuseMap(RADARALARMTEX[1-m_render_to_AVM_index]);
 
     for(i=0;i<icount;i++)
@@ -4901,15 +4910,15 @@ int SVScene::UpdateRadarAlarm(void)
 	int enter_top_flag=0;
 	unsigned char switch_vew_flag=0;
     unsigned char drive_direct,temp;
-     AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&drive_direct);
+    AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&drive_direct);
 	for(int i=0;i<8;i++)
 	{
-	#ifdef CHANGAN_HMI
+#ifdef CHANGAN_HMI
 	    if(i == 2||i==3)
 	    {
 	        continue;
 	    }
-    #endif
+#endif
 		AVMData::GetInstance()->m_p_can_data->Get_PA_State(i/4,i%4,&ucAlarm);
 
 		if (ucAlarm >= 4)
@@ -4959,12 +4968,12 @@ int SVScene::UpdateRadarAlarm(void)
     for(int i=0;i<8;i++)
     {
 
-        #ifdef CHANGAN_HMI
+#ifdef CHANGAN_HMI
     	if(i == 2||i==3)
 	    {
 	        continue;
 	    }
-		#endif
+#endif
 
 		if (ucAlarm >= 4)
 		{
@@ -4991,7 +5000,7 @@ int SVScene::UpdateRadarAlarm(void)
     {
 
 #ifdef CHANGAN_HMI
-    	 if(i == 2||i==3)
+        if(i == 2||i==3)
 	    {
 	        continue;
 	    }
@@ -5002,7 +5011,7 @@ int SVScene::UpdateRadarAlarm(void)
 		}
 
     	AVMData::GetInstance()->m_p_can_data->Get_PA_State(i/4,i%4,&ucAlarm);
-       if(i<4)
+        if(i<4)
         {
             if((ucAlarm != 0)&&ucAlarm<=4)
 			{
@@ -5039,22 +5048,22 @@ int SVScene::UpdateRadarAlarm(void)
     	}
 
 
-   }
-		if(sv2Ddelegate->GetChannel()==front_camera_index)
-		{
-		    for(int i=4;i<8;i++)
-		    {
-				m_RadarAlarm_Node_single[i]->SetEnable(0);
-		    }
-		}
-		else if(sv2Ddelegate->GetChannel()==rear_camera_index)
-		{
-		    for(int i=0;i<4;i++)
-		    {
-				m_RadarAlarm_Node_single[i]->SetEnable(0);
-		    }
-		}
-		#endif
+    }
+    if(sv2Ddelegate->GetChannel()==front_camera_index)
+    {
+        for(int i=4;i<8;i++)
+        {
+            m_RadarAlarm_Node_single[i]->SetEnable(0);
+        }
+    }
+    else if(sv2Ddelegate->GetChannel()==rear_camera_index)
+    {
+        for(int i=0;i<4;i++)
+        {
+            m_RadarAlarm_Node_single[i]->SetEnable(0);
+        }
+    }
+#endif
 	return enter_top_flag;
 }
 
@@ -5068,14 +5077,14 @@ void SVScene::UpdateExternCalibReslt(float *pos)
 void SVScene::UpdateExternCalib2DReslt(GLfloat *pData,int data_size,GLushort *pIndex,int index_size)
 {
     IMesh *pMeshTemp;
-   // sv2Ddelegate->Update2DCalibRslt(pData,data_size,pIndex,index_size);
+    // sv2Ddelegate->Update2DCalibRslt(pData,data_size,pIndex,index_size);
 	AVMData::GetInstance()->m_2D_lut->UpdateLUT(pData,pIndex);
 
-	 m_2d_update_flag =1;
-	 #ifdef CAR_TRANSPARENT
-     m_stich_node->Update2DStichRslt();
+    m_2d_update_flag =1;
+#ifdef CAR_TRANSPARENT
+    m_stich_node->Update2DStichRslt();
 	 
-	 #endif
+#endif
 #if 0
 	for(int i=0;i<8;i++)
 	{
@@ -5084,7 +5093,7 @@ void SVScene::UpdateExternCalib2DReslt(GLfloat *pData,int data_size,GLushort *pI
 		pMeshTemp->UnLockData();
 
 	}
-	#endif
+#endif
 
 }
 
@@ -5098,54 +5107,54 @@ void SVScene::SaveOverlayData(void)
 
 void SVScene::ProcessWheelTurn(float steeringwheel)
 {
-   IAProperty *val;
-   float wheel_angle = 0;
-   wheel_angle = -(steeringwheel/600.0)*60.0*3.1415926/180.0;
+    IAProperty *val;
+    float wheel_angle = 0;
+    wheel_angle = -(steeringwheel/600.0)*60.0*3.1415926/180.0;
 #ifdef CAR_MODEL
-   for (int i=0;i<14;i++)
+    for (int i=0;i<14;i++)
 #else
-     for (int i=0;i<4;i++)
+        for (int i=0;i<4;i++)
 #endif
-   {
+        {
 
-	   if (i%4<2) {
-	   m_wheel[i]->GetCAProperty(AP_RY, &val);
-	   val->Set(wheel_angle);
-	   }
-   }
+            if (i%4<2) {
+                m_wheel[i]->GetCAProperty(AP_RY, &val);
+                val->Set(wheel_angle);
+            }
+        }
 
 }
 void SVScene::ProcessWheelRoll(unsigned char gear_state, float speed)
 {
-      static int vehicle_state = 1;
-      static float vehicle_speed = 0.0;
-      static float vehicle_last_speed = 0.0;
+    static int vehicle_state = 1;
+    static float vehicle_speed = 0.0;
+    static float vehicle_last_speed = 0.0;
 
-      if(vehicle_speed > 6.29 )
-      {
-           vehicle_speed = 0.0;
-      }
-      if(GEAR_R == gear_state)
-      {
-           vehicle_state = -1;
-      }
-      else
-      {
-           vehicle_state = 1;
-      }
+    if(vehicle_speed > 6.29 )
+    {
+        vehicle_speed = 0.0;
+    }
+    if(GEAR_R == gear_state)
+    {
+        vehicle_state = -1;
+    }
+    else
+    {
+        vehicle_state = 1;
+    }
 
-      vehicle_speed += (0.005 * speed) ;
+    vehicle_speed += (0.005 * speed) ;
 
-      IAProperty* val=0;
-      #ifdef CAR_MODEL
-           for (int i=0;i<14;i++)
-      #else
-           for (int i=0;i<4;i++)
-      #endif
-           {
-             m_wheel[i]->GetCAProperty(AP_RX, &val);
-             val->Set(vehicle_state * vehicle_speed);
-           }
+    IAProperty* val=0;
+#ifdef CAR_MODEL
+    for (int i=0;i<14;i++)
+#else
+        for (int i=0;i<4;i++)
+#endif
+        {
+            m_wheel[i]->GetCAProperty(AP_RX, &val);
+            val->Set(vehicle_state * vehicle_speed);
+        }
 
 }
 
@@ -5164,7 +5173,7 @@ void SVScene::ProcessTurnLight(unsigned char turn_light)
     else if(turn_light == TURN_LIGHT_LEFT)
     {
 
-	   flash_cnt[1]=0;
+        flash_cnt[1]=0;
 
         if(flash_cnt[0]<LIGHT_ON_TIME)
         {
@@ -5200,7 +5209,7 @@ void SVScene::ProcessTurnLight(unsigned char turn_light)
     }
 	else
 	{
-         flash_cnt[1] = 0;
+        flash_cnt[1] = 0;
      	if(flash_cnt[0]<LIGHT_ON_TIME)
      	{
      		m_carlightmtl->SetAmbientColor(TURN_LIGHT_COLOR_R,TURN_LIGHT_COLOR_G,TURN_LIGHT_COLOR_B,3.0);
@@ -5245,10 +5254,10 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
 	AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light);
 	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steeringwheel);
-	#ifndef ALI
+#ifndef ALI
 	ProcessWheelTurn(steeringwheel);
 	ProcessWheelRoll(gear_state,speed);
-    #endif
+#endif
     if(speed >0.1)
     {
         wheel_rot =1;
@@ -5313,8 +5322,8 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
     }
 	else
 	{
-	     speed_high_cnt = 0;
-		 speed_second_high_cnt = 0;
+        speed_high_cnt = 0;
+        speed_second_high_cnt = 0;
 
 		if(speed_low_cnt >= SPEED_CHANGE_TIME_GATE )
 		{
@@ -5333,16 +5342,16 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
     {
         JudgeCameraDir(&cam_dir,gear_state,turn_light,speed,speed_high_flag);
 		if(cam_dir == CAMERA_DIR_FRONT)
-			 {
-				// view_cmd = BOSH_FRONT_VIEW;
+        {
+            // view_cmd = BOSH_FRONT_VIEW;
 
-				 view_cmd = FRONT_SINGLE_VIEW;
-			 }
-			 else if((cam_dir == CAMERA_DIR_REAR_LEFT)&&(steeringwheel <STEERING_WHEEL_STILL_GATE && steeringwheel >= -STEERING_WHEEL_STILL_GATE))
-			 {
-				// view_cmd = LEFT_MIRROR_VIEW;
-				view_cmd = FRONT_3D_VIEW+cam_dir;
-			 }
+            view_cmd = FRONT_SINGLE_VIEW;
+        }
+        else if((cam_dir == CAMERA_DIR_REAR_LEFT)&&(steeringwheel <STEERING_WHEEL_STILL_GATE && steeringwheel >= -STEERING_WHEEL_STILL_GATE))
+        {
+            // view_cmd = LEFT_MIRROR_VIEW;
+            view_cmd = FRONT_3D_VIEW+cam_dir;
+        }
 
 		else if((cam_dir == CAMERA_DIR_REAR_LEFT)&&(steeringwheel >=STEERING_WHEEL_STILL_GATE || steeringwheel <= -STEERING_WHEEL_STILL_GATE))
 		{
@@ -5411,17 +5420,17 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 
 	}
 	if(((enter_top_flag == 1)||(enter_top_flag ==3 && gear_state != GEAR_R))
-		&&(view_cmd == FRONT_3D_VIEW||view_cmd == BOSH_FRONT_VIEW||view_cmd==LEFT_FRONT_3D_VIEW
-		||view_cmd == RIGHT_FRONT_3D_VIEW||view_cmd == LEFT_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_TURN_SIGNAL_3D_VIEW
-		||view_cmd ==FRONT_SINGLE_VIEW))
+       &&(view_cmd == FRONT_3D_VIEW||view_cmd == BOSH_FRONT_VIEW||view_cmd==LEFT_FRONT_3D_VIEW
+          ||view_cmd == RIGHT_FRONT_3D_VIEW||view_cmd == LEFT_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_TURN_SIGNAL_3D_VIEW
+          ||view_cmd ==FRONT_SINGLE_VIEW))
 	{
 	    view_cmd = BOSH_FRONT_VIEW_TOP;
 	}
 
 	if(((enter_top_flag == 2)||(enter_top_flag ==3 && gear_state == GEAR_R)))
 		/*&&(view_cmd == REAR_3D_VIEW||view_cmd == BOSH_FRONT_VIEW||view_cmd==LEFT_REAR_3D_VIEW
-		||view_cmd == RIGHT_REAR_3D_VIEW||view_cmd == LEFT_REAR_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_REAR_TURN_SIGNAL_3D_VIEW
-		||view_cmd ==REAR_SINGLE_VIEW||view_cmd ==LEFT_MIRROR_VIEW||view_cmd == RIGHT_MIRROR_VIEW))*/
+          ||view_cmd == RIGHT_REAR_3D_VIEW||view_cmd == LEFT_REAR_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_REAR_TURN_SIGNAL_3D_VIEW
+          ||view_cmd ==REAR_SINGLE_VIEW||view_cmd ==LEFT_MIRROR_VIEW||view_cmd == RIGHT_MIRROR_VIEW))*/
 	{
 	    view_cmd = BOSH_REAR_VIEW_TOP;
 	}
@@ -5457,7 +5466,7 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
         }
 		else
 		{
-           // wheelRot->Start();
+            // wheelRot->Start();
 		}
     }
     m_last_view = view_cmd;
@@ -5489,10 +5498,10 @@ void SVScene::SwitchView2DOnly(unsigned char input_enter_top_flag)
 	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
 	AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light);
 	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steeringwheel);
-	#ifndef ALI
+#ifndef ALI
 	ProcessWheelTurn(steeringwheel);
 	ProcessWheelRoll(gear_state,speed);
-    #endif
+#endif
     if(speed >0.1)
     {
         wheel_rot =1;
@@ -5557,8 +5566,8 @@ void SVScene::SwitchView2DOnly(unsigned char input_enter_top_flag)
     }
 	else
 	{
-	     speed_high_cnt = 0;
-		 speed_second_high_cnt = 0;
+        speed_high_cnt = 0;
+        speed_second_high_cnt = 0;
 
 		if(speed_low_cnt >= SPEED_CHANGE_TIME_GATE )
 		{
@@ -5574,46 +5583,46 @@ void SVScene::SwitchView2DOnly(unsigned char input_enter_top_flag)
 	}
 
 
-        JudgeCameraDir(&cam_dir,gear_state,turn_light,speed,speed_high_flag);
-		if(cam_dir == CAMERA_DIR_FRONT)
-			 {
-				// view_cmd = BOSH_FRONT_VIEW;
+    JudgeCameraDir(&cam_dir,gear_state,turn_light,speed,speed_high_flag);
+    if(cam_dir == CAMERA_DIR_FRONT)
+    {
+        // view_cmd = BOSH_FRONT_VIEW;
 
-				 view_cmd = FRONT_SINGLE_VIEW;
-			 }
-			 else if((cam_dir == CAMERA_DIR_REAR_LEFT)||(cam_dir == CAMERA_DIR_LEFT))
-			 {
-				 view_cmd = LEFT_SINGLE_VIEW;
+        view_cmd = FRONT_SINGLE_VIEW;
+    }
+    else if((cam_dir == CAMERA_DIR_REAR_LEFT)||(cam_dir == CAMERA_DIR_LEFT))
+    {
+        view_cmd = LEFT_SINGLE_VIEW;
 
-			 }
+    }
 
-		else if(cam_dir == CAMERA_DIR_REAR_RIGHT||(cam_dir == CAMERA_DIR_RIGHT))
-        {
-		    //view_cmd = RIGHT_MIRROR_VIEW;
-			view_cmd =RIGHT_SINGLE_VIEW;
-		}
+    else if(cam_dir == CAMERA_DIR_REAR_RIGHT||(cam_dir == CAMERA_DIR_RIGHT))
+    {
+        //view_cmd = RIGHT_MIRROR_VIEW;
+        view_cmd =RIGHT_SINGLE_VIEW;
+    }
 
-  		else if((cam_dir == CAMERA_DIR_REAR))
-		{
-		    view_cmd = REAR_SINGLE_VIEW;
-		}
+    else if((cam_dir == CAMERA_DIR_REAR))
+    {
+        view_cmd = REAR_SINGLE_VIEW;
+    }
 
 
 
 
 
 	if(((enter_top_flag == 1)||(enter_top_flag ==3 && gear_state != GEAR_R))
-		&&(view_cmd == FRONT_3D_VIEW||view_cmd == BOSH_FRONT_VIEW||view_cmd==LEFT_FRONT_3D_VIEW
-		||view_cmd == RIGHT_FRONT_3D_VIEW||view_cmd == LEFT_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_TURN_SIGNAL_3D_VIEW
-		||view_cmd ==FRONT_SINGLE_VIEW))
+       &&(view_cmd == FRONT_3D_VIEW||view_cmd == BOSH_FRONT_VIEW||view_cmd==LEFT_FRONT_3D_VIEW
+          ||view_cmd == RIGHT_FRONT_3D_VIEW||view_cmd == LEFT_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_TURN_SIGNAL_3D_VIEW
+          ||view_cmd ==FRONT_SINGLE_VIEW))
 	{
 	    view_cmd = BOSH_FRONT_VIEW_TOP;
 	}
 
 	if(((enter_top_flag == 2)||(enter_top_flag ==3 && gear_state == GEAR_R)))
 		/*&&(view_cmd == REAR_3D_VIEW||view_cmd == BOSH_FRONT_VIEW||view_cmd==LEFT_REAR_3D_VIEW
-		||view_cmd == RIGHT_REAR_3D_VIEW||view_cmd == LEFT_REAR_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_REAR_TURN_SIGNAL_3D_VIEW
-		||view_cmd ==REAR_SINGLE_VIEW||view_cmd ==LEFT_MIRROR_VIEW||view_cmd == RIGHT_MIRROR_VIEW))*/
+          ||view_cmd == RIGHT_REAR_3D_VIEW||view_cmd == LEFT_REAR_TURN_SIGNAL_3D_VIEW||view_cmd == RIGHT_REAR_TURN_SIGNAL_3D_VIEW
+          ||view_cmd ==REAR_SINGLE_VIEW||view_cmd ==LEFT_MIRROR_VIEW||view_cmd == RIGHT_MIRROR_VIEW))*/
 	{
 	    view_cmd = BOSH_REAR_VIEW_TOP;
 	}
@@ -5631,7 +5640,7 @@ void SVScene::SwitchView2DOnly(unsigned char input_enter_top_flag)
         }
 		else
 		{
-           // wheelRot->Start();
+            // wheelRot->Start();
 		}
     }
     m_last_view = view_cmd;
@@ -5651,50 +5660,50 @@ void  SVScene::SwitchViewCtrlButton(unsigned char Ctrl_Direct)
 	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
 	if(bevSecTour[0]->GetActiveState()==0)
 	{
-       if(Ctrl_Direct == CTRL_BUTTON_FRONT)
-       {
+        if(Ctrl_Direct == CTRL_BUTTON_FRONT)
+        {
             if(speed < SINGLE_VIEW_TO_3D_GATE)
             {
                 SwitchViewLogic(FRONT_SINGLE_VIEW);
             }
-   		 else
-   		 {
-   		     SwitchViewLogic(FRONT_3D_VIEW);
-   		 }
-       }
-       else if(Ctrl_Direct == CTRL_BUTTON_REAR)
-       {
+            else
+            {
+                SwitchViewLogic(FRONT_3D_VIEW);
+            }
+        }
+        else if(Ctrl_Direct == CTRL_BUTTON_REAR)
+        {
             if(speed < SINGLE_VIEW_TO_3D_GATE)
             {
                 SwitchViewLogic(REAR_SINGLE_VIEW);
             }
-   		 else
-   		 {
-   		     SwitchViewLogic(REAR_3D_VIEW);
-   		 }
-       }
-   	else if(Ctrl_Direct == CTRL_BUTTON_LEFT)
-   	{
-   	    if(gear_state == GEAR_R)
-   	    {
-   	        SwitchViewLogic(LEFT_REAR_3D_VIEW);
-   	    }
-   		else
-   		{
-   	        SwitchViewLogic(LEFT_FRONT_3D_VIEW);
-   		}
-   	}
-   	else if(Ctrl_Direct == CTRL_BUTTON_RIGHT)
-   	{
+            else
+            {
+                SwitchViewLogic(REAR_3D_VIEW);
+            }
+        }
+        else if(Ctrl_Direct == CTRL_BUTTON_LEFT)
+        {
+            if(gear_state == GEAR_R)
+            {
+                SwitchViewLogic(LEFT_REAR_3D_VIEW);
+            }
+            else
+            {
+                SwitchViewLogic(LEFT_FRONT_3D_VIEW);
+            }
+        }
+        else if(Ctrl_Direct == CTRL_BUTTON_RIGHT)
+        {
    		    if(gear_state == GEAR_R)
-   	    {
-   	        SwitchViewLogic(RIGHT_REAR_3D_VIEW);
-   	    }
-   		else
-   		{
-   	        SwitchViewLogic(RIGHT_FRONT_3D_VIEW);
-   		}
-   	}
+            {
+                SwitchViewLogic(RIGHT_REAR_3D_VIEW);
+            }
+            else
+            {
+                SwitchViewLogic(RIGHT_FRONT_3D_VIEW);
+            }
+        }
 	}
     return;
 
@@ -5783,24 +5792,24 @@ void SVScene::OnMouseUp(int x, int y)
 		dx = 0;
 	}
 #ifdef EMIRROR
-			//m_eMirror_node->CameraRollDelta(Float32(dx)/4,Float32(dx)/4);
+    //m_eMirror_node->CameraRollDelta(Float32(dx)/4,Float32(dx)/4);
 #else
 	if (m_mode == SceneMode_Free&&(bevSecTour[0]->GetActiveState()==0)) {
 
-	m_sceneCamera->GetCAProperty(AP_RX, &rotX);
-	m_sceneCamera->GetCAProperty(AP_RY, &rotY);
+        m_sceneCamera->GetCAProperty(AP_RX, &rotX);
+        m_sceneCamera->GetCAProperty(AP_RY, &rotY);
 
-	temp = rotX->Get();
-
-
-	   if (m_camPos == CameraPosition_Free) {
-			    //if(abs((int)(temp+dx/4))%360<50||(abs(((int)(temp+dx/4)))%360>310&&(abs((int)(temp+dx/4))%360<360)))
-			    {
-			if (scrollX) scrollX->Scroll(Float32(dx)/4);
-			if (scrollY) scrollY->Scroll(Float32(dy)/4);
+        temp = rotX->Get();
 
 
-			    }
+        if (m_camPos == CameraPosition_Free) {
+            //if(abs((int)(temp+dx/4))%360<50||(abs(((int)(temp+dx/4)))%360>310&&(abs((int)(temp+dx/4))%360<360)))
+            {
+                if (scrollX) scrollX->Scroll(Float32(dx)/4);
+                if (scrollY) scrollY->Scroll(Float32(dy)/4);
+
+
+            }
 		}
 		else {
 			scrollX->DockToValue(0);
@@ -5824,9 +5833,9 @@ void SVScene::OnMouseMove(int x, int y)
 	dy = m_prevY - y;
 
 #ifdef EMIRROR
-		m_eMirror_node->CameraRollDelta(Float32(dx)/4,Float32(dx)/4);
+    m_eMirror_node->CameraRollDelta(Float32(dx)/4,Float32(dx)/4);
 #else
-		m_sceneCamera->GetCAProperty(AP_RX, &rotX);
+    m_sceneCamera->GetCAProperty(AP_RX, &rotX);
 	m_sceneCamera->GetCAProperty(AP_RY, &rotY);
 
 	temp = rotX->Get();
@@ -5835,11 +5844,11 @@ void SVScene::OnMouseMove(int x, int y)
 		//if(abs((int)(temp+dx/4))%360<50||(abs(((int)(temp+dx/4)))%360>310&&(abs((int)(temp+dx/4))%360<360)))
 		{
 
-		if (scrollX) scrollX->DockToDeltaValue(Float32(dx)/4);
-		if (scrollY) scrollY->DockToDeltaValue(Float32(dy)/4);
+            if (scrollX) scrollX->DockToDeltaValue(Float32(dx)/4);
+            if (scrollY) scrollY->DockToDeltaValue(Float32(dy)/4);
 
 
-			}
+        }
 	}
 	else if (m_mode == SceneMode_Pano) {
 		if (scrollX) scrollX->DockToDeltaValue(Float32(dx)/4);
