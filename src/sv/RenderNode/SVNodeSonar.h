@@ -185,6 +185,15 @@ enum
 
 };
 
+enum
+{
+	UPLOAD_LEFT_LOT=0,
+	UPLOAD_RIGHT_LOT,
+	UPLOAD_BOTH_LOT,
+
+
+};
+
 typedef enum slot_searching_state
 {
     slot_searching_not_start=0,		
@@ -263,6 +272,8 @@ public:
 	void AddNewVehicleState(COMMON_VEHICLE_DATA_SIMPLE vehicle_state);
 	int GetPreviousVehicleState(COMMON_VEHICLE_DATA_SIMPLE *vehicle_state,int previous_index);
 	void DelayPointProcess(int delay_frame,float *pos);
+	void ProcessParkLotSearchLogic(void);
+
 private:
 
 	Sonar_Pos     m_sonar_pos[max_sonar_num];
@@ -296,6 +307,9 @@ private:
     int m_active_buffer_index[max_sonar_num]; 
     COMMON_VEHICLE_DATA_SIMPLE m_vehcle_state_buffer[VEHICLE_STATE_BUFFER_NUM];
 	int m_vehicle_state_buffer_index;
+	unsigned char m_lot_upload_left_right_flag;
+	unsigned char m_park_lot_reset_flag;
+	unsigned char m_input_track_flag;
 };
 
 #endif //#ifndef __GL_SV_DEMO_H__
