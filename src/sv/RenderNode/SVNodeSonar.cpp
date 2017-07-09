@@ -1948,6 +1948,7 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 	    ResetParkSlotInfo();		
 	    m_track_park_lot_flag =0;  
 		pre_turn_light_state = TURN_LIGHT_OFF;
+		m_lot_upload_left_right_flag = -1;
 		for(int i=0;i<20;i++)
 {
 		 fprintf(stdout,"!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
