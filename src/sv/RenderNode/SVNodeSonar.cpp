@@ -450,6 +450,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 	else
 	{
 	    
+		
        // fprintf(stdout,"\r\n set non pld result");
     	pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type;
     	pRadarPldRslt->iParkLotNum = 0;
@@ -462,7 +463,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		pRadarPldRslt->sGround_Points[2].y = 0.0;	
 		pRadarPldRslt->sGround_Points[3].x = 0.0;
 		pRadarPldRslt->sGround_Points[3].y = 0.0;
-
+		LOGW(" set NO pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
 	}
 	LOGW("m_track_park_lot_flag(%d)\n",m_track_park_lot_flag);
 	fflush(fpFile);
@@ -1951,14 +1952,14 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 	    m_lot_upload_left_right_flag=UPLOAD_RIGHT_LOT;
 	}
 
-	LOGW("m_lot_upload_left_right_flag:%d\n",UPLOAD_LEFT_LOT); 
+	LOGW("m_lot_upload_left_right_flag:%d\n",m_lot_upload_left_right_flag); 
 
     if(can_data.park_lot_reset_flag ==1 &&pre_reset_flag==0)
     {
 	    ResetParkSlotInfo();		
 	    m_track_park_lot_flag =0;  
 		pre_turn_light_state = TURN_LIGHT_OFF;
-		m_lot_upload_left_right_flag = -1;
+		m_lot_upload_left_right_flag = UPLOAD_BOTH_LOT;
 		for(int i=0;i<20;i++)
 {
 		LOGW("!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
