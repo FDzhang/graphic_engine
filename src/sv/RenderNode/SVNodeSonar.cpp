@@ -1951,7 +1951,7 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 		m_lot_upload_left_right_flag = -1;
 		for(int i=0;i<20;i++)
 {
-		 fprintf(stdout,"!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
+		 //fprintf(stdout,"!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
 }
 		
     }
