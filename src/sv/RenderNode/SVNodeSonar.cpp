@@ -1950,7 +1950,7 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 		pre_turn_light_state = TURN_LIGHT_OFF;
 		for(int i=0;i<20;i++)
 {
-		 fprintf(stdout,"!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
+		 //fprintf(stdout,"!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
 }
 		
     }
