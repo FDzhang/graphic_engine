@@ -391,7 +391,7 @@ void SVNodeSonar::SetRadarPLDReslt()
     
 	pRadarPldRslt= GetSonarPLDDataPointer();
     //right park lot has higher priority
-    if((m_sonar_parking_lot[front_right_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)&&m_lot_upload_left_right_flag == UPLOAD_RIGHT_LOT)
+    if((m_sonar_parking_lot[front_right_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE))
     {
         //fprintf(stdout,"\r\n set right pld result");
         pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type;
@@ -408,11 +408,10 @@ void SVNodeSonar::SetRadarPLDReslt()
 		
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1];
-
-		m_track_park_lot_flag=1;
+		if(m_lot_upload_left_right_flag == UPLOAD_RIGHT_LOT) m_track_park_lot_flag=1;
     }
 	//#if 0
-	else if(m_sonar_parking_lot[front_left_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE&&m_lot_upload_left_right_flag == UPLOAD_LEFT_LOT)
+	else if(m_sonar_parking_lot[front_left_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)
 	{
 	
         
@@ -431,7 +430,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1];
-		m_track_park_lot_flag=1;
+	   if(m_lot_upload_left_right_flag == UPLOAD_LEFT_LOT)	m_track_park_lot_flag=1;
 
 	
 	}
