@@ -1932,6 +1932,8 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
     
 	AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light_state);
 
+	can_data = AVMData::GetInstance()->m_p_can_data->GetCANData();
+
 	if(TURN_LIGHT_LEFT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
 	{
 	    m_lot_upload_left_right_flag=UPLOAD_LEFT_LOT;
