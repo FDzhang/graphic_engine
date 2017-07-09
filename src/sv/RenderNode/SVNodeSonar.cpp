@@ -393,7 +393,7 @@ void SVNodeSonar::SetRadarPLDReslt()
     //right park lot has higher priority
     if((m_sonar_parking_lot[front_right_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE))
     {
-        //fprintf(stdout,"\r\n set right pld result");
+        fprintf(stdout,"set right pld result\n");
         pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type;
 		pRadarPldRslt->iParkLotNum = 1;
 	
@@ -408,6 +408,9 @@ void SVNodeSonar::SetRadarPLDReslt()
 		
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1];
+
+	  fprintf(stdout," set right pld result,pt0(%f,%f)",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
+
 		if(m_lot_upload_left_right_flag == UPLOAD_RIGHT_LOT) m_track_park_lot_flag=1;
     }
 	//#if 0
@@ -415,7 +418,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 	{
 	
         
-        //fprintf(stdout,"\r\n set left pld result");
+      
     	pRadarPldRslt->iParkLotBitFlag = m_sonar_parking_lot[front_left_side_sonar].parking_lot_type;
     	pRadarPldRslt->iParkLotNum = 1;
 	
@@ -430,7 +433,10 @@ void SVNodeSonar::SetRadarPLDReslt()
 		
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1];
-	   if(m_lot_upload_left_right_flag == UPLOAD_LEFT_LOT)	m_track_park_lot_flag=1;
+	   
+		  fprintf(stdout," set left pld result,pt0(%f,%f)",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
+		
+		if(m_lot_upload_left_right_flag == UPLOAD_LEFT_LOT)	m_track_park_lot_flag=1;
 
 	
 	}
@@ -1938,7 +1944,9 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
     if(can_data.park_lot_reset_flag ==1 &&pre_reset_flag==0)
     {
 	    ResetParkSlotInfo();		
-	    m_track_park_lot_flag =0;   
+	    m_track_park_lot_flag =0;  
+
+		printf("radar Pld reset !!!!!!!!"); 
 		
     }
 
@@ -2149,9 +2157,9 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	m_filter_time =2;
 	int obj_num;
 	
-	//m_sonar_data[front_right_side_sonar].show_flag = 1;
+	m_sonar_data[front_right_side_sonar].show_flag = 1;
 	
-	//m_sonar_data[front_left_side_sonar].show_flag = 1;
+	m_sonar_data[front_left_side_sonar].show_flag = 1;
     for(int j=0;j<max_sonar_num;j++)
     {
 		//m_sonar_data[j].show_flag = 1;
@@ -2218,7 +2226,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 
 		
     }
-	//DrawParkLot();
+	DrawParkLot();
 
 	SetRadarPLDReslt();
 	
