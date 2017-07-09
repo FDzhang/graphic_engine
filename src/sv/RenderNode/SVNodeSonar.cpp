@@ -409,9 +409,9 @@ void SVNodeSonar::SetRadarPLDReslt()
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1];
 
-	  fprintf(stdout," set right pld result,pt0(%f,%f)",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
+	  fprintf(stdout," set right pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
 
-		if(m_lot_upload_left_right_flag == UPLOAD_RIGHT_LOT) m_track_park_lot_flag=1;
+	//	if(m_lot_upload_left_right_flag == UPLOAD_RIGHT_LOT) m_track_park_lot_flag=1;
     }
 	//#if 0
 	else if(m_sonar_parking_lot[front_left_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)
@@ -434,9 +434,9 @@ void SVNodeSonar::SetRadarPLDReslt()
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1];
 	   
-		  fprintf(stdout," set left pld result,pt0(%f,%f)",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
+		  fprintf(stdout," set left pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
 		
-		if(m_lot_upload_left_right_flag == UPLOAD_LEFT_LOT)	m_track_park_lot_flag=1;
+	//	if(m_lot_upload_left_right_flag == UPLOAD_LEFT_LOT)	m_track_park_lot_flag=1;
 
 	
 	}
@@ -1945,8 +1945,10 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
     {
 	    ResetParkSlotInfo();		
 	    m_track_park_lot_flag =0;  
-
-		printf("radar Pld reset !!!!!!!!"); 
+		for(int i=0;i<20;i++)
+{
+		 fprintf(stdout,"!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
+}
 		
     }
 
