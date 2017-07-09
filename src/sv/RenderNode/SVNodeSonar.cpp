@@ -10,6 +10,9 @@
 
 
 ----------------------------------------------*/
+FILE *fpFile = fopen("GPU_radar_log.txt", "wt+");
+#define LOGW(format,...)     (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
+#define LOGE(format,...)     (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
 
 extern char BLUETEX[];
 extern char OVERLAYTEX[];
@@ -390,6 +393,7 @@ void SVNodeSonar::SetRadarPLDReslt()
     Radar_PLD_Result *pRadarPldRslt=NULL;
     
 	pRadarPldRslt= GetSonarPLDDataPointer();
+	LOGW("m_lot_upload_left_right_flag(%d)\n",m_lot_upload_left_right_flag);
     //right park lot has higher priority
     if((m_sonar_parking_lot[front_right_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)
 		&&m_lot_upload_left_right_flag != UPLOAD_LEFT_LOT)
@@ -410,7 +414,7 @@ void SVNodeSonar::SetRadarPLDReslt()
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1];
 
-	 // fprintf(stdout," set right pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
+	 	LOGW(" set right pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
 
 		if(m_lot_upload_left_right_flag == UPLOAD_RIGHT_LOT) m_track_park_lot_flag=1;
     }
@@ -436,7 +440,7 @@ void SVNodeSonar::SetRadarPLDReslt()
     	pRadarPldRslt->sGround_Points[3].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top] ;
     	pRadarPldRslt->sGround_Points[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1];
 	   
-	//	  fprintf(stdout," set left pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
+		LOGW(" set left pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
 		
 		if(m_lot_upload_left_right_flag == UPLOAD_LEFT_LOT)	m_track_park_lot_flag=1;
 
@@ -460,7 +464,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		pRadarPldRslt->sGround_Points[3].y = 0.0;
 
 	}
-	
+	LOGW("m_track_park_lot_flag(%d)\n",m_track_park_lot_flag);
 	
 }
 void SVNodeSonar::GenerateParkLotRect(sonar_parking_lot_t *park_lot_state,float *pVertex)
@@ -1420,6 +1424,8 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 
 void SVNodeSonar::ResetParkSlotInfo(void)
 {   
+
+	LOGW("ResetParkSlotInfo!!!!");
     float fdata;
 	int idata;
 	int park_lot_index;
@@ -1945,6 +1951,8 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 	    m_lot_upload_left_right_flag=UPLOAD_RIGHT_LOT;
 	}
 
+	LOGW("m_lot_upload_left_right_flag:%d\n",UPLOAD_LEFT_LOT); 
+
     if(can_data.park_lot_reset_flag ==1 &&pre_reset_flag==0)
     {
 	    ResetParkSlotInfo();		
@@ -1953,7 +1961,7 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 		m_lot_upload_left_right_flag = -1;
 		for(int i=0;i<20;i++)
 {
-		 //fprintf(stdout,"!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
+		LOGW("!!!!!!!!!!!!radar Pld reset !!!!!!!!\n"); 
 }
 		
     }
