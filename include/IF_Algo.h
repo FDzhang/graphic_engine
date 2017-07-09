@@ -47,8 +47,12 @@ public:
      */
     virtual void Enable(bool flag) = 0;
     /**
-     * \brief 更新进度条位置
+     * \brief 更新Algo Apa
      */
+    virtual void EnableApaImageStream(bool flag) = 0;
+    virtual char* GetApaImageStream(uint32_t* width, uint32_t* height) = 0;
+    virtual void Sync() = 0;
+    
 };
 
 //! 接口函数

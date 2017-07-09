@@ -46,6 +46,7 @@ namespace GUI
         {"CGPUButton" , "playback" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoExit) , (PFOnEvent)(&AlgoLayout::OnEventExit), NULL},
         {"CGPUButton" , "record" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoRecord) , (PFOnEvent)(&AlgoLayout::OnEventRecord), NULL},
         {"CGPUButton" , "wifi" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoWifi) , (PFOnEvent)(&AlgoLayout::OnEventWifi), NULL},
+        {"CGPUImageStream", "ApaImage", 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApaImage), NULL},
     };
 
     void AlgoLayout::Enable(bool flag)
@@ -64,7 +65,24 @@ namespace GUI
     AlgoLayout::~AlgoLayout()
     {
     }
-
+    void AlgoLayout::EnableApaImageStream(bool flag)
+    {
+        if(m_algoApaImageStream)
+        {
+            m_algoApaImageStream->Enable(flag);
+        }
+    }
+    char* AlgoLayout::GetApaImageStream(uint32_t* width, uint32_t* height)
+    {
+        return m_algoApaImageStream->GetImageRawData(width, height);
+    }
+    void AlgoLayout::Sync()
+    {
+        if(m_algoApaImageStream)
+        {
+            m_algoApaImageStream->UpdateImage();
+        }
+    }
     static IGUITexture ldw_array_texture[] =
     {
         {XR_RES_DVR"BC64.dds", 702, 620, 78, 78},
@@ -99,6 +117,9 @@ namespace GUI
     {
         {XR_RES_DVR"BC64.dds", 1170, 620, 78, 78},
         {XR_RES_DVR"BC64.dds", 1170, 620, 78, 78},
+    };
+    static IGUITexture apaImage_array_texture[] = {
+        {XR_RES_DVR"BC64.dds", 0, 0, 1280, 720},
     };
     void AlgoLayout::InitAlgoLdw(IGUIElement* ldw_button, const GUI_HANDLE_T parentId)
     {
@@ -234,6 +255,21 @@ namespace GUI
         payload->body.onlyNotify = true;
         PostEvent(event);
     }
+    void AlgoLayout::InitAlgoApaImage(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId)
+    {
+        algoApa_image->Attach(m_node, parentId);
+        algoApa_image->SetTexture(apaImage_array_texture, 0);
+        algoApa_image->Create(apaImage_array_texture[0].pos_x,
+                              apaImage_array_texture[0].pos_y,
+                              apaImage_array_texture[0].element_width,
+                              apaImage_array_texture[0].element_height);
+        algoApa_image->Enable(false);
+        m_algoApaImageStream = dynamic_cast<CGPUImageStream*>(algoApa_image);
+    }
+    void AlgoLayout::OnEventImage(IGUIElement*)
+    {
+        
+    }
     /**
      * 接口函数，操作AlgoLayout
      */
@@ -244,6 +280,7 @@ namespace GUI
 
     extern "C" DLL_PUBLIC void DeleteAlgoLayout(IAlgoLayout* layout)
     {
+
         if(layout)
         {
             delete layout;

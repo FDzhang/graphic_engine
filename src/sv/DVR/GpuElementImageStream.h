@@ -46,6 +46,7 @@ namespace GUI
         char* GetImageRawData(uint32_t* width, uint32_t* height);
         //! 更新完image_raw_data, 调用接口更新图片数据
         void  UpdateImage();
+        void Enable(bool enable) {m_image_layer->SetEnable(enable);};
     private:
         //重载事件响应
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
@@ -54,6 +55,7 @@ namespace GUI
         IMaterial* m_thumbnailMtl;
         char*      m_raw_image;      //image数据
         IDeviceManager* m_pIdm;
+        ILayer* m_image_layer;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUImageStream, IGUIElement)
     };

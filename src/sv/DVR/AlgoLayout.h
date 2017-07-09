@@ -27,6 +27,7 @@
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
 #include "GpuElementButton.h"
+#include "GpuElementImageStream.h"
 #include "IF_Algo.h"
 
 namespace GUI
@@ -40,6 +41,9 @@ namespace GUI
     public:
         void Init() {};
         void Enable(bool flag) ;
+        void EnableApaImageStream(bool flag);
+        char* GetApaImageStream(uint32_t* width, uint32_t* height);
+        void Sync();
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
@@ -58,6 +62,11 @@ namespace GUI
         void OnEventRecord(IGUIElement*);
         void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
         void OnEventWifi(IGUIElement*, const GUI_HANDLE_T);
+        void InitAlgoApaImage(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void OnEventImage(IGUIElement*);
+
+    private:
+        CGPUImageStream* m_algoApaImageStream;
     private:
         static AlgoLayout* m_layout;
     };
