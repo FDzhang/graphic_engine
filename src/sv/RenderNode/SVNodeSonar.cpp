@@ -465,7 +465,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 
 	}
 	LOGW("m_track_park_lot_flag(%d)\n",m_track_park_lot_flag);
-	
+	fflush(fpFile);
 }
 void SVNodeSonar::GenerateParkLotRect(sonar_parking_lot_t *park_lot_state,float *pVertex)
 {
