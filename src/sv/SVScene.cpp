@@ -3671,11 +3671,9 @@ void SVScene::SetSingleViewCamPos(unsigned char ucDir)
     }
 
 }
-#include "log/log.h"
 
 void SVScene::SwitchViewLogic(unsigned char  Input)
 {
-    Log_Error("-------%s------------", __func__);
 #ifndef ALI
     if(Input <= RIGHT_SINGLE_VIEW)
     {
@@ -3687,7 +3685,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 	    //	m_sceneNode->SetEnable(1);
 		//#else
         m_2DAVMNode->SetEnable(1);
-
+        m_stich_node->SetEnable(1);
 		m_pAdasHmi->SetEnable(1);
     	m_crossImage->SetEnable(0);
         m_sceneNode->SetEnable(0);

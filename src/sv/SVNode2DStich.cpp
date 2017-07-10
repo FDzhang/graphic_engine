@@ -787,10 +787,11 @@ int SVNode2DStich::SetEnable(unsigned char flag)
     }
 	else
     {
+        m_StichAreaNode->SetEnable(1);
 	    m_StichNode[0]->SetEnable(1);
 		
 	    m_StichNode[1]->SetEnable(1);
-		
+		m_StichNode[2]->SetEnable(1);
 	    m_GroundNode->SetEnable(1);
     }		
    // return m_groundRT->GetTextureId();
