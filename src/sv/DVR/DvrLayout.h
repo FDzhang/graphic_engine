@@ -117,6 +117,18 @@ namespace GUI
         void OnListviewNextEvent(IGUIElement*);
         void InitMediaListviewOk(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnListviewOkEvent(IGUIElement*);
+
+        //视图切换
+        void InitMediaTopleftview(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnTopleftviewEvent(IGUIElement*);
+        void InitMediaToprightview(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnToprightviewEvent(IGUIElement*);
+        void InitMediaButtomleftview(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnButtomleftviewEvent(IGUIElement*);
+        void InitMediaButtomrightview(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnButtomrightviewEvent(IGUIElement*);
+        void InitMediaFullscreenview(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnFullscreenviewEvent(IGUIElement*);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
@@ -126,7 +138,12 @@ namespace GUI
         CGPUListView*   m_listview;
         CGPUImageStream* m_listview_thumbnail;
         AvmEventType    m_event_type;
-
+        CGPUButton*     m_topleftView_button;
+        CGPUButton*     m_toprightView_button;
+        CGPUButton*     m_buttomleftView_button;
+        CGPUButton*     m_buttomrightView_button;
+        CGPUButton*     m_fullscreenView_button;
+        
         PlaylistItemTable_T table;
     private:
         static DvrLayout* m_layout;

@@ -266,16 +266,22 @@ bool XRSV::update(unsigned int view_control_flag)
 		start = XrGetTime();
 		//Set_Frame_TimeStamp(start-pre_time_start);
 		Set_Frame_TimeStamp(AVMData::GetInstance()->m_p_can_data->GetTimeStamp());
-		svscn->Update(view_control_flag,0);
-		//svui->Update(0,0);
-		g_pIXrCore->ProcessEvent();
-        if(view_control_flag == 2)
+        if(view_control_flag == 2 ||
+           view_control_flag == 0xf0 ||
+           view_control_flag == 0xf1 ||
+           view_control_flag == 0xf2 ||
+           view_control_flag == 0xf3)
         {
+            svscn->UpdateView(view_control_flag);
+            g_pIXrCore->ProcessEvent();
             g_pIXrCore->Update();
             g_pIXrCore->Render();
             g_pXrSwapChain->Swap();
             return 0;
         }
+        svscn->Update(view_control_flag,0);
+		//svui->Update(0,0);
+		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();
 #ifndef EMIRROR
         if(init_flag ==1)
