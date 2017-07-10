@@ -27,6 +27,7 @@
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
 #include "IF_Dvr.h"
+#include "GpuElementEventListener.h"
 #include "GpuElementButton.h"
 #include "GpuElementProcessbar.h"
 #include "GpuElementPanel.h"
@@ -138,11 +139,11 @@ namespace GUI
         CGPUListView*   m_listview;
         CGPUImageStream* m_listview_thumbnail;
         AvmEventType    m_event_type;
-        CGPUButton*     m_topleftView_button;
-        CGPUButton*     m_toprightView_button;
-        CGPUButton*     m_buttomleftView_button;
-        CGPUButton*     m_buttomrightView_button;
-        CGPUButton*     m_fullscreenView_button;
+        CGPUEventListener*     m_topleftView_button;
+        CGPUEventListener*     m_toprightView_button;
+        CGPUEventListener*     m_buttomleftView_button;
+        CGPUEventListener*     m_buttomrightView_button;
+        CGPUEventListener*     m_fullscreenView_button;
         
         PlaylistItemTable_T table;
     private:
