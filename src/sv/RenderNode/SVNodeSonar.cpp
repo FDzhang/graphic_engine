@@ -1947,7 +1947,7 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 	{
 	    m_lot_upload_left_right_flag=UPLOAD_LEFT_LOT;
 	}
-	else if(TURN_LIGHT_LEFT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
+	else if(TURN_LIGHT_RIGHT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
 	{	    
 	    m_lot_upload_left_right_flag=UPLOAD_RIGHT_LOT;
 	}
