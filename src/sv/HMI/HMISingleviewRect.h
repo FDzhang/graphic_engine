@@ -36,7 +36,6 @@ public:
 
 private:
 
-    bool m_enable;
     int m_text_box_slot_num;
 	int m_text_box_cur_index;
 	ISceneNode *m_pSeneNode;

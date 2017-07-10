@@ -239,3 +239,11 @@ int HMIScrollBox::Update(void)
 	}
 	return 0;
 }
+void HMIScrollBox::SetEnable(bool flag)
+{
+    for(int i =0;i<m_text_box_cur_index;i++)
+    {
+        m_pNode[2*i]->SetEnable(flag);
+        m_pNode[2*i+1]->SetEnable(flag);
+    }
+}

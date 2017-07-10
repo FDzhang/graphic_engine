@@ -127,5 +127,6 @@ void SVNodeAdasHMI::SetEnable(unsigned char flag)
 {
      m_AdasHMINode->SetEnable(flag);
      m_pSingleviewRect->SetEnable(flag);
+     m_pScrollBox->SetEnable(flag);
 }
 
