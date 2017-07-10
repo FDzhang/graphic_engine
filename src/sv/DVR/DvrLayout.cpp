@@ -45,11 +45,11 @@ namespace GUI
      */
     struct DvrLayout::ElementFuntionTable DvrLayout::m_element_info[] =
     {
+        { "CGPUEventListener", "全屏单视图监听控件", 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaFullscreenview), (PFOnEvent)(&DvrLayout::OnFullscreenviewEvent), NULL},
         { "CGPUEventListener", "前视图监听控件", 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaTopleftview), (PFOnEvent)(&DvrLayout::OnTopleftviewEvent), NULL},
         { "CGPUEventListener", "后视图监听控件", 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaToprightview), (PFOnEvent)(&DvrLayout::OnToprightviewEvent), NULL},
         { "CGPUEventListener", "左视图监听控件", 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaButtomleftview), (PFOnEvent)(&DvrLayout::OnButtomleftviewEvent), NULL},
         { "CGPUEventListener", "右视图监听控件", 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaButtomrightview), (PFOnEvent)(&DvrLayout::OnButtomrightviewEvent), NULL},
-        { "CGPUEventListener", "全屏单视图监听控件", 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaFullscreenview), (PFOnEvent)(&DvrLayout::OnFullscreenviewEvent), NULL},
         { "CGPUPanel"      , "多媒体栏"   , 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaPanel)       , NULL, NULL},
         { "CGPUButton"     , "播放按钮"   , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaPlay)        , (PFOnEvent)(&DvrLayout::OnPlayEvent), NULL},
         { "CGPUButton"     , "上一曲"     , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaNext)        , (PFOnEvent)(&DvrLayout::OnNextEvent), NULL},
@@ -234,7 +234,8 @@ namespace GUI
         {XR_RES_DVR"media_listview_poped.dds", 24, 45, 48, 50}
     };
     static IGUITexture listview_array_texture[] = {
-        {XR_RES_DVR"media_listview_bg.dds", 0, 200, 602, 350},
+        //{XR_RES_DVR"media_listview_bg.dds", 0, 200, 602, 350},
+        {XR_RES_DVR"media_listview_bg.dds", 0, 200, 329, 350}, //临时去缩略图框
         {XR_RES_DVR"media_listview_itemPlay.dds",0, 33, 329, 35},
         {XR_RES_DVR"media_listview_item.dds", 0, 68, 329, 35},
         {XR_RES_DVR"media_listview_itemSelected.dds",0, 68, 329, 35},
