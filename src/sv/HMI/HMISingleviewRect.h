@@ -32,11 +32,11 @@ public:
     void CvtPointCoordinate(float *out_model_Coord,float *in_world_coord,bool rear_single_view);
 	int Update(void);
     void GenerateSingleviewRectPlane(float *point,float*pVertex,bool rear_single_view);
-
+    void SetEnable(bool flag);
 
 private:
 
-
+    bool m_enable;
     int m_text_box_slot_num;
 	int m_text_box_cur_index;
 	ISceneNode *m_pSeneNode;

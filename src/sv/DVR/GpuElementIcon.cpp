@@ -53,8 +53,8 @@ namespace GUI
                 flag = InsertFlag_Default;
             }
             Int32 m_baseLayerId = node->CreateSpirit(parent, flag, -1, 1.0, pos_x, pos_y, 0, element_width, element_height);
-            ILayer* layer = node->GetLayer(m_baseLayerId);
-            layer->SetEventResponder(this);
+            //ILayer* layer = node->GetLayer(m_baseLayerId);
+            //layer->SetEventResponder(this);
 
             Int32 iconId = node->CreateUIMaterial(Material_UI_Spirit, m_iconTexture->texName);
             Int32 iconSpiritId = node->CreateSpirit(m_baseLayerId, InsertFlag_Child,
@@ -75,7 +75,7 @@ namespace GUI
 
     Boolean CGPUIcon::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        if(m_iconStyle == GUI_ICON_MOVEABLE)
+        //if(m_iconStyle == GUI_ICON_MOVEABLE)
         {
             m_iconLayer->SetX(x);
             m_iconLayer->SetY(y);

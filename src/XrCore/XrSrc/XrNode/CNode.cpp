@@ -97,7 +97,7 @@ Void CNode::SetName(String name)
 }
 
 
-xr_state CNode::SetMaterial(
+ xr_state CNode::SetMaterial(
 	/* [in] */ Int32 materialId)
 {
 	SAFE_RELEASE(m_drawable.mtl);

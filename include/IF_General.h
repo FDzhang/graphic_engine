@@ -42,7 +42,7 @@ public:
     virtual void Enable(bool flag) = 0;
 
     /*光标作为一个始终拥有焦点的控件，在目前架构中，需要特殊处理*/
-    //virtual void OnMouseMove(int x, int y) = 0;
+    virtual void OnMouseMove(int x, int y) = 0;
     //virtual void OnMouseUp(int x, int y) = 0;
     //virtual void OnMouseDown(int x, int y) = 0;
 };

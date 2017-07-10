@@ -3671,16 +3671,18 @@ void SVScene::SetSingleViewCamPos(unsigned char ucDir)
     }
 
 }
+#include "log/log.h"
+
 void SVScene::SwitchViewLogic(unsigned char  Input)
 {
+    Log_Error("-------%s------------", __func__);
 #ifndef ALI
     if(Input <= RIGHT_SINGLE_VIEW)
     {
-#if 0
 		m_sceneNode->SetRenderROI(&RightTopFadeReg);
 		m_objectNode->SetRenderROI(&RightTopFadeReg);
         m_2DSingleViewNode->SetRenderROI(&RightReg);
-#endif
+
 		//#ifdef ALI
 	    //	m_sceneNode->SetEnable(1);
 		//#else
@@ -3734,11 +3736,10 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 	}
 	else
 	{
-#if 0
     	m_sceneNode->SetRenderROI(&RightReg);
     	m_objectNode->SetRenderROI(&RightReg);
     	m_2DSingleViewNode->SetRenderROI(&RightBottomFadeReg);
-#endif
+
         m_2DAVMNode->SetEnable(1);
 
 		m_pAdasHmi->SetEnable(1);
@@ -4541,47 +4542,25 @@ void SVScene::Calc3DGroundTexture()
 
 
 }
-int SVScene::UpdateView(int view_control_flag)
+
+int SVScene::SwitchCrossView()
 {
-    static int last_view_control_flag = 0;
-    if(last_view_control_flag == view_control_flag)
-    {
-        return 0;
-    }
-    last_view_control_flag = view_control_flag;
-    unsigned char view_cmd = 0;
-    Region fullscreenROI(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
-    switch(view_control_flag)
-    {
-        case 2:
-            view_cmd = CROSS_IMAGE_VIEW;	
-            m_2DAVMNode->SetEnable(0);
-            m_pAdasHmi->SetEnable(0);
-            m_sceneNode ->SetEnable(0);
-            m_objectNode->SetEnable(0);
-            m_2DSingleViewNode->SetEnable(0);
-            m_stich_node->SetEnable(0);
-            m_viewNode->SetEnable(0);
-            m_crossImage->SetEnable(1);
-            m_overlay_2d_single->SetEnable(0);
-            for(int index = 0; index < 8; index++)
-                m_RadarAlarm_Node_single[index]->SetEnable(0);
-            return 0;
-            break;
-        case 0xf0:
-            view_cmd = FRONT_SINGLE_VIEW;
-            break;
-        case 0xf1:
-            view_cmd = REAR_SINGLE_VIEW;
-            break;
-        case 0xf2:
-            view_cmd = LEFT_SINGLE_VIEW;
-            break;
-        case 0xf3:
-            view_cmd = RIGHT_SINGLE_VIEW;
-            break;
-    }
-    
+    m_2DAVMNode->SetEnable(0);
+    m_pAdasHmi->SetEnable(0);
+    m_sceneNode ->SetEnable(0);
+    m_objectNode->SetEnable(0);
+    m_2DSingleViewNode->SetEnable(0);
+    m_stich_node->SetEnable(0);
+    m_viewNode->SetEnable(0);
+    m_crossImage->SetEnable(1);
+    m_overlay_2d_single->SetEnable(0);
+    for(int index = 0; index < 8; index++)
+        m_RadarAlarm_Node_single[index]->SetEnable(0);
+    m_last_view = 0xff; //保证切换到SVScene::Update时 ， 一定执行更新
+}
+
+int SVScene::SwitchSingleView(int view_control_flag)
+{
     m_2DAVMNode->SetEnable(0);
     m_pAdasHmi->SetEnable(0);
     m_sceneNode->SetEnable(0);
@@ -4591,27 +4570,46 @@ int SVScene::UpdateView(int view_control_flag)
     m_viewNode->SetEnable(0);
     m_crossImage->SetEnable(0);
     m_overlay_2d_single->SetEnable(0);
+
     for(int index = 0; index < 8; index++)
         m_RadarAlarm_Node_single[index]->SetEnable(0);
-        
-    SetSingleViewCamPos(view_cmd);
-    m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-    switch (view_cmd)
+
+    m_last_view = 0xff; //保证切换到SVScene::Update时 ， 一定执行更新
+    Region fullscreenROI(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
+    switch(view_control_flag)
     {
-        case FRONT_SINGLE_VIEW:
+        case 0xf0:
             sv2Ddelegate->SetChannel(front_camera_index);
+            SetSingleViewCamPos(FRONT_SINGLE_VIEW);
+            m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
+            
             break;
-        case REAR_SINGLE_VIEW:
+        case 0xf1:
             sv2Ddelegate->SetChannel(rear_camera_index);
+            SetSingleViewCamPos(REAR_SINGLE_VIEW);
+            m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
+
             break;
-        case LEFT_SINGLE_VIEW:
+        case 0xf2:
             sv2Ddelegate->SetChannel(left_camera_index);
+            SetSingleViewCamPos(LEFT_SINGLE_VIEW);
+            m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
+
             break;
-        case RIGHT_SINGLE_VIEW:
+        case 0xf3:
             sv2Ddelegate->SetChannel(right_camera_index);
+            SetSingleViewCamPos(RIGHT_SINGLE_VIEW);
+            m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
+
             break;
+        default:
+            return 0;
     }
+
+
+    
 }
+
 int SVScene::Update(int view_control_flag, int param2)
 {
     float steer_angle;
