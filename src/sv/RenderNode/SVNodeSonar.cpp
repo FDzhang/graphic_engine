@@ -2254,7 +2254,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 
 		
     }
-	DrawParkLot();
+	//DrawParkLot();
 
 	SetRadarPLDReslt();
 	
