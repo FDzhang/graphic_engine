@@ -2174,9 +2174,9 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	m_filter_time =2;
 	int obj_num;
 	
-	m_sonar_data[front_right_side_sonar].show_flag = 1;
+	m_sonar_data[front_right_side_sonar].show_flag = 0;
 	
-	m_sonar_data[front_left_side_sonar].show_flag = 1;
+	m_sonar_data[front_left_side_sonar].show_flag = 0;
     for(int j=0;j<max_sonar_num;j++)
     {
 		//m_sonar_data[j].show_flag = 1;
