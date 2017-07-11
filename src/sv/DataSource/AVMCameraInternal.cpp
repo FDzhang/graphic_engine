@@ -158,7 +158,7 @@ AVMCameraInternal::~AVMCameraInternal()
 
 void AVMCameraInternal::InitParamFromSysConfig(CAMERA_CFG *cam_model,Camera_Param_T *p_sys_config,Smc_Cal_T *pSMC)
 {
-	Cam_Int_T sys_cam_mdl;
+	Camera_Param_Cam_Int_T sys_cam_mdl;
     int j=0;
     for(int i =0;i<4;i++)
     {
@@ -181,7 +181,7 @@ void AVMCameraInternal::InitParamFromSysConfig(CAMERA_CFG *cam_model,Camera_Para
         sys_cam_mdl = p_sys_config[j].cam_int;
 
 		cam_model[i].CAM_TYPE = 0;
-		cam_model[i].CAM_INT_W = p_sys_config->cam_input.input_image_width;
+		cam_model[i].CAM_INT_W = p_sys_config->cam_int.cam_int_w;
 		cam_model[i].CAM_INT_H = sys_cam_mdl.cam_int_h;
 		cam_model[i].CAM_INT_CX = sys_cam_mdl.cam_int_cu;
 		cam_model[i].CAM_INT_CY = sys_cam_mdl.cam_int_cv;
@@ -193,7 +193,7 @@ void AVMCameraInternal::InitParamFromSysConfig(CAMERA_CFG *cam_model,Camera_Para
 		cam_model[i].CAM_LEN_TOP_CUT = sys_cam_mdl.cam_int_use_fov;
 		printf("before cam_lut_index = %d ",sys_cam_mdl.cam_int_lut);
 
-	    m_camera_lut[i] = pSMC->lut_lable[sys_cam_mdl.cam_int_lut];
+	    m_camera_lut[i] = pSMC->lut_table[sys_cam_mdl.cam_int_lut];
 		printf("cam_lut_index =0x%x", m_camera_lut[i]);
     }
 
