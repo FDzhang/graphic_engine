@@ -39,6 +39,7 @@ namespace GUI
 
     struct AlgoLayout::ElementFuntionTable AlgoLayout::m_element_info[] =
     {
+        {"CGPUIcon", "ApaImage", 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApaImage), NULL},
         {"CGPUButton" , "ldw" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoLdw) , (PFOnEvent)(&AlgoLayout::OnEventLdw), NULL},
         {"CGPUButton" , "bsd" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoBsd) , (PFOnEvent)(&AlgoLayout::OnEventBsd), NULL},
         {"CGPUButton" , "online" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoOnline) , (PFOnEvent)(&AlgoLayout::OnEventOnline), NULL},
@@ -46,7 +47,6 @@ namespace GUI
         {"CGPUButton" , "playback" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoExit) , (PFOnEvent)(&AlgoLayout::OnEventExit), NULL},
         {"CGPUButton" , "record" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoRecord) , (PFOnEvent)(&AlgoLayout::OnEventRecord), NULL},
         {"CGPUButton" , "wifi" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoWifi) , (PFOnEvent)(&AlgoLayout::OnEventWifi), NULL},
-        {"CGPUImageStream", "ApaImage", 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApaImage), NULL},
     };
 
     void AlgoLayout::Enable(bool flag)
@@ -58,6 +58,7 @@ namespace GUI
         :ILayout(ALGOHMI_EVENT_NAME)
         ,IAlgoLayout()
         ,m_element_size(sizeof(m_element_info) / sizeof( struct ElementFuntionTable))
+        ,m_algoApaImage(NULL)
     {
         InitElementTable(m_element_info, m_element_size);
     }
@@ -65,22 +66,11 @@ namespace GUI
     AlgoLayout::~AlgoLayout()
     {
     }
-    void AlgoLayout::EnableApaImageStream(bool flag)
+    void AlgoLayout::EnableApaDemoPicture(bool flag)
     {
-        if(m_algoApaImageStream)
+        if(m_algoApaImage)
         {
-            m_algoApaImageStream->Enable(flag);
-        }
-    }
-    char* AlgoLayout::GetApaImageStream(uint32_t* width, uint32_t* height)
-    {
-        return m_algoApaImageStream->GetImageRawData(width, height);
-    }
-    void AlgoLayout::Sync()
-    {
-        if(m_algoApaImageStream)
-        {
-            m_algoApaImageStream->UpdateImage();
+            m_algoApaImage -> Enable(flag);
         }
     }
     static IGUITexture ldw_array_texture[] =
@@ -119,7 +109,7 @@ namespace GUI
         {XR_RES_DVR"BC64.dds", 1170, 620, 78, 78},
     };
     static IGUITexture apaImage_array_texture[] = {
-        {XR_RES_DVR"BC64.dds", 0, 0, 1280, 720},
+        {XR_RES_ALGO"APA_SINGLE_VIEW_ID_0.dds", 456, 0, 824, 720},
     };
     void AlgoLayout::InitAlgoLdw(IGUIElement* ldw_button, const GUI_HANDLE_T parentId)
     {
@@ -264,7 +254,7 @@ namespace GUI
                               apaImage_array_texture[0].element_width,
                               apaImage_array_texture[0].element_height);
         algoApa_image->Enable(false);
-        m_algoApaImageStream = dynamic_cast<CGPUImageStream*>(algoApa_image);
+        m_algoApaImage = dynamic_cast<CGPUIcon*>(algoApa_image);
     }
     void AlgoLayout::OnEventImage(IGUIElement*)
     {

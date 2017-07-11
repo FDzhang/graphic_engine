@@ -28,6 +28,7 @@
 #include "Layout.h"
 #include "GpuElementButton.h"
 #include "GpuElementImageStream.h"
+#include "GpuElementIcon.h"
 #include "IF_Algo.h"
 
 namespace GUI
@@ -41,9 +42,7 @@ namespace GUI
     public:
         void Init() {};
         void Enable(bool flag) ;
-        void EnableApaImageStream(bool flag);
-        char* GetApaImageStream(uint32_t* width, uint32_t* height);
-        void Sync();
+        void EnableApaDemoPicture(bool flag);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
@@ -66,7 +65,7 @@ namespace GUI
         void OnEventImage(IGUIElement*);
 
     private:
-        CGPUImageStream* m_algoApaImageStream;
+        CGPUIcon* m_algoApaImage;
     private:
         static AlgoLayout* m_layout;
     };

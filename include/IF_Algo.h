@@ -49,9 +49,7 @@ public:
     /**
      * \brief 更新Algo Apa
      */
-    virtual void EnableApaImageStream(bool flag) = 0;
-    virtual char* GetApaImageStream(uint32_t* width, uint32_t* height) = 0;
-    virtual void Sync() = 0;
+    virtual void EnableApaDemoPicture(bool flag) = 0; 
     
 };
 

@@ -62,7 +62,7 @@ namespace GUI
 
     static IGUITexture cursor_array_texture[] =
     {
-        {XR_RES_FRONT"cursor.dds", 0, 0, 64, 64}
+        {XR_RES_GENERAL"cursor.dds", 0, 0, 64, 64},
     };
 
     void GeneralLayout::InitMouseCursor(IGUIElement* cursor, const GUI_HANDLE_T parentId)
