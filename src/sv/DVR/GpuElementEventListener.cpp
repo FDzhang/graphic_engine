@@ -1,5 +1,5 @@
 /*------------------------------------------------------------------------------------------
- * FILE: GpuElementIcon.cpp
+ * FILE: GpuElementEventListener.cpp
  *==========================================================================================
  * Copyright 2017  O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -21,23 +21,22 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 19 6月 2017 dota2_black
+ * VERSION: 10 7月 2017 dota2_black 
  *------------------------------------------------------------------------------------------*/
-#include "GpuElementIcon.h"
+#include "GpuElementEventListener.h"
 
 namespace GUI
 {
-    CGPUIcon::CGPUIcon()
-        :IGUIElement("CGPUIcon")
+    CGPUEventListener::CGPUEventListener()
+        :IGUIElement("CGPUEventListener")
         ,CXrBaseView()
-        ,m_iconTexture(NULL),m_iconLayer(NULL)
-        ,m_iconStyle(0)
+        ,m_eventLayer(NULL)
     {
     }
-    CGPUIcon::~CGPUIcon()
+    CGPUEventListener::~CGPUEventListener()
     {
     }
-    bool CGPUIcon::Create(const uint32_t pos_x, const uint32_t pos_y,
+    bool CGPUEventListener::Create(const uint32_t pos_x, const uint32_t pos_y,
                           const uint32_t element_width, const uint32_t element_height)
     {
         const IUINode* node = GetLayoutNode();
@@ -52,37 +51,28 @@ namespace GUI
                 parent = -1;
                 flag = InsertFlag_Default;
             }
-            Int32 m_baseLayerId = node->CreateSpirit(parent, flag, -1, 1.0, pos_x, pos_y, 0, element_width, element_height);
-            //ILayer* layer = node->GetLayer(m_baseLayerId);
-            //layer->SetEventResponder(this);
-
-            Int32 iconId = node->CreateUIMaterial(Material_UI_Spirit, m_iconTexture->texName);
-            Int32 iconSpiritId = node->CreateSpirit(m_baseLayerId, InsertFlag_Child,
-                                                    iconId, 1.0,
-                                                    m_iconTexture->pos_x,
-                                                    m_iconTexture->pos_y, 0,
-                                                    m_iconTexture->element_width,
-                                                    m_iconTexture->element_height);
-            m_iconLayer = node->GetLayer(iconSpiritId);
-            IGUIElement::SetHwnd((GUI_HANDLE_T)m_baseLayerId);
+            Int32 m_eventLayerId = node->CreateSpirit(parent, flag, -1, 0, pos_x, pos_y, 0, element_width, element_height);
+            m_eventLayer = node->GetLayer(m_eventLayerId);
+            m_eventLayer->SetEventResponder(this);
+            
+            IGUIElement::SetHwnd((GUI_HANDLE_T)m_eventLayerId);
         }
     }
-    void CGPUIcon::SetTexture(const IGUITexture* effect, const long style)
-    {
-        m_iconTexture = &(((IGUITexture*)effect)[0]);
-        m_iconStyle = style;
-    }
 
-    Boolean CGPUIcon::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
+    Boolean CGPUEventListener::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
-        //if(m_iconStyle == GUI_ICON_MOVEABLE)
+        if(type == TouchEvent_Down)
         {
-            m_iconLayer->SetX(x);
-            m_iconLayer->SetY(y);
+            IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
         }
         return TRUE;
     }
-    IMPLEMENT_DYNAMIC_CLASS(CGPUIcon)
+
+    void CGPUEventListener::Enable(bool enable)
+    {
+        m_eventLayer->SetEnable(enable);
+    }
+    IMPLEMENT_DYNAMIC_CLASS(CGPUEventListener)
 };
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)

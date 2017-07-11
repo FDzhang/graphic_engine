@@ -26,7 +26,7 @@ public:
 	int Add(ISceneNode *pSeneNode,st_scroll_box_data_T *icon_box_cfg);
 
 	int Update(void);
-
+    void SetEnable(bool flag);
 
 private:
 	INode *m_pNode[MAX_SCROLL_NUM*2];

@@ -89,7 +89,7 @@ void SVNodeAdasHMI::Init(BEV_CONFIG_T  pConfig,ISceneNode *pSencenode,ISceneNode
 
     	for(j=0;j<pAdasMdlHmiHandle->single_view_rect_num;j++)
     	{
-    		m_pSingleviewRect->Add(pSencenode,&(pAdasMdlHmiHandle->pSingleviewRect[j]));
+    		//m_pSingleviewRect->Add(pSencenode,&(pAdasMdlHmiHandle->pSingleviewRect[j]));
     	}
 
     	for(j=0;j<pAdasMdlHmiHandle->scroll_rect_num;j++)
@@ -126,5 +126,7 @@ int SVNodeAdasHMI::Update(void)
 void SVNodeAdasHMI::SetEnable(unsigned char flag)
 {
      m_AdasHMINode->SetEnable(flag);
+     m_pSingleviewRect->SetEnable(flag);
+     m_pScrollBox->SetEnable(flag);
 }
 

@@ -167,6 +167,8 @@ public:
 	void ProcessDoorState(unsigned char driver_door_state, unsigned char passenger_door_state, unsigned char rear_right_door_state, unsigned char rear_left_door_state);
 	int UpdateAnimation();
 	int Update(int view_control_flag, int param2);
+    int SwitchCrossView();
+    int SwitchSingleView(int view_control_flag);
     void ShowProduct(Int32 pos);
     void AdjustProductPosition(Int32 pos);	
 	void EnterTopView(Int32 pos);

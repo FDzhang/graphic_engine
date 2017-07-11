@@ -87,13 +87,13 @@ namespace GUI
     };
     static IGUITexture exit_array_texture[] =
     {
-        {XR_RES_DVR"BC64.dds", 1014, 620, 78, 78},
-        {XR_RES_DVR"BC64.dds", 1014, 620, 78, 78},
+        {XR_RES"playback_unable.dds", 1014, 620, 78, 78},
+        {XR_RES"playback_enable.dds", 1014, 620, 78, 78},
     };
     static IGUITexture record_array_texture[] =
     {
-        {XR_RES_DVR"BC64.dds", 1092, 620, 78, 78},
-        {XR_RES_DVR"BC64.dds", 1092, 620, 78, 78},
+        {XR_RES"record_unable.dds", 1092, 620, 78, 78},
+        {XR_RES"record_enable.dds", 1092, 620, 78, 78},
     };
     static IGUITexture wifi_array_texture[] =
     {
@@ -199,7 +199,7 @@ namespace GUI
     void AlgoLayout::InitAlgoRecord(IGUIElement* record_button, const GUI_HANDLE_T parentId)
     {
         record_button->Attach(m_node, parentId);
-        record_button->SetTexture(record_array_texture, 0);
+        record_button->SetTexture(record_array_texture, GUI_BUTTON_EFFECT_LOCK);
         record_button->Create(record_array_texture[0].pos_x,
                               record_array_texture[0].pos_y,
                               record_array_texture[0].element_width,

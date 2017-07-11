@@ -129,27 +129,37 @@ void HMISingleviewRect::GenerateSingleviewRectPlane(float *point,float*pVertex,b
 
 
 }
+
 int HMISingleviewRect::Update(void)
 {
     ISpirit *pBackgroundLayer;
-	float pOutput[4];
-	IMesh *pMeshTemp;
-	for(int i =0;i<m_text_box_cur_index;i++)
-	{
-	    if(m_p_box_slot[i].p_singleview_rect_data->show_flag == 0)
-	    {
-			m_p_box_slot[i].pNode->SetEnable(0);
+    float pOutput[4];
+    IMesh *pMeshTemp;
+    for(int i =0;i<m_text_box_cur_index;i++)
+    {
+        if(m_p_box_slot[i].p_singleview_rect_data->show_flag == 0)
+        {
+            m_p_box_slot[i].pNode->SetEnable(0);
 
-	    }
-		else
-		{
+        }
+        else
+        {
 		
-		    m_p_box_slot[i].pNode->SetEnable(1);
-			m_p_box_slot[i].pRectMtl->SetDiffuseMap(m_p_box_slot[i].p_singleview_rect_data->icon_file_name[m_p_box_slot[i].p_singleview_rect_data->alarm_state]);
+            m_p_box_slot[i].pNode->SetEnable(1);
+            m_p_box_slot[i].pRectMtl->SetDiffuseMap(m_p_box_slot[i].p_singleview_rect_data->icon_file_name[m_p_box_slot[i].p_singleview_rect_data->alarm_state]);
 
-			GenerateSingleviewRectPlane(m_p_box_slot[i].p_singleview_rect_data->point,m_p_box_slot[i].pdatabuffer,m_p_box_slot[i].p_singleview_rect_data->rear_single_view_flag);
-	         m_p_box_slot[i].pRectMesh->UnLockData();
-		}
-	}
+            GenerateSingleviewRectPlane(m_p_box_slot[i].p_singleview_rect_data->point,m_p_box_slot[i].pdatabuffer,m_p_box_slot[i].p_singleview_rect_data->rear_single_view_flag);
+            m_p_box_slot[i].pRectMesh->UnLockData();
+        }
+    }
+
 	return 0;
+}
+
+void HMISingleviewRect::SetEnable(bool flag)
+{
+    for(int i =0;i<m_text_box_cur_index;i++)
+    {
+        m_p_box_slot[i].pNode->SetEnable(flag);
+    }
 }

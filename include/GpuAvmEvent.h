@@ -141,6 +141,11 @@ typedef enum
     DVR_MEDIA_BAR,                /*进度条 */
     DVR_MEDIA_LIST_VIEW,          /*文件列表*/
     //DVR_MEDIA_STATE_ICON,       /*状态图标*/
+    DVR_MEDIA_TOPLEFTVIEW_BUTTON, /*田字格左上视图按钮*/
+    DVR_MEDIA_TOPRIGHTVIEW_BUTTON, /*田字格右上视图按钮*/
+    DVR_MEDIA_BUTTOMLEFTVIEW_BUTTON, /*田字格左下视图按钮*/
+    DVR_MEDIA_BUTTOMRIGHTVIEW_BUTTON, /*田字格右下试图按钮*/
+    DVR_MEDIA_SINGLEVIEW_BUTTON, /*单视图状态按钮*/
     DVR_MEDIA_MAX_NUM = 0xFFFFFFFF
 }DVR_EVENT_ELEMENT_ID_T;
 /*------------------------------------------------------------------------------------------
