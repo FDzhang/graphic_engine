@@ -11,8 +11,8 @@
 
 ----------------------------------------------*/
 FILE *fpFile = fopen("GPU_radar_log.txt", "wt+");
-#define LOGW(format,...)     (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
-#define LOGE(format,...)     (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
+#define LOGW(format,...)   //  (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
+#define LOGE(format,...)   //  (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
 
 extern char BLUETEX[];
 extern char OVERLAYTEX[];
@@ -464,6 +464,13 @@ void SVNodeSonar::SetRadarPLDReslt()
 		pRadarPldRslt->sGround_Points[3].x = 0.0;
 		pRadarPldRslt->sGround_Points[3].y = 0.0;
 		LOGW(" set NO pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
+	}
+
+	if(pRadarPldRslt->sGround_Points[0].x < -3.5 && 0 ==  m_track_park_lot_flag) 
+	{
+	    ResetParkSlotInfo();		
+	    m_track_park_lot_flag =0;  
+		m_lot_upload_left_right_flag = UPLOAD_BOTH_LOT;
 	}
 	LOGW("m_track_park_lot_flag(%d)\n",m_track_park_lot_flag);
 	fflush(fpFile);
