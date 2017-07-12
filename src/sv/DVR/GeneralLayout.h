@@ -44,6 +44,7 @@ namespace GUI
         void OnMouseMove(int x, int y);
         void OnMouseUp(int x, int y);
         void OnMouseDown(int x, int y);
+        void EnableCursor(bool flag);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];

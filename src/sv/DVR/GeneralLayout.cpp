@@ -97,6 +97,14 @@ namespace GUI
             m_cursor->OnTouchEvent(m_cursor->GetHwnd(), x, y, TouchEvent_Down);
         }
     }
+
+    void GeneralLayout::EnableCursor(bool flag)
+    {
+        if(m_cursor)
+        {
+            m_cursor->Enable(flag);
+        }
+    }
 };
 
 /**
