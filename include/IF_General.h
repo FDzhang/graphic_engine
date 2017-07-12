@@ -45,6 +45,8 @@ public:
     virtual void OnMouseMove(int x, int y) = 0;
     //virtual void OnMouseUp(int x, int y) = 0;
     //virtual void OnMouseDown(int x, int y) = 0;
+
+    virtual void EnableCursor(bool flag) = 0;
 };
 
 //! 接口函数
