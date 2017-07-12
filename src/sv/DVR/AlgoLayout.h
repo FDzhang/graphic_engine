@@ -42,7 +42,7 @@ namespace GUI
     public:
         void Init() {};
         void Enable(bool flag) ;
-        void EnableApaDemoPicture(bool flag);
+        void EnableApaDemoPicture(int flag);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
@@ -61,11 +61,23 @@ namespace GUI
         void OnEventRecord(IGUIElement*);
         void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
         void OnEventWifi(IGUIElement*, const GUI_HANDLE_T);
-        void InitAlgoApaImage(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
-        void OnEventImage(IGUIElement*);
 
+        //临时添加， ＡＰＡ IMAGE
+        void InitAlgoApaImage0(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void InitAlgoApaImage1(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void InitAlgoApaImage2(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void InitAlgoApaImage3(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void InitAlgoApaImage4(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void InitAlgoApaImage5(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void InitAlgoApaImage6(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
     private:
-        CGPUIcon* m_algoApaImage;
+        CGPUIcon* m_algoApaImage0;
+        CGPUIcon* m_algoApaImage1;
+        CGPUIcon* m_algoApaImage2;
+        CGPUIcon* m_algoApaImage3;
+        CGPUIcon* m_algoApaImage4;
+        CGPUIcon* m_algoApaImage5;
+        CGPUIcon* m_algoApaImage6;
     private:
         static AlgoLayout* m_layout;
     };

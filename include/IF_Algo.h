@@ -49,7 +49,7 @@ public:
     /**
      * \brief 更新Algo Apa
      */
-    virtual void EnableApaDemoPicture(bool flag) = 0; 
+    virtual void EnableApaDemoPicture(int flag) = 0; 
     
 };
 
