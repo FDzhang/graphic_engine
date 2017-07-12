@@ -466,7 +466,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		LOGW(" set NO pld result,pt0(%f,%f)\n",pRadarPldRslt->sGround_Points[0].x ,	pRadarPldRslt->sGround_Points[0].y);
 	}
 
-	if(pRadarPldRslt->sGround_Points[0].x < -3.5 && 0 ==  m_track_park_lot_flag) 
+	if(pRadarPldRslt->sGround_Points[2].x < -3000 && 0 ==  m_track_park_lot_flag) 
 	{
 	    ResetParkSlotInfo();		
 	    m_track_park_lot_flag =0;  
@@ -1950,13 +1950,17 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 
 	can_data = AVMData::GetInstance()->m_p_can_data->GetCANData();
 
-	if(TURN_LIGHT_LEFT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
+	if(TURN_LIGHT_LEFT == turn_light_state)
 	{
 	    m_lot_upload_left_right_flag=UPLOAD_LEFT_LOT;
 	}
-	else if(TURN_LIGHT_RIGHT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
+	else if(TURN_LIGHT_RIGHT == turn_light_state)
 	{	    
 	    m_lot_upload_left_right_flag=UPLOAD_RIGHT_LOT;
+	}
+	else
+	{
+		m_lot_upload_left_right_flag=UPLOAD_BOTH_LOT;
 	}
 
 	LOGW("m_lot_upload_left_right_flag:%d\n",m_lot_upload_left_right_flag); 
@@ -2250,7 +2254,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 
 		
     }
-	DrawParkLot();
+	//DrawParkLot();
 
 	SetRadarPLDReslt();
 	

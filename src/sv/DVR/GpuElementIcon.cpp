@@ -56,6 +56,7 @@ namespace GUI
             m_baseLayer = node->GetLayer(m_baseLayerId);
             m_baseLayer->SetEventResponder(this);
 
+
             Int32 iconId = node->CreateUIMaterial(Material_UI_Spirit, m_iconTexture->texName);
             Int32 iconSpiritId = node->CreateSpirit(m_baseLayerId, InsertFlag_Child,
                                                     iconId, 1.0,
