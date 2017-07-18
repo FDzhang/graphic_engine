@@ -17,7 +17,7 @@ Void CUIUpdateVisitor::visitNode(LayerTraverseInfo& traverseInfo)
 	traverseInfo.opacity *= opacity;
 
 	if (layer->isMasksToBound()) {
-		Rect clip(traverseInfo.x-layer->width.Get()*layer->GetAnchorX(), traverseInfo.y-layer->height.Get()*layer->GetAnchorY(), layer->width.Get(), layer->height.Get());
+		XrRect clip(traverseInfo.x-layer->width.Get()*layer->GetAnchorX(), traverseInfo.y-layer->height.Get()*layer->GetAnchorY(), layer->width.Get(), layer->height.Get());
 		traverseInfo.clipRect.Clip(clip);
 		if (traverseInfo.clipRect.IsEmpty()) {
 			m_continue = FALSE;
@@ -25,8 +25,8 @@ Void CUIUpdateVisitor::visitNode(LayerTraverseInfo& traverseInfo)
 		}
 	}
 	else {
-		Rect clip(traverseInfo.x-layer->width.Get()*layer->GetAnchorX(), traverseInfo.y-layer->height.Get()*layer->GetAnchorY(), layer->width.Get(), layer->height.Get());
-		Rect screen(0,0,GetScreenWidth(),GetScreenHeight());
+		XrRect clip(traverseInfo.x-layer->width.Get()*layer->GetAnchorX(), traverseInfo.y-layer->height.Get()*layer->GetAnchorY(), layer->width.Get(), layer->height.Get());
+		XrRect screen(0,0,GetScreenWidth(),GetScreenHeight());
 		screen.Clip(clip);
 		if (screen.IsEmpty()) {
 			m_continue = FALSE;

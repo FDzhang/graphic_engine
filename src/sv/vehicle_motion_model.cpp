@@ -306,9 +306,9 @@ void VehicleMotion::revMotion2KframePredictVCS(
 
 
 void VehicleMotion::getPos2Kframe(
-	CvPoint2D32f pointIn,
+	GpuCvPoint2D32f pointIn,
 	float32_t m[9],
-	CvPoint2D32f &pointOut
+	GpuCvPoint2D32f &pointOut
 	)
 {
 	pointOut.x = m[0]*pointIn.x+m[1]*pointIn.y+m[2];
@@ -601,7 +601,7 @@ float VehicleMotion::get_theta_from_multi_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_d
 	
 }
 
-void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], COMMON_VEHICLE_DATA_SIMPLE * v_data, float g_PLD_time_Offset_in)
+void VehicleMotion::get_new_point_from_Vhichle_data(Gpu_Point2f pts[MAXPOINTNUM], COMMON_VEHICLE_DATA_SIMPLE * v_data, float g_PLD_time_Offset_in)
 {
 	int dri_sign = get_driving_dir(v_data);
 	int turn_sign = get_turn_dir(v_data);
@@ -623,7 +623,7 @@ void VehicleMotion::get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], CO
 
 	for (int i = 0; i < MAXPOINTNUM; i++)
 	{
-		Point2f point_src, point_dst;
+		Gpu_Point2f point_src, point_dst;
 		point_src = pts[i];
 		if (shft_pos == 2)
 		{

@@ -75,9 +75,9 @@ struct Region {
 	Float32		bottom;
 };
 
-struct Rect {
-	Rect() { x = y = width = height = 0; }
-	Rect(Float32 _x, Float32 _y, Float32 _width, Float32 _height)
+struct XrRect {
+	XrRect() { x = y = width = height = 0; }
+	XrRect(Float32 _x, Float32 _y, Float32 _width, Float32 _height)
 	{
 		Set(_x, _y, _width, _height);
 	}
@@ -85,7 +85,7 @@ struct Rect {
 	{
 		x = _x; y = _y; width = _width; height = _height;
 	}
-	Void operator=(Rect& src)
+	Void operator=(XrRect& src)
 	{
 		x = src.x;
 		y = src.y;
@@ -99,13 +99,13 @@ struct Rect {
 		width = src.right - src.left;
 		height = src.bottom - src.top;
 	}
-	Boolean IsIn(Rect& rect)
+	Boolean IsIn(XrRect& rect)
 	{
 		if (x>=rect.x && y>=rect.y && width<=rect.width && height<=rect.height) return TRUE;
 		else return FALSE;
 	}
 
-	Void Clip(Rect& clip)
+	Void Clip(XrRect& clip)
 	{
 		Float32 _x = x; 
 		Float32 _y = y;

@@ -158,16 +158,16 @@ enum CALIB_INDEX
 	POS_CALIB_PPMMY,
 };
 
-typedef struct CvPoint2D32f
+typedef struct GpuCvPoint2D32f
 {
 	float x;
 	float y;
 
 
-	CvPoint2D32f(float _x = 0, float _y = 0): x(_x), y(_y) {}
+	GpuCvPoint2D32f(float _x = 0, float _y = 0): x(_x), y(_y) {}
 
 }
-CvPoint2D32f;
+GpuCvPoint2D32f;
 typedef struct Vehicle_Param_T
 {
     float vehicle_length;      //unit mm

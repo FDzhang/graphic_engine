@@ -198,7 +198,7 @@ public:
 	//Boolean isSimpleRotation() { return rz.Get()== 0 ||  rz.Get()== 90 || rz.Get()== 180 || rz.Get()== 270; }
 	Boolean hasMesh() { return !(m_mesh == 0); }
 
-	static Void GetAdaptiveLayerSize(CMaterial* pMtl, Rect* roi, Float32& w, Float32& h, Region& texCoord);
+	static Void GetAdaptiveLayerSize(CMaterial* pMtl, XrRect* roi, Float32& w, Float32& h, Region& texCoord);
 	xr_state SetMaterial(CMaterial* pMtl);
 
 	Boolean isMasksToBound() {

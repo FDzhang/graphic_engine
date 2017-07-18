@@ -1,6 +1,6 @@
 #include "CXrPanel.h"
 
-static Rect roi[6];
+static XrRect roi[6];
 #define TRANSITION_DURATION 500
 CXrPanel::CXrPanel(Int32 cornerSize, Int32 BorderWidth, Boolean hollow)
 {

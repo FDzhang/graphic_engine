@@ -4843,9 +4843,9 @@ void SVScene::DoorActionSingle(int pos,int state)
 void SVScene::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
 {
     float car_point[4];
-	CvPoint2D32f car_rect[2];
+	GpuCvPoint2D32f car_rect[2];
     float car_adjust_point[4];
-	CvPoint2D32f car_rect_world[2];
+	GpuCvPoint2D32f car_rect_world[2];
 	float pModelPoint[6];
 	float pWorldPint[6];
 	

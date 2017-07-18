@@ -1,11 +1,11 @@
 #ifndef __VEHICLE_MOTION_H__
 #define __VEHICLE_MOTION_H__
 //#pragma once
-typedef struct Point2f_T
+typedef struct Gpu_Point2f_T
 {
 	float x;
 	float y;
-}Point2f;
+}Gpu_Point2f;
 
 typedef struct COMMON_VEHICLE_DATA_SIMPLE_T
 {

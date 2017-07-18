@@ -424,7 +424,7 @@ Int32 CLayer::OnAddMesh(Float32* vBuffer, UInt16* iBuffer, Float32 x, Float32 y,
 	return 0;
 }
 
-Void CLayer::GetAdaptiveLayerSize(CMaterial* pMtl, Rect* roi, Float32& w, Float32& h, Region& texCoord)
+Void CLayer::GetAdaptiveLayerSize(CMaterial* pMtl, XrRect* roi, Float32& w, Float32& h, Region& texCoord)
 {
 
 	Float32 mtlW=0, mtlH=0;

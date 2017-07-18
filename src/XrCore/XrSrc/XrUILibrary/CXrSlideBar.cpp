@@ -19,7 +19,7 @@ CXrSlideBar::CXrSlideBar(Boolean isHorizontal)
 }
 
 
-xr_state CXrSlideBar::Add(class IUINode* node,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 width, Int32 height, Int32 mtl, Rect* barROI, Rect* sliderROI)
+xr_state CXrSlideBar::Add(class IUINode* node,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 width, Int32 height, Int32 mtl, XrRect* barROI, XrRect* sliderROI)
 {
 
 	//Int32 mtl1, mtl2;

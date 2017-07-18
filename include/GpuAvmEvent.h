@@ -146,7 +146,7 @@ typedef enum
     DVR_MEDIA_BUTTOMLEFTVIEW_BUTTON, /*田字格左下视图按钮*/
     DVR_MEDIA_BUTTOMRIGHTVIEW_BUTTON, /*田字格右下试图按钮*/
     DVR_MEDIA_SINGLEVIEW_BUTTON, /*单视图状态按钮*/
-    DVR_MEDIA_MAX_NUM = 0xFFFFFFFF
+
 }DVR_EVENT_ELEMENT_ID_T;
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)

@@ -645,13 +645,13 @@ float  AVM2DLUT::GetCalibReslt(int index )
 	}
 }
 
-void AVM2DLUT::CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
+void AVM2DLUT::CvtPointImage2Wolrd(GpuCvPoint2D32f InPoint,GpuCvPoint2D32f *pOutPoint)
 {
      pOutPoint->x =  -((-InPoint.y*240+240)-m_calib_para[POS_CALIB_CX])*m_calib_para[POS_CALIB_PPMMX]/1000.0;
 	 pOutPoint->y = ((InPoint.x*108+108)-m_calib_para[POS_CALIB_CY])*m_calib_para[POS_CALIB_PPMMY]/1000.0;
 
 }
-void AVM2DLUT::CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
+void AVM2DLUT::CvtPointWorld2Image(GpuCvPoint2D32f InPoint,GpuCvPoint2D32f *pOutPoint)
 {
 
 	 pOutPoint->y = 1.0-(((InPoint.x*1000.0)/(0.0-m_calib_para[POS_CALIB_PPMMX])+m_calib_para[POS_CALIB_CX])/240.0);
@@ -659,7 +659,7 @@ void AVM2DLUT::CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
 
 }
 
-void AVM2DLUT::CvtPointWorld2ImageUnitmm(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint)
+void AVM2DLUT::CvtPointWorld2ImageUnitmm(GpuCvPoint2D32f InPoint,GpuCvPoint2D32f *pOutPoint)
 {
 
 	 pOutPoint->y = 1.0-(((InPoint.x)/(0.0-m_calib_para[POS_CALIB_PPMMX])+m_calib_para[POS_CALIB_CX])/240.0);

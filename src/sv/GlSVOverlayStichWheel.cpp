@@ -105,11 +105,11 @@ void GlSVOverlayStichWheel::CalcWheelCenterPosWld(float *pCenterPoseWld,vehicle_
 }
 
 
-void GlSVOverlayStichWheel::CalcWheelRect(CvPoint2D32f RectPointImg[],float *pPosCenter,vehicle_param veh_param,float wheel_turn_angle)
+void GlSVOverlayStichWheel::CalcWheelRect(GpuCvPoint2D32f RectPointImg[],float *pPosCenter,vehicle_param veh_param,float wheel_turn_angle)
 {
     float pWorld[8];
-	CvPoint2D32f RectPointWolrd[4];
-	CvPoint2D32f RectPointWldRot[4];
+	GpuCvPoint2D32f RectPointWolrd[4];
+	GpuCvPoint2D32f RectPointWldRot[4];
 
     RectPointWolrd[0].x = pPosCenter[0] - veh_param.vehicle_wheel_radius*cos(wheel_turn_angle)-veh_param.vehicle_wheel_width/2.0*sin(wheel_turn_angle);	
     RectPointWolrd[0].y = pPosCenter[1] - veh_param.vehicle_wheel_width/2.0*cos(wheel_turn_angle)+veh_param.vehicle_wheel_radius*sin(wheel_turn_angle);
@@ -160,7 +160,7 @@ void GlSVOverlayStichWheel::CalcWheelRect(CvPoint2D32f RectPointImg[],float *pPo
 }
 	
 
-int GlSVOverlayStichWheel::InitRectNode(CvPoint2D32f *RectPoint,INode **pNode,ISceneNode *pSeneNode,char *pTextureName,MaterialType MtlType,float **pBuffer)
+int GlSVOverlayStichWheel::InitRectNode(GpuCvPoint2D32f *RectPoint,INode **pNode,ISceneNode *pSeneNode,char *pTextureName,MaterialType MtlType,float **pBuffer)
 {
     
     int tempmaterialid;
@@ -197,7 +197,7 @@ int GlSVOverlayStichWheel::InitRectNode(CvPoint2D32f *RectPoint,INode **pNode,IS
 	pMeshTemp->UnLockData();
 	return 0;
 }
-int GlSVOverlayStichWheel::UpdateRectNode(CvPoint2D32f *RectPoint,INode *pNode,float *pBuffer)
+int GlSVOverlayStichWheel::UpdateRectNode(GpuCvPoint2D32f *RectPoint,INode *pNode,float *pBuffer)
 {
     
     int tempmaterialid;

@@ -30,7 +30,7 @@ public:
 	void Init2DGroundNodeRT(int j);
 	
 	int ProcessGroundCoord(float steering_wheel_angle,float vehicle_speed,float left_wheel_speed, float right_wheel_speed,unsigned char gear_state,int time_offset,float yaw_rate);
-	void UpdateGoundTextureCoord(CvPoint2D32f *pTextureIndex);
+	void UpdateGoundTextureCoord(GpuCvPoint2D32f *pTextureIndex);
 	//Update(unsigned char update_key_flag)
 	int SetEnable(unsigned char flag);
 	
@@ -39,7 +39,7 @@ public:
 	void Update2DStichRslt(void);
 
 private:
-		void Cvt4Point2Rect(float *pPoint,CvPoint2D32f *pRect);
+		void Cvt4Point2Rect(float *pPoint,GpuCvPoint2D32f *pRect);
 		//void CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
 		//void CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
 
@@ -79,8 +79,8 @@ private:
 	 float32_t m_Move_Matrix[ 9 ];
 	 XRMat3 m_transform_matrix_gpu;
 	 VehicleMotion *m_vehicle_motion;
-	 CvPoint2D32f m_Car_rect[4];
-	 CvPoint2D32f m_CarPoint_Image[4];
+	 GpuCvPoint2D32f m_Car_rect[4];
+	 GpuCvPoint2D32f m_CarPoint_Image[4];
 	 float m_adjust_ground_texture[4];
 	 
 };

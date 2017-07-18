@@ -4,8 +4,8 @@
 
 static char BaseTex[] = XR_RES"button.pvr";
 static char GlowTes[] = XR_RES"button.pvr";
-static Rect texRect1(0,0, 0.5, 1);
-static Rect texRect2(0.5,0, 0.5, 1);
+static XrRect texRect1(0,0, 0.5, 1);
+static XrRect texRect2(0.5,0, 0.5, 1);
 
 Int32 CXrGlowButton::baseMtlId = -1;
 Int32 CXrGlowButton::glowMtlId = -1;

@@ -8,7 +8,7 @@ public:
 	CXrSlideBar(Boolean isHorizontal);
 	~CXrSlideBar() {};
 	
-	virtual xr_state Add(class IUINode* node,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 width, Int32 height, Int32 mtl, Rect* barROI=0, Rect* sliderROI=0);
+	virtual xr_state Add(class IUINode* node,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 width, Int32 height, Int32 mtl, XrRect* barROI=0, XrRect* sliderROI=0);
 	Void InitMaterial(class IUINode* node);
 	virtual Void SetRange(Float32 low, Float32 high) { m_high = high, m_low = low; }
 	virtual Void* GetObject() { return (Void*)this; }

@@ -241,8 +241,8 @@ void AVMData::cvtWorldPoint2ModelPoint3D(float *out_Model_Coord,float *in_world_
 }
 void AVMData::cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord,unsigned char unitmm)
 {
-	CvPoint2D32f inPoint;
-	CvPoint2D32f outPoint;
+	GpuCvPoint2D32f inPoint;
+	GpuCvPoint2D32f outPoint;
 	inPoint.x = in_world_coord[0];
     inPoint.y = in_world_coord[1];
     if(unitmm == 1)

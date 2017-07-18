@@ -145,6 +145,11 @@ void AVMCANData::Get_Wheel_Pulse(unsigned short *pwheelpulse)
     }
 
 }
+CAN_DATA AVMCANData::GetCANData(void)
+{
+   return m_CAN_Data;
+}
+
 
 /*===========================================================================*\
  * External Object Definitions

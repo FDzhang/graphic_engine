@@ -23,10 +23,10 @@
 #define NO_POINT 3
 #define K_SLOP_GATE    1
 
-#define FINAL_PARKING_LOT_PARALLEL_LENGTH  4900
+#define FINAL_PARKING_LOT_PARALLEL_LENGTH  5700
 #define FINAL_PARKING_LOT_PARALLEL_WIDTH   2100
-#define FINAL_PARKING_LOT_VERTICAL_LEGNTH  4000
-#define FINAL_PARKING_LOT_VERTICAL_WIDTH   1800
+#define FINAL_PARKING_LOT_VERTICAL_LEGNTH  4500
+#define FINAL_PARKING_LOT_VERTICAL_WIDTH   1850
 #define SEACHING_SLOT_STEERING_GATE  180
 #define MIN_VEHICLE_WIDTH 1450
 #define SINGLE_EDGE_PARKING_LOT_LENGTH  7000
@@ -185,6 +185,15 @@ enum
 
 };
 
+enum
+{
+	UPLOAD_RIGHT_LOT=0,
+	UPLOAD_LEFT_LOT,
+	UPLOAD_BOTH_LOT,
+
+
+};
+
 typedef enum slot_searching_state
 {
     slot_searching_not_start=0,		
@@ -263,6 +272,8 @@ public:
 	void AddNewVehicleState(COMMON_VEHICLE_DATA_SIMPLE vehicle_state);
 	int GetPreviousVehicleState(COMMON_VEHICLE_DATA_SIMPLE *vehicle_state,int previous_index);
 	void DelayPointProcess(int delay_frame,float *pos);
+	void ProcessParkLotSearchLogic(void);
+
 private:
 
 	Sonar_Pos     m_sonar_pos[max_sonar_num];
@@ -296,6 +307,9 @@ private:
     int m_active_buffer_index[max_sonar_num]; 
     COMMON_VEHICLE_DATA_SIMPLE m_vehcle_state_buffer[VEHICLE_STATE_BUFFER_NUM];
 	int m_vehicle_state_buffer_index;
+	unsigned char m_lot_upload_left_right_flag;
+	unsigned char m_park_lot_reset_flag;
+	unsigned char m_input_track_flag;
 };
 
 #endif //#ifndef __GL_SV_DEMO_H__
