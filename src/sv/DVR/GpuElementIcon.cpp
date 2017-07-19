@@ -60,8 +60,8 @@ namespace GUI
             Int32 iconId = node->CreateUIMaterial(Material_UI_Spirit, m_iconTexture->texName);
             Int32 iconSpiritId = node->CreateSpirit(m_baseLayerId, InsertFlag_Child,
                                                     iconId, 1.0,
-                                                    m_iconTexture->pos_x,
-                                                    m_iconTexture->pos_y, 0,
+                                                    0,
+                                                    0, 0,
                                                     m_iconTexture->element_width,
                                                     m_iconTexture->element_height);
             m_iconLayer = node->GetLayer(iconSpiritId);
