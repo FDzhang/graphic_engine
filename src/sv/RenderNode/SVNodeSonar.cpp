@@ -880,7 +880,16 @@ unsigned char SVNodeSonar::CheckParkinglotSizewithType(sonar_parking_lot_t *pPar
 	unsigned char ret = PARKING_LOT_NOT_SIUTABLE;
 	if(pParklotData->lot_length>=FINAL_PARKING_LOT_PARALLEL_LENGTH)
 	{
-	    if(pParklotData->lot_width>=FINAL_PARKING_LOT_PARALLEL_WIDTH)
+        if(pParklotData->lot_width>=FINAL_PARKING_LOT_VERTICAL_LEGNTH)
+        {          
+	        pParklotData->parking_lot_type = PARKING_LOT_VERTICAL;
+
+		    pParklotData->lot_start_pos[0] = pParklotData->lot_end_pos[0]-pParklotData->lot_width+SINGLE_SIDE_PARKING_LOT_WIDTH;
+		    //pParklotData->lot_end_pos[1] = pParklotData->lot_start_pos[1] ; 
+
+			
+        }
+		else if(pParklotData->lot_width>=FINAL_PARKING_LOT_PARALLEL_WIDTH)
 	    {
 	        pParklotData->parking_lot_type = PARKING_LOT_PARALLEL;
 	    }
@@ -954,10 +963,13 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 	static unsigned char line_flag[MAX_PARKING_LOT_NUM]={0,};
 	static float first_enter_state_dist[MAX_PARKING_LOT_NUM]={0,};
 	static float first_enter_first_state_dist[MAX_PARKING_LOT_NUM]={0,};
+	static float first_no_top_bottom_no_point_distane[MAX_PARKING_LOT_NUM]={0,};
+	static unsigned char curent_state_no_point_entered_flag[MAX_PARKING_LOT_NUM]={0};
+    static unsigned char first_enter_no_top_bottom_flag[MAX_PARKING_LOT_NUM]={1,};
 	unsigned char line_type;
 	unsigned char edge_type;
 	void *pSetData;
-	float slop=1.0;
+	float slop=1000.0;
 	float fdata;
 	int idata;
 	if(empty_flag == 1)
@@ -1027,6 +1039,18 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 					fdata = m_sonar_obj_list[sonar_index][2 * (*obj_id+1 ) + 1];					
 					SetParkSlotInfo(park_lot_index, park_lot_dist_cross, (void *)&fdata);
     			   line_type = EDGE_TYPE_NO_TOP_BOTTOM;
+				     if(curent_state_no_point_entered_flag[park_lot_index]==1
+					 	&&AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist()-first_no_top_bottom_no_point_distane[sonar_index]>=SINGLE_SIDE_PARKING_LOT_WIDTH )
+				     {
+						 uc_no_top_bottom_turn_flag[sonar_index] = 2;
+						 idata = *obj_id;
+						 SetParkSlotInfo(park_lot_index,park_lot_bottom_before_turn_id,(void *)&idata); 	  
+						 float drive_dist = AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist()-first_no_top_bottom_no_point_distane[sonar_index];
+						 SetParkSlotInfo(park_lot_index,park_lot_drive_dist,(void *)&drive_dist);
+					     line_type = EDGE_TYPE_TOP_BOTTOM;
+
+					 
+				     }
     			break;
     			case NO_POINT:
 					if (obstacle_appeared_flag[park_lot_index] == 1)
@@ -1041,10 +1065,16 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 					}
 					else
 					{                      
+					    if(pre_point_type[sonar_index]!= NO_POINT||first_enter_no_top_bottom_flag[sonar_index]==1)
+					    {
+					        first_no_top_bottom_no_point_distane[sonar_index] = AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist();
+							curent_state_no_point_entered_flag[park_lot_index]=1;
+					    }
 						line_type = EDGE_TYPE_NO_TOP_BOTTOM;
 					}
     			break;
             }
+			first_enter_no_top_bottom_flag[sonar_index] = 0;
     	}
      	else if(pre_line_type[park_lot_index] == EDGE_TYPE_TOP_TURN)
     	{
@@ -1159,7 +1189,31 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 				uc_no_bottom_turn_flag[park_lot_index]=1;
 				
 			}
+			else if (AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist() - first_enter_state_dist[park_lot_index] >= SINGLE_SIDE_PARKING_LOT_WIDTH
+				)
+			{
+				if (fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_width) > fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_cross) + 6000
+					|| fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_width )== EMPTY_POINT_DEFAULT_DIST)
+				{
+					line_type = EDGE_TYPE_TOP_BOTTOM;
+					drive_dist = AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist() - first_enter_state_dist[park_lot_index];
+					//fdata = m_sonar_obj_list[sonar_index][2*((*obj_id+1)%MAX_SONAR_OBJ_NUM)+1];
 
+					fdata = m_sonar_obj_list[sonar_index][2*(((*obj_id + 1) % MAX_SONAR_OBJ_NUM))+1];
+					if (idata != MAX_SONAR_OBJ_NUM + 1)
+					{
+						SetParkSlotInfo(park_lot_index, park_lot_bottom_before_turn_id, (void *)&idata);
+					}
+					else
+					{
+						SetParkSlotInfo(park_lot_index, park_lot_bottom_before_turn_id, (void *)&idata);
+						SetParkSlotInfo(park_lot_index, park_lot_bottom_after_turn_id, (void *)&idata);
+						SetParkSlotInfo(park_lot_index, park_lot_drive_dist, (void *)&drive_dist);
+
+					}
+					uc_no_bottom_turn_flag[park_lot_index] = 1;
+				}
+			}
             
     	}  	
      	else if(pre_line_type[park_lot_index] == EDGE_TYPE_BOTTOM_TURN)
@@ -1209,7 +1263,8 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 						{
 							SetParkSlotInfo(park_lot_index, park_lot_bottom_after_turn_id, (void *)&idata);
 							fdata = AVMData::GetInstance()->m_p_can_data->Get_Drive_Dist() - first_enter_first_state_dist[park_lot_index];
-							if (fdata >= FINAL_PARKING_LOT_PARALLEL_LENGTH)
+							if (fdata >= FINAL_PARKING_LOT_PARALLEL_LENGTH||(fdata>=SINGLE_SIDE_PARKING_LOT_WIDTH&&(fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_width) > fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_cross) + 6000
+								|| fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_width )== EMPTY_POINT_DEFAULT_DIST)))
 							{
 								SetParkSlotInfo(park_lot_index, park_lot_drive_dist, (void *)&fdata);
 								if (fabs(m_sonar_obj_list[sonar_index][2 * (*obj_id)+1])<fabs(m_slot_data[m_active_buffer_index[park_lot_index]][park_lot_index].dist_cross)
@@ -1267,11 +1322,11 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
     	} 
     	else
     	{
-    	    if(fabs(slop) < 0.1)
+    	    if(fabs(slop) < 0.5||fabs(slop) ==1000)
     	    {
     	        
     			slot_ok_cnt[park_lot_index]++;
-				if(slot_ok_cnt[park_lot_index]>=3)
+				if(slot_ok_cnt[park_lot_index]>=0)
 				{
     	            line_flag[park_lot_index] = 1;
 				}
@@ -1343,6 +1398,10 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
     		}	
 	
 		    }
+			else
+			{
+			    slot_ok_cnt[park_lot_index]++;
+		    }
 	    }
         if(pre_line_type[park_lot_index] == EDGE_TYPE_TOP_NO_BOTTOM)
         {
@@ -1370,6 +1429,7 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 		}
 		//else
 		//AVMData::GetInstance()->m_p_can_data->ResetDriveDist();  	
+		first_enter_no_top_bottom_flag[sonar_index]=1;
 		idata=MAX_SONAR_OBJ_NUM+1;
 		
 		SetParkSlotInfo(park_lot_index,park_lot_bottom_after_turn_id,(void *)&idata);									
@@ -1378,6 +1438,7 @@ unsigned char SVNodeSonar::JudgeObjLine(int filter_num,int sonar_index,int *obj_
 		SetParkSlotInfo(park_lot_index,park_lot_top_after_turn_id,(void *)&idata);	
 		idata = (m_sonar_obj_list_end[sonar_index]+MAX_SONAR_OBJ_NUM-1)%MAX_SONAR_OBJ_NUM;
 		obstacle_appeared_flag[park_lot_index] = 0;
+		curent_state_no_point_entered_flag[park_lot_index]=0;
 		
 		if (*obj_id >= MAX_SONAR_OBJ_NUM || *obj_id <0)
 		{
@@ -1475,7 +1536,14 @@ void SVNodeSonar::SetParkSlotInfo(int park_lot_index,park_lot_property property_
 			}
         break;
         case park_lot_dist_width:			
-			m_slot_data[buffer_index][park_lot_index].dist_width=*((float *)pData);
+			if(fabs(*((float *)pData))!=0)
+			{
+			    m_slot_data[buffer_index][park_lot_index].dist_width=*((float *)pData);
+			}
+			else
+			{
+			    m_slot_data[buffer_index][park_lot_index].dist_width = EMPTY_POINT_DEFAULT_DIST;
+			}
         break;				
         case park_lot_dist_cross_avg:
 			m_slot_data[buffer_index][park_lot_index].dist_cross = (*((float *)pData) + m_slot_data[buffer_index][park_lot_index].dist_cross) / 2.0;
