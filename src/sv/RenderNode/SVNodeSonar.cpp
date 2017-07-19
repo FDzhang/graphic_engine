@@ -410,17 +410,17 @@ void SVNodeSonar::SetRadarPLDReslt()
 	{
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nParkingGarageID=RadarPldRslt.nParkingGarageNum;
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nType = m_sonar_parking_lot[front_right_side_sonar].parking_lot_type ;
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_bottom];
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_bottom+1];	
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_bottom]/1000.0;
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_bottom+1]/1000.0;	
 		
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_bottom];
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_bottom+1];
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_bottom]/1000.0;
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_bottom+1]/1000.0;
 		
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_top];
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_top+1];	
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_top]/1000.0;
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].y = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_top+1]/1000.0;	
 		
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top] ;
-        RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1];
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top]/1000.0 ;
+        RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1]/1000.0;
 		
 		
 		RadarPldRslt.nParkingGarageNum++;
@@ -432,17 +432,17 @@ void SVNodeSonar::SetRadarPLDReslt()
 	{
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nParkingGarageID=RadarPldRslt.nParkingGarageNum;
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nType = m_sonar_parking_lot[front_left_side_sonar].parking_lot_type ;
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_bottom];
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].y = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_bottom+1];	
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_bottom]/1000.0;
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[0].y = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_bottom+1]/1000.0;	
 		
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_bottom];
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].y = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_bottom+1];
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_bottom]/1000.0;
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[1].y = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_bottom+1]/1000.0;
 		
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_top];
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].y = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_top+1];	
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_top]/1000.0;
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[2].y = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_near_top+1]/1000.0;	
 		
-    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top] ;
-        RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1];
+    	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top]/1000.0;
+        RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1]/1000.0;
 		
 		
 		RadarPldRslt.nParkingGarageNum++;
