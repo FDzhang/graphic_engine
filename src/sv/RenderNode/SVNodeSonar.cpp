@@ -2240,7 +2240,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 
 		
     }
-	//DrawParkLot();
+	DrawParkLot();
 
 	SetRadarPLDReslt();
 	MessageBus_SetTopic("Radar_Obj_Pos",&obj_pos_rslt,sizeof(Sonar_Obj_Pos));
