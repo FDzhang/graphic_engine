@@ -45,11 +45,11 @@ namespace GUI
                     const uint32_t element_width, const uint32_t element_height);
         void SetTexture(const IGUITexture* effect, const long style);
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
-        void Enable(bool enable) { /*m_baseLayer->SetEnable(enable);*/}
+        void Enable(bool enable) { m_baseLayer->SetEnable(enable);}
     private:
         IGUITexture* m_iconTexture;
         ILayer*      m_iconLayer;
-
+        ILayer*      m_baseLayer;
         long         m_iconStyle;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUIcon, IGUIElement)
