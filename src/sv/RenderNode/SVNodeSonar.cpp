@@ -2119,6 +2119,11 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 				{
 				    m_sonar_data[i].show_flag = 0;
 				}
+				
+				if(obj_dist[i]>2500||i==rear_left_side_sonar||i==rear_right_side_sonar)
+				{			    
+					m_sonar_arc_data[i].show_flag =0;
+				}
 
 			 }
 			
@@ -2208,6 +2213,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 
 		  	
 		}
+	
 		if(j!=front_left_side_sonar&&j!=front_right_side_sonar&&m_sonar_arc_data[j].show_flag == 1) 
 		{
 		   UpdateSonarArc(obj_dist[j],(sonar_index)j);
