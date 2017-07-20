@@ -2252,7 +2252,7 @@ void SVScene::InitViewNode()
 
 
 }
-static GLfloat fVerticesLastChange[32];
+
 void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 {
 
@@ -2311,7 +2311,7 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
         pSV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);
         pMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
         m_singleviewMesh[i - eFrontSingle] = pMesh;
-        memcpy(fVerticesLastChange, pData, 28 * sizeof(GLfloat));
+
         //step 3 combine mesh and material(video texture) together.
         materialID = 5;
 
@@ -3724,10 +3724,11 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
                 break;
         }
         XRVertexLayout data_format;
-        float* pVertexData = NULL;
+        float* pVertexData = NULL , *pData = NULL;
         Int32 iCount = 0;
+        m_SV2DData->GetVertexBuffer(offset, &pData, &iCount);
         m_singleviewMesh[offset]->LockData(&pVertexData, &data_format, &iCount);
-        memcpy(pVertexData, fVerticesLastChange, 28 * sizeof(GLfloat));
+        memcpy(pVertexData, pData, 28 * sizeof(GLfloat));
         m_singleviewMesh[offset]->UnLockData();
     }
 	else if(Input == CROSS_IMAGE_VIEW)
@@ -4658,7 +4659,6 @@ int SVScene::SwitchSingleView(int view_control_flag)
     float* pVertexData = NULL;
     Int32 iCount = 0;
     m_singleviewMesh[offset]->LockData(&pVertexData, &data_format, &iCount);
-    memcpy(fVerticesLastChange, pVertexData, 28 * sizeof(GLfloat));
     memcpy(pVertexData, viewmatrix, 28 * sizeof(GLfloat));
     m_singleviewMesh[offset]->UnLockData();
 }
