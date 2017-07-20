@@ -290,6 +290,7 @@ private:
 	class SVNodeCrossImage *m_crossImage;
 
 	IMesh*				m_planeMesh;
+    IMesh*              m_singleviewMesh[4];
 	IMesh*				m_lisenceMesh;
 	IMesh*				m_wheelMesh;
 	IMesh*				m_arrowMesh;

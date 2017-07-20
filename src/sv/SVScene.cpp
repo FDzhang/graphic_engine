@@ -2252,7 +2252,7 @@ void SVScene::InitViewNode()
 
 
 }
-
+static GLfloat fVerticesLastChange[32];
 void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 {
 
@@ -2304,14 +2304,14 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
     for(int i = eFrontSingle;i<=eRightSingle;i++)
     {
         //step 2 prepare mesh for 2D stiching
-
+        IMesh* pMesh = NULL;
         pSV2DData->GetVertexBuffer(i,&pData,&BufferSize);
-        meshid = m_2DSingleViewNode->CreateMesh(ModelType_Null, 1,0,0,MeshName[i-eFrontSingle], &m_planeMesh);
-        m_planeMesh->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
+        meshid = m_2DSingleViewNode->CreateMesh(ModelType_Null, 1,0,0,MeshName[i-eFrontSingle], &pMesh);
+        pMesh->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
         pSV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);
-        m_planeMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
-
-
+        pMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
+        m_singleviewMesh[i - eFrontSingle] = pMesh;
+        memcpy(fVerticesLastChange, pData, 28 * sizeof(GLfloat));
         //step 3 combine mesh and material(video texture) together.
         materialID = 5;
 
@@ -3694,33 +3694,41 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
         m_2DSingleViewNode->SetEnable(1);
 		SetSingleViewCamPos(Input);
 		//m_2DAVMNode->SetClear(TRUE,TRUE);
+        int offset = 0;
         switch (Input)
         {
             case FRONT_SINGLE_VIEW:
                 // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWFRONT);
                 //m_SV2Dplane[eFrontSingle]->SetEnable(0);
                 sv2Ddelegate->SetChannel(front_camera_index);
+                offset = 0;
                 //m_overlay_2d_single->SetEnable(1);
                 break;
             case REAR_SINGLE_VIEW:
                 //m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWREAR);
                 sv2Ddelegate->SetChannel(rear_camera_index);
+                offset = 1;
                 //m_overlay_2d_single->SetEnable(1);
                 break;
             case LEFT_SINGLE_VIEW:
                 // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWLEFT);
                 sv2Ddelegate->SetChannel(left_camera_index);
                 m_overlay_2d_single->SetEnable(0);
+                offset = 2;
                 break;
             case RIGHT_SINGLE_VIEW:
                 // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWRIGHT);
                 sv2Ddelegate->SetChannel(right_camera_index);
                 m_overlay_2d_single->SetEnable(0);
-
+                offset = 3;
                 break;
         }
-
-
+        XRVertexLayout data_format;
+        float* pVertexData = NULL;
+        Int32 iCount = 0;
+        m_singleviewMesh[offset]->LockData(&pVertexData, &data_format, &iCount);
+        memcpy(pVertexData, fVerticesLastChange, 28 * sizeof(GLfloat));
+        m_singleviewMesh[offset]->UnLockData();
     }
 	else if(Input == CROSS_IMAGE_VIEW)
 	{
@@ -4557,8 +4565,43 @@ int SVScene::SwitchCrossView()
     m_last_view = 0xff; //保证切换到SVScene::Update时 ， 一定执行更新
 }
 
+//dota2_black: 单视图全屏回放模式
+static GLfloat fVerticesOriginFront[]={
+	-1,  1, -1.0, 0, 1,1.0,0.0,
+     1,  1, -1.0, 1, 1,1.0,0.0,
+    -1, -1, -1.000000, 0, 0, 1.0,0.0,
+     1, -1, -1.000000, 1, 0,1.0,0.0,
+};
+
+static GLfloat fVerticesOriginRear[] = {
+	-1,  1, -1.000000, 0, 1,1.0,0.0,
+     1,  1, -1.000000, 1, 1,1.0,0.0,
+    -1, -1, -1.000000, 0, 0,1.0,0.0,
+     1, -1, -1.000000, 1, 0,1.0,0.0,
+};
+
+static GLfloat fVerticesOriginLeft[] = {
+    -1,  1, -1.000000, 0, 1,1.0,0.0,
+     1,  1, -1.000000, 1, 1,1.0,0.0,
+    -1, -1, -1.000000, 0, 1,1.0,0.0,
+     1, -1, -1.000000, 1, 0,1.0,0.0,
+};
+
+static GLfloat fVerticesOriginRight[] = {
+    -1,  1, -1.000000, 0, 1,1.0,0.0,
+     1,  1, -1.000000, 1, 1,1.0,0.0,
+    -1, -1, -1.000000, 0, 0,1.0,0.0,
+     1, -1, -1.000000, 1, 0,1.0,0.0,
+};
+
+#include "log/log.h"
 int SVScene::SwitchSingleView(int view_control_flag)
 {
+    if(m_last_view == view_control_flag)
+    {
+        return 0;
+    }
+    //第一步: 初始化所有node
     m_2DAVMNode->SetEnable(0);
     m_pAdasHmi->SetEnable(0);
     m_sceneNode->SetEnable(0);
@@ -4572,40 +4615,53 @@ int SVScene::SwitchSingleView(int view_control_flag)
     for(int index = 0; index < 8; index++)
         m_RadarAlarm_Node_single[index]->SetEnable(0);
 
-    m_last_view = 0xff; //保证切换到SVScene::Update时 ， 一定执行更新
+    m_last_view = view_control_flag; //保证切换到SVScene::Update时 ， 一定执行更新
     Region fullscreenROI(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
+
+    //第二步: 更改 fVerticesSingleView , 修改纹理mesh区域(不进行处理)
+    Int32 offset = 0; float* viewmatrix = NULL;
     switch(view_control_flag)
     {
         case 0xf0:
             sv2Ddelegate->SetChannel(front_camera_index);
             SetSingleViewCamPos(FRONT_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-            
+            //修改前视图
+            offset = 0; viewmatrix = fVerticesOriginFront;
             break;
         case 0xf1:
             sv2Ddelegate->SetChannel(rear_camera_index);
             SetSingleViewCamPos(REAR_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-
+            //修改后视图
+            offset = 1; viewmatrix = fVerticesOriginRear;
             break;
         case 0xf2:
             sv2Ddelegate->SetChannel(left_camera_index);
             SetSingleViewCamPos(LEFT_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-
+            //修改左视图
+            offset = 2; viewmatrix = fVerticesOriginLeft;
             break;
         case 0xf3:
             sv2Ddelegate->SetChannel(right_camera_index);
             SetSingleViewCamPos(RIGHT_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-
+            //修改右视图
+            offset = 3; viewmatrix = fVerticesOriginRight;
             break;
         default:
             return 0;
+            break;
     }
 
-
-    
+    XRVertexLayout  data_format;
+    float* pVertexData = NULL;
+    Int32 iCount = 0;
+    m_singleviewMesh[offset]->LockData(&pVertexData, &data_format, &iCount);
+    memcpy(fVerticesLastChange, pVertexData, 28 * sizeof(GLfloat));
+    memcpy(pVertexData, viewmatrix, 28 * sizeof(GLfloat));
+    m_singleviewMesh[offset]->UnLockData();
 }
 
 int SVScene::Update(int view_control_flag, int param2)
