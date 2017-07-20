@@ -5046,10 +5046,10 @@ int SVScene::UpdateRadarAlarm(void)
     	else
     	{
 
-    		m_RadarAlarm_Node_2d[i]->SetEnable(1);
-    		m_RadarAlarm_Mesh_2d[i]->UnLockData();
+    		//m_RadarAlarm_Node_2d[i]->SetEnable(1);
+    		//m_RadarAlarm_Mesh_2d[i]->UnLockData();
 
-			m_RadarAlarm_Mtl_2d[i]->SetDiffuseMap(RADARALARMTEX[ucAlarm-1]);
+			//m_RadarAlarm_Mtl_2d[i]->SetDiffuseMap(RADARALARMTEX[ucAlarm-1]);
     	}
     }
     for(int i=0;i<8;i++)
