@@ -2151,8 +2151,8 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 				if( CalcMultiSonarObj(new_obj_pos, obj_dist, (sonar_index)i))
 				{
 				
-				obj_pos_rslt.sonar_obj_pos[2*i]=new_obj_pos[0]; 		
-				obj_pos_rslt.sonar_obj_pos[2*i+1]=new_obj_pos[1];
+				//obj_pos_rslt.sonar_obj_pos[2*i]=new_obj_pos[0]; 		
+				//obj_pos_rslt.sonar_obj_pos[2*i+1]=new_obj_pos[1];
 				 m_sonar_draw_obj_list_end[i]=0;
 
 				 m_sonar_draw_obj_list[i][2 * m_sonar_draw_obj_list_end[i]] = new_obj_pos[0];
@@ -2243,9 +2243,9 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	m_filter_time =2;
 	int obj_num;
 	
-	m_sonar_data[front_right_side_sonar].show_flag = 1;
+	m_sonar_data[front_right_side_sonar].show_flag = 0;
 	
-	m_sonar_data[front_left_side_sonar].show_flag = 1;
+	m_sonar_data[front_left_side_sonar].show_flag = 0;
     for(int j=0;j<max_sonar_num;j++)
     {
 		//m_sonar_data[j].show_flag = 1;
@@ -2314,7 +2314,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 
 		
     }
-	DrawParkLot();
+	//DrawParkLot();
 
 	SetRadarPLDReslt();
 	MessageBus_SetTopic("Radar_Obj_Pos",&obj_pos_rslt,sizeof(Sonar_Obj_Pos));
