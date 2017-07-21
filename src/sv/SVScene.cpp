@@ -3702,13 +3702,13 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
                 //m_SV2Dplane[eFrontSingle]->SetEnable(0);
                 sv2Ddelegate->SetChannel(front_camera_index);
                 offset = 0;
-                //m_overlay_2d_single->SetEnable(1);
+                m_overlay_2d_single->SetEnable(1);
                 break;
             case REAR_SINGLE_VIEW:
                 //m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWREAR);
                 sv2Ddelegate->SetChannel(rear_camera_index);
                 offset = 1;
-                //m_overlay_2d_single->SetEnable(1);
+                m_overlay_2d_single->SetEnable(1);
                 break;
             case LEFT_SINGLE_VIEW:
                 // m_SVSingleMtl->SetDiffuseMap(ARROUNDVIEWLEFT);
@@ -3726,7 +3726,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
         XRVertexLayout data_format;
         float* pVertexData = NULL , *pData = NULL;
         Int32 iCount = 0;
-        m_SV2DData->GetVertexBuffer(offset, &pData, &iCount);
+        m_SV2DData->GetVertexBuffer(eFrontSingle + offset, &pData, &iCount);
         m_singleviewMesh[offset]->LockData(&pVertexData, &data_format, &iCount);
         memcpy(pVertexData, pData, 28 * sizeof(GLfloat));
         m_singleviewMesh[offset]->UnLockData();
