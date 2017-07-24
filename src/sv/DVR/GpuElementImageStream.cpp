@@ -33,6 +33,7 @@ namespace GUI
         ,m_thumbnail_texture(NULL)
         ,m_thumbnailMtl(NULL)
         ,m_raw_image(NULL)
+        ,m_image_layer(NULL)
     {
     }
 
@@ -64,15 +65,16 @@ namespace GUI
             {
                 //从文件中载入缩略图背景图
                 IXrCore* core = GetXrCoreInterface();
-                core->GetDeviceManager(&m_pIdm);            
+                core->GetDeviceManager(&m_pIdm);
+
                 Int32 texId = m_pIdm->CreateTexture(m_raw_image,
                                                     m_thumbnail_texture->element_width,
                                                     m_thumbnail_texture->element_height,
-                                                    XR_R8G8B8,
-                                                    XR_SAMPLER_CLAMP | XR_SAMPLER_LINEAR, 1);
-
+                                                    XR_R8G8B8A8,
+                                                    XR_SAMPLER_CLAMP | XR_SAMPLER_LINEAR, 0);
                 Int32 mtlId = node->CreateMaterial(Material_UI_Spirit, &m_thumbnailMtl);
                 m_thumbnailMtl->SetDiffuseMap(texId);
+
                 Int32 thumbnailId = node->CreateSpirit(parent, flag,
                                                        mtlId, 1.0,
                                                        m_thumbnail_texture->pos_x,
@@ -80,8 +82,8 @@ namespace GUI
                                                        0,
                                                        m_thumbnail_texture->element_width,
                                                        m_thumbnail_texture->element_height);
-                ILayer* layer = node->GetLayer(thumbnailId);
-                layer->SetEventResponder(this);
+                m_image_layer = node->GetLayer(thumbnailId);
+                m_image_layer->SetEventResponder(this);
             }
             else
             {
@@ -93,7 +95,7 @@ namespace GUI
     void CGPUImageStream::SetTexture(const IGUITexture* effect, const long style)
     {
         m_thumbnail_texture = &(((IGUITexture*)effect)[0]);
-        m_raw_image = (char*)malloc(m_thumbnail_texture->element_width * m_thumbnail_texture->element_height * 3);
+        m_raw_image = (char*)malloc(m_thumbnail_texture->element_width * m_thumbnail_texture->element_height * 4);
     }
 
     char* CGPUImageStream::GetImageRawData(uint32_t* width, uint32_t* height)
@@ -108,7 +110,7 @@ namespace GUI
         glBindTexture(GL_TEXTURE_2D,  m_thumbnailMtl->GetDiffuseMap()->texid);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
                         m_thumbnail_texture->element_width,
-                        m_thumbnail_texture->element_height, GL_RGB, GL_UNSIGNED_BYTE, m_raw_image);
+                        m_thumbnail_texture->element_height, GL_RGBA, GL_UNSIGNED_BYTE, m_raw_image);
     }
     Boolean CGPUImageStream::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {

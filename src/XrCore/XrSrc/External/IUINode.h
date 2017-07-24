@@ -32,7 +32,7 @@ public:
 		/* [in] */ Float32 opacity,
 		/* [in] */ Float32 x,
         /* [in] */ Float32 y,
-		/* [in] */ Rect* roi=0,
+		/* [in] */ XrRect* roi=0,
         /* [in] */ Float32 width=0,
         /* [in] */ Float32 height=0,
 		/* [in] */ Float32 z=0)=0;

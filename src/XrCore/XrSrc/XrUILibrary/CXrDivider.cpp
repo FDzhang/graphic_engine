@@ -48,7 +48,7 @@ xr_state CXrDivider::Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag
 	IMaterial* mtl=0;
 	m_mtlId = node->CreateMaterial(Material_UI_Spirit, &mtl);
 
-	Rect roi;
+	XrRect roi;
     for(Int32 i =0;i<num;i++)
     {
     	if (m_isHorizontal) {

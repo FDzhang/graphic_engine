@@ -22,16 +22,17 @@
 #define MIN(x, y) ((x) > (y)?(y):(x))
 #endif
 /* constructs CvPoint2D32f structure. */
-inline  CvPoint2D32f  cvPoint2D32f(float32_t x, float32_t y)
+#if 0
+inline  GpuCvPoint2D32f  GpuCvPoint2D32f(float32_t x, float32_t y)
 {
-	CvPoint2D32f p;
+	GpuCvPoint2D32f p;
 
 	p.x = (float)x;
 	p.y = (float)y;
 
 	return p;
 }
-
+#endif
 
 class VehicleMotion
 {
@@ -68,13 +69,13 @@ void Motion2KframePredictVCS(
 	float32_t thresh_dist_kframe
 	);
 	void getPos2Kframe(
-		CvPoint2D32f pointIn,
+		GpuCvPoint2D32f pointIn,
 		float32_t m[9],
-		CvPoint2D32f &pointOut
+		GpuCvPoint2D32f &pointOut
 		);
 	
 	float get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data);
-	void get_new_point_from_Vhichle_data(Point2f pts[MAXPOINTNUM], COMMON_VEHICLE_DATA_SIMPLE * v_data, float g_PLD_time_Offset_in);
+	void get_new_point_from_Vhichle_data(Gpu_Point2f pts[MAXPOINTNUM], COMMON_VEHICLE_DATA_SIMPLE * v_data, float g_PLD_time_Offset_in);
 private:
 	int get_driving_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data);
 	int get_turn_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data);

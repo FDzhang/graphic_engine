@@ -44,6 +44,7 @@ INCLUDE_DIRECTORIES(${J6_ROOTFS}/usr/include ${J6_ROOTFS}/usr/include/freetype2
                     ${j6armcomm_INCLUDE_DIR} ${j6armcomm_INCLUDE_DIR}/avm .
                     ${algorithm_INCLUDE_DIR}/
                     ${algorithm_INCLUDE_DIR}/common
+		    ${algorithm_INCLUDE_DIR}/../src/alg/apa/interface
                     )
 LINK_DIRECTORIES(${J6_ROOTFS}/lib ${J6_ROOTFS}/usr/lib)
 

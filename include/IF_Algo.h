@@ -47,8 +47,10 @@ public:
      */
     virtual void Enable(bool flag) = 0;
     /**
-     * \brief 更新进度条位置
+     * \brief 更新Algo Apa
      */
+    virtual void EnableApaDemoPicture(int flag) = 0; 
+    
 };
 
 //! 接口函数

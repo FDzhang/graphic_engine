@@ -792,7 +792,7 @@ struct LayerTraverseInfo {
     }
 
     class CLayer*     layer;
-    Rect   clipRect;
+    XrRect   clipRect;
     Float32       x;
     Float32       y;
 	Float32       z;

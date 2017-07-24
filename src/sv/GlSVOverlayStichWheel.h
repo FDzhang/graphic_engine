@@ -20,18 +20,18 @@ public:
 	GlSVOverlayStichWheel();
 
 	int Init(ISceneNode *pSeneNode,char *pFilePath,vehicle_param in_vehicle_param);
-	int InitRectNode(CvPoint2D32f *RectPoint,INode **pNode,ISceneNode *pSeneNode,char *pTextureName,MaterialType MtlType,float **pBuffer);
+	int InitRectNode(GpuCvPoint2D32f *RectPoint,INode **pNode,ISceneNode *pSeneNode,char *pTextureName,MaterialType MtlType,float **pBuffer);
 	int Update(float steering_angle);
-	int UpdateRectNode(CvPoint2D32f *RectPoint,INode *pNode,float *pBuffer);
+	int UpdateRectNode(GpuCvPoint2D32f *RectPoint,INode *pNode,float *pBuffer);
 	void CalcWheelCenterPosWld(float *pCenterPoseWld,vehicle_param veh_param);
-	void CalcWheelRect(CvPoint2D32f RectPointImg[],float *pPosCenter,vehicle_param veh_param,float wheel_turn_angle);
+	void CalcWheelRect(GpuCvPoint2D32f RectPointImg[],float *pPosCenter,vehicle_param veh_param,float wheel_turn_angle);
 
 
 private:
 
     char m_stich_wheel_texture[MAX_NAME_LENGTH];
 	float m_CenterPoint[8];
-	CvPoint2D32f  m_wheel_rect_image[4];
+	GpuCvPoint2D32f  m_wheel_rect_image[4];
 	float *m_pBuffer[4];
 
 	INode *m_pWheelRectNode[4];

@@ -412,9 +412,9 @@ void SVNode2DStich::InitStichKeyFrameNodeRT(int j)
 	else
 	{
 	
-	    CvPoint2D32f CarPoint_Image_Temp[4];
+	    GpuCvPoint2D32f CarPoint_Image_Temp[4];
 		
-	    CvPoint2D32f CarPoint_Image_Texture[4];
+	    GpuCvPoint2D32f CarPoint_Image_Texture[4];
     	CalcShadowTextureCoord(car_rect_image,car_rect_adjust,texture);
 	    Cvt4Point2Rect(car_rect_image,CarPoint_Image_Temp);
 		
@@ -465,12 +465,12 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 	float car_rect_image[4];
 	float car_rect_world[4];
 	float car_rect_adjust[4];
-	CvPoint2D32f CarPoint[4];
+	GpuCvPoint2D32f CarPoint[4];
 	static int pre_time=0;
 	static int init_flag = 0;
 	int present_time=0;
-	CvPoint2D32f WorldInPoint[4];
-	CvPoint2D32f WorldOutPoint[4];
+	GpuCvPoint2D32f WorldInPoint[4];
+	GpuCvPoint2D32f WorldOutPoint[4];
 	int update_key_frame_flag;
 
     present_time = XrGetTime();
@@ -547,7 +547,7 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 		
 }
 
-void SVNode2DStich::Cvt4Point2Rect(float *pPoint,CvPoint2D32f *pRect)
+void SVNode2DStich::Cvt4Point2Rect(float *pPoint,GpuCvPoint2D32f *pRect)
 {
      pRect[LEFT_BOTTOM_POINT_INDEX].x=pPoint[rect_left];
 	 pRect[LEFT_BOTTOM_POINT_INDEX].y=pPoint[rect_bottom];
@@ -594,7 +594,7 @@ void SVNode2DStich::CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutP
 #endif
 
 
-void SVNode2DStich::UpdateGoundTextureCoord(CvPoint2D32f *pTextureIndex)
+void SVNode2DStich::UpdateGoundTextureCoord(GpuCvPoint2D32f *pTextureIndex)
 {
     float *pVertexData;
 	XRVertexLayout  data_format;

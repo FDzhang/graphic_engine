@@ -540,6 +540,10 @@ int OnMouseSingleMove(int x,int y)
 
 void UpdateGPUMdlCANData(CAN_DATA in_CAN_data)
 {
+    in_CAN_data.radar_alarm[0]=0;
+	in_CAN_data.radar_alarm[3]=0;
+	in_CAN_data.radar_alarm[5]=0;
+	in_CAN_data.radar_alarm[6]=0;
     AVMData::GetInstance()->m_p_can_data->UpdateCANData(in_CAN_data);
 }
 

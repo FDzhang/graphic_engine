@@ -87,6 +87,7 @@ public:
 	
 	void ResetDriveDist(void);
 	unsigned int GetTimeStamp(void);
+	CAN_DATA GetCANData(void);
 
 	CAN_DATA m_CAN_Data;
 	float m_drive_distance;

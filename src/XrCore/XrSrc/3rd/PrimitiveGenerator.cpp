@@ -133,7 +133,7 @@ Float32* GenPlaneMeshH(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh* mesh, 
 	Int32 x, y;
 	Float32* PlaneVBO = (Float32*)malloc(dx*dy*8*4);
 	UInt16* PlaneIBO = (UInt16*)malloc((dx-1)*(dy-1)*6*2);
-	Rect uv;
+	XrRect uv;
 	if (roi) uv = *roi;
 	else uv.Set(0,0,1,1);
 
@@ -197,7 +197,7 @@ Float32* GenPlaneMeshV(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh* mesh, 
 	Int32 x, y;
 	Float32* PlaneVBO = (Float32*)malloc(dx*dy*8*4);
 	UInt16* PlaneIBO = (UInt16*)malloc((dx-1)*(dy-1)*6*2);
-	Rect uv;
+	XrRect uv;
 	if (roi) uv = *roi;
 	else uv.Set(0,0,1,1);
 
@@ -262,7 +262,7 @@ Float32* GenPlaneDynamicMeshV(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh*
 	Int32 x, y;
 	Float32* PlaneVBO = (Float32*)malloc(dx*dy*8*4);
 	UInt16* PlaneIBO = (UInt16*)malloc((dx-1)*(dy-1)*6*2);
-	Rect uv;
+	XrRect uv;
 	if (roi) uv = *roi;
 	else uv.Set(0,0.1,1,0.9);
 
@@ -346,7 +346,7 @@ Float32* GenPlaneArcPlaneMeshV(Float32 r, Float32 s_a, Float32 e_a,  CMesh* mesh
 	
 	Float32* PlaneVBO = (Float32*)malloc((point_num+1)*8*4);
 	UInt16* PlaneIBO = (UInt16*)malloc((point_num-1)*3*2);
-	Rect uv;
+	XrRect uv;
 	if (roi) uv = *roi;
 	else uv.Set(0,0.0,1,1.0);
 
@@ -425,7 +425,7 @@ Float32* GenPlaneDynamicMeshH(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh*
 		Int32 x, y;
 		Float32* PlaneVBO = (Float32*)malloc(dx*dy*8*4);
 		UInt16* PlaneIBO = (UInt16*)malloc((dx-1)*(dy-1)*6*2);
-		Rect uv;
+		XrRect uv;
 		if (roi) uv = *roi;
 		else uv.Set(0,0.1,1,0.9);
 	
@@ -548,7 +548,7 @@ Float32* GenLineMeshV(Float32 sx, Float32 sy, Int32 dx, Int32 dy, CMesh* mesh, R
 	// buffer file %s,line %d",__FILE__,__LINE__);
 	UInt16* PlaneIBO = (UInt16*)malloc((dx-1)*(dy-1)*6*2);
 	// buffer file %s,line %d",__FILE__,__LINE__);
-	Rect uv;
+	XrRect uv;
 	if (roi) uv = *roi;
 	else uv.Set(0,0,1,1);
 

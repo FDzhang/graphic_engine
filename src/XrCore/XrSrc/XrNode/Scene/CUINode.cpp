@@ -262,7 +262,7 @@ Int32 CUINode::CreateSpirit(
 	/* [in] */ Float32 opacity,
 	/* [in] */ Float32 x,
     /* [in] */ Float32 y,
-	/* [in] */ Rect* roi,
+	/* [in] */ XrRect* roi,
     /* [in] */ Float32 width,
     /* [in] */ Float32 height,
 	/* [in] */ Float32 z)

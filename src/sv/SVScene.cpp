@@ -3419,7 +3419,7 @@ void SVScene::EnterFreeView(Int32 pos)
 #else
 #define AT_X 0.0
 #define AT_Z -520
-#define AT_Y 800
+#define AT_Y 1200
 #endif
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
@@ -3436,7 +3436,7 @@ void SVScene::EnterFreeView(Int32 pos)
 
 #define AT_X 0.0
 #define AT_Z 560
-#define AT_Y 400
+#define AT_Y 1200
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
         m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -4915,9 +4915,9 @@ void SVScene::DoorActionSingle(int pos,int state)
 void SVScene::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
 {
     float car_point[4];
-	CvPoint2D32f car_rect[2];
+	GpuCvPoint2D32f car_rect[2];
     float car_adjust_point[4];
-	CvPoint2D32f car_rect_world[2];
+	GpuCvPoint2D32f car_rect_world[2];
 	float pModelPoint[6];
 	float pWorldPint[6];
 	
@@ -5118,10 +5118,10 @@ int SVScene::UpdateRadarAlarm(void)
     	else
     	{
 
-    		m_RadarAlarm_Node_2d[i]->SetEnable(1);
-    		m_RadarAlarm_Mesh_2d[i]->UnLockData();
+    		//m_RadarAlarm_Node_2d[i]->SetEnable(1);
+    		//m_RadarAlarm_Mesh_2d[i]->UnLockData();
 
-			m_RadarAlarm_Mtl_2d[i]->SetDiffuseMap(RADARALARMTEX[ucAlarm-1]);
+			//m_RadarAlarm_Mtl_2d[i]->SetDiffuseMap(RADARALARMTEX[ucAlarm-1]);
     	}
     }
     for(int i=0;i<8;i++)
