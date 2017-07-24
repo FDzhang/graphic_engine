@@ -2257,7 +2257,7 @@ void SVScene::InitViewNode()
 //使用临时数组保存lock_data修改前的值
 //GetVertexBuffer 不使用
 
-static GLfloat fVerticesSnapshot[4][28];
+static GLfloat fVerticesSnapshot[4][28 * sizeof(GLfloat)];
 void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 {
 
@@ -4567,6 +4567,18 @@ int SVScene::SwitchCrossView()
     m_overlay_2d_single->SetEnable(0);
     for(int index = 0; index < 8; index++)
         m_RadarAlarm_Node_single[index]->SetEnable(0);
+
+
+    XRVertexLayout  data_format;
+    float* pVertexData = NULL;
+    Int32 iCount = 0;
+    //singleview cross 来回切换导致的lock_data读取的数据不是avm视图数据
+    for(int index = 0; index < 4; index++)
+    {
+        m_singleviewMesh[index]->LockData(&pVertexData, &data_format, &iCount);
+        memcpy(pVertexData, fVerticesSnapshot[index], 28 * sizeof(GLfloat));
+        m_singleviewMesh[index]->UnLockData();
+    }
     m_last_view = 0xff; //保证切换到SVScene::Update时 ， 一定执行更新
 }
 
