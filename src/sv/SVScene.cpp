@@ -3414,7 +3414,7 @@ void SVScene::EnterFreeView(Int32 pos)
 #else
 #define AT_X 0.0
 #define AT_Z -520
-#define AT_Y 800
+#define AT_Y 1200
 #endif
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
@@ -3431,7 +3431,7 @@ void SVScene::EnterFreeView(Int32 pos)
 
 #define AT_X 0.0
 #define AT_Z 560
-#define AT_Y 400
+#define AT_Y 1200
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
         m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
