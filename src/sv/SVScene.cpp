@@ -2253,6 +2253,11 @@ void SVScene::InitViewNode()
 
 }
 
+//dota2_black: lock_data方法修改mesh后， GetVertexBuffer的值也变化了，为了保证dvr hmi不影响mesh
+//使用临时数组保存lock_data修改前的值
+//GetVertexBuffer 不使用
+
+static GLfloat fVerticesSnapshot[4][28];
 void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 {
 
@@ -2311,7 +2316,7 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
         pSV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);
         pMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
         m_singleviewMesh[i - eFrontSingle] = pMesh;
-
+        memcpy(fVerticesSnapshot[i - eFrontSingle], pData, 28 * sizeof(GLfloat));
         //step 3 combine mesh and material(video texture) together.
         materialID = 5;
 
@@ -3724,11 +3729,10 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
                 break;
         }
         XRVertexLayout data_format;
-        float* pVertexData = NULL , *pData = NULL;
+        float* pVertexData = NULL;
         Int32 iCount = 0;
-        m_SV2DData->GetVertexBuffer(eFrontSingle + offset, &pData, &iCount);
         m_singleviewMesh[offset]->LockData(&pVertexData, &data_format, &iCount);
-        memcpy(pVertexData, pData, 28 * sizeof(GLfloat));
+        memcpy(pVertexData, fVerticesSnapshot[offset], 28 * sizeof(GLfloat));
         m_singleviewMesh[offset]->UnLockData();
     }
 	else if(Input == CROSS_IMAGE_VIEW)
@@ -4659,6 +4663,7 @@ int SVScene::SwitchSingleView(int view_control_flag)
     float* pVertexData = NULL;
     Int32 iCount = 0;
     m_singleviewMesh[offset]->LockData(&pVertexData, &data_format, &iCount);
+    memcpy(fVerticesSnapshot[offset], pVertexData, 28 * sizeof(GLfloat));
     memcpy(pVertexData, viewmatrix, 28 * sizeof(GLfloat));
     m_singleviewMesh[offset]->UnLockData();
 }
