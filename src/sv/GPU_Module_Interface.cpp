@@ -550,6 +550,19 @@ void UpdateGpuChainSgxFps(float fps)
 		AVMData::GetInstance()->m_process_info->UpdateFps(fps);
 	}
 }
+void UpdateStichAngle(unsigned char seam_change_flag[],StitcherResult* sticher_result)
+{
+    float *pData;
+	int   unstitch_point_num = sticher_result->gpu_2dlut_param->gpu_lut_config[1]
+	  +sticher_result->gpu_2dlut_param->gpu_lut_config[3]
+	  +sticher_result->gpu_2dlut_param->gpu_lut_config[5]
+	  +sticher_result->gpu_2dlut_param->gpu_lut_config[7];
+
+	pData = sticher_result->gpu_2dlut_param->gpu_lut_data+unstitch_point_num*7;
+
+	
+    app.UpdateStichAngle(seam_change_flag,pData);
+}
 
 void UpdateGpuChainSrcToSgxLatency(float avg_in_ms, float max_in_ms)
 {

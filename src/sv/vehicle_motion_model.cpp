@@ -341,58 +341,7 @@ int VehicleMotion::get_turn_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data)
 }
 
 
-void VehicleMotion::steeringwheel_radius(
-	float str_whl_angle,
-	int shft_pos,
-	float &radius
-	)//convert from steering wheel angle to steering radius
-{
-	enum{ _Forward_R = 0, _Forward_L, _Backward_R, _Backward_L };
-	float32_t H = 2.700f * 1000;
-	float32_t W = 1.800f * 500;
-	float32_t _a[4], _b[4];
 
-
-
-if (shft_pos == 2)
-{
-	if (str_whl_angle < 0) // steering wheel turns clockwisely
-	{
-		radius = H / tan((4.5448*(1.0e-9)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -6.817*(1.0e-7)*(-str_whl_angle) *(-str_whl_angle)
-			+0.05411 * (-str_whl_angle) + 0.0013101)*CV_PI / 180) - W;
-	}
-	else
-	{
-		radius = H / tan((-3.1771*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) +6.1926*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
-			+0.057879 * (str_whl_angle) + 0.0041277)*CV_PI / 180) + W;
-
-		//radius = 2756 / tan(ABS(0.06501 * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) + 919.5;
-	}
-}
-else
-{
-	if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
-	{
-		radius = H / tan((3.3703*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -2.5039*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
-			+0.061205 * (-str_whl_angle) + 0.0049860)*CV_PI / 180) - W;
-	}
-	else
-	{
-		radius = H / tan((4.9477*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) -8.2930*(1.0e-6)*(str_whl_angle) *(str_whl_angle)
-			+0.071908 * (str_whl_angle) + 0.0091791)*CV_PI / 180) + W;
-	}
-}
-
-
-static float pre_steering_wheel=0;
-   if(pre_steering_wheel != str_whl_angle)
-   {
-      // fprintf(stdout,"\r\n gear[%d],steer[%f],radius[%f]",shft_pos,str_whl_angle,radius);
-       pre_steering_wheel = str_whl_angle;
-    }
-   
-}
-#if 0
 void VehicleMotion::steeringwheel_radius(
 	float str_whl_angle,
 	int shft_pos,
@@ -532,7 +481,6 @@ static float pre_steering_wheel=0;
    
 }
 
-#endif
 float VehicleMotion::get_yawrate_from_curvature(COMMON_VEHICLE_DATA_SIMPLE * v_data)
 {
 	unsigned char gear_state = v_data->shift_pos;
@@ -573,7 +521,7 @@ float VehicleMotion::get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data
     {
 	    if(pulse_curent[i]<pulse_pre[i])
 	    {
-	        pulse_delta[i] = -pulse_pre[i]+256+pulse_curent[i];
+	        pulse_delta[i] = -pulse_pre[i]+1024+pulse_curent[i];
 	    }
 		else
 		{
@@ -582,7 +530,7 @@ float VehicleMotion::get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data
 		}
     }
 
-    return((pulse_delta[0] +pulse_delta[1] )*0.0111616);
+    return((pulse_delta[0] +pulse_delta[1] )*0.022905);
 	
 }
 float VehicleMotion::get_theta_from_multi_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data,float radius,int turn_sign)
