@@ -389,6 +389,10 @@ void XRSV::Pinch(float distance)
 {
 	pCamera->SetFOVDelta(distance);
 }
+void XRSV::UpdateStichAngle(unsigned char seam_change_flag[],float *pVertex)
+{
+	svscn->UpdateStich2DReslt(seam_change_flag,pVertex);
+}
 
 void XRSV::DoubleTouchDown(int x, int y)
 {

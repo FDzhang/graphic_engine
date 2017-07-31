@@ -41,6 +41,7 @@ public:
 	void KeyDown(int x);
 	//>>>>>>> feature_autoparking
 	void Pinch(float distance);
+	void UpdateStichAngle(unsigned char seam_change_flag[],float *pVertex);
 
 	void SwitchViewButton(int buttonid);
 	bool initVehicleParam(SV_VEHICLE_PARAM_T in_veh_param);

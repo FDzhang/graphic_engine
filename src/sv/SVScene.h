@@ -235,7 +235,7 @@ public:
 	void ProcessViewRot();
 	void DoorAction(Int32 Pos);
 	void SetCarEnable(Boolean flag);
-	
+	void UpdateStich2DReslt(unsigned char Seam_Update_Flag[],GLfloat *pData);
 	void ProcessTurnLight(unsigned char turn_light);
 	
 	void TurnLightAction(Int32 Pos);

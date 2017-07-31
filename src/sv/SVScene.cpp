@@ -5207,7 +5207,28 @@ void SVScene::UpdateExternCalib2DReslt(GLfloat *pData,int data_size,GLushort *pI
 #endif
 
 }
+void SVScene::UpdateStich2DReslt(unsigned char Seam_Update_Flag[],GLfloat *pData)
+{
+    IMesh *pMeshTemp;
+   // sv2Ddelegate->Update2DCalibRslt(pData,data_size,pIndex,index_size);
+   float *pTemp;
+   unsigned int BufSize;
+   unsigned int totalBufSize=0;
+   for(int i=0;i<4;i++)
+   {
+   
+       m_SV2DData->GetVertexBuffer(eFrontLeftMesh+i,&pTemp,&BufSize);
+       if(1== Seam_Update_Flag[i])
+       {
+	       memcpy(pTemp,pData+7*totalBufSize,BufSize*7*sizeof(GLfloat));
+   	
+           m_stich_node->UpdateStich2DReslt(i);
+       }
+	   
+	   totalBufSize+=BufSize;
+   }
 
+}
 void SVScene::SaveOverlayData(void)
 {
 
