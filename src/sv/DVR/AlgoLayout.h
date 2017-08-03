@@ -40,6 +40,14 @@ namespace GUI
     public:
         void Init() {};
         void Enable(bool flag) ;
+
+        void EnableRecord(bool flag);
+        void EnablePlayback(bool flag);
+        void EnableLdw(bool flag);
+        void EnableBsd(bool flag);
+        void EnableOnline(bool flag);
+        void EnableApa(bool flag);
+        void EnableWifi(bool flag);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
@@ -58,6 +66,10 @@ namespace GUI
         void OnEventRecord(IGUIElement*);
         void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
         void OnEventWifi(IGUIElement*, const GUI_HANDLE_T);
+
+    private:
+        CGPUButton *m_record_button, *m_playback_button,
+            *m_ldw_button, *m_bsd_button, *m_online_button, *m_apa_button, *m_wifi_button;
     private:
         static AlgoLayout* m_layout;
     };

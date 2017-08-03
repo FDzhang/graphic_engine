@@ -222,7 +222,7 @@ namespace GUI
     };
     static IGUITexture exit_array_texture[] = {
         {XR_RES_DVR"media_on.dds",  1200, 33, 74, 74},
-        {XR_RES_DVR"media_off.dds", 1200, 33, 74, 74}
+        {XR_RES_DVR"media_on.dds", 1200, 33, 74, 74}
     };
     static IGUITexture text_array_texture[] = {
         {XR_RES_DVR"BC64.dds", 240, 50, 80, 40},

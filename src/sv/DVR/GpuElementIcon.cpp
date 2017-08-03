@@ -30,7 +30,7 @@ namespace GUI
     CGPUIcon::CGPUIcon()
         :IGUIElement("CGPUIcon")
         ,CXrBaseView()
-        ,m_iconTexture(NULL),m_iconLayer(NULL)
+        ,m_iconTexture(NULL),m_iconLayer(NULL), m_baseLayer(NULL)
         ,m_iconStyle(0)
     {
     }
@@ -53,7 +53,7 @@ namespace GUI
                 flag = InsertFlag_Default;
             }
             Int32 m_baseLayerId = node->CreateSpirit(parent, flag, -1, 1.0, pos_x, pos_y, 0, element_width, element_height);
-            //ILayer* layer = node->GetLayer(m_baseLayerId);
+            m_baseLayer = node->GetLayer(m_baseLayerId);
             //layer->SetEventResponder(this);
 
 

@@ -51,10 +51,48 @@ namespace GUI
     void AlgoLayout::Enable(bool flag)
     {
         EnableLayout(flag);
+        m_record_button->Enable(flag);
+        m_playback_button->Enable(flag);
+        m_ldw_button->Enable(flag);
+        m_bsd_button->Enable(flag);
+        m_online_button->Enable(flag);
+        m_apa_button->Enable(flag);
+        m_wifi_button->Enable(flag);
     }
-
+    void AlgoLayout::EnableRecord(bool flag)
+    {
+        m_record_button -> Enable(flag);
+    }
+    void AlgoLayout::EnablePlayback(bool flag)
+    {
+        m_playback_button -> Enable(flag);
+    }
+    void AlgoLayout::EnableLdw(bool flag)
+    {
+        m_ldw_button -> Enable(flag);
+    }
+    void AlgoLayout::EnableBsd(bool flag)
+    {
+        m_bsd_button -> Enable(flag);
+    }
+    void AlgoLayout::EnableOnline(bool flag)
+    {
+        m_online_button -> Enable(flag);
+    }
+    void AlgoLayout::EnableApa(bool flag)
+    {
+        m_apa_button -> Enable(flag);
+    }
+    void AlgoLayout::EnableWifi(bool flag)
+    {
+        m_wifi_button -> Enable(flag);
+    }
+    
     AlgoLayout::AlgoLayout()
         :ILayout(ALGOHMI_EVENT_NAME)
+        ,m_record_button(NULL), m_playback_button(NULL)
+        ,m_ldw_button(NULL), m_bsd_button(NULL)
+        ,m_online_button(NULL), m_apa_button(NULL), m_wifi_button(NULL)
         ,IAlgoLayout()
         ,m_element_size(sizeof(m_element_info) / sizeof( struct ElementFuntionTable))
     {
@@ -87,8 +125,8 @@ namespace GUI
     };
     static IGUITexture exit_array_texture[] =
     {
-        {XR_RES"playback_unable.dds", 1014, 620, 78, 78},
-        {XR_RES"playback_enable.dds", 1014, 620, 78, 78},
+        {XR_RES_DVR"BC64.dds", 1014, 620, 78, 78},
+        {XR_RES_DVR"BC64.dds", 1014, 620, 78, 78},
     };
     static IGUITexture record_array_texture[] =
     {
@@ -109,6 +147,7 @@ namespace GUI
                            ldw_array_texture[0].element_width,
                            ldw_array_texture[0].element_height
             );
+        m_ldw_button = dynamic_cast<CGPUButton*>(ldw_button);
     }
     void AlgoLayout::OnEventLdw(IGUIElement* ldw_button)
     {
@@ -128,6 +167,7 @@ namespace GUI
                            bsd_array_texture[0].element_width,
                            bsd_array_texture[0].element_height
             );
+        m_bsd_button = dynamic_cast<CGPUButton*>(bsd_button);
     }
     void AlgoLayout::OnEventBsd(IGUIElement* bsd_button)
     {
@@ -147,6 +187,8 @@ namespace GUI
                               online_array_texture[0].element_width,
                               online_array_texture[0].element_height
             );
+        
+        m_online_button = dynamic_cast<CGPUButton*>(online_button);
     }
     void AlgoLayout::OnEventOnline(IGUIElement* play_button)
     {
@@ -166,6 +208,8 @@ namespace GUI
                            apa_array_texture[0].element_width,
                            apa_array_texture[0].element_height
             );
+
+        m_apa_button = dynamic_cast<CGPUButton*>(apa_button);
     }
     void AlgoLayout::OnEventApa(IGUIElement* play_button)
     {
@@ -186,6 +230,7 @@ namespace GUI
                             exit_array_texture[0].element_width,
                             exit_array_texture[0].element_height
             );
+        m_playback_button = dynamic_cast<CGPUButton*>(exit_button);
     }
     void AlgoLayout::OnEventExit(IGUIElement* play_button)
     {
@@ -205,6 +250,7 @@ namespace GUI
                               record_array_texture[0].element_width,
                               record_array_texture[0].element_height
             );
+        m_record_button = dynamic_cast<CGPUButton*>(record_button);
     }
     void AlgoLayout::OnEventRecord(IGUIElement*)
     {
@@ -224,6 +270,8 @@ namespace GUI
                             wifi_array_texture[0].element_width,
                             wifi_array_texture[0].element_height
             );
+
+        m_wifi_button = dynamic_cast<CGPUButton*>(wifi_button);
     }
     void AlgoLayout::OnEventWifi(IGUIElement*, const GUI_HANDLE_T)
     {

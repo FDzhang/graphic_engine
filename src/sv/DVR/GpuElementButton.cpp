@@ -89,7 +89,7 @@ namespace GUI
         m_hit_texture =  &(((IGUITexture*)effect)[1]);
         m_button_property = style;
     }
-    void CGPUButton::SetEnable(bool enable)
+    void CGPUButton::Enable(bool enable)
     {
         CXrButton::SetEnable(enable);
     }
