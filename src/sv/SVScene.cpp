@@ -2693,6 +2693,7 @@ void SVScene::InitRadarWaveMesh(float radius, int mesh_longi,int mesh_lati,int a
 
 int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 {
+    m_SwitchViewLogicAgain = false;
 	///////////////////////////Scene Node///////////////////////////////
 	m_mode = SceneMode_Free;
 	m_topModeFOV = 160;
@@ -3683,10 +3684,15 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
     if(Input <= RIGHT_SINGLE_VIEW)
     {
 #if 0
-		m_sceneNode->SetRenderROI(&RightTopFadeReg);
-		m_objectNode->SetRenderROI(&RightTopFadeReg);
+        m_sceneNode->SetRenderROI(&RightTopFadeReg);
+        m_objectNode->SetRenderROI(&RightTopFadeReg);
         m_2DSingleViewNode->SetRenderROI(&RightBottomFadeReg);
 #endif
+        if(!m_SwitchViewLogicAgain)
+        {
+            m_SwitchViewLogicAgain = true;
+            m_2DSingleViewNode->SetRenderROI(&RightReg);
+        }
 		//#ifdef ALI
 	    //	m_sceneNode->SetEnable(1);
 		//#else
@@ -3753,6 +3759,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
     	m_objectNode->SetRenderROI(&RightReg);
     	m_2DSingleViewNode->SetRenderROI(&RightBottomFadeReg);
 #endif
+        
         m_2DAVMNode->SetEnable(1);
 
 		m_pAdasHmi->SetEnable(1);
@@ -4581,7 +4588,12 @@ int SVScene::SwitchCrossView()
         memcpy(pVertexData, fVerticesSnapshot[index], 28 * sizeof(GLfloat));
         m_singleviewMesh[index]->UnLockData();
     }
-    m_last_view = 0xff; //保证切换到SVScene::Update时 ， 一定执行更新
+
+    Region roi(XrGetScreenWidth()/4, 3 * XrGetScreenWidth()/4,
+               XrGetScreenHeight()/4, 3 * XrGetScreenHeight()/4);
+    m_2DSingleViewNode->SetRenderROI(&roi);
+    m_last_view = 0x02; //保证切换到SVScene::Update时 ， 一定执行更新
+    m_SwitchViewLogicAgain = false;
 }
 
 //dota2_black: 单视图全屏回放模式
@@ -4615,6 +4627,7 @@ static GLfloat fVerticesOriginRight[] = {
 
 int SVScene::SwitchSingleView(int view_control_flag)
 {
+    m_SwitchViewLogicAgain = false;
     if(m_last_view == view_control_flag)
     {
         return 0;
