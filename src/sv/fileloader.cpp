@@ -363,6 +363,42 @@ bool ReadFloatSpaceTxtFile(char *filename,float *content,int size)
 
 
 }
+bool ReadIntSpaceTxtFile(char *filename,int *content,int size)
+{
+	FILE *fp_table;
+	   fp_table = fopen(filename,"r");
+	   if(fp_table == NULL)
+	   {
+		   printf("\r\n can not find file %s",filename);
+		   return true;
+	   }
+	   float tempUint;
+	  
+	   int i;
+	   
+	   printf("\r\nstart to read file %s",filename);
+	   for(i = 0;i < size  ;i ++)
+	   {
+		   fscanf( fp_table , "%d " , &tempUint);		   
+		   *(content+i) = tempUint;
+	   }
+	   printf("\r\n read [%d] over",size);
+	
+	   if(fp_table != NULL)
+	   {
+		   if(fileno(fp_table)>0)
+		   {	 
+			   printf("\r\n fp_table = %d",fp_table);	
+			   fclose(fp_table);
+			}		 
+	   return false;
+	   }   
+	
+	   return false;
+
+
+}
+
 
 bool ReadFloatBinFile(char *filename,float *content,int size)
 {

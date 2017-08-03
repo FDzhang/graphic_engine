@@ -26,6 +26,7 @@ char SONAR_WAVE_TEX[] = XR_RES"sonar_wave.dds";
 extern st_text_box_data_T gpu_debug_texbox;
 char SONAR_PARK_LOT_VERTICAL[]=XR_RES"sonar_park_v.dds";
 char SONAR_PARK_LOT_PARALLEL[]=XR_RES"sonar_park_p.dds";
+char debug_cfg_file[20]="apahmi_cfg.txt";
 unsigned char guc_reset_parkLot;
 extern unsigned int Get_Frame_TimeStamp(void);
 extern "C" Radar_PLD_Result* GetSonarPLDDataPointer(void);
@@ -510,6 +511,7 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
      memcpy(m_sonar_pos,&(pConfig->smc_hmi.REAR_LEFT_CONOR_SONAR_POS_X),max_sonar_num*sizeof(Sonar_Pos));
 	 
      memcpy(m_sonar_color_list,&(pConfig->smc_hmi.REAR_LEFT_CONOR_SONAR_COLOR_R ),max_sonar_num*3*sizeof(float));
+	 ReadIntSpaceTxtFile(debug_cfg_file,&m_debug_flag,1);
 	 for(int i = 0;i<max_sonar_num;i++)
 	 {
 	     m_sonar_obj_list_start[i]=0;
@@ -2244,10 +2246,17 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 		
 	m_filter_time =2;
 	int obj_num;
+	if(m_debug_flag ==1)
+	{
+	    m_sonar_data[front_right_side_sonar].show_flag = 1;	
+	    m_sonar_data[front_left_side_sonar].show_flag = 1;
+	}
+	else
+	{
+	    m_sonar_data[front_right_side_sonar].show_flag = 0;	
+	    m_sonar_data[front_left_side_sonar].show_flag = 0;
 	
-	m_sonar_data[front_right_side_sonar].show_flag = 0;
-	
-	m_sonar_data[front_left_side_sonar].show_flag = 0;
+	}
     for(int j=0;j<max_sonar_num;j++)
     {
 		//m_sonar_data[j].show_flag = 1;
@@ -2315,7 +2324,8 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 
 		
     }
-	//DrawParkLot();
+	if(m_debug_flag>0)
+	DrawParkLot();
 
 	SetRadarPLDReslt();
 	

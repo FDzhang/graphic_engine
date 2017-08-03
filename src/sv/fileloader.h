@@ -71,6 +71,8 @@ int LoadShaderFromFile(char* file_name, char** pString);
 char* GetValidFilePath(char* path[], char* filename);
 bool ReadFloatSpaceTxtFile(char *filename,float *content,int size);
 bool ReadFloatBinFile(char *filename,float *content,int size);
+bool ReadIntSpaceTxtFile(char *filename,int *content,int size);
+
 #ifdef __cplusplus
 }
 #endif

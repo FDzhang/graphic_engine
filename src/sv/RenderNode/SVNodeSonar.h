@@ -23,7 +23,7 @@
 #define NO_POINT 3
 #define K_SLOP_GATE    1
 #define SINGLE_SIDE_PARKING_LOT_WIDTH   2500
-#define FINAL_PARKING_LOT_PARALLEL_LENGTH  5700
+#define FINAL_PARKING_LOT_PARALLEL_LENGTH  5200
 #define FINAL_PARKING_LOT_PARALLEL_WIDTH   2100
 #define FINAL_PARKING_LOT_VERTICAL_LEGNTH  4500
 #define FINAL_PARKING_LOT_VERTICAL_WIDTH   1850
@@ -310,6 +310,7 @@ private:
 	unsigned char m_lot_upload_left_right_flag;
 	unsigned char m_park_lot_reset_flag;
 	unsigned char m_input_track_flag;
+	int m_debug_flag;
 };
 
 #endif //#ifndef __GL_SV_DEMO_H__
