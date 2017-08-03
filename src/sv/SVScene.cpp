@@ -3682,10 +3682,11 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 #ifndef ALI
     if(Input <= RIGHT_SINGLE_VIEW)
     {
+#if 0
 		m_sceneNode->SetRenderROI(&RightTopFadeReg);
 		m_objectNode->SetRenderROI(&RightTopFadeReg);
-        m_2DSingleViewNode->SetRenderROI(&RightReg);
-
+        m_2DSingleViewNode->SetRenderROI(&RightBottomFadeReg);
+#endif
 		//#ifdef ALI
 	    //	m_sceneNode->SetEnable(1);
 		//#else
@@ -3747,10 +3748,11 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 	}
 	else
 	{
+#if 0
     	m_sceneNode->SetRenderROI(&RightReg);
     	m_objectNode->SetRenderROI(&RightReg);
     	m_2DSingleViewNode->SetRenderROI(&RightBottomFadeReg);
-
+#endif
         m_2DAVMNode->SetEnable(1);
 
 		m_pAdasHmi->SetEnable(1);
