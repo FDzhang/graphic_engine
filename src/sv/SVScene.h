@@ -412,6 +412,7 @@ private:
 	//for test
 	vehicle_param m_veh_param;
     //IMaterial* m_ground_mtl;
+    bool m_SwitchViewLogicAgain;
 };
 
 
