@@ -59,7 +59,7 @@ namespace GUI
         //! 同步列表框hmi status
         void Sync();
     protected:
-        void OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type);
+        Boolean OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type);
     private:
         //重载事件响应
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);
@@ -89,8 +89,7 @@ namespace GUI
         }*m_listview_item, *m_current_item;
 
         //列表框下方的上/下翻页 上/下选择layer
-        ILayer* m_itemOkLayer, *m_itemSelectedLayer;
-        ITextLayer* m_itemOkTextLayer;
+        ILayer *m_itemSelectedLayer;
     private:
         DECLEAR_DYNAMIC_CLASS(CGPUListView, IGUIElement)
     };

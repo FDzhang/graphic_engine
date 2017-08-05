@@ -34,7 +34,7 @@
 typedef struct
 {
     //暂时固定itemNum, 后期可调
-    const uint32_t maxItemNum = 8;
+    const uint32_t maxItemNum = 6;
     uint32_t itemNum = maxItemNum;
     struct
     {

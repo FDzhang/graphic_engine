@@ -46,10 +46,10 @@ namespace GUI
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y,Int32 type);
 
     private:
-        IGUITexture* m_barBaseTexture,* m_barSlideTexture;
+        IGUITexture* m_barBaseTexture,* m_barSlideTexture, *m_barFinishedTexture;
         uint32_t m_processbar_x, m_processbar_y;
         uint32_t m_processbar_width, m_processbar_height;
-        ILayer   *m_pbarBase, *m_pbarSlide;
+        ILayer   *m_pbarBase, *m_pbarSlide, *m_pbarFinished;
         float m_pos;
 
         bool m_touchDown;

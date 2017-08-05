@@ -71,9 +71,17 @@ namespace GUI
     protected:
         AvmEventType GetAttachEventType() {return m_event_type; }
     private:
-        //暂停播放按钮
-        void InitMediaPlay(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnPlayEvent(IGUIElement*);
+        //panel
+        void InitMediaPanel(IGUIElement*, const GUI_HANDLE_T parentId);
+        //退出按钮
+        void InitMediaExit(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnExitEvent(IGUIElement*);
+        //设置按钮
+        void InitMediaSetting(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnSettingEvent(IGUIElement*);
+        //停止按钮
+        void InitMediaStop(IGUIElement*, const GUI_HANDLE_T);
+        void OnStopEvent(IGUIElement*);
         //下一曲按钮
         void InitMediaNext(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnNextEvent(IGUIElement*);
@@ -83,34 +91,17 @@ namespace GUI
         //前进按钮
         void InitMediaForward(IGUIElement*,const  GUI_HANDLE_T parentId);
         void OnForwardEvent(IGUIElement*);
-        //后退按钮
-        void InitMediaRewind(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnRewindEvent(IGUIElement*);
-        //截图按钮
-        void InitMediaScreenShot(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnScreenShotEvent(IGUIElement*);
-        //设置按钮
-        void InitMediaSetting(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnSettingEvent(IGUIElement*);
-        //进度条按钮
-        void InitMediaBar(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnBarEvent(IGUIElement*);
-        //时间文本控件
-        void InitMediaText(IGUIElement*, const GUI_HANDLE_T parentId);
-
-        //状态图标
-        void InitMediaStateIcon(IGUIElement*, const GUI_HANDLE_T parentId);
-        //panel
-        void InitMediaPanel(IGUIElement*, const GUI_HANDLE_T parentId);
-        //media_exit
-        void InitMediaExit(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnExitEvent(IGUIElement*);
+        //视图切换
+        void InitMediaView(IGUIElement*, const GUI_HANDLE_T);
+        void OnViewEvent(IGUIElement*);
+        //文件列表弹出
+        void InitMediaListviewPop(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnListviewPop(IGUIElement*);
 
         //文件列表
         void InitMediaListview(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnListviewEvent(IGUIElement*);
-        void InitMediaListviewPop(IGUIElement*, const GUI_HANDLE_T parentId);
-        void OnListviewPop(IGUIElement*);
+
         void InitMediaListviewThumbnail(IGUIElement*, const GUI_HANDLE_T parentId);
         void InitMediaListviewPrev(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnListviewPrevEvent(IGUIElement*);
@@ -118,6 +109,14 @@ namespace GUI
         void OnListviewNextEvent(IGUIElement*);
         void InitMediaListviewOk(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnListviewOkEvent(IGUIElement*);
+        
+        //播放按钮
+        void InitMediaPlay(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnPlayEvent(IGUIElement*);
+        
+        //进度条
+        void InitMediaBar(IGUIElement*, const GUI_HANDLE_T parentId);
+        void OnBarEvent(IGUIElement*);
 
         //视图切换
         void InitMediaTopleftview(IGUIElement*, const GUI_HANDLE_T parentId);
