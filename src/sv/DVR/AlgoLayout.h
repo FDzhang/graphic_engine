@@ -27,6 +27,7 @@
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
 #include "GpuElementButton.h"
+#include "GpuElementPanel.h"
 #include "IF_Algo.h"
 
 namespace GUI
@@ -49,11 +50,7 @@ namespace GUI
         void EnableApa(bool flag);
         void EnableWifi(bool flag);
     private:
-        uint32_t m_element_size;
-        static struct ElementFuntionTable m_element_info[];
-    private:
-        void InitAlgoExit(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventExit(IGUIElement*);
+        
         void InitAlgoLdw(IGUIElement* , const GUI_HANDLE_T);
         void OnEventLdw(IGUIElement*);
         void InitAlgoBsd(IGUIElement* , const GUI_HANDLE_T);
@@ -62,14 +59,22 @@ namespace GUI
         void OnEventOnline(IGUIElement*);
         void InitAlgoApa(IGUIElement* , const GUI_HANDLE_T);
         void OnEventApa(IGUIElement*);
-        void InitAlgoRecord(IGUIElement*, const GUI_HANDLE_T);
-        void OnEventRecord(IGUIElement*);
-        void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
-        void OnEventWifi(IGUIElement*, const GUI_HANDLE_T);
 
+        void InitAlgoPanel(IGUIElement*, const GUI_HANDLE_T);
+        void InitAlgoMedia(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventMedia(IGUIElement*);
+        void InitAlgoMediaPanel(IGUIElement*, const GUI_HANDLE_T);
+        void InitAlgoMediaPlayback(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventMediaPlayback(IGUIElement*);
+        void InitAlgoMediaRecord(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventMediaRecord(IGUIElement*);
     private:
         CGPUButton *m_record_button, *m_playback_button,
-            *m_ldw_button, *m_bsd_button, *m_online_button, *m_apa_button, *m_wifi_button;
+            *m_ldw_button, *m_bsd_button, *m_online_button, *m_apa_button, *m_media_button;
+        CGPUPanel *m_media_panel;
+    private:
+        uint32_t m_element_size;
+        static struct ElementFuntionTable m_element_info[];
     private:
         static AlgoLayout* m_layout;
     };

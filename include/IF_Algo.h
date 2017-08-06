@@ -46,16 +46,6 @@ public:
      * \param [IN] flag true则Layout显示
      */
     virtual void Enable(bool flag) = 0;
-    /**
-     * \brief 更新进度条位置
-     */
-    virtual void EnableRecord(bool flag) = 0;
-    virtual void EnablePlayback(bool flag) = 0;
-    virtual void EnableLdw(bool flag) = 0;
-    virtual void EnableBsd(bool flag) = 0;
-    virtual void EnableOnline(bool flag) = 0;
-    virtual void EnableApa(bool flag) = 0;
-    virtual void EnableWifi(bool flag) = 0;
 };
 
 //! 接口函数

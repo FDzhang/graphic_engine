@@ -201,54 +201,54 @@ namespace GUI
         {XR_RES_DVR"media_playback_panel.dds", 0, 0, 115, 720},
     };
     static IGUITexture exit_array_texture[] = {
-        {XR_RES_DVR"BC64.dds",  0, 0, 115, 90},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 0, 115, 90}
+        {XR_RES_HMI"BC64.dds",  0, 0, 115, 90},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 0, 115, 90}
     };
     static IGUITexture setting_array_texture[] =  {
-        {XR_RES_DVR"BC64.dds", 0, 90, 115, 90},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 90, 115, 90},
+        {XR_RES_HMI"BC64.dds", 0, 90, 115, 90},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 90, 115, 90},
     };
     static IGUITexture stop_array_texture[] =  {
-        {XR_RES_DVR"BC64.dds", 0, 180, 115, 90},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 180, 115, 90},
+        {XR_RES_HMI"BC64.dds", 0, 180, 115, 90},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 180, 115, 90},
     };
     static IGUITexture next_array_texture[] = {
-        {XR_RES_DVR"BC64.dds", 0, 270, 115, 90},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 270, 115, 90}
+        {XR_RES_HMI"BC64.dds", 0, 270, 115, 90},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 270, 115, 90}
     };
     static IGUITexture prev_array_texture[] =  {
-        {XR_RES_DVR"BC64.dds", 0, 360, 115, 90},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 360, 115, 90},
+        {XR_RES_HMI"BC64.dds", 0, 360, 115, 90},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 360, 115, 90},
     };
     static IGUITexture forward_array_texture[] = {
-        {XR_RES_DVR"BC64.dds", 0, 450, 115, 90},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 450, 115, 90}
+        {XR_RES_HMI"BC64.dds", 0, 450, 115, 90},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 450, 115, 90}
     };
     static IGUITexture view_array_texture[] = {
-        {XR_RES_DVR"BC64.dds", 0, 540, 115, 90},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 540, 115, 90}
+        {XR_RES_HMI"BC64.dds", 0, 540, 115, 90},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 540, 115, 90}
     };
     static IGUITexture listviewpop_array_texture[] =
     {
-        {XR_RES_DVR"BC64.dds",   0, 630, 113, 112},
-        {XR_RES_DVR"media_btn_clicked.dds", 0, 630, 113, 112}
+        {XR_RES_HMI"BC64.dds",   0, 630, 113, 112},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 630, 113, 112}
     };
 
     static IGUITexture listview_array_texture[] = {
-        {XR_RES_DVR"media_playback_listview_bg.dds", 80, 448, 181, 267},
-        {XR_RES_DVR"BC64.dds", 13, 24, 154, 33},
-        {XR_RES_DVR"media_playback_listview_itemSelected.dds",13, 24, 154, 33},
-        {XR_RES_DVR"consola.ttf", 0, 0, 0, 0}
+        {XR_RES_DVR"media_playback_listview_bg.dds", 80, 448, 300, 267},
+        {XR_RES_HMI"BC64.dds", 13, 24, 154, 33},
+        {XR_RES_DVR"media_playback_listview_itemSelected.dds",13, 24, 280, 33},
+        {XR_RES_HMI"consola.ttf", 0, 0, 0, 0}
     };
     static IGUITexture listview_itemPrev_texture[] =
     {
         {XR_RES_DVR"media_playback_listview_itemPrev.dds", 25, 0, 33, 33},
-        {XR_RES_DVR"BC64.dds", 25, 0, 33, 33},
+        {XR_RES_HMI"BC64.dds", 25, 0, 33, 33},
     };
     static IGUITexture listview_itemNext_texture[] =
     {
         {XR_RES_DVR"media_listview_itemNext.dds", 270, 0, 33, 33},
-        {XR_RES_DVR"BC64.dds", 270, 0, 33, 33},
+        {XR_RES_HMI"BC64.dds", 270, 0, 33, 33},
     };
     static IGUITexture listviewThumbnail_array_texture[] = {
         {XR_RES_DVR"media_listview_thumbnail.dds", 329, 0, 273, 348},
@@ -303,6 +303,9 @@ namespace GUI
     }
     void DvrLayout::OnExitEvent(IGUIElement* exit_button)
     {
+        //reset dvr layout的状态
+        
+        
         m_media_play->Reset();
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
@@ -366,12 +369,14 @@ namespace GUI
         AvmEvent* event = RequestEvent(&payload);
         if(m_listview->NextItem())
         {
+            ERROR("-------1---------");
             //填充有效数据
             payload->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
             payload->body.onlyNotify = true;
         }
         else
         {
+            ERROR("-------2---------");
             //!列表框下移越界，触发向下翻页命令
             payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
             payload->body.dvr_body.listview_file.operation = 0x06;
@@ -383,7 +388,7 @@ namespace GUI
     void DvrLayout::InitMediaPrev(IGUIElement* media_prev_button, const GUI_HANDLE_T parentId)
     {
         media_prev_button->Attach(m_node, parentId);
-        media_prev_button->SetTexture(prev_array_texture, GUI::GUI_BUTTON_EFFECT_LOCK);
+        media_prev_button->SetTexture(prev_array_texture, 0);
         media_prev_button->Create(prev_array_texture[0].pos_x,
                                   prev_array_texture[0].pos_y,
                                   prev_array_texture[0].element_width,
