@@ -31,6 +31,8 @@
 #include "SVAdjust.h"
 #include "gpu_log.h"
 
+#include "HMISource/CSVChangAnHmi.h"
+
 SVUI* svui;
 SVScene* svscn;
 #define VK_A 0x41
@@ -173,6 +175,17 @@ void XRSV::initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 	m_adas_mdl_num = HmiMdlNum;
 
 }
+int XRSV::InitHmi(int screen_width, int screen_height)
+{
+	m_customHmi = new CSVChanganHmi();
+	m_customHmi->Init(screen_width, screen_height);
+
+	return 0;
+}
+int XRSV::UpdateHmiData()
+{
+	m_customHmi->Update();
+}
 
 bool XRSV::init(int width, int height, st_GPU_Init_Config_T& gpu_init_cfg)
 {
@@ -227,7 +240,7 @@ LutData,MAX_NAME_LENGTH);
     m_sv_data_config.pSmc = gpu_init_cfg.pSys_SMC;
 	m_sv_data_config.pPose = gpu_init_cfg.pPose;
     m_sv_data_config.pCamParam = gpu_init_cfg.camera_param;
-
+	m_vehicleId =  gpu_init_cfg.vehicle_type_id;
 
     m_sv_data_config.pSticherResult = gpu_init_cfg.sticher_result;
     //} add end ke.zhonghua
@@ -241,6 +254,9 @@ LutData,MAX_NAME_LENGTH);
 	svui->svscn = svscn;
 
 	temp = svscn->InitNode(sv_config,m_pAdasMdl,m_adas_mdl_num);
+
+	//InitHmi(width, height);
+
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
 	#endif
@@ -288,7 +304,11 @@ bool XRSV::update(unsigned int view_control_flag)
             default:
                 break;
         }
+
+    //UpdateHmiData();
+
         svscn->Update(view_control_flag,0);
+        
 		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();
@@ -365,6 +385,7 @@ void XRSV::SingleTouchDown(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Down);
 	svscn->OnMouseDown(x,y);
+	//m_customHmi->SetSingleTouchDownEvent(x, y);
 }
 
 void XRSV::SingleTouchMove(int x, int y)

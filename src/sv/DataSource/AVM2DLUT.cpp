@@ -51,7 +51,7 @@
 /*===========================================================================*\
  * External Object Definitions
 \*===========================================================================*/
-
+float car_rect[4] = {0.0, 0.0,0.0,0.0};
 /*===========================================================================*\
  * Local Object Definitions
 \*===========================================================================*/
@@ -528,6 +528,11 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
 
                 m_car_rect[2] = -1.0+2.0*((float)(pSticherReslt->car_Icon_Rect.x-1)+(float)pSticherReslt->car_Icon_Rect.width+2)/(float)pSticherReslt->bev_img_width ;
                 m_car_rect[3] = 1.0-2.0*((float)(pSticherReslt->car_Icon_Rect.y-1)+(float)pSticherReslt->car_Icon_Rect.height+2)/(float)pSticherReslt->bev_img_height ;
+
+                car_rect[0] = m_car_rect[0];
+                car_rect[1] = m_car_rect[1];
+                car_rect[2] = m_car_rect[2];
+                car_rect[3] = m_car_rect[3];
 
                 //更新pgs
                 m_calib_para[0] = pSticherReslt->cx;
