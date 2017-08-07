@@ -526,7 +526,7 @@ int OnMouseSingleDown(int x,int y)
 {
     app.SingleTouchDown( x, y);
 
-	printf("\r\nSingle touch down, [%d,%d]",x,y);
+	//Log_Message("\r\nSingle touch down, [%d,%d]",x,y);
     return 0;
 }
 
