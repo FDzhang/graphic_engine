@@ -2709,7 +2709,7 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	float f_stich_ratio=0.3;
 	IMaterial *pTempMtl;
 	float f_vertical_radio = 0.5;
-	float black_width = XrGetScreenHeight()*0.045;
+	float black_width = 50;//XrGetScreenHeight()*0.045;
 	FadeLeftReg.Set(-XrGetScreenWidth()-FADE_BORDER, -FADE_BORDER, 0, XrGetScreenHeight());
 	CenterReg.Set(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
 	FadeRightReg.Set(XrGetScreenWidth()+FADE_BORDER, 2*XrGetScreenWidth()+FADE_BORDER, 0, XrGetScreenHeight());
