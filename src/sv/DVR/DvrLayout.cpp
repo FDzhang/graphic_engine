@@ -63,14 +63,14 @@ namespace GUI
         { "CGPUButton"     , "播放按钮"   , 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaPlay)        , (PFOnEvent)(&DvrLayout::OnPlayEvent), NULL},
         { "CGPUListView"   , "播放列表"   , 1, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListview),(PFOnEvent)(&DvrLayout::OnListviewEvent), NULL},
         //{ "CGPUImageStream", "播放列表缩略图", 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewThumbnail), NULL, NULL},
-        //{ "CGPUButton", "播放列表itemNext" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewPrev), (PFOnEvent)(&DvrLayout::OnListviewPrevEvent), NULL},
-        //{ "CGPUButton", "播放列表itemPrev" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewNext), (PFOnEvent)(&DvrLayout::OnListviewNextEvent), NULL},
+        { "CGPUButton", "播放列表itemNext" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewPrev), (PFOnEvent)(&DvrLayout::OnListviewPrevEvent), NULL},
+        { "CGPUButton", "播放列表itemPrev" , 2, 0, NULL, (PFCreateElement)(&DvrLayout::InitMediaListviewNext), (PFOnEvent)(&DvrLayout::OnListviewNextEvent), NULL},
     };
 
     DvrLayout::DvrLayout()
         :ILayout(DVRHMI_EVENT_NAME)
         ,m_element_size(sizeof(m_element_info) / sizeof(struct ElementFuntionTable))
-        ,m_bar(NULL), m_media_play(NULL), m_bar_text(NULL), m_listview(NULL), m_listview_thumbnail(NULL), m_topleftView_button(NULL), m_toprightView_button(NULL), m_buttomleftView_button(NULL), m_buttomrightView_button(NULL), m_fullscreenView_button(NULL)
+        ,m_bar(NULL), m_media_play(NULL), m_listview_pop(NULL), m_bar_text(NULL), m_listview(NULL), m_listview_thumbnail(NULL), m_topleftView_button(NULL), m_toprightView_button(NULL), m_buttomleftView_button(NULL), m_buttomrightView_button(NULL), m_fullscreenView_button(NULL)
     {
         InitElementTable(m_element_info, m_element_size);
     }
@@ -242,13 +242,13 @@ namespace GUI
     };
     static IGUITexture listview_itemPrev_texture[] =
     {
-        {XR_RES_DVR"media_playback_listview_itemPrev.dds", 25, 0, 33, 33},
-        {XR_RES_HMI"BC64.dds", 25, 0, 33, 33},
+        {XR_RES_DVR"media_playback_listview_itemPrev.dds", 125, 8, 42, 14},
+        {XR_RES_HMI"BC64.dds", 125, 8, 42, 14},
     };
     static IGUITexture listview_itemNext_texture[] =
     {
-        {XR_RES_DVR"media_listview_itemNext.dds", 270, 0, 33, 33},
-        {XR_RES_HMI"BC64.dds", 270, 0, 33, 33},
+        {XR_RES_DVR"media_playback_listview_itemNext.dds", 125, 238, 42, 14},
+        {XR_RES_HMI"BC64.dds", 125, 238, 42, 14},
     };
     static IGUITexture listviewThumbnail_array_texture[] = {
         {XR_RES_DVR"media_listview_thumbnail.dds", 329, 0, 273, 348},
@@ -293,9 +293,8 @@ namespace GUI
     //退出按钮/切换到系统home界面
     void DvrLayout::InitMediaExit(IGUIElement* media_exit, const GUI_HANDLE_T parentId)
     {
-
         media_exit->Attach(m_node, parentId);
-        media_exit->SetTexture(exit_array_texture, 0);
+        media_exit->SetTexture(exit_array_texture, GUI_BUTTON_EFFECT_LOCK);
         media_exit->Create(exit_array_texture[0].pos_x,
                            exit_array_texture[0].pos_y,
                            exit_array_texture[0].element_width,
@@ -304,9 +303,11 @@ namespace GUI
     void DvrLayout::OnExitEvent(IGUIElement* exit_button)
     {
         //reset dvr layout的状态
-        
-        
+        //bug! 由于退出按钮在down之后，退出界面，无法响应对应的up消息．导致再次进入状态异常
+        exit_button->Reset();
         m_media_play->Reset();
+        //m_listview_pop->Reset();
+        
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
         //填充有效数据
@@ -369,14 +370,17 @@ namespace GUI
         AvmEvent* event = RequestEvent(&payload);
         if(m_listview->NextItem())
         {
-            ERROR("-------1---------");
             //填充有效数据
             payload->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
             payload->body.onlyNotify = true;
         }
         else
         {
-            ERROR("-------2---------");
+            payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
+            payload->body.dvr_body.listview_file.operation = 0x06;
+            payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
+        
+            ERROR("---------------------");
             //!列表框下移越界，触发向下翻页命令
             payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
             payload->body.dvr_body.listview_file.operation = 0x06;
@@ -484,6 +488,7 @@ namespace GUI
                                           listviewpop_array_texture[0].pos_y,
                                           listviewpop_array_texture[0].element_width,
                                           listviewpop_array_texture[0].element_height);
+        m_listview_pop = dynamic_cast<CGPUButton*>(media_listview_pop_button);
     }
     void DvrLayout::OnListviewPop(IGUIElement* listviewpop_button)
     {

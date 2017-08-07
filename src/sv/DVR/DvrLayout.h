@@ -133,7 +133,7 @@ namespace GUI
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
         CGPUProcessbar* m_bar;
-        CGPUButton*     m_media_play;
+        CGPUButton*     m_media_play, *m_listview_pop;
         CGPUText*       m_bar_text;
         CGPUListView*   m_listview;
         CGPUImageStream* m_listview_thumbnail;

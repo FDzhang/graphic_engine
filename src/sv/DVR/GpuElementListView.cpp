@@ -80,16 +80,6 @@ namespace GUI
                                               0,
                                               m_element_width, m_element_height);
 
-            //选择框, 单击选择框表示选中进行播放
-            Int32 itemSelectedId = node->CreateSpirit(rootId, InsertFlag_Child,
-                                                      textSelectedItemId, 1.0,
-                                                      m_listview_itemSelected_texture->pos_x,
-                                                      m_listview_itemSelected_texture->pos_y,
-                                                      0,
-                                                      m_listview_itemSelected_texture->element_width,
-                                                      m_listview_itemSelected_texture->element_height);
-            m_itemSelectedLayer = node->GetLayer(itemSelectedId);
-            m_itemSelectedLayer -> SetEventResponder(this);
             for(int index = 0; index < m_itemNum; index++)
             {
                 //按要求创建指定数目的listview item子控件
@@ -123,6 +113,16 @@ namespace GUI
                 m_listview_item[index].valid = false;
             }
 
+             //选择框, 单击选择框表示选中进行播放
+            Int32 itemSelectedId = node->CreateSpirit(rootId, InsertFlag_Child,
+                                                      textSelectedItemId, 1.0,
+                                                      m_listview_itemSelected_texture->pos_x,
+                                                      m_listview_itemSelected_texture->pos_y,
+                                                      0,
+                                                      m_listview_itemSelected_texture->element_width,
+                                                      m_listview_itemSelected_texture->element_height);
+            m_itemSelectedLayer = node->GetLayer(itemSelectedId);
+            m_itemSelectedLayer -> SetEventResponder(this);
             //初始化当前选中框
             m_current_item = &(m_listview_item[0]);
             IGUIElement::SetHwnd((GUI_HANDLE_T)rootId);
