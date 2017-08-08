@@ -133,7 +133,7 @@ namespace GUI
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
         CGPUProcessbar* m_bar;
-        CGPUButton*     m_media_play, *m_listview_pop;
+        CGPUButton *m_listview_pop;
         CGPUText*       m_bar_text;
         CGPUListView*   m_listview;
         CGPUImageStream* m_listview_thumbnail;
@@ -145,6 +145,9 @@ namespace GUI
         CGPUEventListener*     m_fullscreenView_button;
         
         PlaylistItemTable_T table;
+    public:
+        //dota2_black 临时
+        static CGPUButton*    m_media_play;
     private:
         static DvrLayout* m_layout;
     };

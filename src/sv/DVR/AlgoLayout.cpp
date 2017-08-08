@@ -293,11 +293,13 @@ namespace GUI
     }
     void AlgoLayout::OnEventMediaRecord(IGUIElement*)
     {
+        static bool is_record = true;
+        is_record = !is_record;
         //处理按钮逻辑
-        m_ldw_button->Enable(false);
-        m_bsd_button->Enable(false);
-        m_online_button->Enable(false);
-        m_apa_button->Enable(false);
+        m_ldw_button->Enable(is_record);
+        m_bsd_button->Enable(is_record);
+        m_online_button->Enable(is_record);
+        m_apa_button->Enable(is_record);
         m_playback_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;

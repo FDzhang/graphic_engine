@@ -42,13 +42,6 @@ namespace GUI
         void Init() {};
         void Enable(bool flag) ;
 
-        void EnableRecord(bool flag);
-        void EnablePlayback(bool flag);
-        void EnableLdw(bool flag);
-        void EnableBsd(bool flag);
-        void EnableOnline(bool flag);
-        void EnableApa(bool flag);
-        void EnableWifi(bool flag);
     private:
         
         void InitAlgoLdw(IGUIElement* , const GUI_HANDLE_T);

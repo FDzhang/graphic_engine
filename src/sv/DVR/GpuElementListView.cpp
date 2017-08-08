@@ -123,6 +123,8 @@ namespace GUI
                                                       m_listview_itemSelected_texture->element_height);
             m_itemSelectedLayer = node->GetLayer(itemSelectedId);
             m_itemSelectedLayer -> SetEventResponder(this);
+
+            m_itemSelectedLayer->SetEnable(false);
             //初始化当前选中框
             m_current_item = &(m_listview_item[0]);
             IGUIElement::SetHwnd((GUI_HANDLE_T)rootId);
@@ -161,6 +163,7 @@ namespace GUI
         {
             case TouchEvent_Down:
             {
+                m_itemSelectedLayer->SetEnable(true);
                 struct ListViewItem* item =  (struct ListViewItem*)(responder->GetPrivateData());
                 m_itemSelectedLayer->SetY((item->m_itemLayer)->GetY());
                 //更新current指针
@@ -237,6 +240,7 @@ namespace GUI
     }
     void CGPUListView::Sync()
     {
+        m_itemSelectedLayer->SetEnable(false);
         m_current_item = &(m_listview_item[0]);
 
         //同步选中框状态，若itemSelected位置没有及时更新，则重新更新状态

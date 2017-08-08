@@ -29,6 +29,7 @@
 
 namespace GUI
 {
+    CGPUButton* DvrLayout::m_media_play= NULL;
     DvrLayout* DvrLayout::m_layout = NULL;
     IDvrLayout* DvrLayout::GetLayout()
     {
@@ -70,7 +71,7 @@ namespace GUI
     DvrLayout::DvrLayout()
         :ILayout(DVRHMI_EVENT_NAME)
         ,m_element_size(sizeof(m_element_info) / sizeof(struct ElementFuntionTable))
-        ,m_bar(NULL), m_media_play(NULL), m_listview_pop(NULL), m_bar_text(NULL), m_listview(NULL), m_listview_thumbnail(NULL), m_topleftView_button(NULL), m_toprightView_button(NULL), m_buttomleftView_button(NULL), m_buttomrightView_button(NULL), m_fullscreenView_button(NULL)
+        ,m_bar(NULL), m_listview_pop(NULL), m_bar_text(NULL), m_listview(NULL), m_listview_thumbnail(NULL), m_topleftView_button(NULL), m_toprightView_button(NULL), m_buttomleftView_button(NULL), m_buttomrightView_button(NULL), m_fullscreenView_button(NULL)
     {
         InitElementTable(m_element_info, m_element_size);
     }
@@ -368,24 +369,9 @@ namespace GUI
         m_media_play->Reset();
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        if(m_listview->NextItem())
-        {
-            //填充有效数据
-            payload->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
-            payload->body.onlyNotify = true;
-        }
-        else
-        {
-            payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
-            payload->body.dvr_body.listview_file.operation = 0x06;
-            payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
-        
-            ERROR("---------------------");
-            //!列表框下移越界，触发向下翻页命令
-            payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
-            payload->body.dvr_body.listview_file.operation = 0x06;
-            payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
-        }
+        //填充有效数据
+        payload->header.msg_id = DVR_MEDIA_NEXT_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
     //上一曲按钮
@@ -403,22 +389,11 @@ namespace GUI
         m_media_play->Reset();
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
-        if(m_listview->PrevItem())
-        {
-            //填充有效数据
-            payload->header.msg_id = DVR_MEDIA_PREVE_BUTTON;
-            payload->body.onlyNotify = true;
-        }
-        else
-        {
-            //!列表框上移越界，触发向上翻页命令
-            payload->header.msg_id = DVR_MEDIA_LIST_VIEW;
-            payload->body.dvr_body.listview_file.operation = 0x05;
-            payload->body.dvr_body.listview_file.method.file_play = m_listview->GetCurrentIndex();
-        }
+        //填充有效数据
+        payload->header.msg_id = DVR_MEDIA_PREVE_BUTTON;
+        payload->body.onlyNotify = true;
         PostEvent(event);
     }
-    
     
     void DvrLayout::InitMediaPlay(IGUIElement* media_play_button, const GUI_HANDLE_T parentId)
     {
