@@ -2709,9 +2709,10 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	float f_stich_ratio=0.3;
 	IMaterial *pTempMtl;
 	float f_vertical_radio = 0.5;
-	float black_width = XrGetScreenHeight()*0.045;
+	float black_width = 80;  //XrGetScreenHeight()*0.045;
+	float left_panel_width = 100.0;
 	FadeLeftReg.Set(-XrGetScreenWidth()-FADE_BORDER, -FADE_BORDER, 0, XrGetScreenHeight());
-	CenterReg.Set(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
+	CenterReg.Set(0 + left_panel_width, XrGetScreenWidth(), 0 + black_width, XrGetScreenHeight() - black_width);
 	FadeRightReg.Set(XrGetScreenWidth()+FADE_BORDER, 2*XrGetScreenWidth()+FADE_BORDER, 0, XrGetScreenHeight());
 #ifdef ALI
     Stich2DReg.Set(XrGetScreenWidth()*f_stich_ratio,XrGetScreenWidth(),0,XrGetScreenHeight()* f_vertical_radio - CUT_LINE);
@@ -2722,8 +2723,8 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 #else
 
     f_stich_ratio=0.35;
-    Stich2DReg.Set(0,XrGetScreenWidth()*f_stich_ratio,0+black_width,XrGetScreenHeight()-black_width);
-    RightReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.0,XrGetScreenHeight()-black_width);
+    Stich2DReg.Set(left_panel_width,left_panel_width + (XrGetScreenWidth() - left_panel_width)*f_stich_ratio,0+black_width,XrGetScreenHeight()-black_width);
+    RightReg.Set(left_panel_width + (XrGetScreenWidth() - left_panel_width)*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.0,XrGetScreenHeight()-black_width);
 
 
 #endif
@@ -3698,7 +3699,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 		//#else
         m_2DAVMNode->SetEnable(1);
         m_stich_node->SetEnable(1);
-		m_pAdasHmi->SetEnable(1);
+		m_pAdasHmi->SetEnable(0);
     	m_crossImage->SetEnable(0);
         m_sceneNode->SetEnable(0);
 		//#endif
@@ -3762,7 +3763,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
         
         m_2DAVMNode->SetEnable(1);
 
-		m_pAdasHmi->SetEnable(1);
+		m_pAdasHmi->SetEnable(0);
     	m_crossImage->SetEnable(0);
 	    m_sceneNode->SetEnable(1);
 

@@ -198,45 +198,45 @@ namespace GUI
      *　　　　主要涉及的是UI的绘制代码，private 不对外暴露实现细节
      */
     static IGUITexture panel_array_texture[] = {
-        {XR_RES_DVR"media_playback_panel.dds", 0, 0, 115, 720},
+        {XR_RES_DVR"media_playback_panel.dds", 0, 80, 100, 560},
     };
     static IGUITexture exit_array_texture[] = {
-        {XR_RES_HMI"BC64.dds",  0, 0, 115, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 0, 115, 90}
+        {XR_RES_HMI"BC64.dds",  0, 0, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 0, 100, 70}
     };
     static IGUITexture setting_array_texture[] =  {
-        {XR_RES_HMI"BC64.dds", 0, 90, 115, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 90, 115, 90},
+        {XR_RES_HMI"BC64.dds", 0, 70, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 70, 100, 70},
     };
     static IGUITexture stop_array_texture[] =  {
-        {XR_RES_HMI"BC64.dds", 0, 180, 115, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 180, 115, 90},
+        {XR_RES_HMI"BC64.dds", 0, 140, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 140, 100, 70},
     };
     static IGUITexture next_array_texture[] = {
-        {XR_RES_HMI"BC64.dds", 0, 270, 115, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 270, 115, 90}
+        {XR_RES_HMI"BC64.dds", 0, 210, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 210, 100, 70}
     };
     static IGUITexture prev_array_texture[] =  {
-        {XR_RES_HMI"BC64.dds", 0, 360, 115, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 360, 115, 90},
+        {XR_RES_HMI"BC64.dds", 0, 280, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 280, 100, 70},
     };
     static IGUITexture forward_array_texture[] = {
-        {XR_RES_HMI"BC64.dds", 0, 450, 115, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 450, 115, 90}
+        {XR_RES_HMI"BC64.dds", 0, 350, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 350, 100, 70}
     };
     static IGUITexture view_array_texture[] = {
-        {XR_RES_HMI"BC64.dds", 0, 540, 115, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 540, 115, 90}
+        {XR_RES_HMI"BC64.dds", 0, 420, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 420, 100, 70}
     };
     static IGUITexture listviewpop_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds",   0, 630, 113, 112},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 630, 113, 112}
+        {XR_RES_HMI"BC64.dds",   0, 490, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 490, 100, 70}
     };
 
     static IGUITexture listview_array_texture[] = {
-        {XR_RES_DVR"media_playback_listview_bg.dds", 80, 448, 300, 267},
-        {XR_RES_HMI"BC64.dds", 13, 24, 154, 33},
+        {XR_RES_DVR"media_playback_listview_bg.dds", 80, 368, 300, 267},
+        {XR_RES_HMI"BC64.dds", 13, 24, 240, 33},
         {XR_RES_DVR"media_playback_listview_itemSelected.dds",13, 24, 280, 33},
         {XR_RES_HMI"consola.ttf", 0, 0, 0, 0}
     };
@@ -260,7 +260,7 @@ namespace GUI
     };
     
     static IGUITexture bar_array_texture[] = {
-        {XR_RES_DVR"media_playback_barBase.dds", 284, 661, 813, 46},
+        {XR_RES_DVR"media_playback_barBase.dds", 284, 581, 813, 46},
         {XR_RES_DVR"media_playback_barSlide.dds", 0, 0, 31, 35},
         {XR_RES_DVR"media_playback_barFinished.dds", 0, 0, 813, 46},
     };

@@ -108,7 +108,7 @@ namespace GUI
                                       m_listview_item_texture->element_width * 0.6 ,
                                       m_listview_item_texture->element_height * 0.6);
                 m_listview_item[index].m_itemText->SetOpacity(1.0);
-                m_listview_item[index].m_itemText->SetFontSize(15);
+                m_listview_item[index].m_itemText->SetFontSize(13);
                 m_listview_item[index].m_itemText->SetColor(1.0, 1.0, 1.0);
                 m_listview_item[index].valid = false;
             }
