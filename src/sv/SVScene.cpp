@@ -194,6 +194,8 @@ char *RADARALARMTEX[4] = {XR_RES"red.dds",XR_RES"orange.dds",XR_RES"yellow.dds",
 #define _DATAPGSPARA_ XR_RES"pgs.txt"
 
 int videoid[4];
+static float left_plane = 100.0;
+static float black_plane = 80.0;
 Region FadeLeftReg, CenterReg, FadeRightReg,MapPlateReg;
 //Region Stich2DReg, RightReg, RightTopFadeReg,RightBottomFadeReg,RightBottomSingleReg;
 Region Stich2DReg,SingleViewReg, UIControlReg,RightReg, RightTopFadeReg,RightBottomFadeReg;
@@ -2709,9 +2711,9 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	float f_stich_ratio=0.3;
 	IMaterial *pTempMtl;
 	float f_vertical_radio = 0.5;
-	float black_width = 50;//XrGetScreenHeight()*0.045;
+	float black_width = 80.0;//XrGetScreenHeight()*0.045;
 	FadeLeftReg.Set(-XrGetScreenWidth()-FADE_BORDER, -FADE_BORDER, 0, XrGetScreenHeight());
-	CenterReg.Set(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
+	CenterReg.Set(0 + left_plane, XrGetScreenWidth(), 0, XrGetScreenHeight());
 	FadeRightReg.Set(XrGetScreenWidth()+FADE_BORDER, 2*XrGetScreenWidth()+FADE_BORDER, 0, XrGetScreenHeight());
 #ifdef ALI
     Stich2DReg.Set(XrGetScreenWidth()*f_stich_ratio,XrGetScreenWidth(),0,XrGetScreenHeight()* f_vertical_radio - CUT_LINE);
@@ -2722,8 +2724,8 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 #else
 
     f_stich_ratio=0.35;
-    Stich2DReg.Set(0,XrGetScreenWidth()*f_stich_ratio,0+black_width,XrGetScreenHeight()-black_width);
-    RightReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.0,XrGetScreenHeight()-black_width);
+    Stich2DReg.Set(0 + left_plane,left_plane + XrGetScreenWidth()*f_stich_ratio,0+black_width,XrGetScreenHeight()-black_width);
+    RightReg.Set(XrGetScreenWidth()*f_stich_ratio+CUT_LINE + left_plane,XrGetScreenWidth(),0+black_width+XrGetScreenHeight()*0.0,XrGetScreenHeight()-black_width);
 
 
 #endif
@@ -4647,7 +4649,7 @@ int SVScene::SwitchSingleView(int view_control_flag)
         m_RadarAlarm_Node_single[index]->SetEnable(0);
 
     m_last_view = view_control_flag; //保证切换到SVScene::Update时 ， 一定执行更新
-    Region fullscreenROI(0, XrGetScreenWidth(), 0, XrGetScreenHeight());
+    Region fullscreenROI(0 + left_plane, XrGetScreenWidth(), 0 + black_plane, XrGetScreenHeight() - black_plane);
 
     //第二步: 更改 fVerticesSingleView , 修改纹理mesh区域(不进行处理)
     Int32 offset = 0; float* viewmatrix = NULL;

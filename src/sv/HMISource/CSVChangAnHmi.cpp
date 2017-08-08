@@ -79,6 +79,11 @@ int CSVChanganHmi::ProcessIconTouchEvent()
 }
 int CSVChanganHmi::Update()
 {   
+	if(m_visibilityStatus == 0)
+	{
+		return 0;
+	}
+	
 	ProcessIconTouchEvent();
 	SetElemProperty();
 
@@ -90,16 +95,16 @@ int CSVChanganHmi::Update()
 	ccagIcon[CCAG_CAMERA_LEFT]->Update();
 	ccagIcon[CCAG_CAMERA_RIGHT]->Update();
 
-    return true;
+    return 0;
 }
 
 int CSVChanganHmi::SetSurroundViewCamElem()
 {
-	float leftPanelWidth = 0.0;
+	float leftPanelWidth = 100.0;
 
 	ccagIconData[CCAG_RED_TRACK].width = 378.0;
 	ccagIconData[CCAG_RED_TRACK].height = 487.0;
-	ccagIconData[CCAG_RED_TRACK].pos[0] = (m_stitchRegionWidth - ccagIconData[CCAG_RED_TRACK].width)/2.0 + 0.0;
+	ccagIconData[CCAG_RED_TRACK].pos[0] = (m_stitchRegionWidth - ccagIconData[CCAG_RED_TRACK].width)/2.0 + leftPanelWidth;
     ccagIconData[CCAG_RED_TRACK].pos[1] = (m_stitchRegionHeight - ccagIconData[CCAG_RED_TRACK].height)/2.0 + 0.0;
 	ccagIconData[CCAG_RED_TRACK].show_flag = 1;
     ccagIconData[CCAG_RED_TRACK].icon_type = STATIC_ICON;
