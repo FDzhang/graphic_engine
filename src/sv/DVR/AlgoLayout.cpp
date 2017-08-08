@@ -70,35 +70,35 @@ namespace GUI
     {
     }
     static IGUITexture panel_array_texture[] = {
-        {XR_RES_ALGO"algo_panel.dds", 0, 0, 115, 720},
+        {XR_RES_ALGO"algo_panel.dds", 0, 80, 100, 560},
     };
     static IGUITexture ldw_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 180, 100, 90},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 180, 100, 90},
+        {XR_RES_HMI"BC64.dds", 0, 140, 100, 70},
+        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 140, 100, 70},
     };
     static IGUITexture bsd_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 270, 100, 90},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 270, 100, 90},
+        {XR_RES_HMI"BC64.dds", 0, 210, 100, 70},
+        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 210, 100, 70},
     };
     static IGUITexture online_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 360, 100, 90},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 360, 100, 90},
+        {XR_RES_HMI"BC64.dds", 0, 280, 100, 70},
+        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 280, 100, 70},
     };
     static IGUITexture apa_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 450, 100, 90},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 450, 100, 90},
+        {XR_RES_HMI"BC64.dds", 0, 350, 100, 70},
+        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 350, 100, 70},
     };
     static IGUITexture media_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 630, 100, 90},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 630, 100, 90},
+        {XR_RES_HMI"BC64.dds", 0, 490, 100, 70},
+        {XR_RES_HMI"media_btn_clicked.dds", 0, 490, 100, 70},
     };
     static IGUITexture mediaPanel_array_texture[] = {
-        {XR_RES_ALGO"algo_media_panel.dds", 76, 604, 175, 113},
+        {XR_RES_ALGO"algo_media_panel.dds", 76, 524, 175, 113},
     };
     static IGUITexture record_array_texture[] =
     {
