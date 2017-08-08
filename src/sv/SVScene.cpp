@@ -5622,14 +5622,16 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
         view_cmd = CROSS_IMAGE_VIEW;
     }
 
-    if(view_cmd != m_last_view)
-    {
-        SwitchViewLogic(view_cmd);
-    }
 	if(m_touchedSelectViewState != m_lastSelectViewState && view_cmd != TOUR_VIEW)
 	{
 		SwitchViewLogic(m_touchedSelectViewState);
 	}
+
+    if(view_cmd != m_last_view)
+    {
+        SwitchViewLogic(view_cmd);
+    }
+
     if(pre_wheel_rot != wheel_rot)
     {
         if(wheel_rot == 0)

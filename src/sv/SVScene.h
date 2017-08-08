@@ -156,7 +156,7 @@ class SVScene
 	// The program object containing the 2 shader objects
 
 public:
-	SVScene():m_lastSelectViewState(100)
+	SVScene():m_lastSelectViewState(0)
 	{
 		m_lisenceRT = 0;
 	}

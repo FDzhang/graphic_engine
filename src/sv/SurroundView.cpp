@@ -321,7 +321,8 @@ bool XRSV::update(unsigned int view_control_flag)
 				|| m_currentAlgoStatus == ALGO_BSD
 				|| m_currentAlgoStatus == ALGO_ONLINE_CALIBRATION
 				|| m_currentAlgoStatus == ALGO_APA
-				|| m_currentAlgoStatus == ALGO_CTA)
+				|| m_currentAlgoStatus == ALGO_CTA
+				|| m_currentAlgoStatus == ALGO_LDW_BSD)
 				{
 					m_customHmi->SetVisibility(0);
 				}
@@ -358,6 +359,7 @@ bool XRSV::update(unsigned int view_control_flag)
 			init_flag = 1;
         }
 #endif
+
 		g_pIXrCore->Update();
 		timestamp2 = XrGetTime();
 		g_pIXrCore->Render();
@@ -407,20 +409,20 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 void XRSV::SingleTouchDown(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Down);
-	svscn->OnMouseDown(x,y);
+	//svscn->OnMouseDown(x,y);
 	m_customHmi->SetSingleTouchDownEvent(x, y);
 }
 
 void XRSV::SingleTouchMove(int x, int y)
 {
-	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Move);
-	svscn->OnMouseMove(x,y);
+	//if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Move);
+	//svscn->OnMouseMove(x,y);
 }
 
 void XRSV::SingleTouchUp(int x, int y)
 {
-	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Up);
-	svscn->OnMouseUp(x,y);
+	//if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Up);
+	//svscn->OnMouseUp(x,y);
 }
 
 void XRSV::SwitchViewButton(int buttonid)

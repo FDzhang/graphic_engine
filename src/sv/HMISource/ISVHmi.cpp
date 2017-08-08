@@ -2,7 +2,7 @@
 
 extern IXrCore* g_pIXrCore;
 
-ISVHmi::ISVHmi()
+ISVHmi::ISVHmi():m_viewState(0)
 {
     m_uiNodeId = g_pIXrCore->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_uiNode);
 }
