@@ -31,6 +31,7 @@ enum
     ALGO_ONLINE_CALIBRATION = 4,
     ALGO_APA = 5,
     ALGO_CTA,
+    ALGO_LDW_BSD = 3,
 };
 
 typedef struct Hmi_Message_Tag

@@ -3,6 +3,33 @@
 
 extern float car_rect[4];
 
+typedef enum ChanganViewType {
+	CCAG_FRONT_SINGLE_VIEW			= 0x00000000,
+	CCAG_REAR_SINGLE_VIEW			= 0x00000001,
+    CCAG_LEFT_SINGLE_VIEW		    = 0x00000002,
+	CCAG_RIGHT_SINGLE_VIEW			= 0x00000003,
+	CCAG_FRONT_3D_VIEW       		= 0x00000004,
+	CCAG_REAR_3D_VIEW				= 0x00000005,
+	CCAG_LEFT_FRONT_3D_VIEW                =0x0000006,
+	CCAG_RIGHT_FRONT_3D_VIEW				=0x0000007,	
+	CCAG_LEFT_REAR_3D_VIEW           =0x0008,
+	CCAG_RIGHT_REAR_3D_VIEW          = 0x00009,
+	CCAG_LEFT_TURN_SIGNAL_3D_VIEW,
+	CCAG_RIGHT_TURN_SIGNAL_3D_VIEW,
+	CCAG_LEFT_REAR_TURN_SIGNAL_3D_VIEW,
+	CCAG_RIGHT_REAR_TURN_SIGNAL_3D_VIEW,	
+	CCAG_LEFT_HIGHT_SPEED_TURN_3D_VIEW,
+	CCAG_RIGHT_HIGHT_SPEED_TURN_3D_VIEW,
+	CCAG_TOUR_VIEW,
+	CCAG_BOSH_FRONT_VIEW,
+	CCAG_BOSH_FRONT_VIEW_TOP,	
+	CCAG_BOSH_REAR_VIEW_TOP,
+	CCAG_LEFT_MIRROR_VIEW,
+	CCAG_RIGHT_MIRROR_VIEW,	
+	CCAG_CROSS_IMAGE_VIEW,			
+	CCAG_TOTAL_VIEW_NUM,
+};
+
 static void OnPressTrackCam();
 static void OnPressFrontCam();
 static void OnPressRearCam();
@@ -55,27 +82,35 @@ bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 	{
 		if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
 		{
-			tempViewIndex = 4; //front 3d
+			tempViewIndex = CCAG_BOSH_FRONT_VIEW_TOP; //front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR)
 		{
-			tempViewIndex = 4; //rear 3d
+			tempViewIndex = CCAG_REAR_3D_VIEW; //rear 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_LEFT)
 		{
-			tempViewIndex = 6; //left front 3d
+			tempViewIndex = CCAG_LEFT_FRONT_3D_VIEW; //left front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_RIGHT)
 		{
-			tempViewIndex = 7; //right front 3d
+			tempViewIndex = CCAG_RIGHT_FRONT_3D_VIEW; //right front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT_LEFT)
 		{
-			tempViewIndex = 6; //left front 3d
+			tempViewIndex = CCAG_LEFT_TURN_SIGNAL_3D_VIEW; //left front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT)
 		{
-			tempViewIndex = 7; //right front 3d
+			tempViewIndex = CCAG_RIGHT_TURN_SIGNAL_3D_VIEW; //right front 3d
+		}
+		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR_LEFT)
+		{
+			tempViewIndex = CCAG_LEFT_HIGHT_SPEED_TURN_3D_VIEW; //left rear 3d
+		}
+		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR_RIGHT)
+		{
+			tempViewIndex = CCAG_RIGHT_HIGHT_SPEED_TURN_3D_VIEW; //right rear 3d
 		}
 	}
 	
