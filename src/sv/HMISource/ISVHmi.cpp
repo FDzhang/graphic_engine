@@ -15,7 +15,7 @@ int ISVHmi::Init(int window_width, int window_height)
     return HMI_SUCCESS;
 }
 
-int ISVHmi::Update()
+int ISVHmi::Update(Hmi_Message_T& hmiMsg)
 {
     return HMI_SUCCESS;
 }

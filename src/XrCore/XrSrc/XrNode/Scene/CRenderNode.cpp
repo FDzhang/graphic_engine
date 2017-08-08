@@ -37,10 +37,10 @@ xr_state CRenderNode::SetRenderROI(
 		m_ROIAP->y.Set(reg->right,0,0);
 		m_ROIAP->z.Set(reg->top,0,0);
 		m_ROIAP->w.Set(reg->bottom,0,0);
-		m_ROIAP->x.SetTransitionStyle(AnimationStyle_EaseOut, 500);
-		m_ROIAP->y.SetTransitionStyle(AnimationStyle_EaseOut, 500);
-		m_ROIAP->z.SetTransitionStyle(AnimationStyle_EaseOut, 500);
-		m_ROIAP->w.SetTransitionStyle(AnimationStyle_EaseOut, 500);
+		//m_ROIAP->x.SetTransitionStyle(AnimationStyle_EaseOut, 500);
+		//m_ROIAP->y.SetTransitionStyle(AnimationStyle_EaseOut, 500);
+		//m_ROIAP->z.SetTransitionStyle(AnimationStyle_EaseOut, 500);
+		//m_ROIAP->w.SetTransitionStyle(AnimationStyle_EaseOut, 500);
 	}
 
 	//if (m_renderROI) *m_renderROI = *reg;

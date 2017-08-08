@@ -700,7 +700,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[0].width = scroll_1_width;
 	 m_scroll[0].height = scroll_1_height;
 	 m_scroll[0].horizon = 1;
-	 m_scroll[0].show_flag = 1;
+	 m_scroll[0].show_flag = 0;
 	 m_scroll[0].scroll_rate = 1.0;
 	 m_scroll[0].icon_file_name[0]=new char [50]; 
 	 m_scroll[0].icon_file_name[1]=new char [50];
@@ -712,7 +712,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[1].width = scroll_2_width;
 	 m_scroll[1].height = scroll_2_height;
 	 m_scroll[1].horizon = 1;
-	 m_scroll[1].show_flag = 1;
+	 m_scroll[1].show_flag = 0;
 	 m_scroll[1].scroll_rate = 1.0;
 	 m_scroll[1].icon_file_name[0]=new char [50]; 
 	 m_scroll[1].icon_file_name[1]=new char [50];
@@ -724,7 +724,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[2].width = scroll_3_width;
 	 m_scroll[2].height = scroll_3_height;
 	 m_scroll[2].horizon = 1;
-	 m_scroll[2].show_flag = 1;
+	 m_scroll[2].show_flag = 0;
 	 m_scroll[2].scroll_rate = 1.0;
 	 m_scroll[2].icon_file_name[0]=new char [50]; 
 	 m_scroll[2].icon_file_name[1]=new char [50];
@@ -736,7 +736,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[3].width = scroll_frame_ratio_width;
 	 m_scroll[3].height = scroll_frame_ratio_height;
 	 m_scroll[3].horizon = 1;
-	 m_scroll[3].show_flag = 1;
+	 m_scroll[3].show_flag = 0;
 	 m_scroll[3].scroll_rate = 1.0;
 	 m_scroll[3].icon_file_name[0]=new char [50]; 
 	 m_scroll[3].icon_file_name[1]=new char [50];
@@ -748,7 +748,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[4].width = scroll_frame_latency_width;
 	 m_scroll[4].height = scroll_frame_latency_height;
 	 m_scroll[4].horizon = 1;
-	 m_scroll[4].show_flag = 1;
+	 m_scroll[4].show_flag = 0;
 	 m_scroll[4].scroll_rate = 1.0;
 	 m_scroll[4].icon_file_name[0]=new char [50]; 
 	 m_scroll[4].icon_file_name[1]=new char [50];
@@ -760,7 +760,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[5].width = scroll_alg_time_width;
 	 m_scroll[5].height = scroll_alg_time_height;
 	 m_scroll[5].horizon = 1;
-	 m_scroll[5].show_flag = 1;
+	 m_scroll[5].show_flag = 0;
 	 m_scroll[5].scroll_rate = 1.0;
 	 m_scroll[5].icon_file_name[0]=new char [50]; 
 	 m_scroll[5].icon_file_name[1]=new char [50];
@@ -772,7 +772,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[7].width = scroll_steering_ang_width;
 	 m_scroll[7].height = scroll_steering_ang_height;
 	 m_scroll[7].horizon = 1;
-	 m_scroll[7].show_flag = 1;
+	 m_scroll[7].show_flag = 0;
 	 m_scroll[7].scroll_rate = 1.0;
 	 m_scroll[7].icon_file_name[0]=new char [50]; 
 	 m_scroll[7].icon_file_name[1]=new char [50];
@@ -785,7 +785,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[8].width = scroll_yaw_rate_width;
 	 m_scroll[8].height = scroll_yaw_rate_height;
 	 m_scroll[8].horizon = 1;
-	 m_scroll[8].show_flag = 1;
+	 m_scroll[8].show_flag = 0;
 	 m_scroll[8].scroll_rate = 1.0;
 	 m_scroll[8].icon_file_name[0]=new char [50]; 
 	 m_scroll[8].icon_file_name[1]=new char [50];
@@ -798,7 +798,7 @@ void SVNodeTestHMI::SetHMIScroll()
 	 m_scroll[9].width = scroll_vd_avg_time_width;
 	 m_scroll[9].height = scroll_vd_avg_time_height;
 	 m_scroll[9].horizon = 1;
-	 m_scroll[9].show_flag = 1;
+	 m_scroll[9].show_flag = 0;
 	 m_scroll[9].scroll_rate = 1.0;
 	 m_scroll[9].icon_file_name[0]=new char [50]; 
 	 m_scroll[9].icon_file_name[1]=new char [50];
@@ -816,15 +816,15 @@ void SVNodeTestHMI::SetHMIParams()
 	SetHMIBSDRegion();
 	SetHMIScroll();
 //2,1,1
-	m_test_hmi.icon_num = 13;
+	m_test_hmi.icon_num = 0;
 	m_test_hmi.pStaticIcon = m_icon;
 	m_test_hmi.ldw_line_num = 0;
 	m_test_hmi.pLDWLine = m_LDWData;
 	m_test_hmi.single_view_rect_num = 0;
 	m_test_hmi.pSingleviewRect = m_BSDRectData;
-	m_test_hmi.text_box_num = 8;
+	m_test_hmi.text_box_num = 0;
 	m_test_hmi.pTextBox = m_text;
-	m_test_hmi.scroll_rect_num = 10;
+	m_test_hmi.scroll_rect_num = 0;
 	m_test_hmi.pScrollRect = m_scroll;
 	m_test_hmi.BSD_radar_num = 0;
 	m_test_hmi.pBSDRadar = m_BSDRadarData;

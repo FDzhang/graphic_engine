@@ -27,7 +27,7 @@ Changan_Main_Screen_Hmi_Tag;
 
 typedef enum Changan_Track_Cam_Region_Index_Tag
 {
-    CCAG_TRACK_CAMERA_REGION_FRONT,
+    CCAG_TRACK_CAMERA_REGION_FRONT = 0,
 	CCAG_TRACK_CAMERA_REGION_REAR,
 	CCAG_TRACK_CAMERA_REGION_LEFT,
 	CCAG_TRACK_CAMERA_REGION_RIGHT,
@@ -41,9 +41,9 @@ Changan_Track_Cam_Region_Index_T;
 
 enum
 {
-	CAR_RECT_X = 146,
+	CAR_RECT_X = 246,
 	CAR_RECT_Y = 310,
-	CAR_RECT_WIDTH = 100,
+	CAR_RECT_WIDTH = 130,
 	CAR_RECT_HEIGHT = 100,
 };
 
@@ -74,15 +74,15 @@ public:
 
 	CSVChanganHmi();
     virtual int Init(int window_width, int window_height);
-    virtual int Update();
+    virtual int Update(Hmi_Message_T& hmiMsg);
     virtual int ReturnHmiMsg(Hmi_Message_T* pHmiMsg);
-
 private:
 	int SetSurroundViewCamElem();
 	int ProcessIconTouchEvent();
 	int ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action);
 	int ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action);
 	int SetElemProperty();
+	bool SetCustomView(unsigned char viewIndex);
 
 private:
 	Hmi_Button_Data_T ccagIconData[CCAG_ICON_NUMS];
@@ -112,6 +112,8 @@ public:
 	static unsigned int m_currentTrackCamRegionIndex;
 	static unsigned int m_isTrackRegion;
 	static unsigned int m_isCarRegion;
+
+	static unsigned char m_currentViewState;
 };
 
 

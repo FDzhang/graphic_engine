@@ -290,6 +290,9 @@ void UpdateCustomHMIData()
 void setHMIAlgStatus(int alg_status_value)
 {
 	test_hmi.alg_status= alg_status_value;
+
+	app.SetCurrentAlgoStatus(alg_status_value);
+	
 }
 
 void setHMIChainsStatus(int demo_status_value)

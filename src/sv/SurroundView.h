@@ -50,9 +50,14 @@ public:
     void initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 	int m_useHDR;
 
+public:
+	int SetCurrentAlgoStatus(int algo_status);
 private:
 	int InitHmi(int screen_width, int screen_height);
 	int UpdateHmiData();
+private:
+	int m_currentAlgoStatus;
+	Hmi_Message_T currentHmiMessage;
 protected:
 
 	void switchScene();
