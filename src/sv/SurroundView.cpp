@@ -184,9 +184,21 @@ int XRSV::InitHmi(int screen_width, int screen_height)
 }
 int XRSV::UpdateHmiData()
 {
-	m_customHmi->Update();
-}
+	m_customHmi->Update(currentHmiMessage);
+	unsigned char currentViewIndex = 0;
+	m_customHmi->GetCurrentView(currentViewIndex);
 
+	if(svscn)
+	{
+		svscn->SetTouchSelectView(currentViewIndex);
+	}
+}
+int XRSV::SetCurrentAlgoStatus(int algo_status)
+{
+	m_currentAlgoStatus = algo_status;
+	currentHmiMessage.algo_status = algo_status;
+	return 0;
+}
 bool XRSV::init(int width, int height, st_GPU_Init_Config_T& gpu_init_cfg)
 {
 	int i,logoMtlId,logoLayerId;
@@ -255,7 +267,7 @@ LutData,MAX_NAME_LENGTH);
 
 	temp = svscn->InitNode(sv_config,m_pAdasMdl,m_adas_mdl_num);
 
-	//InitHmi(width, height);
+	InitHmi(width, height);
 
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
@@ -285,6 +297,7 @@ bool XRSV::update(unsigned int view_control_flag)
         switch(view_control_flag)
         {
             case 2:
+				m_customHmi->SetVisibility(0);
                 svscn->SwitchCrossView();
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -295,6 +308,7 @@ bool XRSV::update(unsigned int view_control_flag)
             case 0xf1:
             case 0xf2:
             case 0xf3:
+				m_customHmi->SetVisibility(0);
                 svscn->SwitchSingleView(view_control_flag);
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -302,10 +316,19 @@ bool XRSV::update(unsigned int view_control_flag)
                 g_pXrSwapChain->Swap();
                 return 0;
             default:
+				m_customHmi->SetVisibility(1);
+				if(m_currentAlgoStatus == ALGO_LDW
+				|| m_currentAlgoStatus == ALGO_BSD
+				|| m_currentAlgoStatus == ALGO_ONLINE_CALIBRATION
+				|| m_currentAlgoStatus == ALGO_APA
+				|| m_currentAlgoStatus == ALGO_CTA)
+				{
+					m_customHmi->SetVisibility(0);
+				}
                 break;
         }
 
-    //UpdateHmiData();
+    UpdateHmiData();
 
         svscn->Update(view_control_flag,0);
         
@@ -385,7 +408,7 @@ void XRSV::SingleTouchDown(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Down);
 	svscn->OnMouseDown(x,y);
-	//m_customHmi->SetSingleTouchDownEvent(x, y);
+	m_customHmi->SetSingleTouchDownEvent(x, y);
 }
 
 void XRSV::SingleTouchMove(int x, int y)

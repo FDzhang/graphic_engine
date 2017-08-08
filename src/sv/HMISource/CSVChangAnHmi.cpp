@@ -31,6 +31,8 @@ unsigned int CSVChanganHmi::m_currentTrackCamRegionIndex = 0;
 unsigned int CSVChanganHmi::m_isTrackRegion = 0;
 unsigned int CSVChanganHmi::m_isCarRegion = 0;
 
+unsigned char CSVChanganHmi::m_currentViewState = 0;
+
 CSVChanganHmi::CSVChanganHmi()
 {
 
@@ -45,7 +47,40 @@ int CSVChanganHmi::Init(int window_width, int window_height)
     return true;
 }
 
-
+bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
+{
+	unsigned char tempViewIndex;
+	tempViewIndex = viewIndex;
+	if(m_isTrackRegion == 1)
+	{
+		if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
+		{
+			tempViewIndex = 4; //front 3d
+		}
+		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR)
+		{
+			tempViewIndex = 4; //rear 3d
+		}
+		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_LEFT)
+		{
+			tempViewIndex = 6; //left front 3d
+		}
+		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_RIGHT)
+		{
+			tempViewIndex = 7; //right front 3d
+		}
+		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT_LEFT)
+		{
+			tempViewIndex = 6; //left front 3d
+		}
+		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT)
+		{
+			tempViewIndex = 7; //right front 3d
+		}
+	}
+	
+	SetCurrentView(tempViewIndex);
+}
 int CSVChanganHmi::ReturnHmiMsg(Hmi_Message_T* hmi_msg)
 {
  
@@ -72,12 +107,14 @@ int CSVChanganHmi::ProcessIconTouchEvent()
 			ccagIcon[CCAG_CAMERA_LEFT]->onClickListener(x,y,touchType);
 			ccagIcon[CCAG_CAMERA_RIGHT]->onClickListener(x,y,touchType);
 		}
+		SetCustomView(m_currentViewState);
+
 	}
 	
 
 	return 0;
 }
-int CSVChanganHmi::Update()
+int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
 {   
 	if(m_visibilityStatus == 0)
 	{
@@ -100,7 +137,7 @@ int CSVChanganHmi::Update()
 
 int CSVChanganHmi::SetSurroundViewCamElem()
 {
-	float leftPanelWidth = 100.0;
+	float leftPanelWidth = 120.0;
 
 	ccagIconData[CCAG_RED_TRACK].width = 378.0;
 	ccagIconData[CCAG_RED_TRACK].height = 487.0;
@@ -122,42 +159,42 @@ int CSVChanganHmi::SetSurroundViewCamElem()
 	ccagIconData[CCAG_RED_TRACK_CAMERA].width = 64.0;
 	ccagIconData[CCAG_RED_TRACK_CAMERA].height = 64.0;
 
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + (ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width)/2.0 + leftPanelWidth;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + (ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width)/2.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] - ccagIconData[CCAG_RED_TRACK_CAMERA].height/2.0 + 10.0;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_Y];
 	
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + (ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width)/2.0 + leftPanelWidth + 5.0;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + (ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width)/2.0 + 5.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + ccagIconData[CCAG_RED_TRACK].height - ccagIconData[CCAG_RED_TRACK_CAMERA].height/2.0 - 10.0;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_Y];
 	
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_LEFT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + leftPanelWidth - 8.0;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_LEFT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] - 8.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_LEFT][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + (ccagIconData[CCAG_RED_TRACK].height)/2.0 - 25.0;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_LEFT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_LEFT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_LEFT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_LEFT][CCAG_ELEM_Y];
 
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_RIGHT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width  + leftPanelWidth + 8.0;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_RIGHT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width + 8.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_RIGHT][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + (ccagIconData[CCAG_RED_TRACK].height)/2.0 - 25.0;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_RIGHT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_RIGHT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_RIGHT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_RIGHT][CCAG_ELEM_Y];
 
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_LEFT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + leftPanelWidth + 10.0;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_LEFT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + 10.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_LEFT][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + ccagIconData[CCAG_RED_TRACK].height/6.5;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT_LEFT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_LEFT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT_LEFT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_LEFT][CCAG_ELEM_Y];
 
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + ccagIconData[CCAG_RED_TRACK].width* 2.4/3.0 + leftPanelWidth;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + ccagIconData[CCAG_RED_TRACK].width* 2.4/3.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + ccagIconData[CCAG_RED_TRACK].height/6.5;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT][CCAG_ELEM_Y];
 
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_LEFT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + leftPanelWidth + 15.0;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_LEFT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + 15.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_LEFT][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + ccagIconData[CCAG_RED_TRACK].height* 2.2/3.0;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR_LEFT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_LEFT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR_LEFT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_LEFT][CCAG_ELEM_Y];
 
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_RIGHT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + ccagIconData[CCAG_RED_TRACK].width* 2.4/3.0 + leftPanelWidth;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_RIGHT][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + ccagIconData[CCAG_RED_TRACK].width* 2.4/3.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_RIGHT][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + ccagIconData[CCAG_RED_TRACK].height* 2.2/3.0;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR_RIGHT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_RIGHT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR_RIGHT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR_RIGHT][CCAG_ELEM_Y];
@@ -342,6 +379,7 @@ int CSVChanganHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned 
 				&& touch_pos_y < m_trackCamRegion[index][CCAG_ELEM_Y]  + m_trackCamRegion[index][CCAG_ELEM_HEIGHT] )
 		{
 			m_currentTrackCamRegionIndex = index;
+			m_currentViewState = m_currentTrackCamRegionIndex;
 		}
 	}
 	return BUTTON_NORMAL;
@@ -414,6 +452,7 @@ void OnPressFrontCam()
 	CSVChanganHmi::m_leftCamColor = 0;
 	CSVChanganHmi::m_rightCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_FRONT;
 }
 void OnPressRearCam()
 {
@@ -424,6 +463,8 @@ void OnPressRearCam()
 	CSVChanganHmi::m_leftCamColor = 0;
 	CSVChanganHmi::m_rightCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_REAR;
+
 }
 void OnPressLeftCam()
 {
@@ -434,6 +475,8 @@ void OnPressLeftCam()
 	CSVChanganHmi::m_rearCamColor = 0;
 	CSVChanganHmi::m_rightCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_LEFT;
+
 }
 void OnPressRightCam()
 {
@@ -444,4 +487,6 @@ void OnPressRightCam()
 	CSVChanganHmi::m_rearCamColor = 0;
 	CSVChanganHmi::m_leftCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_RIGHT;
+
 }

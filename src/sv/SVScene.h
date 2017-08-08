@@ -156,7 +156,7 @@ class SVScene
 	// The program object containing the 2 shader objects
 
 public:
-	SVScene() 
+	SVScene():m_lastSelectViewState(100)
 	{
 		m_lisenceRT = 0;
 	}
@@ -245,6 +245,12 @@ public:
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 	void Init2DStichAVMNode();
 	void Calc3DGroundTexture();
+
+public:
+	void SetTouchSelectView(unsigned char view_index);
+private:
+	unsigned char m_touchedSelectViewState;	
+	unsigned char m_lastSelectViewState;
 private:
 	ISceneNode*			m_sceneNode;
 	Int32				m_scenenodeId;

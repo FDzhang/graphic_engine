@@ -7,6 +7,8 @@
 #include "SVNodeAdasHmi.h"
 #include "RenderNode/SVNodeCrossImage.h"
 #include "RenderNode/SVNodeSonar.h"
+#include "gpu_log.h"
+
 extern IXrCore* g_pIXrCore;
 extern IDeviceManager* rm;
 extern IAnimationManager* am;
@@ -2713,7 +2715,7 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	float f_vertical_radio = 0.5;
 	float black_width = 80.0;//XrGetScreenHeight()*0.045;
 	FadeLeftReg.Set(-XrGetScreenWidth()-FADE_BORDER, -FADE_BORDER, 0, XrGetScreenHeight());
-	CenterReg.Set(0 + left_plane, XrGetScreenWidth(), 0, XrGetScreenHeight());
+	CenterReg.Set(0 + left_plane, XrGetScreenWidth(), 0 + black_plane, XrGetScreenHeight() - black_plane);
 	FadeRightReg.Set(XrGetScreenWidth()+FADE_BORDER, 2*XrGetScreenWidth()+FADE_BORDER, 0, XrGetScreenHeight());
 #ifdef ALI
     Stich2DReg.Set(XrGetScreenWidth()*f_stich_ratio,XrGetScreenWidth(),0,XrGetScreenHeight()* f_vertical_radio - CUT_LINE);
@@ -5624,6 +5626,10 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
     {
         SwitchViewLogic(view_cmd);
     }
+	if(m_touchedSelectViewState != m_lastSelectViewState && view_cmd != TOUR_VIEW)
+	{
+		SwitchViewLogic(m_touchedSelectViewState);
+	}
     if(pre_wheel_rot != wheel_rot)
     {
         if(wheel_rot == 0)
@@ -5635,7 +5641,10 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
             // wheelRot->Start();
 		}
     }
+
     m_last_view = view_cmd;
+	m_lastSelectViewState = m_touchedSelectViewState;
+
 	pre_speed_falg = speed_flag;
 	pre_input_flag = enter_top_flag;
 	pre_wheel_rot = wheel_rot;
@@ -6023,4 +6032,9 @@ void SVScene::OnMouseMove(int x, int y)
 	m_prevX = x;
 	m_prevY = y;
 	m_lastTime = XrGetTime();
+}
+
+void SVScene::SetTouchSelectView(unsigned char view_index)
+{
+	m_touchedSelectViewState = view_index;
 }

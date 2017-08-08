@@ -24,12 +24,24 @@ enum
      VISIBLE = 1,
 };
 
+enum
+{
+    ALGO_LDW = 1,
+    ALGO_BSD = 2,
+    ALGO_ONLINE_CALIBRATION = 4,
+    ALGO_APA = 5,
+    ALGO_CTA,
+};
+
 typedef struct Hmi_Message_Tag
 {
     unsigned char view_model;
     unsigned char guide_line_model;
     unsigned char sys_language;
     unsigned char hmi_cmd;
+    
+    int algo_status;
+    
 }
 Hmi_Message_T;
 
@@ -39,7 +51,7 @@ public:
     ISVHmi();
     virtual ~ISVHmi();
     virtual int Init(int window_width, int window_height);
-    virtual int Update();
+    virtual int Update(Hmi_Message_T& hmiMsg);
     virtual int ReturnHmiMsg(Hmi_Message_T* pHmiMsg);
     virtual int DestroyHmiElems();
 
