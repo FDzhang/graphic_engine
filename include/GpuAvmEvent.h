@@ -125,6 +125,7 @@ typedef enum
     ALGO_APA_BUTTON,
     ALGO_RECORD_BUTTON,
     ALGO_WIFI_BUTTON,
+    ALGO_FCW_BUTTON,
 }ALGO_EVENT_ELEMENT_ID_T;
 
 typedef enum

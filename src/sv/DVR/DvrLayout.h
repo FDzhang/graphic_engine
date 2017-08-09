@@ -60,14 +60,7 @@ namespace GUI
         void AppendPlaylist(const char* playlist);
         void NextItemInPlaylist();
         void PrevItemInPlaylist();
-        //媒体播放按钮控制
-        void StartPlay();
-        void PausePlay();
-        void NextPlay();
-        void PrevPlay();
-        void FastForwardPlay();
-        void RewindPlay();
-        void SetPlaylist();
+        void CurrentPlaylist(const char* file);
     protected:
         AvmEventType GetAttachEventType() {return m_event_type; }
     private:
@@ -129,6 +122,8 @@ namespace GUI
         void OnButtomrightviewEvent(IGUIElement*);
         void InitMediaFullscreenview(IGUIElement*, const GUI_HANDLE_T parentId);
         void OnFullscreenviewEvent(IGUIElement*);
+
+        void InitMediaTitleText(IGUIElement*, const GUI_HANDLE_T parentId);
     private:
         uint32_t m_element_size;
         static struct ElementFuntionTable m_element_info[];
@@ -145,6 +140,7 @@ namespace GUI
         CGPUEventListener*     m_fullscreenView_button;
         
         PlaylistItemTable_T table;
+
     public:
         //dota2_black 临时
         static CGPUButton*    m_media_play;

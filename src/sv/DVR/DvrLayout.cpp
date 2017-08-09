@@ -98,7 +98,7 @@ namespace GUI
                     whole_time / 3600,(whole_time / 60) % 60, whole_time % 60
                 );
 
-            //m_bar_text->SetText(time_text);
+            m_bar->SetTime(time_text);
         }
     }
     void DvrLayout::InsertProcessbarKeyFrame(void* frame)
@@ -125,75 +125,12 @@ namespace GUI
     {
 
     }
-    void DvrLayout::NextItemInPlaylist()
+    void DvrLayout::CurrentPlaylist(const char* file)
     {
-        static bool down = true;
-        if(down)
-        {
-            OnMouseSingleDown(210, 589);
-            down =false;
-        }
-        else
-        {
-            OnMouseSingleUp(210, 589);
-            down = true;
-        }
+        m_bar->Current(file);
     }
-    void DvrLayout::PrevItemInPlaylist()
-    {
-        static bool down = true;
-        if(down)
-        {
-            OnMouseSingleDown(20, 589);
-            down =false;
-        }
-        else
-        {
-            OnMouseSingleUp(20, 589);
-            down = true;
-        }
-    }
-    /**
-     * \brief 内部测试专用接口,  实际采用触摸屏左边进行Layout的坐标响应操作
-     */
-    void DvrLayout::StartPlay()
-    {
-        OnMouseSingleDown(640, 670);
-    }
-    void DvrLayout::PausePlay()
-    {
-        OnMouseSingleDown(640, 670);
-    }
-    void DvrLayout::NextPlay()
-    {
-        OnMouseSingleDown(690, 670);
-    }
-    void DvrLayout::PrevPlay()
-    {
-        OnMouseSingleDown(526, 670);
-    }
-    void DvrLayout::FastForwardPlay()
-    {
-        OnMouseSingleDown(456, 670);
-    }
-    void DvrLayout::RewindPlay()
-    {
-        OnMouseSingleDown(760, 670);
-    }
-    void DvrLayout::SetPlaylist()
-    {
-        static bool down = true;
-        if(down)
-        {
-            OnMouseSingleDown(126, 589);
-            down =false;
-        }
-        else
-        {
-            OnMouseSingleUp(126, 589);
-            down = true;
-        }
-    }
+    
+    
     /**
      * \brief DVR 控件元素操作接口实现，　目前为手动添加并实现，后期可通过UI设计并自动代码生成并添加
      *　　　　主要涉及的是UI的绘制代码，private 不对外暴露实现细节
@@ -261,10 +198,12 @@ namespace GUI
     };
     
     static IGUITexture bar_array_texture[] = {
-        {XR_RES_HMI"BC64.dds", 284, 581, 813, 46},
+        {XR_RES_HMI"BC64.dds", 284, 581, 813, 60},
         {XR_RES_DVR"media_playback_barBase.dds", 0, 10, 812, 10},
         {XR_RES_DVR"media_playback_barSlide.dds", 0, 0, 31, 35},
         {XR_RES_DVR"media_playback_barFinished.dds", 0, 10, 812, 10},
+        {XR_RES_HMI"consola.ttf", 34, 41, 67, 15},
+        {XR_RES_HMI"consola.ttf", 300, 41, 67, 15},
     };
 
     static IGUITexture topleftview_texture[] = {
@@ -282,6 +221,11 @@ namespace GUI
     static IGUITexture fullscreenview_texture[] = {
         {NULL, 100, 80, 1180, 560},
     };
+    static IGUITexture mediaTitle_array_texture[] = {
+        {XR_RES_DVR"BC64.dds", 580, 160, 80, 40},
+        {XR_RES"text_box.ttf", 580, 160, 80, 80}
+    };
+
     //panel按钮
     void DvrLayout::InitMediaPanel(IGUIElement* media_panel, const GUI_HANDLE_T parentId)
     {
@@ -686,7 +630,7 @@ namespace GUI
                                       fullscreenview_texture[0].pos_y,
                                       fullscreenview_texture[0].element_width,
                                       fullscreenview_texture[0].element_height);
-        //fullscreenview_button->Enable(false);
+        fullscreenview_button->Enable(false);
         m_fullscreenView_button = dynamic_cast<CGPUEventListener*>(fullscreenview_button);
     }
 
@@ -704,6 +648,7 @@ namespace GUI
         payload->body.onlyNotify = true;
         PostEvent(event);
     }
+    
 };
 
 /**

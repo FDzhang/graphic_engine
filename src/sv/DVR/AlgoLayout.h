@@ -61,9 +61,11 @@ namespace GUI
         void OnEventMediaPlayback(IGUIElement*);
         void InitAlgoMediaRecord(IGUIElement*, const GUI_HANDLE_T);
         void OnEventMediaRecord(IGUIElement*);
+        void InitAlgoFCW(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventFCW(IGUIElement*);
     private:
         CGPUButton *m_record_button, *m_playback_button,
-            *m_ldw_button, *m_bsd_button, *m_online_button, *m_apa_button, *m_media_button;
+            *m_ldw_button, *m_bsd_button, *m_online_button, *m_apa_button, *m_media_button, *m_fcw_button;
         CGPUPanel *m_media_panel;
     private:
         uint32_t m_element_size;

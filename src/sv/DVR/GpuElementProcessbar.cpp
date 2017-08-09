@@ -103,6 +103,30 @@ namespace GUI
                                                   m_barSlideTexture->element_width,
                                                   m_barSlideTexture->element_height);
             m_pbarSlide = node->GetLayer(barSlideId);
+
+            Int32 fontId = node->CreateUIFontMaterial(const_cast<char*>(m_barTimeFontTexture->texName), 0);
+            node->CreateTextLayer(barBgId, InsertFlag_Child, fontId, 1,
+                                  m_barTimeFontTexture->pos_x,
+                                  m_barTimeFontTexture->pos_y,
+                                  &m_itemTime,
+                                  m_barTimeFontTexture->element_width,
+                                  m_barTimeFontTexture->element_height);
+            m_itemTime->SetOpacity(1.0);
+            m_itemTime->SetFontSize(20);
+            m_itemTime->SetColor(1.0, 1.0, 1.0);
+
+            fontId = node->CreateUIFontMaterial(const_cast<char*>(m_barFileFontTexture->texName), 0);
+            node->CreateTextLayer(barBgId, InsertFlag_Child, fontId, 1,
+                                  m_barFileFontTexture->pos_x,
+                                  m_barFileFontTexture->pos_y,
+                                  &m_itemFile,
+                                  m_barFileFontTexture->element_width,
+                                  m_barFileFontTexture->element_height);
+            m_itemFile->SetOpacity(1.0);
+            m_itemFile->SetFontSize(20);
+            m_itemFile->SetColor(0.34, 0.84, 0.08);
+
+            
             IGUIElement::SetHwnd((GUI_HANDLE_T)barBgId);
         }
         else
@@ -121,6 +145,8 @@ namespace GUI
         m_barBaseTexture = &(((IGUITexture*)effect)[1]);
         m_barSlideTexture = &(((IGUITexture*)effect)[2]);
         m_barFinishedTexture= &(((IGUITexture*)effect)[3]);
+        m_barTimeFontTexture = &(((IGUITexture*)effect)[4]);
+        m_barFileFontTexture = &(((IGUITexture*)effect)[5]);
     }
     Boolean CGPUProcessbar::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {

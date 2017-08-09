@@ -44,6 +44,7 @@ namespace GUI
         {"CGPUButton" , "bsd" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoBsd) , (PFOnEvent)(&AlgoLayout::OnEventBsd), NULL},
         {"CGPUButton" , "online" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoOnline) , (PFOnEvent)(&AlgoLayout::OnEventOnline), NULL},
         {"CGPUButton" , "apa" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApa) , (PFOnEvent)(&AlgoLayout::OnEventApa), NULL},
+        {"CGPUButton" , "fcw" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoFCW) , (PFOnEvent)(&AlgoLayout::OnEventFCW), NULL},
         {"CGPUButton" , "行车记录仪" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoMedia) , (PFOnEvent)(&AlgoLayout::OnEventMedia), NULL},
         {"CGPUPanel" , "algo_media_panel" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoMediaPanel) , NULL, NULL},
         {"CGPUButton" , "playback" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoMediaPlayback) , (PFOnEvent)(&AlgoLayout::OnEventMediaPlayback), NULL},
@@ -92,6 +93,12 @@ namespace GUI
         {XR_RES_HMI"BC64.dds", 0, 350, 100, 70},
         {XR_RES_ALGO"algo_btn_clicked.dds", 0, 350, 100, 70},
     };
+    static IGUITexture fcw_array_texture[] =
+    {
+        {XR_RES_HMI"BC64.dds", 0, 420, 100, 70},
+        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 420, 100, 70},
+    };
+    
     static IGUITexture media_array_texture[] =
     {
         {XR_RES_HMI"BC64.dds", 0, 490, 100, 70},
@@ -138,6 +145,7 @@ namespace GUI
         //处理按钮逻辑
         m_online_button->Reset();
         m_apa_button->Reset();
+        m_fcw_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
@@ -163,6 +171,7 @@ namespace GUI
         //处理按钮逻辑关系
         m_online_button->Reset();
         m_apa_button->Reset();
+        m_fcw_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
@@ -188,6 +197,7 @@ namespace GUI
         m_ldw_button->Reset();
         m_bsd_button->Reset();
         m_apa_button->Reset();
+        m_fcw_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
@@ -214,6 +224,7 @@ namespace GUI
         m_ldw_button->Reset();
         m_bsd_button->Reset();
         m_online_button->Reset();
+        m_fcw_button->Reset();
                 
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
@@ -222,6 +233,35 @@ namespace GUI
         payload->body.onlyNotify = true;
         PostEvent(event);
     }
+    void AlgoLayout::InitAlgoFCW(IGUIElement* fcw_button, const GUI_HANDLE_T parentId)
+    {        
+        fcw_button->Attach(m_node, parentId);
+        fcw_button->SetTexture(fcw_array_texture, GUI_BUTTON_EFFECT_LOCK);
+        fcw_button->Create(fcw_array_texture[0].pos_x,
+                           fcw_array_texture[0].pos_y,
+                           fcw_array_texture[0].element_width,
+                           fcw_array_texture[0].element_height
+            );
+        m_fcw_button = dynamic_cast<CGPUButton*>(fcw_button);
+    }
+    void AlgoLayout::OnEventFCW(IGUIElement*)
+    {
+        static bool is_record = true;
+        is_record = !is_record;
+        //处理按钮逻辑
+        m_ldw_button->Enable(is_record);
+        m_bsd_button->Enable(is_record);
+        m_online_button->Enable(is_record);
+        m_apa_button->Enable(is_record);
+        
+        Layout_Event_Payload_T* payload = NULL;
+        AvmEvent* event = RequestEvent(&payload);
+        //填充有效数据
+        payload->header.msg_id = ALGO_FCW_BUTTON;
+        payload->body.onlyNotify = true;
+        PostEvent(event);
+    }
+    
     void AlgoLayout::InitAlgoMedia(IGUIElement* media_button, const GUI_HANDLE_T parentId)
     {
         media_button->Attach(m_node, parentId);
