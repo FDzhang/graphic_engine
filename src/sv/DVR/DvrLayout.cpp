@@ -256,30 +256,31 @@ namespace GUI
     };
     
     static IGUITexture play_array_texture[] =  {
-        {XR_RES_DVR"media_playback_pause.dds", 630, 300, 120, 120},
-        {XR_RES_DVR"media_playback_play.dds", 630, 300, 120, 120}
+        {XR_RES_DVR"media_playback_pause.dds", 660, 330, 60, 60},
+        {XR_RES_DVR"media_playback_play.dds", 660, 330, 60, 60}
     };
     
     static IGUITexture bar_array_texture[] = {
-        {XR_RES_DVR"media_playback_barBase.dds", 284, 581, 813, 46},
+        {XR_RES_HMI"BC64.dds", 284, 581, 813, 46},
+        {XR_RES_DVR"media_playback_barBase.dds", 0, 10, 812, 10},
         {XR_RES_DVR"media_playback_barSlide.dds", 0, 0, 31, 35},
-        {XR_RES_DVR"media_playback_barFinished.dds", 0, 0, 813, 46},
+        {XR_RES_DVR"media_playback_barFinished.dds", 0, 10, 812, 10},
     };
 
     static IGUITexture topleftview_texture[] = {
-        {NULL, 0, 0, 640, 360},
+        {NULL, 100, 80, 590, 280},
     };
     static IGUITexture toprightview_texture[] = {
-        {NULL, 640, 0, 640, 360},
+        {NULL, 690, 80, 590, 280},
     };
     static IGUITexture buttomleftview_texture[] = {
-        {NULL, 0, 360, 640, 360},
+        {NULL, 100, 360, 590, 280},
     };
     static IGUITexture buttomrightview_texture[] = {
-        {NULL, 640, 360, 640, 360},
+        {NULL, 690, 360, 590, 280},
     };
     static IGUITexture fullscreenview_texture[] = {
-        {NULL, 0, 0, 1280, 720},
+        {NULL, 100, 80, 1180, 560},
     };
     //panel按钮
     void DvrLayout::InitMediaPanel(IGUIElement* media_panel, const GUI_HANDLE_T parentId)

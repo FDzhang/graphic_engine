@@ -4632,6 +4632,11 @@ static GLfloat fVerticesOriginRight[] = {
 int SVScene::SwitchSingleView(int view_control_flag)
 {
     m_SwitchViewLogicAgain = false;
+
+    //单视图不具备清理能力
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
     if(m_last_view == view_control_flag)
     {
         return 0;

@@ -64,10 +64,18 @@ namespace GUI
                 parent = -1;
                 flag = InsertFlag_Default;
             }
+
+            Int32 RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_barBgTexture->texName);
+            Int32 barBgId = node->CreateSpirit(parent, flag, RTMtlId, 1.0,
+                                               m_barBgTexture->pos_x,
+                                               m_barBgTexture->pos_y,
+                                               0,
+                                               m_barBgTexture->element_width,
+                                               m_barBgTexture->element_height);
+            m_pbarBg = node->GetLayer(barBgId);
             
-            Int32 RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_barBaseTexture->texName);
-            
-            Int32 barBaseId = node->CreateSpirit(parent, flag, RTMtlId, 1.0,
+            RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_barBaseTexture->texName);
+            Int32 barBaseId = node->CreateSpirit(barBgId, InsertFlag_Child, RTMtlId, 1.0,
                                                  m_barBaseTexture->pos_x,
                                                  m_barBaseTexture->pos_y,
                                                  0,
@@ -77,41 +85,42 @@ namespace GUI
             m_pbarBase->SetEventResponder(this);
             
             RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_barFinishedTexture->texName);
-            Int32 barFinishedId = node->CreateSpirit(barBaseId, InsertFlag_Child, RTMtlId,
-                                                  1.0, 0,
-                                                  m_barFinishedTexture->pos_x,
-                                                  m_barFinishedTexture->pos_y,
-                                                  m_barFinishedTexture->element_width,
-                                                  m_barFinishedTexture->element_height);
+            Int32 barFinishedId = node->CreateSpirit(barBgId, InsertFlag_Child, RTMtlId,
+                                                     1.0,
+                                                     m_barFinishedTexture->pos_x,
+                                                     m_barFinishedTexture->pos_y,
+                                                     0,
+                                                     m_barFinishedTexture->element_width,
+                                                     m_barFinishedTexture->element_height);
             m_pbarFinished = node->GetLayer(barFinishedId);
-
+            m_pbarFinished->SetEventResponder(this);
             
             RTMtlId = node->CreateUIMaterial(Material_UI_Spirit, m_barSlideTexture->texName);
-            Int32 barSlideId = node->CreateSpirit(barBaseId, InsertFlag_Child, RTMtlId,
+            Int32 barSlideId = node->CreateSpirit(barBgId, InsertFlag_Child, RTMtlId,
                                                   1.0, 0,
                                                   m_barSlideTexture->pos_x,
                                                   m_barSlideTexture->pos_y,
                                                   m_barSlideTexture->element_width,
                                                   m_barSlideTexture->element_height);
             m_pbarSlide = node->GetLayer(barSlideId);
-            
-            IGUIElement::SetHwnd((GUI_HANDLE_T)barBaseId);
+            IGUIElement::SetHwnd((GUI_HANDLE_T)barBgId);
         }
         else
         {
-            Log_Error("\n");
+            ERROR("plese point a layout node for it");
         }
         return true;
     }
-    void CGPUProcessbar::SetEnable(bool enable)
+    void CGPUProcessbar::Enable(bool enable)
     {
-        SetEnable(enable);
+        m_pbarBg->SetEnable(enable);
     }
     void CGPUProcessbar::SetTexture(const IGUITexture* effect, const long style)
     {
-        m_barBaseTexture = &(((IGUITexture*)effect)[0]);
-        m_barSlideTexture = &(((IGUITexture*)effect)[1]);
-        m_barFinishedTexture= &(((IGUITexture*)effect)[2]);
+        m_barBgTexture = &(((IGUITexture*)effect)[0]);
+        m_barBaseTexture = &(((IGUITexture*)effect)[1]);
+        m_barSlideTexture = &(((IGUITexture*)effect)[2]);
+        m_barFinishedTexture= &(((IGUITexture*)effect)[3]);
     }
     Boolean CGPUProcessbar::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
@@ -130,6 +139,7 @@ namespace GUI
                 Int32 PosX = x<0?0:x;
                 PosX = PosX>m_processbar_width?m_processbar_width:PosX;
                 m_pbarSlide->SetX(PosX);
+                m_pbarFinished->SetWidth(PosX);
                 m_pos = ((float)PosX / (float)m_processbar_width)* m_whole_time;
             }
             break;
