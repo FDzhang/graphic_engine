@@ -244,16 +244,9 @@ namespace GUI
             );
         m_fcw_button = dynamic_cast<CGPUButton*>(fcw_button);
     }
+    
     void AlgoLayout::OnEventFCW(IGUIElement*)
     {
-        static bool is_record = true;
-        is_record = !is_record;
-        //处理按钮逻辑
-        m_ldw_button->Enable(is_record);
-        m_bsd_button->Enable(is_record);
-        m_online_button->Enable(is_record);
-        m_apa_button->Enable(is_record);
-        
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
         //填充有效数据
