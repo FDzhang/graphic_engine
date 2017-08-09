@@ -78,6 +78,7 @@ public:
     virtual int ReturnHmiMsg(Hmi_Message_T* pHmiMsg);
 private:
 	int SetSurroundViewCamElem();
+	int ProcessAvmStatus();
 	int ProcessIconTouchEvent();
 	int ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action);
 	int ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action);

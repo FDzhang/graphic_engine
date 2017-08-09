@@ -62,6 +62,8 @@ public:
     bool GetTouchEventInfo(int &x, int &y, int &type);
     bool SetCurrentView(unsigned char viewIndex);
     bool GetCurrentView(unsigned char &viewIndex);
+    bool SetAvmDisplayView(unsigned char viewIndex);
+    bool GetAvmDisplayView(unsigned char &viewIndex);
 public:
     IUINode* m_uiNode;	
     int      m_uiNodeId;
@@ -72,7 +74,8 @@ private:
 	int m_touchDownEventPosX;
 	int m_touchDownEventPosY;
 
-        unsigned char m_viewState;
+    unsigned char m_viewState;
+    unsigned char m_avmDisplayViewState;
 
 };
 

@@ -248,9 +248,11 @@ public:
 
 public:
 	void SetTouchSelectView(unsigned char view_index);
+	void GetCurrentDisplayView(unsigned char &view_index);
 private:
 	unsigned char m_touchedSelectViewState;	
 	unsigned char m_lastSelectViewState;
+	unsigned char m_currentCanSetViewState;
 private:
 	ISceneNode*			m_sceneNode;
 	Int32				m_scenenodeId;

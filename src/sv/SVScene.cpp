@@ -5627,8 +5627,9 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 		SwitchViewLogic(m_touchedSelectViewState);
 	}
 
+	m_currentCanSetViewState = view_cmd;
     if(view_cmd != m_last_view)
-    {
+    {		
         SwitchViewLogic(view_cmd);
     }
 
@@ -6039,4 +6040,8 @@ void SVScene::OnMouseMove(int x, int y)
 void SVScene::SetTouchSelectView(unsigned char view_index)
 {
 	m_touchedSelectViewState = view_index;
+}
+void SVScene::GetCurrentDisplayView(unsigned char &view_index)
+{
+	view_index = m_currentCanSetViewState;
 }

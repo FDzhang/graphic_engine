@@ -16,7 +16,7 @@
 // ARISING OUT OF THE  USE OF OR INABILITY  TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
 // BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 //
-//
+// 
 //----------------------------------------------------------------------------------
 #include "SurroundView.h"
 #include "SVScene.h"
@@ -184,6 +184,33 @@ int XRSV::InitHmi(int screen_width, int screen_height)
 }
 int XRSV::UpdateHmiData()
 {
+	float vehicle_speed = 0.0;
+	unsigned char  custom_hmi_visibility = 1;
+	unsigned char current_avm_display_view = 0;
+	AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&vehicle_speed);
+
+	if(vehicle_speed > 15.0)
+	{
+		custom_hmi_visibility = 0;
+	}
+	if(m_currentAlgoStatus == ALGO_LDW
+	|| m_currentAlgoStatus == ALGO_BSD
+	|| m_currentAlgoStatus == ALGO_ONLINE_CALIBRATION
+	|| m_currentAlgoStatus == ALGO_APA
+	|| m_currentAlgoStatus == ALGO_CTA
+	|| m_currentAlgoStatus == ALGO_LDW_BSD)
+	{
+		custom_hmi_visibility = 0;
+	}
+	m_customHmi->SetVisibility(custom_hmi_visibility);
+
+	if(svscn)
+	{
+		svscn->GetCurrentDisplayView(current_avm_display_view);
+
+		m_customHmi->SetAvmDisplayView(current_avm_display_view);
+	}
+
 	m_customHmi->Update(currentHmiMessage);
 	unsigned char currentViewIndex = 0;
 	m_customHmi->GetCurrentView(currentViewIndex);
@@ -317,15 +344,6 @@ bool XRSV::update(unsigned int view_control_flag)
                 return 0;
             default:
 				m_customHmi->SetVisibility(1);
-				if(m_currentAlgoStatus == ALGO_LDW
-				|| m_currentAlgoStatus == ALGO_BSD
-				|| m_currentAlgoStatus == ALGO_ONLINE_CALIBRATION
-				|| m_currentAlgoStatus == ALGO_APA
-				|| m_currentAlgoStatus == ALGO_CTA
-				|| m_currentAlgoStatus == ALGO_LDW_BSD)
-				{
-					m_customHmi->SetVisibility(0);
-				}
                 break;
         }
 
@@ -415,13 +433,13 @@ void XRSV::SingleTouchDown(int x, int y)
 
 void XRSV::SingleTouchMove(int x, int y)
 {
-	//if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Move);
+	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Move);
 	//svscn->OnMouseMove(x,y);
 }
 
 void XRSV::SingleTouchUp(int x, int y)
 {
-	//if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Up);
+	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Up);
 	//svscn->OnMouseUp(x,y);
 }
 

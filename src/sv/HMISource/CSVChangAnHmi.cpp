@@ -157,6 +157,7 @@ int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
 	}
 	
 	ProcessIconTouchEvent();
+	ProcessAvmStatus();
 	SetElemProperty();
 
 	ccagIcon[CCAG_RED_TRACK]->Update();
@@ -352,6 +353,43 @@ int CSVChanganHmi::SetSurroundViewCamElem()
 
 	return BUTTON_NORMAL;
 }
+
+int CSVChanganHmi::ProcessAvmStatus()
+{
+	static unsigned char lastAvmDisplayView = 100;
+	unsigned char currentAvmDisplayView = 0;
+	GetAvmDisplayView(currentAvmDisplayView);
+	if(lastAvmDisplayView != currentAvmDisplayView)
+	{
+		switch(currentAvmDisplayView)
+		{
+			case CCAG_FRONT_3D_VIEW:
+			case CCAG_FRONT_SINGLE_VIEW:
+				ccagIcon[CCAG_CAMERA_FRONT]->ButtonEffectClick();
+			break;
+			case CCAG_REAR_3D_VIEW:
+			case CCAG_REAR_SINGLE_VIEW:
+				ccagIcon[CCAG_CAMERA_REAR]->ButtonEffectClick();
+				break;
+			case CCAG_LEFT_SINGLE_VIEW:
+			case CCAG_LEFT_REAR_3D_VIEW:
+			case CCAG_LEFT_TURN_SIGNAL_3D_VIEW:
+			case CCAG_LEFT_FRONT_3D_VIEW:
+				ccagIcon[CCAG_CAMERA_LEFT]->ButtonEffectClick();
+			break;
+			case CCAG_RIGHT_REAR_3D_VIEW:
+			case CCAG_RIGHT_FRONT_3D_VIEW:
+			case CCAG_RIGHT_TURN_SIGNAL_3D_VIEW:
+			case CCAG_RIGHT_SINGLE_VIEW:
+				ccagIcon[CCAG_CAMERA_RIGHT]->ButtonEffectClick();
+				break;
+			default:
+			break;
+		}
+	}
+
+	lastAvmDisplayView = currentAvmDisplayView;
+}
 int CSVChanganHmi::ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action)
 {
 	static int  touch_action = action;
@@ -460,6 +498,7 @@ int CSVChanganHmi::SetElemProperty()
 
 	return BUTTON_NORMAL;
 }
+
 void OnPressTrackCam()
 {
 	//CSVChanganHmi::m_frontTrackCamVisibility = 0;
@@ -487,6 +526,10 @@ void OnPressFrontCam()
 	CSVChanganHmi::m_leftCamColor = 0;
 	CSVChanganHmi::m_rightCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_frontCamVisibility = 1;
+	CSVChanganHmi::m_rearCamVisibility = 1;
+	CSVChanganHmi::m_leftCamVisibility = 1;
+	CSVChanganHmi::m_rightCamVisibility = 1;
 	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_FRONT;
 }
 void OnPressRearCam()
@@ -498,6 +541,12 @@ void OnPressRearCam()
 	CSVChanganHmi::m_leftCamColor = 0;
 	CSVChanganHmi::m_rightCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	
+	CSVChanganHmi::m_frontCamVisibility = 1;
+	CSVChanganHmi::m_rearCamVisibility = 1;
+	CSVChanganHmi::m_leftCamVisibility = 1;
+	CSVChanganHmi::m_rightCamVisibility = 1;
+
 	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_REAR;
 
 }
@@ -510,6 +559,10 @@ void OnPressLeftCam()
 	CSVChanganHmi::m_rearCamColor = 0;
 	CSVChanganHmi::m_rightCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_frontCamVisibility = 1;
+	CSVChanganHmi::m_rearCamVisibility = 1;
+	CSVChanganHmi::m_leftCamVisibility = 1;
+	CSVChanganHmi::m_rightCamVisibility = 1;
 	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_LEFT;
 
 }
@@ -522,6 +575,10 @@ void OnPressRightCam()
 	CSVChanganHmi::m_rearCamColor = 0;
 	CSVChanganHmi::m_leftCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_frontCamVisibility = 1;
+	CSVChanganHmi::m_rearCamVisibility = 1;
+	CSVChanganHmi::m_leftCamVisibility = 1;
+	CSVChanganHmi::m_rightCamVisibility = 1;
 	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_RIGHT;
 
 }

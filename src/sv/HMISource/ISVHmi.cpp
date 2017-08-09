@@ -72,7 +72,16 @@ bool ISVHmi::GetCurrentView(unsigned char &viewIndex)
     viewIndex = m_viewState;
     return true;
 }
-    
+
+bool ISVHmi::SetAvmDisplayView(unsigned char viewIndex)
+{
+    m_avmDisplayViewState = viewIndex;
+}
+bool ISVHmi::GetAvmDisplayView(unsigned char &viewIndex)
+{
+    viewIndex = m_avmDisplayViewState;
+}
+
 int ISVHmi::DestroyHmiElems()
 {
     return HMI_SUCCESS;
