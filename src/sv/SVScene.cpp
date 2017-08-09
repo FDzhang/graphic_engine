@@ -3702,7 +3702,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 		//#else
         m_2DAVMNode->SetEnable(1);
         m_stich_node->SetEnable(1);
-		m_pAdasHmi->SetEnable(0);
+		m_pAdasHmi->SetEnable(1);
     	m_crossImage->SetEnable(0);
         m_sceneNode->SetEnable(0);
 		//#endif
@@ -3766,7 +3766,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
         
         m_2DAVMNode->SetEnable(1);
 
-		m_pAdasHmi->SetEnable(0);
+		m_pAdasHmi->SetEnable(1);
     	m_crossImage->SetEnable(0);
 	    m_sceneNode->SetEnable(1);
 
