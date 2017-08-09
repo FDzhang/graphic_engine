@@ -304,6 +304,11 @@ namespace GUI
         m_record_button->Reset();
         m_playback_button->Reset();
         m_media_button->Reset();
+        m_ldw_button->Reset();
+        m_bsd_button->Reset();
+        m_online_button->Reset();
+        m_apa_button->Reset();
+        m_fcw_button->Reset();
         OnEventMedia(m_media_panel);
         
         Layout_Event_Payload_T* payload = NULL;
@@ -333,6 +338,7 @@ namespace GUI
         m_bsd_button->Enable(is_record);
         m_online_button->Enable(is_record);
         m_apa_button->Enable(is_record);
+        m_fcw_button->Enable(is_record);
         m_playback_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
