@@ -5609,7 +5609,7 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 	}
 
 
-    if(view_cmd == FRONT_3D_VIEW||REAR_3D_VIEW == view_cmd)
+    if(view_cmd == FRONT_3D_VIEW)
     {
         view_cmd = FRONT_SINGLE_VIEW;
     }
