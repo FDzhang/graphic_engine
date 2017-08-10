@@ -98,6 +98,14 @@ typedef enum CameraPosition {
 	
 	CameraPosition_Left_Front_Light = 0x000000f,
 	CameraPosition_Right_Front_Light = 0x0000010,
+
+        CameraPosition_BMW_Rear = 0x0000011,
+        CameraPosition_BMW_Left = 0x0000012,
+        CameraPosition_BMW_Right = 0x0000013,
+        CameraPosition_BMW_Left_Front = 0x0000014,
+        CameraPosition_BMW_Right_Front = 0x0000015,
+        CameraPosition_BMW_Left_Rear = 0x0000016,
+        CameraPosition_BMW_Right_Rear = 0x0000017,
 };
 typedef enum RightViewType {
 	FRONT_SINGLE_VIEW			= 0x00000000,
@@ -122,7 +130,14 @@ typedef enum RightViewType {
 	BOSH_REAR_VIEW_TOP,
 	LEFT_MIRROR_VIEW,
 	RIGHT_MIRROR_VIEW,	
-	CROSS_IMAGE_VIEW,			
+	CROSS_IMAGE_VIEW,	
+	BMW_REAR_VIEW,
+	BMW_LEFT_VIEW,
+	BMW_RIGHT_VIEW,
+	BMW_LEFT_FRONT_VIEW,
+	BMW_RIGHT_FRONT_VIEW,
+	BMW_LEFT_REAR_VIEW,
+	BMW_RIGHT_REAR_VIEW,
 	TOTAL_VIEW_NUM,
 };
 

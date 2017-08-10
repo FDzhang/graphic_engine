@@ -39,6 +39,18 @@ typedef enum Changan_Track_Cam_Region_Index_Tag
 }
 Changan_Track_Cam_Region_Index_T;
 
+
+typedef enum Changan_Cam_Region_Index_Tag
+{
+    CCAG_CAMERA_REGION_FRONT = 9,
+    CCAG_CAMERA_REGION_REAR,
+    CCAG_CAMERA_REGION_LEFT,
+    CCAG_CAMERA_REGION_RIGHT,
+
+}
+Changan_Cam_Region_Index_T;
+
+
 enum
 {
 	CAR_RECT_X = 246,
@@ -91,6 +103,8 @@ private:
 	
 	int m_stitchRegionWidth;
 	int m_stitchRegionHeight;
+
+        unsigned char m_storeTrackRegion;
 
 public:	
 	static unsigned char m_trackCamVisibility;
