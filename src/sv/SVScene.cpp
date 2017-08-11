@@ -811,8 +811,8 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	int vanwheelMeshIdright = object_render_node->CreateMesh(ModelType_Null, 0,0,0,"vanwheel", &p_van_wheel_right);
 	p_van_wheel_right->LoadFromFile(VANRIGHTWHEELMODEL, 21, FALSE);
 #endif
-	modelId = object_render_node->CreateModel(0, m_carmtlId, m_carId, InsertFlag_Child, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_WIDTH, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_UP, -pConfig.smc_hmi.WHEEL_MODEL_OFFSET_FRONT, 1.1, &m_wheel[0]);
-	modelId = object_render_node->CreateModel(0, m_carmtlId, m_carId, InsertFlag_Child, -pConfig.smc_hmi.WHEEL_MODEL_OFFSET_WIDTH, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_UP, -pConfig.smc_hmi.WHEEL_MODEL_OFFSET_FRONT, 1.1, &m_wheel[1]);
+	modelId = object_render_node->CreateModel(0, m_carmtlId, m_carId, InsertFlag_Child, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_WIDTH, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_UP, -pConfig.smc_hmi.WHEEL_MODEL_OFFSET_FRONT - 250.0, 1.1, &m_wheel[0]);
+	modelId = object_render_node->CreateModel(0, m_carmtlId, m_carId, InsertFlag_Child, -pConfig.smc_hmi.WHEEL_MODEL_OFFSET_WIDTH, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_UP, -pConfig.smc_hmi.WHEEL_MODEL_OFFSET_FRONT- 250.0, 1.1, &m_wheel[1]);
 	modelId = object_render_node->CreateModel(0, m_carmtlId, m_carId, InsertFlag_Child, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_WIDTH, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_UP, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_REAR, 1.1, &m_wheel[2]);
 	modelId = object_render_node->CreateModel(0, m_carmtlId, m_carId, InsertFlag_Child, -pConfig.smc_hmi.WHEEL_MODEL_OFFSET_WIDTH, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_UP, pConfig.smc_hmi.WHEEL_MODEL_OFFSET_REAR, 1.1, &m_wheel[3]);
 
@@ -3467,17 +3467,17 @@ void SVScene::EnterFreeView(Int32 pos)
              }
     
              else if (pos == CameraPosition_BMW_Left) {
-    
-#define AT_X -1800
+#define AT_X -3600
 #define AT_Y -100
-#define AT_Z 2000
-                       m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
-            m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
-            m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-            m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
-            m_lastclickfreeflag = 0;
-            scrollX->DockToValue(0);
-            scrollY->DockToValue(40);
+#define AT_Z 0                   
+                m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                m_sceneCamera->LookAt(0.25*AT_X, AT_Y, AT_Z);
+                m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                m_objectCamera->LookAt(0.25*AT_X, AT_Y, AT_Z);
+                m_lastclickfreeflag = 0;
+                scrollX->DockToValue(0);
+                scrollY->DockToValue(38);
+
              }
     
              else if (pos == CameraPosition_BMW_Left_Rear) {
@@ -3510,17 +3510,17 @@ void SVScene::EnterFreeView(Int32 pos)
                        }
              
                        else if (pos == CameraPosition_BMW_Right) {
-             
-#define AT_X 1800
+#define AT_X 3600
 #define AT_Y -100
-#define AT_Z 2000
-                                m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
-                                m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
-                                m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-                                m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
-                                m_lastclickfreeflag = 0;
-                                scrollX->DockToValue(0);
-                                scrollY->DockToValue(40);
+#define AT_Z 0                   
+                            m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                            m_sceneCamera->LookAt(0.25*AT_X, AT_Y, AT_Z);
+                            m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                            m_objectCamera->LookAt(0.25*AT_X, AT_Y, AT_Z);
+                            m_lastclickfreeflag = 0;
+                            scrollX->DockToValue(0);
+                            scrollY->DockToValue(38);
+
                        }
              
                        else if (pos == CameraPosition_BMW_Right_Rear) {
@@ -4575,7 +4575,7 @@ void SVScene::SwitchCarModel(Int32 pos)
 }
 
 #define HIGH_SPEED_GATE 30
-#define SINGLE_VIEW_TO_3D_GATE  15
+#define SINGLE_VIEW_TO_3D_GATE  25
 #define STEERING_WHEEL_GATE    90
 #define STEERING_WHEEL_STILL_GATE    20
 #define STEERING_WHEEL_TIME_GATE 150
@@ -4948,9 +4948,15 @@ int SVScene::Update(int view_control_flag, int param2)
     }
     else
     {
-	
-        m_overlay_2d_single->SetEnable(1);
-		
+	if(m_view_control == LEFT_SINGLE_VIEW
+            ||m_view_control == RIGHT_SINGLE_VIEW )
+        {
+             m_overlay_2d_single->SetEnable(0);
+        }
+        else
+        {
+            m_overlay_2d_single->SetEnable(1);
+        }
         m_overlay_2d->SetEnable(1);
     }
     //m_Car->SetEnable(0);
@@ -5713,12 +5719,6 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 	{
 	    view_cmd = BOSH_REAR_VIEW_TOP;
 	}
-
-
-    if(view_cmd == FRONT_3D_VIEW)
-    {
-        view_cmd = FRONT_SINGLE_VIEW;
-    }
 	
     if(view_control_flag == 1)
     {

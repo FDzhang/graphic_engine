@@ -104,8 +104,6 @@ private:
 	int m_stitchRegionWidth;
 	int m_stitchRegionHeight;
 
-        unsigned char m_storeTrackRegion;
-
 public:	
 	static unsigned char m_trackCamVisibility;
 	static unsigned char m_trackVisibility;
@@ -129,6 +127,8 @@ public:
 	static unsigned int m_isCarRegion;
 
 	static unsigned char m_currentViewState;
+        static unsigned char m_storeTrackRegion;
+    
 };
 
 

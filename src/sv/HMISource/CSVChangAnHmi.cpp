@@ -66,8 +66,9 @@ unsigned int CSVChanganHmi::m_isTrackRegion = 0;
 unsigned int CSVChanganHmi::m_isCarRegion = 0;
 
 unsigned char CSVChanganHmi::m_currentViewState = 0;
+unsigned char CSVChanganHmi::m_storeTrackRegion = 0;
 
-CSVChanganHmi::CSVChanganHmi():m_storeTrackRegion(0)
+CSVChanganHmi::CSVChanganHmi()
 {
 
 
@@ -90,7 +91,7 @@ bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 	        tempViewIndex = m_storeTrackRegion;
 		if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
 		{
-			tempViewIndex = CCAG_BOSH_FRONT_VIEW_TOP; //front 3d
+			tempViewIndex = CCAG_FRONT_3D_VIEW; //front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR)
 		{
@@ -559,6 +560,8 @@ void OnPressFrontCam()
 	CSVChanganHmi::m_leftCamVisibility = 1;
 	CSVChanganHmi::m_rightCamVisibility = 1;
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_FRONT;
+       	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
+        CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
 }
 void OnPressRearCam()
 {
@@ -576,6 +579,8 @@ void OnPressRearCam()
 	CSVChanganHmi::m_rightCamVisibility = 1;
 
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_REAR;
+        CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
+        CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
 
 }
 void OnPressLeftCam()
@@ -592,6 +597,8 @@ void OnPressLeftCam()
 	CSVChanganHmi::m_leftCamVisibility = 1;
 	CSVChanganHmi::m_rightCamVisibility = 1;
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_LEFT;
+        CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
+        CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
 
 }
 void OnPressRightCam()
@@ -608,5 +615,7 @@ void OnPressRightCam()
 	CSVChanganHmi::m_leftCamVisibility = 1;
 	CSVChanganHmi::m_rightCamVisibility = 1;
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_RIGHT;
+    	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
+        CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
 
 }
