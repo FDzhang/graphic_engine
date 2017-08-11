@@ -3452,6 +3452,90 @@ void SVScene::EnterFreeView(Int32 pos)
 
 
     }
+    else if (pos == CameraPosition_BMW_Left_Front) {
+    
+#define AT_X -1200
+#define AT_Y -100
+#define AT_Z 2000
+                       m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+            m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
+            m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+            m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
+            m_lastclickfreeflag = 0;
+            scrollX->DockToValue(0);
+            scrollY->DockToValue(38);
+             }
+    
+             else if (pos == CameraPosition_BMW_Left) {
+    
+#define AT_X -1800
+#define AT_Y -100
+#define AT_Z 2000
+                       m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+            m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
+            m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+            m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
+            m_lastclickfreeflag = 0;
+            scrollX->DockToValue(0);
+            scrollY->DockToValue(40);
+             }
+    
+             else if (pos == CameraPosition_BMW_Left_Rear) {
+    
+#define AT_X -1150
+#define AT_Y -100
+#define AT_Z 2950
+                       m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+            m_sceneCamera->LookAt(0.5*AT_X, AT_Y, 0.2*AT_Z);
+            m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+            m_objectCamera->LookAt(0.5*AT_X, AT_Y, 0.2*AT_Z);
+            m_lastclickfreeflag = 0;
+            scrollX->DockToValue(0);
+            scrollY->DockToValue(38);
+             }
+    
+             
+             else if (pos == CameraPosition_BMW_Right_Front) {
+             
+#define AT_X 1200
+#define AT_Y -100
+#define AT_Z 2000
+                                m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                                m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
+                                m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                                m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
+                                m_lastclickfreeflag = 0;
+                                scrollX->DockToValue(0);
+                                scrollY->DockToValue(38);
+                       }
+             
+                       else if (pos == CameraPosition_BMW_Right) {
+             
+#define AT_X 1800
+#define AT_Y -100
+#define AT_Z 2000
+                                m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                                m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
+                                m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                                m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.4*AT_Z);
+                                m_lastclickfreeflag = 0;
+                                scrollX->DockToValue(0);
+                                scrollY->DockToValue(40);
+                       }
+             
+                       else if (pos == CameraPosition_BMW_Right_Rear) {
+             
+#define AT_X 1150
+#define AT_Y -100
+#define AT_Z 2950
+                                m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                                m_sceneCamera->LookAt(0.5*AT_X, AT_Y, 0.2*AT_Z);
+                                m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                                m_objectCamera->LookAt(0.5*AT_X, AT_Y, 0.2*AT_Z);
+                                m_lastclickfreeflag = 0;
+                                scrollX->DockToValue(0);
+                                scrollY->DockToValue(38);
+                       }
 
 
 	m_mode = SceneMode_Free;
@@ -3854,6 +3938,28 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 			case BOSH_REAR_VIEW_TOP:
 	            EnterFreeView(CameraPosition_BOSCH_Rear_Top_REVERSE);
                 break;
+        	case BMW_REAR_VIEW:
+	            EnterFreeView(CameraPosition_BMW_Rear);
+                break;
+            	case BMW_LEFT_VIEW:
+	            EnterFreeView(CameraPosition_BMW_Left);
+                break;
+            	case BMW_RIGHT_VIEW:
+	            EnterFreeView(CameraPosition_BMW_Right);
+                break;
+            	case BMW_LEFT_FRONT_VIEW:
+	            EnterFreeView(CameraPosition_BMW_Left_Front);
+                break;
+            	case BMW_RIGHT_FRONT_VIEW:
+	            EnterFreeView(CameraPosition_BMW_Right_Front);
+                break;
+                case BMW_LEFT_REAR_VIEW:
+	            EnterFreeView(CameraPosition_BMW_Left_Rear);
+                break;
+            	case BMW_RIGHT_REAR_VIEW:
+	            EnterFreeView(CameraPosition_BMW_Right_Rear);
+                break;
+                
 			default:
 				m_camPos = CameraPosition_Free;
                 break;
@@ -5609,7 +5715,7 @@ void SVScene::SwitchView(unsigned char input_enter_top_flag,int view_control_fla
 	}
 
 
-    if(view_cmd == FRONT_3D_VIEW||REAR_3D_VIEW == view_cmd)
+    if(view_cmd == FRONT_3D_VIEW)
     {
         view_cmd = FRONT_SINGLE_VIEW;
     }

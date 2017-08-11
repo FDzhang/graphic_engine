@@ -367,6 +367,10 @@ bool XRSV::update(unsigned int view_control_flag)
 				init_flag =2;
 
             }
+            else
+            {
+                 m_customHmi->SetVisibility(0);
+            }
         }
         if(init_flag==0)
         {

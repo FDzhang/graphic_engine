@@ -26,7 +26,14 @@ typedef enum ChanganViewType {
 	CCAG_BOSH_REAR_VIEW_TOP,
 	CCAG_LEFT_MIRROR_VIEW,
 	CCAG_RIGHT_MIRROR_VIEW,	
-	CCAG_CROSS_IMAGE_VIEW,			
+	CCAG_CROSS_IMAGE_VIEW,	
+	CCAG_BMW_REAR_VIEW,
+	CCAG_BMW_LEFT_VIEW,
+	CCAG_BMW_RIGHT_VIEW,
+	CCAG_BMW_LEFT_FRONT_VIEW,
+	CCAG_BMW_RIGHT_FRONT_VIEW,
+	CCAG_BMW_LEFT_REAR_VIEW,
+	CCAG_BMW_RIGHT_REAR_VIEW,
 	CCAG_TOTAL_VIEW_NUM,
 };
 
@@ -60,7 +67,7 @@ unsigned int CSVChanganHmi::m_isCarRegion = 0;
 
 unsigned char CSVChanganHmi::m_currentViewState = 0;
 
-CSVChanganHmi::CSVChanganHmi()
+CSVChanganHmi::CSVChanganHmi():m_storeTrackRegion(0)
 {
 
 
@@ -80,6 +87,7 @@ bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 	tempViewIndex = viewIndex;
 	if(m_isTrackRegion == 1)
 	{
+	        tempViewIndex = m_storeTrackRegion;
 		if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
 		{
 			tempViewIndex = CCAG_BOSH_FRONT_VIEW_TOP; //front 3d
@@ -90,29 +98,48 @@ bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_LEFT)
 		{
-			tempViewIndex = CCAG_LEFT_FRONT_3D_VIEW; //left front 3d
+			tempViewIndex = CCAG_BMW_LEFT_VIEW; //left front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_RIGHT)
 		{
-			tempViewIndex = CCAG_RIGHT_FRONT_3D_VIEW; //right front 3d
+			tempViewIndex = CCAG_BMW_RIGHT_VIEW; //right front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT_LEFT)
 		{
-			tempViewIndex = CCAG_LEFT_TURN_SIGNAL_3D_VIEW; //left front 3d
+			tempViewIndex = CCAG_BMW_LEFT_FRONT_VIEW; //left front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT)
 		{
-			tempViewIndex = CCAG_RIGHT_TURN_SIGNAL_3D_VIEW; //right front 3d
+			tempViewIndex = CCAG_BMW_RIGHT_FRONT_VIEW; //right front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR_LEFT)
 		{
-			tempViewIndex = CCAG_LEFT_HIGHT_SPEED_TURN_3D_VIEW; //left rear 3d
+			tempViewIndex = CCAG_BMW_LEFT_REAR_VIEW; //left rear 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR_RIGHT)
 		{
-			tempViewIndex = CCAG_RIGHT_HIGHT_SPEED_TURN_3D_VIEW; //right rear 3d
+			tempViewIndex = CCAG_BMW_RIGHT_REAR_VIEW; //right rear 3d
 		}
 	}
+        else if(m_isTrackRegion == 0 || m_isCarRegion == 1)
+        {
+            if(tempViewIndex == CCAG_CAMERA_REGION_FRONT)
+            {
+            	tempViewIndex = CCAG_FRONT_SINGLE_VIEW; //front 3d
+            }
+            else if(tempViewIndex == CCAG_CAMERA_REGION_REAR)
+            {
+            	tempViewIndex = CCAG_REAR_SINGLE_VIEW; //rear 3d          	
+            }
+            else if(tempViewIndex == CCAG_CAMERA_REGION_LEFT)
+            {
+            	tempViewIndex = CCAG_LEFT_SINGLE_VIEW; //left front 3d
+            }
+            else if(tempViewIndex == CCAG_CAMERA_REGION_RIGHT)
+            {
+            	tempViewIndex = CCAG_RIGHT_SINGLE_VIEW; //right front 3d
+            }
+        }
 	
 	SetCurrentView(tempViewIndex);
 }
@@ -453,6 +480,7 @@ int CSVChanganHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned 
 		{
 			m_currentTrackCamRegionIndex = index;
 			m_currentViewState = m_currentTrackCamRegionIndex;
+                        m_storeTrackRegion = m_currentTrackCamRegionIndex;
 		}
 	}
 	return BUTTON_NORMAL;
@@ -530,7 +558,7 @@ void OnPressFrontCam()
 	CSVChanganHmi::m_rearCamVisibility = 1;
 	CSVChanganHmi::m_leftCamVisibility = 1;
 	CSVChanganHmi::m_rightCamVisibility = 1;
-	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_FRONT;
+	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_FRONT;
 }
 void OnPressRearCam()
 {
@@ -547,7 +575,7 @@ void OnPressRearCam()
 	CSVChanganHmi::m_leftCamVisibility = 1;
 	CSVChanganHmi::m_rightCamVisibility = 1;
 
-	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_REAR;
+	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_REAR;
 
 }
 void OnPressLeftCam()
@@ -563,7 +591,7 @@ void OnPressLeftCam()
 	CSVChanganHmi::m_rearCamVisibility = 1;
 	CSVChanganHmi::m_leftCamVisibility = 1;
 	CSVChanganHmi::m_rightCamVisibility = 1;
-	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_LEFT;
+	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_LEFT;
 
 }
 void OnPressRightCam()
@@ -579,6 +607,6 @@ void OnPressRightCam()
 	CSVChanganHmi::m_rearCamVisibility = 1;
 	CSVChanganHmi::m_leftCamVisibility = 1;
 	CSVChanganHmi::m_rightCamVisibility = 1;
-	CSVChanganHmi::m_currentViewState = CCAG_TRACK_CAMERA_REGION_RIGHT;
+	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_RIGHT;
 
 }
