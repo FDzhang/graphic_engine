@@ -339,6 +339,11 @@ namespace GUI
         m_online_button->Enable(is_record);
         m_apa_button->Enable(is_record);
         m_fcw_button->Enable(is_record);
+        m_ldw_button->Reset();
+        m_bsd_button->Reset();
+        m_online_button->Reset();
+        m_apa_button->Reset();
+        m_fcw_button->Reset();
         m_playback_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
