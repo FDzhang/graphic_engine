@@ -3539,6 +3539,18 @@ void SVScene::EnterFreeView(Int32 pos)
                                 scrollY->DockToValue(38);
                        }
 
+					   else if (pos == CameraPosition_BMW_3D_Rear) {
+#define AT_Z -3600
+
+					       m_sceneCamera->SetPosition(0, 0, AT_Z);
+				           m_sceneCamera->LookAt(0.0,0,-300.0);
+				           m_objectCamera->SetPosition(0, 0, AT_Z);
+				           m_objectCamera->LookAt(0.0,0,-300.0);
+				           m_zoomout = 0;
+				           scrollX->DockToValue(0);
+				           scrollY->DockToValue(25);
+					   }
+
 
 	m_mode = SceneMode_Free;
 	m_sceneCamera->SetFOV(m_freeModeFOV);
@@ -3895,7 +3907,6 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 				m_zoomout = 0;
 				scrollX->DockToValue(180);
 				scrollY->DockToValue(25);
-
 				m_camPos = CameraPosition_Free;
                 break;
             case LEFT_FRONT_3D_VIEW:
@@ -3961,6 +3972,9 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
             	case BMW_RIGHT_REAR_VIEW:
 	            EnterFreeView(CameraPosition_BMW_Right_Rear);
                 break;
+
+			case BMW_REAR_3D_VIEW:
+				EnterFreeView(CameraPosition_BMW_3D_Rear);
                 
 			default:
 				m_camPos = CameraPosition_Free;

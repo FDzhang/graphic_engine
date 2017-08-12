@@ -34,6 +34,7 @@ typedef enum ChanganViewType {
 	CCAG_BMW_RIGHT_FRONT_VIEW,
 	CCAG_BMW_LEFT_REAR_VIEW,
 	CCAG_BMW_RIGHT_REAR_VIEW,
+	CCAG_BMW_REAR_3D_VIEW,
 	CCAG_TOTAL_VIEW_NUM,
 };
 
@@ -91,7 +92,7 @@ bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 	        tempViewIndex = m_storeTrackRegion;
 		if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
 		{
-			tempViewIndex = CCAG_REAR_3D_VIEW; //front 3d
+			tempViewIndex = CCAG_BMW_REAR_3D_VIEW; //front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR)
 		{
