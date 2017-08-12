@@ -91,11 +91,11 @@ bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 	        tempViewIndex = m_storeTrackRegion;
 		if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
 		{
-			tempViewIndex = CCAG_FRONT_3D_VIEW; //front 3d
+			tempViewIndex = CCAG_REAR_3D_VIEW; //front 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_REAR)
 		{
-			tempViewIndex = CCAG_REAR_3D_VIEW; //rear 3d
+			tempViewIndex = CCAG_FRONT_3D_VIEW; //rear 3d
 		}
 		else if(tempViewIndex == CCAG_TRACK_CAMERA_REGION_LEFT)
 		{

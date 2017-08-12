@@ -3454,16 +3454,17 @@ void SVScene::EnterFreeView(Int32 pos)
     }
     else if (pos == CameraPosition_BMW_Left_Front) {
     
-#define AT_X -1200
+#define AT_X -2000
 #define AT_Y -100
-#define AT_Z 2000
-                       m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
-            m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
+#define AT_Z -2250                    
+            m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+            m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.3*AT_Z);
             m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-            m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
+            m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.3*AT_Z);
             m_lastclickfreeflag = 0;
             scrollX->DockToValue(0);
             scrollY->DockToValue(38);
+
              }
     
              else if (pos == CameraPosition_BMW_Left) {
@@ -3497,16 +3498,17 @@ void SVScene::EnterFreeView(Int32 pos)
              
              else if (pos == CameraPosition_BMW_Right_Front) {
              
-#define AT_X 1200
+#define AT_X 2000
 #define AT_Y -100
-#define AT_Z 2000
-                                m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
-                                m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
-                                m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
-                                m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.1*AT_Z);
-                                m_lastclickfreeflag = 0;
-                                scrollX->DockToValue(0);
-                                scrollY->DockToValue(38);
+#define AT_Z -2250                    
+                     m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                     m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.3*AT_Z);
+                     m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
+                     m_objectCamera->LookAt(0.25*AT_X, AT_Y, 0.3*AT_Z);
+                     m_lastclickfreeflag = 0;
+                     scrollX->DockToValue(0);
+                     scrollY->DockToValue(38);
+
                        }
              
                        else if (pos == CameraPosition_BMW_Right) {
