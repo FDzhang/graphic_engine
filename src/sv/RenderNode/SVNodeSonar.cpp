@@ -512,6 +512,8 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 	 
      memcpy(m_sonar_color_list,&(pConfig->smc_hmi.REAR_LEFT_CONOR_SONAR_COLOR_R ),max_sonar_num*3*sizeof(float));
 	 ReadIntSpaceTxtFile(debug_cfg_file,&m_debug_flag,1);
+
+m_debug_flag=1;
 	 for(int i = 0;i<max_sonar_num;i++)
 	 {
 	     m_sonar_obj_list_start[i]=0;
