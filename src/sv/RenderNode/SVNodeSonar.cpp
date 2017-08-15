@@ -526,6 +526,7 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 		 Log_Error("file  exist(%d)",m_debug_flag);
 		 fflush(fpFile);
 	 }
+
 	 for(int i = 0;i<max_sonar_num;i++)
 	 {
 	     m_sonar_obj_list_start[i]=0;
