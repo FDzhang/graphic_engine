@@ -2157,8 +2157,10 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 				if( CalcMultiSonarObj(new_obj_pos, obj_dist, (sonar_index)i))
 				{
 				
-				//obj_pos_rslt.sonar_obj_pos[2*i]=new_obj_pos[0]; 		
-				//obj_pos_rslt.sonar_obj_pos[2*i+1]=new_obj_pos[1];
+				obj_pos_rslt.sonar_obj_pos[2*i]=new_obj_pos[0]; 		
+				obj_pos_rslt.sonar_obj_pos[2*i+1]=new_obj_pos[1];
+				
+				obj_pos_rslt.sonar_obj_exist_flag[i]=2;
 				 m_sonar_draw_obj_list_end[i]=0;
 
 				 m_sonar_draw_obj_list[i][2 * m_sonar_draw_obj_list_end[i]] = new_obj_pos[0];
