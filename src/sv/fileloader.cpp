@@ -372,7 +372,7 @@ bool ReadIntSpaceTxtFile(char *filename,int *content,int size)
 		   printf("\r\n can not find file %s",filename);
 		   return true;
 	   }
-	   float tempUint;
+	   int tempUint;
 	  
 	   int i;
 	   

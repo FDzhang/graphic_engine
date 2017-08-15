@@ -7,6 +7,7 @@
 //#include "apa_interface.h"
 #include "common/APA_modules_IF.h"
 #include "messagebus_api.h"
+#include "gpu_log.h"
 
 /*----------------------------------------------
 
@@ -511,7 +512,20 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
      memcpy(m_sonar_pos,&(pConfig->smc_hmi.REAR_LEFT_CONOR_SONAR_POS_X),max_sonar_num*sizeof(Sonar_Pos));
 	 
      memcpy(m_sonar_color_list,&(pConfig->smc_hmi.REAR_LEFT_CONOR_SONAR_COLOR_R ),max_sonar_num*3*sizeof(float));
-	 ReadIntSpaceTxtFile(debug_cfg_file,&m_debug_flag,1);
+	 if(ReadIntSpaceTxtFile(debug_cfg_file,&m_debug_flag,1))
+	 {
+	     fprintf(stdout,"\r\n file don't exist %d",m_debug_flag);		 
+		 LOGW("file don't exist(%d)\n",m_debug_flag);
+		 Log_Error("file don't exist(%d)",m_debug_flag);
+		 fflush(fpFile);
+	 }
+	 else
+	 {
+	     fprintf(stdout,"\r\n file exist %d",m_debug_flag);	
+		 LOGW("file don't exist(%d)\n",m_debug_flag);
+		 Log_Error("file  exist(%d)",m_debug_flag);
+		 fflush(fpFile);
+	 }
 	 for(int i = 0;i<max_sonar_num;i++)
 	 {
 	     m_sonar_obj_list_start[i]=0;
