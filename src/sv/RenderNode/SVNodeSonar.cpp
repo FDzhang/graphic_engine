@@ -514,6 +514,7 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
      memcpy(m_sonar_color_list,&(pConfig->smc_hmi.REAR_LEFT_CONOR_SONAR_COLOR_R ),max_sonar_num*3*sizeof(float));
 	 if(ReadIntSpaceTxtFile(debug_cfg_file,&m_debug_flag,1))
 	 {
+	     m_debug_flag=0;
 	     fprintf(stdout,"\r\n file don't exist %d",m_debug_flag);		 
 		 LOGW("file don't exist(%d)\n",m_debug_flag);
 		 Log_Error("file don't exist(%d)",m_debug_flag);
