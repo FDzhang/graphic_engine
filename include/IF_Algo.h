@@ -46,11 +46,6 @@ public:
      * \param [IN] flag true则Layout显示
      */
     virtual void Enable(bool flag) = 0;
-    /**
-     * \brief 更新Algo Apa
-     */
-    virtual void EnableApaDemoPicture(int flag) = 0; 
-    
 };
 
 //! 接口函数

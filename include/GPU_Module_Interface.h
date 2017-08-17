@@ -84,6 +84,7 @@ DLL_PUBLIC void UpdateGpuLuminanceBalanceCof(CoefYUV *lb_result);
 DLL_PUBLIC void UpdateGPUMdlCANData(CAN_DATA in_CAN_data);
 
 DLL_PUBLIC void UpdateCustomHMIData();
+DLL_PUBLIC void UpdateStichAngle(unsigned char seam_change_flag[],StitcherResult* sticher_result);
 
 DLL_PUBLIC void UpdateAPAResult(APAOverlayStruct *pAPAReslt);
 

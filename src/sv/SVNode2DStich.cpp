@@ -798,3 +798,16 @@ int SVNode2DStich::SetEnable(unsigned char flag)
 	return 0;
 }
 
+void SVNode2DStich::UpdateStich2DReslt(int index)
+{
+    IMesh *pMeshTemp;
+   // sv2Ddelegate->Update2DCalibRslt(pData,data_size,pIndex,index_size);
+   float *pTemp;
+
+
+		m_SV2Dplane[eFrontLeftMesh+index]->GetMesh(&pMeshTemp);
+		pMeshTemp->UnLockData();
+		
+	
+
+}

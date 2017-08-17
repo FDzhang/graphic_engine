@@ -32,7 +32,7 @@ namespace GUI
     CGPUListView::CGPUListView()
         :IGUIElement("CGPUListView")
         ,CXrBaseView()
-        ,m_itemNum(8)
+        ,m_itemNum(6)
         ,m_pos_x(0), m_pos_y(0)
         ,m_element_width(0), m_element_height(0)
         ,m_listview_item(NULL)
@@ -73,14 +73,13 @@ namespace GUI
                                                       const_cast<char*>(m_listview_item_texture->texName));
             Int32 textSelectedItemId = node->CreateUIMaterial(Material_UI_Spirit,
                                                               const_cast<char*>(m_listview_itemSelected_texture->texName));
-            Int32 textOkItemId = node->CreateUIMaterial(Material_UI_Spirit,
-                                                        const_cast<char*>(m_listview_itemOk_texture->texName));
             Int32 fontId = node->CreateUIFontMaterial(const_cast<char*>(m_listview_font_texture->texName), 0);
 
             Int32 rootId = node->CreateSpirit(parent, flag, bgId, 1.0,
                                               m_pos_x, m_pos_y,
                                               0,
                                               m_element_width, m_element_height);
+
             for(int index = 0; index < m_itemNum; index++)
             {
                 //按要求创建指定数目的listview item子控件
@@ -103,17 +102,18 @@ namespace GUI
             {
                 //为每个控件添加text layer
                 node->CreateTextLayer(m_listview_item[index].m_itemSpirtId, InsertFlag_Child, fontId, 1,
-                                             0.1 * m_listview_item_texture->element_width,
-                                             0.1 * m_listview_item_texture->element_height,
-                                             &(m_listview_item[index].m_itemText),
-                                             m_listview_item_texture->element_width * 0.8 ,
-                                             m_listview_item_texture->element_height * 0.8);
+                                      0.2*m_listview_item_texture->element_width,
+                                      0.2*m_listview_item_texture->element_height,
+                                      &(m_listview_item[index].m_itemText),
+                                      m_listview_item_texture->element_width * 0.6 ,
+                                      m_listview_item_texture->element_height * 0.6);
                 m_listview_item[index].m_itemText->SetOpacity(1.0);
-                m_listview_item[index].m_itemText->SetFontSize(20);
+                m_listview_item[index].m_itemText->SetFontSize(13);
                 m_listview_item[index].m_itemText->SetColor(1.0, 1.0, 1.0);
                 m_listview_item[index].valid = false;
             }
-            //选择框, 单击选择框表示选中进行播放
+
+             //选择框, 单击选择框表示选中进行播放
             Int32 itemSelectedId = node->CreateSpirit(rootId, InsertFlag_Child,
                                                       textSelectedItemId, 1.0,
                                                       m_listview_itemSelected_texture->pos_x,
@@ -124,25 +124,7 @@ namespace GUI
             m_itemSelectedLayer = node->GetLayer(itemSelectedId);
             m_itemSelectedLayer -> SetEventResponder(this);
 
-            //当前播放文件项
-            Int32 itemOkId = node->CreateSpirit(rootId, InsertFlag_Child,
-                                                textOkItemId, 1.0,
-                                                m_listview_itemOk_texture->pos_x,
-                                                m_listview_itemOk_texture->pos_y,
-                                                0,
-                                                m_listview_itemOk_texture->element_width,
-                                                m_listview_itemOk_texture->element_height);
-            m_itemOkLayer = node->GetLayer(itemOkId);
-            node->CreateTextLayer(itemOkId, InsertFlag_Child, fontId, 1,
-                                  0.1*m_listview_itemOk_texture->element_width,
-                                  0.1*m_listview_itemOk_texture->element_height,
-                                  &m_itemOkTextLayer,
-                                  m_listview_itemOk_texture->element_width ,
-                                  m_listview_itemOk_texture->element_height);
-            m_itemOkTextLayer->SetOpacity(1.0);
-            m_itemOkTextLayer->SetFontSize(20);
-            m_itemOkTextLayer->SetColor(1.0, 1.0, 0); //当前正在播放的文件为红色
-
+            m_itemSelectedLayer->SetEnable(false);
             //初始化当前选中框
             m_current_item = &(m_listview_item[0]);
             IGUIElement::SetHwnd((GUI_HANDLE_T)rootId);
@@ -152,10 +134,9 @@ namespace GUI
     void CGPUListView::SetTexture(const IGUITexture* effect, const long style)
     {
         m_base_texture                  = &(((IGUITexture*)effect)[0]);
-         m_listview_itemOk_texture       = &(((IGUITexture*)effect)[1]);
-        m_listview_item_texture         = &(((IGUITexture*)effect)[2]);
-        m_listview_itemSelected_texture = &(((IGUITexture*)effect)[3]);
-        m_listview_font_texture         = &(((IGUITexture*)effect)[4]);
+        m_listview_item_texture         = &(((IGUITexture*)effect)[1]);
+        m_listview_itemSelected_texture = &(((IGUITexture*)effect)[2]);
+        m_listview_font_texture         = &(((IGUITexture*)effect)[3]);
     }
     void CGPUListView::Enable(bool enable)
     {
@@ -176,12 +157,13 @@ namespace GUI
             m_listview_item[index].valid = false;
         }
     }
-    void CGPUListView::OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type)
+    Boolean CGPUListView::OnItemSelected(EventResponder* responder, Int32 x, Int32 y, Int32 type)
     {
         switch(type)
         {
             case TouchEvent_Down:
             {
+                m_itemSelectedLayer->SetEnable(true);
                 struct ListViewItem* item =  (struct ListViewItem*)(responder->GetPrivateData());
                 m_itemSelectedLayer->SetY((item->m_itemLayer)->GetY());
                 //更新current指针
@@ -204,7 +186,6 @@ namespace GUI
             return false;
         }
         m_current_item = item;
-        m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
         m_itemSelectedLayer->SetY(m_listview_item_texture->pos_y +
                                   m_current_item->index * m_listview_item_texture->element_height);
         return true;
@@ -221,7 +202,6 @@ namespace GUI
             return false;
         }
         m_current_item = item;
-        m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
         m_itemSelectedLayer->SetY(m_listview_item_texture->pos_y +
                                   m_current_item->index * m_listview_item_texture->element_height);
         return true;
@@ -248,8 +228,7 @@ namespace GUI
     {
         switch(type)
         {
-	    case TouchEvent_Down:
-                m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
+            case TouchEvent_Down:
                 IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
                 break;
             case TouchEvent_Up:
@@ -261,16 +240,8 @@ namespace GUI
     }
     void CGPUListView::Sync()
     {
+        m_itemSelectedLayer->SetEnable(false);
         m_current_item = &(m_listview_item[0]);
-
-
-        /*临时添加的在第一次sync列表框时，默认播放第一个文件*/
-        static bool first = true;
-        if(first)
-        {
-            m_itemOkTextLayer->SetText(const_cast<char*>((m_current_item->m_itemText)->GetText()));
-            first = false;
-        }
 
         //同步选中框状态，若itemSelected位置没有及时更新，则重新更新状态
         m_itemSelectedLayer->SetY(m_current_item->m_itemLayer->GetY());

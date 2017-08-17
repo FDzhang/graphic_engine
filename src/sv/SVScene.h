@@ -98,6 +98,15 @@ typedef enum CameraPosition {
 	
 	CameraPosition_Left_Front_Light = 0x000000f,
 	CameraPosition_Right_Front_Light = 0x0000010,
+
+        CameraPosition_BMW_Rear = 0x0000011,
+        CameraPosition_BMW_Left = 0x0000012,
+        CameraPosition_BMW_Right = 0x0000013,
+        CameraPosition_BMW_Left_Front = 0x0000014,
+        CameraPosition_BMW_Right_Front = 0x0000015,
+        CameraPosition_BMW_Left_Rear = 0x0000016,
+        CameraPosition_BMW_Right_Rear = 0x0000017,
+        CameraPosition_BMW_3D_Rear = 0x0000018,
 };
 typedef enum RightViewType {
 	FRONT_SINGLE_VIEW			= 0x00000000,
@@ -122,7 +131,15 @@ typedef enum RightViewType {
 	BOSH_REAR_VIEW_TOP,
 	LEFT_MIRROR_VIEW,
 	RIGHT_MIRROR_VIEW,	
-	CROSS_IMAGE_VIEW,			
+	CROSS_IMAGE_VIEW,	
+	BMW_REAR_VIEW,
+	BMW_LEFT_VIEW,
+	BMW_RIGHT_VIEW,
+	BMW_LEFT_FRONT_VIEW,
+	BMW_RIGHT_FRONT_VIEW,
+	BMW_LEFT_REAR_VIEW,
+	BMW_RIGHT_REAR_VIEW,
+    BMW_REAR_3D_VIEW,	
 	TOTAL_VIEW_NUM,
 };
 
@@ -156,7 +173,7 @@ class SVScene
 	// The program object containing the 2 shader objects
 
 public:
-	SVScene() 
+	SVScene():m_lastSelectViewState(0)
 	{
 		m_lisenceRT = 0;
 	}
@@ -235,7 +252,7 @@ public:
 	void ProcessViewRot();
 	void DoorAction(Int32 Pos);
 	void SetCarEnable(Boolean flag);
-	
+	void UpdateStich2DReslt(unsigned char Seam_Update_Flag[],GLfloat *pData);
 	void ProcessTurnLight(unsigned char turn_light);
 	
 	void TurnLightAction(Int32 Pos);
@@ -245,6 +262,14 @@ public:
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 	void Init2DStichAVMNode();
 	void Calc3DGroundTexture();
+
+public:
+	void SetTouchSelectView(unsigned char view_index);
+	void GetCurrentDisplayView(unsigned char &view_index);
+private:
+	unsigned char m_touchedSelectViewState;	
+	unsigned char m_lastSelectViewState;
+	unsigned char m_currentCanSetViewState;
 private:
 	ISceneNode*			m_sceneNode;
 	Int32				m_scenenodeId;

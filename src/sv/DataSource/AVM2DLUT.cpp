@@ -51,7 +51,7 @@
 /*===========================================================================*\
  * External Object Definitions
 \*===========================================================================*/
-
+float car_rect[4] = {0.0, 0.0,0.0,0.0};
 /*===========================================================================*\
  * Local Object Definitions
 \*===========================================================================*/
@@ -529,16 +529,21 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
                 m_car_rect[2] = -1.0+2.0*((float)(pSticherReslt->car_Icon_Rect.x-1)+(float)pSticherReslt->car_Icon_Rect.width+2)/(float)pSticherReslt->bev_img_width ;
                 m_car_rect[3] = 1.0-2.0*((float)(pSticherReslt->car_Icon_Rect.y-1)+(float)pSticherReslt->car_Icon_Rect.height+2)/(float)pSticherReslt->bev_img_height ;
 
+                car_rect[0] = m_car_rect[0];
+                car_rect[1] = m_car_rect[1];
+                car_rect[2] = m_car_rect[2];
+                car_rect[3] = m_car_rect[3];
+
                 //更新pgs
                 m_calib_para[0] = pSticherReslt->cx;
                 m_calib_para[1] = pSticherReslt->cy;
                 m_calib_para[2] = pSticherReslt->ppmmx;
                 m_calib_para[3] = pSticherReslt->ppmmy;
 				AdjustCarPose(m_car_rect,0.005,0.01);
-				m_car_shadow_adjust_rect[0] = -0.04;
-				m_car_shadow_adjust_rect[1]=0.08;
-				m_car_shadow_adjust_rect[2]=0.04;
-				m_car_shadow_adjust_rect[3]=-0.08;
+				m_car_shadow_adjust_rect[0] = -(1000.0/pSticherReslt->ppmmy/108.0);
+				m_car_shadow_adjust_rect[1]=(1200.0/pSticherReslt->ppmmx/240.0);
+				m_car_shadow_adjust_rect[2]=-m_car_shadow_adjust_rect[0];
+				m_car_shadow_adjust_rect[3]=-m_car_shadow_adjust_rect[1];
 
                 return true;
             }

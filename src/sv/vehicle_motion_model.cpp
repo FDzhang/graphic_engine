@@ -340,6 +340,8 @@ int VehicleMotion::get_turn_dir(COMMON_VEHICLE_DATA_SIMPLE * v_data)
 
 }
 
+
+
 void VehicleMotion::steeringwheel_radius(
 	float str_whl_angle,
 	int shft_pos,
@@ -478,7 +480,6 @@ static float pre_steering_wheel=0;
     }
    
 }
-
 
 float VehicleMotion::get_yawrate_from_curvature(COMMON_VEHICLE_DATA_SIMPLE * v_data)
 {

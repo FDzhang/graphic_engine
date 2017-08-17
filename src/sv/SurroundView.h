@@ -11,12 +11,14 @@
 #include "../XrCore/XrSrc/External/XrHeaders.h"
 #include "../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
 #include "AVMData.h"
+#include "HMISource/ISVHmi.h"
 class SVAdjust;
 class XRSV
 {
 public:
 
-	XRSV() {
+	XRSV():m_vehicleId(0x00)
+	{
 	}
 
 	virtual ~XRSV() {m_pAdasMdl = NULL;};
@@ -31,22 +33,31 @@ public:
 	void DoubleTouchDown(int x, int y);
 	void DoubleTouchMove(int x, int y);
 	void DoubleTouchUp(int x, int y);
-	//<<<<<<< HEAD
+
 	void Update3DParam(float *pose);
 	void Update2DParam(void *pdata,void *pIndex);
 
-	//=======
+
 	void RightTouchUp(int x, int y);
 	void RightTouchDown(int x, int y);
 	void KeyDown(int x);
-	//>>>>>>> feature_autoparking
+
 	void Pinch(float distance);
+	void UpdateStichAngle(unsigned char seam_change_flag[],float *pVertex);
 
 	void SwitchViewButton(int buttonid);
 	bool initVehicleParam(SV_VEHICLE_PARAM_T in_veh_param);
     void initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 	int m_useHDR;
 
+public:
+	int SetCurrentAlgoStatus(int algo_status);
+private:
+	int InitHmi(int screen_width, int screen_height);
+	int UpdateHmiData();
+private:
+	int m_currentAlgoStatus;
+	Hmi_Message_T currentHmiMessage;
 protected:
 
 	void switchScene();
@@ -65,6 +76,10 @@ protected:
 
 public:
     static PFUpdateJointParamCallback UpdateJonintParam;
+
+private:
+	ISVHmi* m_customHmi;
+	unsigned char m_vehicleId;
 
 };
 

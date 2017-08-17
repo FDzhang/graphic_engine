@@ -34,6 +34,7 @@ public:
 	//Update(unsigned char update_key_flag)
 	int SetEnable(unsigned char flag);
 	
+	void UpdateStich2DReslt(int index);
 	void InitStichAreaRT(void);
 	void CalcShadowTextureCoord(float *car_rect,float *shadow_rect,float *pshadow_texture);
 	void Update2DStichRslt(void);

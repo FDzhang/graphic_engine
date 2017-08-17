@@ -143,17 +143,14 @@ Void CUINode::TraverseNode(
 
 xr_state CUINode::OnUpdate()
 {
-    if(m_enable)
-    {
-        m_RenderGroupList.Clear();
-        LayerTraverseInfo rs;
-        rs.z = 2.1;
-        CUIUpdateVisitor visitor(this);
-        if (!m_pHead) return XR_OK;
-        rs.layer = m_pHead;
-        rs.clipRect.Set(0,0, XrCore->GetScreenWidth(), XrCore->GetScreenHeight());
-        TraverseNode(&rs, &visitor, TRUE);
-    }
+    m_RenderGroupList.Clear();
+    LayerTraverseInfo rs;
+    rs.z = 2.1;
+    CUIUpdateVisitor visitor(this);
+    if (!m_pHead) return XR_OK;
+    rs.layer = m_pHead;
+    rs.clipRect.Set(0,0, XrCore->GetScreenWidth(), XrCore->GetScreenHeight());
+    TraverseNode(&rs, &visitor, TRUE);
 	return XR_OK;
 }
 

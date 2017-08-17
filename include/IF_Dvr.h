@@ -34,7 +34,7 @@
 typedef struct
 {
     //暂时固定itemNum, 后期可调
-    const uint32_t maxItemNum = 8;
+    const uint32_t maxItemNum = 6;
     uint32_t itemNum = maxItemNum;
     struct
     {
@@ -83,6 +83,11 @@ public:
      *
      */
     virtual void SyncPlaylist() = 0;
+    /**
+     * \brief 设置当前播放文件(接口调用将清空列表控件的item并更新itemTable至列表中)
+     *
+     */
+    virtual void CurrentPlaylist(const char* file) = 0;
 };
 
 //! 接口函数

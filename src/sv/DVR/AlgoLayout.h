@@ -27,8 +27,7 @@
  *------------------------------------------------------------------------------------------*/
 #include "Layout.h"
 #include "GpuElementButton.h"
-#include "GpuElementImageStream.h"
-#include "GpuElementIcon.h"
+#include "GpuElementPanel.h"
 #include "IF_Algo.h"
 
 namespace GUI
@@ -43,14 +42,8 @@ namespace GUI
         void Init() {};
         void Enable(bool flag) ;
 
-        void EnableApaDemoPicture(int flag);
-
     private:
-        uint32_t m_element_size;
-        static struct ElementFuntionTable m_element_info[];
-    private:
-        void InitAlgoExit(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventExit(IGUIElement*);
+        
         void InitAlgoLdw(IGUIElement* , const GUI_HANDLE_T);
         void OnEventLdw(IGUIElement*);
         void InitAlgoBsd(IGUIElement* , const GUI_HANDLE_T);
@@ -59,27 +52,28 @@ namespace GUI
         void OnEventOnline(IGUIElement*);
         void InitAlgoApa(IGUIElement* , const GUI_HANDLE_T);
         void OnEventApa(IGUIElement*);
-        void InitAlgoRecord(IGUIElement*, const GUI_HANDLE_T);
-        void OnEventRecord(IGUIElement*);
-        void InitAlgoWifi(IGUIElement*, const GUI_HANDLE_T);
-        void OnEventWifi(IGUIElement*, const GUI_HANDLE_T);
 
-        //临时添加， ＡＰＡ IMAGE
-        void InitAlgoApaImage0(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
-        void InitAlgoApaImage1(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
-        void InitAlgoApaImage2(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
-        void InitAlgoApaImage3(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
-        void InitAlgoApaImage4(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
-        void InitAlgoApaImage5(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
-        void InitAlgoApaImage6(IGUIElement* algoApa_image, const GUI_HANDLE_T parentId);
+        void InitAlgoPanel(IGUIElement*, const GUI_HANDLE_T);
+        void InitAlgoMedia(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventMedia(IGUIElement*);
+        void InitAlgoMediaPanel(IGUIElement*, const GUI_HANDLE_T);
+        void InitAlgoMediaPlayback(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventMediaPlayback(IGUIElement*);
+        void InitAlgoMediaRecord(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventMediaRecord(IGUIElement*);
+        void InitAlgoFCW(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventFCW(IGUIElement*);
+        void InitAlgoApaIn(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventApaIn(IGUIElement*);
+        void InitAlgoApaOut(IGUIElement*, const GUI_HANDLE_T);
+        void OnEventApaOut(IGUIElement*);
     private:
-        CGPUIcon* m_algoApaImage0;
-        CGPUIcon* m_algoApaImage1;
-        CGPUIcon* m_algoApaImage2;
-        CGPUIcon* m_algoApaImage3;
-        CGPUIcon* m_algoApaImage4;
-        CGPUIcon* m_algoApaImage5;
-        CGPUIcon* m_algoApaImage6;
+        CGPUButton *m_record_button, *m_playback_button,
+            *m_ldw_button, *m_bsd_button, *m_online_button, *m_apa_button, *m_media_button, *m_fcw_button, *m_apaIn_button, *m_apaOut_button;
+        CGPUPanel *m_media_panel;
+    private:
+        uint32_t m_element_size;
+        static struct ElementFuntionTable m_element_info[];
     private:
         static AlgoLayout* m_layout;
     };

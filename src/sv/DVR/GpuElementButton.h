@@ -57,7 +57,7 @@ namespace GUI
         bool Create(const uint32_t pos_x, const uint32_t pos_y,
                     const uint32_t element_width, const uint32_t element_height);
         void SetTexture(const IGUITexture* effect, const long style);
-        void SetEnable(bool enable);
+        void Enable(bool enable);
         void Reset() ;
     private:
         Boolean OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type);

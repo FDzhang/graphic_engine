@@ -5,7 +5,7 @@
 #include <math.h>
 #include "../AVMData.h"
 
-
+#include "gpu_log.h"
 /*----------------------------------------------
 
 

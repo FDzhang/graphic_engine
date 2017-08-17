@@ -123,8 +123,11 @@ typedef enum
     ALGO_BSD_BUTTON,
     ALGO_ONLINE_BUTTON,
     ALGO_APA_BUTTON,
+    ALGO_APA_IN_BUTTON,
+    ALGO_APA_OUT_BUTTON,
     ALGO_RECORD_BUTTON,
     ALGO_WIFI_BUTTON,
+    ALGO_FCW_BUTTON,
 }ALGO_EVENT_ELEMENT_ID_T;
 
 typedef enum
@@ -136,7 +139,7 @@ typedef enum
     DVR_MEDIA_FORWARD_BUTTON,     /*快进*/
     DVR_MEDIA_REWIND_BUTTON,      /*快退*/
     DVR_MEDIA_EXIT_BUTTON,        /*退出*/
-    DVR_MEDIA_SCREEN_SHOT_BUTTON, /*截图*/
+    //DVR_MEDIA_SCREEN_SHOT_BUTTON, /*截图*/
     DVR_MEDIA_SETTING_BUTTON,     /*设置*/
     DVR_MEDIA_BAR,                /*进度条 */
     DVR_MEDIA_LIST_VIEW,          /*文件列表*/
@@ -146,6 +149,7 @@ typedef enum
     DVR_MEDIA_BUTTOMLEFTVIEW_BUTTON, /*田字格左下视图按钮*/
     DVR_MEDIA_BUTTOMRIGHTVIEW_BUTTON, /*田字格右下试图按钮*/
     DVR_MEDIA_SINGLEVIEW_BUTTON, /*单视图状态按钮*/
+    DVR_MEDIA_VIEW_BUTTON, /*回放展现的view形式*/
     DVR_MEDIA_MAX_NUM = 0xFFFFFFFF
 }DVR_EVENT_ELEMENT_ID_T;
 /*------------------------------------------------------------------------------------------

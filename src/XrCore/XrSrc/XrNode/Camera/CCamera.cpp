@@ -5,7 +5,7 @@
 CCamera::CCamera():
 	//m_transitionDuration(DefaultTransitionDuration),
 	//m_transitionStyle(AnimationStyle_EaseOut),
-	m_transitionDuration(2000),
+	m_transitionDuration(1000),
 	m_transitionStyle(AnimationStyle_EaseOut),
 	m_lockLookAt(FALSE),
 	m_2Dmode(FALSE),

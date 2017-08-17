@@ -89,16 +89,15 @@ namespace GUI
         m_hit_texture =  &(((IGUITexture*)effect)[1]);
         m_button_property = style;
     }
-    void CGPUButton::SetEnable(bool enable)
+    void CGPUButton::Enable(bool enable)
     {
         CXrButton::SetEnable(enable);
     }
     void CGPUButton::Reset()
     {
-        m_hitOpacity = 1;
-        m_base.SetOpacity(m_hitOpacity);
-        m_hitOpacity = !m_hitOpacity;
-        m_hit.SetOpacity(m_hitOpacity);
+        m_hit.SetOpacity(0);
+        m_base.SetOpacity(1);
+        m_hitOpacity = 0;
     }
     Boolean CGPUButton::OnTouchEvent(Int32 layerId, Int32 x, Int32 y, Int32 type)
     {
@@ -107,10 +106,10 @@ namespace GUI
         case GUI_BUTTON_EFFECT_LOCK:
             if( type == TouchEvent_Down)
             {
-                IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
                 m_base.SetOpacity(m_hitOpacity);
                 m_hitOpacity = !m_hitOpacity;
                 m_hit.SetOpacity(m_hitOpacity);
+                IGUIElement::DispatchEvent(IGUIElement::EventId(), type);
             }
             break;
         case GUI_BUTTON_EFFECT_DEFAULT:

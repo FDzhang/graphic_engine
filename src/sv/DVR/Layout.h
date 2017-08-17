@@ -63,6 +63,7 @@ namespace GUI
         void Dispatch(const EVENT_HANDLE_T eventId, const uint32_t type);
         //! 使能layout(控制layout的绘制与否)
         void EnableLayout(int flag);
+
     protected:
         //! 初始化控件元素表
         void InitElementTable(struct ElementFuntionTable* table, const uint32_t elementNum);

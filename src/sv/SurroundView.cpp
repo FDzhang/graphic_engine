@@ -16,7 +16,7 @@
 // ARISING OUT OF THE  USE OF OR INABILITY  TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
 // BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 //
-//
+// 
 //----------------------------------------------------------------------------------
 #include "SurroundView.h"
 #include "SVScene.h"
@@ -30,6 +30,8 @@
 
 #include "SVAdjust.h"
 #include "gpu_log.h"
+
+#include "HMISource/CSVChangAnHmi.h"
 
 SVUI* svui;
 SVScene* svscn;
@@ -173,7 +175,57 @@ void XRSV::initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 	m_adas_mdl_num = HmiMdlNum;
 
 }
+int XRSV::InitHmi(int screen_width, int screen_height)
+{
+	m_customHmi = new CSVChanganHmi();
+	m_customHmi->Init(screen_width, screen_height);
 
+	return 0;
+}
+int XRSV::UpdateHmiData()
+{
+	float vehicle_speed = 0.0;
+	unsigned char  custom_hmi_visibility = 1;
+	unsigned char current_avm_display_view = 0;
+	AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&vehicle_speed);
+
+	if(vehicle_speed > 15.0)
+	{
+		custom_hmi_visibility = 0;
+	}
+	if(m_currentAlgoStatus == ALGO_LDW
+	|| m_currentAlgoStatus == ALGO_BSD
+	|| m_currentAlgoStatus == ALGO_ONLINE_CALIBRATION
+	|| m_currentAlgoStatus == ALGO_APA
+	|| m_currentAlgoStatus == ALGO_CTA
+	|| m_currentAlgoStatus == ALGO_LDW_BSD)
+	{
+		custom_hmi_visibility = 0;
+	}
+	m_customHmi->SetVisibility(custom_hmi_visibility);
+
+	if(svscn)
+	{
+		svscn->GetCurrentDisplayView(current_avm_display_view);
+
+		m_customHmi->SetAvmDisplayView(current_avm_display_view);
+	}
+
+	m_customHmi->Update(currentHmiMessage);
+	unsigned char currentViewIndex = 0;
+	m_customHmi->GetCurrentView(currentViewIndex);
+
+	if(svscn)
+	{
+		svscn->SetTouchSelectView(currentViewIndex);
+	}
+}
+int XRSV::SetCurrentAlgoStatus(int algo_status)
+{
+	m_currentAlgoStatus = algo_status;
+	currentHmiMessage.algo_status = algo_status;
+	return 0;
+}
 bool XRSV::init(int width, int height, st_GPU_Init_Config_T& gpu_init_cfg)
 {
 	int i,logoMtlId,logoLayerId;
@@ -227,7 +279,7 @@ LutData,MAX_NAME_LENGTH);
     m_sv_data_config.pSmc = gpu_init_cfg.pSys_SMC;
 	m_sv_data_config.pPose = gpu_init_cfg.pPose;
     m_sv_data_config.pCamParam = gpu_init_cfg.camera_param;
-
+	m_vehicleId =  gpu_init_cfg.vehicle_type_id;
 
     m_sv_data_config.pSticherResult = gpu_init_cfg.sticher_result;
     //} add end ke.zhonghua
@@ -241,6 +293,9 @@ LutData,MAX_NAME_LENGTH);
 	svui->svscn = svscn;
 
 	temp = svscn->InitNode(sv_config,m_pAdasMdl,m_adas_mdl_num);
+
+	InitHmi(width, height);
+
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
 	#endif
@@ -269,6 +324,7 @@ bool XRSV::update(unsigned int view_control_flag)
         switch(view_control_flag)
         {
             case 2:
+				m_customHmi->SetVisibility(0);
                 svscn->SwitchCrossView();
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -279,6 +335,7 @@ bool XRSV::update(unsigned int view_control_flag)
             case 0xf1:
             case 0xf2:
             case 0xf3:
+				m_customHmi->SetVisibility(0);
                 svscn->SwitchSingleView(view_control_flag);
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -286,9 +343,14 @@ bool XRSV::update(unsigned int view_control_flag)
                 g_pXrSwapChain->Swap();
                 return 0;
             default:
+				m_customHmi->SetVisibility(1);
                 break;
         }
+
+    UpdateHmiData();
+
         svscn->Update(view_control_flag,0);
+        
 		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();
@@ -305,6 +367,10 @@ bool XRSV::update(unsigned int view_control_flag)
 				init_flag =2;
 
             }
+            else
+            {
+                 m_customHmi->SetVisibility(0);
+            }
         }
         if(init_flag==0)
         {
@@ -315,6 +381,7 @@ bool XRSV::update(unsigned int view_control_flag)
 			init_flag = 1;
         }
 #endif
+
 		g_pIXrCore->Update();
 		timestamp2 = XrGetTime();
 		g_pIXrCore->Render();
@@ -364,19 +431,20 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 void XRSV::SingleTouchDown(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Down);
-	svscn->OnMouseDown(x,y);
+	//svscn->OnMouseDown(x,y);
+	m_customHmi->SetSingleTouchDownEvent(x, y);
 }
 
 void XRSV::SingleTouchMove(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Move);
-	svscn->OnMouseMove(x,y);
+	//svscn->OnMouseMove(x,y);
 }
 
 void XRSV::SingleTouchUp(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Up);
-	svscn->OnMouseUp(x,y);
+	//svscn->OnMouseUp(x,y);
 }
 
 void XRSV::SwitchViewButton(int buttonid)
@@ -388,6 +456,10 @@ void XRSV::SwitchViewButton(int buttonid)
 void XRSV::Pinch(float distance)
 {
 	pCamera->SetFOVDelta(distance);
+}
+void XRSV::UpdateStichAngle(unsigned char seam_change_flag[],float *pVertex)
+{
+	svscn->UpdateStich2DReslt(seam_change_flag,pVertex);
 }
 
 void XRSV::DoubleTouchDown(int x, int y)

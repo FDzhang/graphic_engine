@@ -5,40 +5,18 @@ SET(gpu_project_name graphic_engine)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -Wl,-Bsymbolic")
 SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-Bsymbolic")
 
-AUX_SOURCE_DIRECTORY(. gpu_srcs)
+file(GLOB_RECURSE gpu_c_src "*.c")
+file(GLOB_RECURSE gpu_cpp_src "*.c??")
+file(GLOB_RECURSE free_type_c_src "freetype/*.c")
+list(REMOVE_ITEM gpu_c_src ${free_type_c_src})
+list(APPEND gpu_c_src "${CMAKE_CURRENT_BINARY_DIR}/version.c")
 
-#添加sv子目录所有代码
-AUX_SOURCE_DIRECTORY(sv/DVR svdvr_srcs)
-AUX_SOURCE_DIRECTORY(sv/DataSource svdatasrc_srcs)
-AUX_SOURCE_DIRECTORY(sv/HMI svhmi_srcs)
-AUX_SOURCE_DIRECTORY(sv/HMISource svhmisrc_srcs)
-AUX_SOURCE_DIRECTORY(sv/RenderDelegate svrender_srcs)
-AUX_SOURCE_DIRECTORY(sv/VideoSource svvideosrc_srcs)
-AUX_SOURCE_DIRECTORY(sv/RenderNode svrendernode_srcs)
-AUX_SOURCE_DIRECTORY(sv sv_srcs)
-
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrResource xrres_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Render xrrender_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Render/GLES2Shaders xrrshaders_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Render/GLES2Render xrrshader_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Platform xrplatform_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Effect xreffect_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode xrnode_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Lighting xrlight_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Layer xrlayer_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Intersect xrinter_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Material xrmeterial_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Camera xrcamera_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Mesh xrmesh_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Animation xranimat_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrNode/Scene xrscene_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrCore xrcore_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/XrUILibrary xruilib_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/External xrext_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/3rd xr3rd_srcs)
-AUX_SOURCE_DIRECTORY(XrCore/XrSrc/Common srccomm_srcs)
+execute_process(COMMAND "./version.sh"  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/version.c")
 
 AUX_SOURCE_DIRECTORY(extra extra_srcs)
+AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_BINARY_DIR} dynamic_gen_srcs)
+
+execute_process(COMMAND "./version.sh"  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/version.c")
 
 INCLUDE_DIRECTORIES(${J6_ROOTFS}/usr/include ${J6_ROOTFS}/usr/include/freetype2 
                     ${j6armcomm_INCLUDE_DIR} ${j6armcomm_INCLUDE_DIR}/avm .
@@ -54,12 +32,8 @@ execute_process(COMMAND "${CMAKE_LINKER}" "-m${OUTPUT_LINK_MODE}" "-verbose"
                     )
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -T ${CMAKE_BINARY_DIR}/graphic_engine.lds")
 
-ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_srcs} ${svdvr_srcs} ${svdatasrc_srcs} ${svhmi_srcs} ${svhmisrc_srcs} ${svrender_srcs} ${svrendernode_srcs}
-		${svvideosrc_srcs} ${sv_srcs} ${xrres_srcs} ${xrrender_srcs} ${xrrshaders_srcs} ${xrrshader_srcs}
-		 ${xrplatform_srcs} ${xreffect_srcs} ${xrnode_srcs}  ${xrlight_srcs} ${xrlayer_srcs} ${xrinter_srcs} 
-		 ${xrmeterial_srcs} ${xrcamera_srcs} ${xrmesh_srcs} ${xranimat_srcs} ${xrscene_srcs} ${xrcore_srcs} 
-		 ${xruilib_srcs} ${xrext_srcs} ${xr3rd_srcs} ${srccomm_srcs}
-         ${extra_srcs}
-         )
+ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_c_src} ${gpu_cpp_src})
 #设置输出路径
 SET(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
+
+set_target_properties(${gpu_project_name} PROPERTIES LINKER_LANGUAGE C)

@@ -30,7 +30,7 @@ namespace GUI
     CGPUIcon::CGPUIcon()
         :IGUIElement("CGPUIcon")
         ,CXrBaseView()
-        ,m_iconTexture(NULL),m_iconLayer(NULL)
+        ,m_iconTexture(NULL),m_iconLayer(NULL), m_baseLayer(NULL)
         ,m_iconStyle(0)
     {
     }
