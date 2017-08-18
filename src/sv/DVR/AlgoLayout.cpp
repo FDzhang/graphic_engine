@@ -382,7 +382,7 @@ namespace GUI
     void AlgoLayout::InitAlgoApaIn(IGUIElement* apaIn_button, const GUI_HANDLE_T parentId)
     {
         apaIn_button->Attach(m_node, parentId);
-        apaIn_button->SetTexture(apaIn_array_texture, 0);
+        apaIn_button->SetTexture(apaIn_array_texture, GUI::GUI_BUTTON_EFFECT_LOCK);
         apaIn_button->Create(apaIn_array_texture[0].pos_x,
                              apaIn_array_texture[0].pos_y,
                              apaIn_array_texture[0].element_width,
@@ -402,7 +402,6 @@ namespace GUI
         //m_online_button->Reset();
         //m_apa_button->Reset();
         m_fcw_button->Reset();
-        OnEventMedia(m_media_panel);
         m_apaOut_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
@@ -416,7 +415,7 @@ namespace GUI
     void AlgoLayout::InitAlgoApaOut(IGUIElement* apaOut_button, const GUI_HANDLE_T parentId)
     {
         apaOut_button->Attach(m_node, parentId);
-        apaOut_button->SetTexture(apaOut_array_texture, 0);
+        apaOut_button->SetTexture(apaOut_array_texture, GUI::GUI_BUTTON_EFFECT_LOCK);
         apaOut_button->Create(apaOut_array_texture[0].pos_x,
                               apaOut_array_texture[0].pos_y,
                               apaOut_array_texture[0].element_width,
@@ -435,7 +434,6 @@ namespace GUI
         //m_online_button->Reset();
         //m_apa_button->Reset();
         m_fcw_button->Reset();
-        OnEventMedia(m_media_panel);
         m_apaIn_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
