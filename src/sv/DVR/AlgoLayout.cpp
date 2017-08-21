@@ -364,8 +364,8 @@ namespace GUI
         m_apaOut_button->Enable(is_record);
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        m_online_button->Reset();
-        m_apa_button->Reset();
+        //m_online_button->Reset();
+        //m_apa_button->Reset();
         m_fcw_button->Reset();
         m_playback_button->Reset();
         m_apaIn_button->Reset();
