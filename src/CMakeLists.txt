@@ -19,7 +19,7 @@ AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_BINARY_DIR} dynamic_gen_srcs)
 execute_process(COMMAND "./version.sh"  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/version.c")
 
 INCLUDE_DIRECTORIES(${J6_ROOTFS}/usr/include ${J6_ROOTFS}/usr/include/freetype2 
-                    ${j6armcomm_INCLUDE_DIR} ${j6armcomm_INCLUDE_DIR}/avm .
+                    ${j6armcomm_INCLUDE_DIR} ${j6armcomm_INCLUDE_DIR}/avm ${j6armcomm_INCLUDE_DIR}/database .
                     ${algorithm_INCLUDE_DIR}/
                     ${algorithm_INCLUDE_DIR}/common
 		    ${algorithm_INCLUDE_DIR}/../src/alg/apa/interface
