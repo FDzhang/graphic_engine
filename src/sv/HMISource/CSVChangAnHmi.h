@@ -88,6 +88,7 @@ public:
     virtual int Init(int window_width, int window_height);
     virtual int Update(Hmi_Message_T& hmiMsg);
     virtual int ReturnHmiMsg(Hmi_Message_T* pHmiMsg);
+	virtual int MockTouchEvent(Hmi_Message_T& hmiMsg);
 private:
 	int SetSurroundViewCamElem();
 	int ProcessAvmStatus();
@@ -103,6 +104,9 @@ private:
 	
 	int m_stitchRegionWidth;
 	int m_stitchRegionHeight;
+
+	int m_touchPressIndex;
+	int m_lastTouchPressIndex;
 
 public:	
 	static unsigned char m_trackCamVisibility;

@@ -16,6 +16,7 @@
 enum
 {
     HMI_SUCCESS = 0,
+    HMI_NO_MOCK_DATA= 1,
 };
 
 enum
@@ -34,6 +35,12 @@ enum
     ALGO_LDW_BSD = 3,
 };
 
+typedef struct HmiKeyCtrlEventTag
+{
+    unsigned char changeViewKeyStatus;
+}
+HmiKeyCtrlEventT;
+
 typedef struct Hmi_Message_Tag
 {
     unsigned char view_model;
@@ -42,6 +49,8 @@ typedef struct Hmi_Message_Tag
     unsigned char hmi_cmd;
     
     int algo_status;
+
+	HmiKeyCtrlEventT keyCtrlEvent;
     
 }
 Hmi_Message_T;
@@ -55,6 +64,8 @@ public:
     virtual int Update(Hmi_Message_T& hmiMsg);
     virtual int ReturnHmiMsg(Hmi_Message_T* pHmiMsg);
     virtual int DestroyHmiElems();
+
+	virtual int MockTouchEvent(Hmi_Message_T& hmiMsg);
 
 public:
     int SetVisibility(unsigned int flag);  

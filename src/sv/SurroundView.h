@@ -27,6 +27,7 @@ public:
 	bool init(int width, int height, st_GPU_Init_Config_T& gpu_init);
 	bool draw();
 	bool update(unsigned int view_control_flag);
+	void MockTouchEvent(unsigned char key_value);
 	void SingleTouchDown(int x, int y);
 	void SingleTouchMove(int x, int y);
 	void SingleTouchUp(int x, int y);

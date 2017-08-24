@@ -184,6 +184,10 @@ int XRSV::InitHmi(int screen_width, int screen_height)
 }
 int XRSV::UpdateHmiData()
 {
+	if(m_customHmi == NULL)
+	{
+		return 0;
+	}
 	float vehicle_speed = 0.0;
 	unsigned char  custom_hmi_visibility = 1;
 	unsigned char current_avm_display_view = 0;
@@ -323,8 +327,11 @@ bool XRSV::update(unsigned int view_control_flag)
 		Set_Frame_TimeStamp(AVMData::GetInstance()->m_p_can_data->GetTimeStamp());
         switch(view_control_flag)
         {
-            case 2:
-				m_customHmi->SetVisibility(0);
+			case 2:
+				if(m_customHmi != NULL)
+				{
+					m_customHmi->SetVisibility(0);
+				}
                 svscn->SwitchCrossView();
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -335,7 +342,10 @@ bool XRSV::update(unsigned int view_control_flag)
             case 0xf1:
             case 0xf2:
             case 0xf3:
-				m_customHmi->SetVisibility(0);
+				if(m_customHmi != NULL)
+				{
+					m_customHmi->SetVisibility(0);
+				}
                 svscn->SwitchSingleView(view_control_flag);
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -343,7 +353,10 @@ bool XRSV::update(unsigned int view_control_flag)
                 g_pXrSwapChain->Swap();
                 return 0;
             default:
-				m_customHmi->SetVisibility(1);
+				if(m_customHmi != NULL)
+				{
+					m_customHmi->SetVisibility(1);
+				}
                 break;
         }
 
@@ -369,7 +382,10 @@ bool XRSV::update(unsigned int view_control_flag)
             }
             else
             {
-                 m_customHmi->SetVisibility(0);
+				if(m_customHmi != NULL)
+				{
+					m_customHmi->SetVisibility(0);
+				}
             }
         }
         if(init_flag==0)
@@ -427,12 +443,24 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 	svscn->UpdateExternCalib2DReslt((GLfloat*)pdata,data_size,(GLushort *)pIndex,index_size);
 }
 
-
+void XRSV::MockTouchEvent(unsigned char key_value)
+{
+	if(m_customHmi != NULL)
+	{
+		Hmi_Message_T hmiMsg;
+		hmiMsg.keyCtrlEvent.changeViewKeyStatus = key_value;
+		m_customHmi->MockTouchEvent(hmiMsg);
+	}
+}
 void XRSV::SingleTouchDown(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Down);
 	//svscn->OnMouseDown(x,y);
-	m_customHmi->SetSingleTouchDownEvent(x, y);
+	if(m_customHmi != NULL)
+	{
+		m_customHmi->SetSingleTouchDownEvent(x, y);
+	}
+	
 }
 
 void XRSV::SingleTouchMove(int x, int y)

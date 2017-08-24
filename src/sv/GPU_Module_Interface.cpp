@@ -651,6 +651,12 @@ void UpdateTexture()
 {
 
 }
+
+void MockTouchEvent(unsigned char key_value)
+{
+	app.MockTouchEvent(key_value);	
+}
+
 #ifdef __cplusplus
 }
 #endif
