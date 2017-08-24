@@ -82,7 +82,10 @@ int CSVChanganHmi::Init(int window_width, int window_height)
 	SetSurroundViewCamElem();
     return true;
 }
-
+unsigned char CSVChanganHmi::GetCustomView()
+{
+	return m_currentViewState;
+}
 bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 {
 	unsigned char tempViewIndex;
@@ -190,8 +193,6 @@ int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
 	ProcessIconTouchEvent();
 	ProcessAvmStatus();
 	SetElemProperty();
-
-	m_touchPressIndex = m_currentViewState;
 
 	ccagIcon[CCAG_RED_TRACK]->Update();
 	ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();
@@ -539,10 +540,11 @@ int CSVChanganHmi::MockTouchEvent(Hmi_Message_T& hmiMsg)
 	const unsigned char LAST_VIEW = 0;
 	const unsigned char NEXT_VIEW = 1;
 	const unsigned char CAR_ICON_REGION = 8;
-	static int storeTouchPressIndex = 0;
+	static int storeTouchPressIndex = 0;	
 
 	if(m_touchPressIndex != CAR_ICON_REGION)
 	{
+		m_touchPressIndex = GetCustomView();
 		storeTouchPressIndex = m_touchPressIndex;
 	}
 	switch(hmiMsg.keyCtrlEvent.changeViewKeyStatus)
@@ -581,9 +583,15 @@ int CSVChanganHmi::MockTouchEvent(Hmi_Message_T& hmiMsg)
 	{		
 		SetSingleTouchDownEvent(CAR_RECT_X + 1, CAR_RECT_Y + 1);
 	}
-	else
+	else if(m_touchPressIndex >= CCAG_TRACK_CAMERA_REGION_FRONT
+			&& m_touchPressIndex <= CCAG_TRACK_CAMERA_REGION_REAR_RIGHT)
 	{
-		SetSingleTouchDownEvent(ccagIconData[m_touchPressIndex].pos[0] + 1, ccagIconData[m_touchPressIndex].pos[1] + 1);		
+		SetSingleTouchDownEvent(m_trackCamIconRegion[m_touchPressIndex][CCAG_ELEM_X] + 1, m_trackCamIconRegion[m_touchPressIndex][CCAG_ELEM_Y] + 1);		
+	}
+	else if(m_touchPressIndex >= CCAG_CAMERA_REGION_FRONT
+		&& m_touchPressIndex <= CCAG_CAMERA_REGION_RIGHT)
+	{
+		SetSingleTouchDownEvent(ccagIconData[m_touchPressIndex - CCAG_CAMERA_REGION_FRONT + CCAG_CAMERA_FRONT].pos[0] + 1, ccagIconData[m_touchPressIndex - CCAG_CAMERA_REGION_FRONT + CCAG_CAMERA_FRONT].pos[1] + 1);		
 	}
 	return HMI_SUCCESS;
 }

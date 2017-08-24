@@ -97,6 +97,7 @@ private:
 	int ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action);
 	int SetElemProperty();
 	bool SetCustomView(unsigned char viewIndex);
+	unsigned char GetCustomView();
 
 private:
 	Hmi_Button_Data_T ccagIconData[CCAG_ICON_NUMS];
