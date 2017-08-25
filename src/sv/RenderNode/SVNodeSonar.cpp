@@ -3,9 +3,9 @@
 #include "SVNodeSonar.h"
 #include "../SVDelegate.h"
 #include "../GlSV2D.h"
-//#include "APA_modules_IF.h"
+//#include "apa_modules_if.h"
 //#include "apa_interface.h"
-#include "common/APA_modules_IF.h"
+#include "apa_interface.h"
 #include "messagebus_api.h"
 #include "gpu_log.h"
 
@@ -404,7 +404,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 	pRadarPldRslt= GetSonarPLDDataPointer();
 	LOGW("m_lot_upload_left_right_flag(%d)\n",m_lot_upload_left_right_flag);
 
-	PLD_Radar_Result RadarPldRslt;
+	PLDRadarResult RadarPldRslt;
 
 	RadarPldRslt.nParkingGarageNum=0;
 
@@ -452,7 +452,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		RadarPldRslt.nParkingGarageNum++;
 
 	}
-    MessageBus_SetTopic("PLD_Radar_Result",&RadarPldRslt,sizeof(PLD_Radar_Result));
+    MessageBus_SetTopic("PLD_RADAR_RESULT",&RadarPldRslt,sizeof(PLDRadarResult));
 #if 0
 	if(pRadarPldRslt->sGround_Points[2].x < -3000 && 0 ==  m_track_park_lot_flag) 
 	{
@@ -569,8 +569,8 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 	 m_vehicle_state_buffer_index=0;
 	 ResetParkSlotInfo();
 	 TestVehicleMovment();
-	 MessageBus_CreateTopic("PLD_Radar_Result",sizeof(PLD_Radar_Result));
-	 MessageBus_CreateTopic("Radar_Obj_Pos",sizeof(Sonar_Obj_Pos));
+	 MessageBus_CreateTopic("PLD_RADAR_RESULT",sizeof(PLDRadarResult));
+	 MessageBus_CreateTopic("RADAR_OBJ_POS",sizeof(SonarObjPos));
 
 	 return 0;
 }
@@ -2020,13 +2020,13 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
     unsigned char turn_light_state;
 	static unsigned char pre_reset_flag=0;
     CAN_DATA can_data;
-	Slot_control_info sSlotCtrl;
+	SlotControlInfo sSlotCtrl;
     
 	AVMData::GetInstance()->m_p_can_data->Get_Turn_Signal(&turn_light_state);
 
 	can_data = AVMData::GetInstance()->m_p_can_data->GetCANData();
 
-    MessageBus_GetTopic("Radar_slot_control_info",&sSlotCtrl,sizeof(Slot_control_info),false);
+    MessageBus_GetTopic("RADAR_SLOT_CONTROL_INFO",&sSlotCtrl,sizeof(SlotControlInfo),false);
 
 	m_lot_upload_left_right_flag=sSlotCtrl.SelectPosition;
 
@@ -2354,7 +2354,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 		 
 	    // fprintf(stdout,"   pos[%f,%f] dist[%f]",obj_pos_rslt.sonar_obj_pos[2*i],obj_pos_rslt.sonar_obj_pos[2*i+1],obj_dist[i]);
 	}
-	MessageBus_SetTopic("Radar_Obj_Pos",&obj_pos_rslt,sizeof(Sonar_Obj_Pos));
+	MessageBus_SetTopic("RADAR_OBJ_POS",&obj_pos_rslt,sizeof(SonarObjPos));
 	
     for(int i=0;i<max_sonar_num;i++)
     {
