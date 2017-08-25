@@ -2065,7 +2065,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	vehicle_state.shift_pos = gear_state;
 	vehicle_state.yaw_rate = yaw_rate;
 	static int init_flag=0;
-	Sonar_Obj_Pos obj_pos_rslt;
+	SonarObjPos obj_pos_rslt;
 
 	if(init_flag ==0)
 	{
