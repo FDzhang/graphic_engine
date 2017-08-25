@@ -2066,12 +2066,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	vehicle_state.yaw_rate = yaw_rate;
 	static int init_flag=0;
 	Sonar_Obj_Pos obj_pos_rslt;
-	if(time_offset == 0)
-	{
-	
-       // fprintf(stdout,"\r\n timeoffset %d",time_offset);
-	    return 0;
-	}
+
 	if(init_flag ==0)
 	{
 	  	for(int i=0;i<4;i++)
@@ -2088,7 +2083,12 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Pulse(vehicle_state.wheel_pulse);
 	AddNewVehicleState(vehicle_state);
 	ProcessParkLotSearchLogic();
+	if(time_offset == 0)
+	{
 	
+       // fprintf(stdout,"\r\n timeoffset %d",time_offset);
+	    return 0;
+	}	
 	if(TURN_LIGHT_LEFT == turn_light_state&&pre_turn_light_state == TURN_LIGHT_OFF)
 	{
 	    //ResetParkSlotInfo();
