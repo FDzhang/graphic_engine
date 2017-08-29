@@ -1845,7 +1845,7 @@ unsigned char  SVNodeSonar::JudgeJumpPoint(int filter_num,int sonar_index,int *o
         
 		k_slop=((current_point[1])-(last_point[1]))/(current_point[0]-last_point[0]);
 		g_debug_slop = k_slop;
-		g_debug_index=g_debug_index;
+		//g_debug_index=g_debug_index;
 		if((k_slop<-K_SLOP_GATE)||(k_slop>K_SLOP_GATE))
 		{
             if(fabs(current_point[1])>fabs(last_point[1]))
