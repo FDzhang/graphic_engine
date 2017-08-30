@@ -3867,7 +3867,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 		m_pAdasHmi->SetEnable(1);
     	m_crossImage->SetEnable(0);
 	    m_sceneNode->SetEnable(1);
-
+        m_stich_node->SetEnable(1);
 		m_objectNode->SetEnable(1);
 #ifdef ALIBABA_HMI
         m_2DSingleViewNode->SetEnable(0);
