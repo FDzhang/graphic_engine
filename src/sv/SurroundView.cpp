@@ -525,6 +525,7 @@ void XRSV::RightTouchDown(int x, int y)
 	m_adjust_eanble = 1;
 
 }
+
 void XRSV::KeyDown(int x)
 {
    static unsigned char  i=0;
@@ -787,4 +788,16 @@ void XRSV::KeyDown(int x)
     }
 
 }
+
+void XRSV::DisableCar()
+{
+    svscn->SetCarEnable(0);
+}
+
+
+void XRSV::EnableCar()
+{
+    svscn->SetCarEnable(1);
+}
+
 

@@ -518,6 +518,12 @@ int UpdateApp(unsigned int view_control_flag,GLuint texYuv[])
 	app.update(view_control_flag);
     return 0;
 }
+
+void SetCarDisable()
+{
+    app.DisableCar();
+}
+
 int OnMouseSingleUp(int x,int y)
 {
     app.SingleTouchUp(x, y);

@@ -23,7 +23,7 @@
  * DEVIATIONS FROM STANDARDS:
  *   TODO: List of deviations from standards in this file, or
  *   None.
- * VERSION: 27 9月 2016 dota2_black
+ * VERSION: 27 9�2016 dota2_black
  *------------------------------------------------------------------------------------------*/
 #ifdef __cplusplus
 extern "C" {
@@ -56,7 +56,7 @@ extern "C" {
  * Exported Type Declarations
  *------------------------------------------------------------------------------------------*/
 
-//重定义, 省去包含egl等头文件
+//重定� 省去包含egl等头文件
 typedef unsigned int GLuint;
 
 #include "luminb_result.h"
@@ -94,6 +94,8 @@ DLL_PUBLIC void setHMIChainsStatus(int demo_status_value);
 DLL_PUBLIC void GetSonarPLDRslt(Radar_PLD_Result *pReslt);
 
 DLL_PUBLIC void MockTouchEvent(unsigned char key_value);
+DLL_PUBLIC void SetCarDisable();
+
 /*------------------------------------------------------------------------------------------
  * Exported Inline Function Definitions and #define Function-Like Macros
  *------------------------------------------------------------------------------------------*/

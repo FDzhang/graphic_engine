@@ -49,6 +49,10 @@ public:
 	void SwitchViewButton(int buttonid);
 	bool initVehicleParam(SV_VEHICLE_PARAM_T in_veh_param);
     void initAdasMdlHmi(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
+
+    void DisableCar();
+    void EnableCar();
+    
 	int m_useHDR;
 
 public:
