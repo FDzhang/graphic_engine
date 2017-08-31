@@ -3879,7 +3879,7 @@ void SVScene::SwitchViewLogic(unsigned char  Input)
 #ifdef ALI
         SetCarEnable(1);
 #else
-		m_Car->SetEnable(1);
+		//m_Car->SetEnable(1);
 #endif
 		//#ifdef ALI
        	//m_2DSingleViewNode->SetEnable(1);

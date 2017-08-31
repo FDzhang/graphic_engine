@@ -519,8 +519,9 @@ int UpdateApp(unsigned int view_control_flag,GLuint texYuv[])
     return 0;
 }
 
-void SetCarDisable()
+void SetShutdownDisplay()
 {
+    app.MockTouchEvent(1);
     app.DisableCar();
 }
 
