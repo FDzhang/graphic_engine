@@ -443,11 +443,12 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 	svscn->UpdateExternCalib2DReslt((GLfloat*)pdata,data_size,(GLushort *)pIndex,index_size);
 }
 
-void XRSV::MockTouchEvent(unsigned char key_value)
+void XRSV::MockTouchEvent(unsigned char key_mode, unsigned char key_value)
 {
 	if(m_customHmi != NULL)
 	{
 		Hmi_Message_T hmiMsg;
+		hmiMsg.keyCtrlEvent.changeViewMode = key_mode;
 		hmiMsg.keyCtrlEvent.changeViewKeyStatus = key_value;
 		m_customHmi->MockTouchEvent(hmiMsg);
 	}

@@ -521,7 +521,7 @@ int UpdateApp(unsigned int view_control_flag,GLuint texYuv[])
 
 void SetShutdownDisplay()
 {
-    app.MockTouchEvent(1);
+    //app.MockTouchEvent(1);
     app.DisableCar();
 }
 
@@ -659,9 +659,9 @@ void UpdateTexture()
 
 }
 
-void MockTouchEvent(unsigned char key_value)
+void MockTouchEvent(unsigned char key_value, unsigned char key_mode)
 {
-	app.MockTouchEvent(key_value);	
+	app.MockTouchEvent(key_mode, key_value);	
 }
 
 #ifdef __cplusplus

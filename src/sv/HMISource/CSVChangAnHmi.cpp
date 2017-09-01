@@ -542,43 +542,53 @@ int CSVChanganHmi::MockTouchEvent(Hmi_Message_T& hmiMsg)
 	const unsigned char CAR_ICON_REGION = 8;
 	static int storeTouchPressIndex = 0;	
 
+	if(hmiMsg.keyCtrlEvent.changeViewMode == 1)//直接输入view index
+	{
+		m_touchPressIndex = hmiMsg.keyCtrlEvent.changeViewKeyStatus;
+	}
+
 	if(m_touchPressIndex != CAR_ICON_REGION)
 	{
 		m_touchPressIndex = GetCustomView();
 		storeTouchPressIndex = m_touchPressIndex;
 	}
-	switch(hmiMsg.keyCtrlEvent.changeViewKeyStatus)
+
+	if(hmiMsg.keyCtrlEvent.changeViewMode == 0)
 	{
-		case LAST_VIEW:
-			if(m_touchPressIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
-			{
-				m_touchPressIndex = CAR_ICON_REGION;
-				break;
-			}
-			if(m_touchPressIndex == CAR_ICON_REGION
-				&& storeTouchPressIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
-			{
-				m_touchPressIndex = CCAG_CAMERA_REGION_RIGHT;
-				break;
-			}
-			if(m_touchPressIndex == CCAG_CAMERA_REGION_FRONT)
-			{
-				m_touchPressIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
-				break;
-			}
-			m_touchPressIndex --;
-			
-		break;
-		case NEXT_VIEW:
-			m_touchPressIndex ++;
-			if(m_touchPressIndex > CCAG_CAMERA_REGION_RIGHT)
-			{
-				m_touchPressIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
-			}
-		break;
-		default:
-		break;
+		switch(hmiMsg.keyCtrlEvent.changeViewKeyStatus)
+		{
+			case LAST_VIEW:
+				if(m_touchPressIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
+				{
+					m_touchPressIndex = CAR_ICON_REGION;
+					break;
+				}
+				if(m_touchPressIndex == CAR_ICON_REGION
+					&& storeTouchPressIndex == CCAG_TRACK_CAMERA_REGION_FRONT)
+				{
+					m_touchPressIndex = CCAG_CAMERA_REGION_RIGHT;
+					break;
+				}
+				if(m_touchPressIndex == CCAG_CAMERA_REGION_FRONT)
+				{
+					m_touchPressIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
+					break;
+				}
+				m_touchPressIndex --;
+				
+			break;
+			case NEXT_VIEW:
+				m_touchPressIndex ++;
+				if(m_touchPressIndex > CCAG_CAMERA_REGION_RIGHT)
+				{
+					m_touchPressIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
+				}
+			break;
+			default:
+			break;
+		}
 	}
+
 	if(m_touchPressIndex == CAR_ICON_REGION)
 	{		
 		SetSingleTouchDownEvent(CAR_RECT_X + 1, CAR_RECT_Y + 1);

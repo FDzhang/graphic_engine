@@ -67,6 +67,30 @@ typedef unsigned int GLuint;
 /*------------------------------------------------------------------------------------------
  * Exported Function Prototypes
  *------------------------------------------------------------------------------------------*/
+
+typedef enum Changan_Track_Cam_Region_Index_Tag
+{
+    CCAG_TRACK_CAMERA_REGION_FRONT = 0,
+    CCAG_TRACK_CAMERA_REGION_REAR,
+    CCAG_TRACK_CAMERA_REGION_LEFT,
+    CCAG_TRACK_CAMERA_REGION_RIGHT,
+    CCAG_TRACK_CAMERA_REGION_FRONT_LEFT,
+    CCAG_TRACK_CAMERA_REGION_FRONT_RIGHT,
+    CCAG_TRACK_CAMERA_REGION_REAR_LEFT,
+    CCAG_TRACK_CAMERA_REGION_REAR_RIGHT,    
+    CCAG_TRACK_CAMERA_REGION_NUMS
+} Changan_Track_Cam_Region_Index_T;
+ 
+ 
+ typedef enum Changan_Cam_Region_Index_Tag
+ {
+    CCAG_CAMERA_REGION_FRONT = 9,
+    CCAG_CAMERA_REGION_REAR,
+    CCAG_CAMERA_REGION_LEFT,
+    CCAG_CAMERA_REGION_RIGHT
+ 
+ } Changan_Cam_Region_Index_T;
+
 DLL_PUBLIC void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 DLL_PUBLIC void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf);
 DLL_PUBLIC int InitAppNew(int width, int height, st_GPU_Init_Config_T* gpu_init);
@@ -93,8 +117,14 @@ DLL_PUBLIC void setHMIChainsStatus(int demo_status_value);
     
 DLL_PUBLIC void GetSonarPLDRslt(Radar_PLD_Result *pReslt);
 
-DLL_PUBLIC void MockTouchEvent(unsigned char key_value);
 DLL_PUBLIC void SetShutdownDisplay();
+
+/*
+param key_mode: 
+    0, next_view change mode.
+    1, view_index change mode.
+*/
+DLL_PUBLIC void MockTouchEvent(unsigned char key_value, unsigned char key_mode = 0);
 
 /*------------------------------------------------------------------------------------------
  * Exported Inline Function Definitions and #define Function-Like Macros

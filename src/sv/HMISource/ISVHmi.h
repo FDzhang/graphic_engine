@@ -37,6 +37,7 @@ enum
 
 typedef struct HmiKeyCtrlEventTag
 {
+    unsigned char changeViewMode;
     unsigned char changeViewKeyStatus;
 }
 HmiKeyCtrlEventT;
