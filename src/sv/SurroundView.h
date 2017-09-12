@@ -17,7 +17,7 @@ class XRSV
 {
 public:
 
-	XRSV():m_vehicleId(0x00)
+	XRSV():m_vehicleId(0x00),m_fullScreenMode(0)
 	{
 	}
 
@@ -85,6 +85,7 @@ public:
 private:
 	ISVHmi* m_customHmi;
 	unsigned char m_vehicleId;
+	unsigned char m_fullScreenMode;
 
 };
 

@@ -206,6 +206,13 @@ int XRSV::UpdateHmiData()
 	{
 		custom_hmi_visibility = 0;
 	}
+
+	
+	if(m_fullScreenMode == 1)
+	{
+		custom_hmi_visibility = 0;
+	}
+	
 	m_customHmi->SetVisibility(custom_hmi_visibility);
 
 	if(svscn)
@@ -321,6 +328,7 @@ bool XRSV::update(unsigned int view_control_flag)
 	static unsigned int endl = 0;
 	static int cnt=0, total=0;
 	static int init_flag = 0;
+	static int last_view_control = -1;
 	if (g_pIXrCore) {
 		start = XrGetTime();
 		//Set_Frame_TimeStamp(start-pre_time_start);
@@ -328,17 +336,18 @@ bool XRSV::update(unsigned int view_control_flag)
         switch(view_control_flag)
         {
 			case FULL_SCREEN_3D:
-				if(m_customHmi != NULL)
+				if(m_fullScreenMode == 0)
 				{
-					m_customHmi->SetVisibility(0);
+					svscn->EnterFullScreenMode(FULL_SCREEN_3D);
+					m_fullScreenMode = 1;
 				}
-				svscn->EnterFullScreenMode(FULL_SCREEN_3D);
 			break;
 			case 2:
 				if(m_customHmi != NULL)
 				{
 					m_customHmi->SetVisibility(0);
 				}
+				m_fullScreenMode = 0;
                 svscn->SwitchCrossView();
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -353,6 +362,7 @@ bool XRSV::update(unsigned int view_control_flag)
 				{
 					m_customHmi->SetVisibility(0);
 				}
+				m_fullScreenMode = 0;
                 svscn->SwitchSingleView(view_control_flag);
                 g_pIXrCore->ProcessEvent();
                 g_pIXrCore->Update();
@@ -364,6 +374,7 @@ bool XRSV::update(unsigned int view_control_flag)
 				{
 					m_customHmi->SetVisibility(1);
 				}
+				m_fullScreenMode = 0;
                 break;
         }
 
