@@ -554,7 +554,7 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 		     m_Move_Matrix[i]=0;
 		 }
 	 }	
-	 	 for (int i = 0; i < max_sonar_num; i++)
+	 for (int i = 0; i < max_sonar_num; i++)
 	 {
 		 m_active_buffer_index[i] = 0;
 	 }
@@ -623,9 +623,6 @@ int SVNodeSonar::InitSoarArc(void)
 	int lisenceMeshId;
 	int groundId;
 	float pos[3]={0.0,0.0,0.0};
-
-
-    
 
     for(int i =0;i<max_sonar_num;i++)
     {

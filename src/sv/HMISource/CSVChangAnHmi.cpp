@@ -542,17 +542,17 @@ int CSVChanganHmi::MockTouchEvent(Hmi_Message_T& hmiMsg)
 	const unsigned char CAR_ICON_REGION = 8;
 	static int storeTouchPressIndex = 0;	
 
-	if(hmiMsg.keyCtrlEvent.changeViewMode == 1)//直接输入view index
-	{
-		m_touchPressIndex = hmiMsg.keyCtrlEvent.changeViewKeyStatus;
-	}
-
 	if(m_touchPressIndex != CAR_ICON_REGION)
 	{
 		m_touchPressIndex = GetCustomView();
 		storeTouchPressIndex = m_touchPressIndex;
 	}
 
+	if(hmiMsg.keyCtrlEvent.changeViewMode == 1)//直接输入view index
+	{
+		m_touchPressIndex = hmiMsg.keyCtrlEvent.changeViewKeyStatus;
+	}
+	
 	if(hmiMsg.keyCtrlEvent.changeViewMode == 0)
 	{
 		switch(hmiMsg.keyCtrlEvent.changeViewKeyStatus)

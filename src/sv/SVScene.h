@@ -143,6 +143,12 @@ typedef enum RightViewType {
 	TOTAL_VIEW_NUM,
 };
 
+typedef enum DisplayModeTag
+{
+	FULL_SCREEN_3D = 35,
+	MAX_DISPLAY_MODE_NUM,
+}
+DisplayModeT;
 
 #define LGITH_FLASH_TIME 20
 #define LIGHT_ON_TIME 18
@@ -192,6 +198,7 @@ public:
 	void EnterCrossView(Int32 pos);
 	void EnterFreeView(Int32 pos);
 	void EnterPanorama(Int32 pos);
+	void EnterFullScreenMode(unsigned char fullScreenMode);
 	void SwitchCameraPosition(Int32 pos);
 	void SetTopViewCrameraFov(Float32 fov);
 	void Draw();

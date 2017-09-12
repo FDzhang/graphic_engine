@@ -327,6 +327,13 @@ bool XRSV::update(unsigned int view_control_flag)
 		Set_Frame_TimeStamp(AVMData::GetInstance()->m_p_can_data->GetTimeStamp());
         switch(view_control_flag)
         {
+			case FULL_SCREEN_3D:
+				if(m_customHmi != NULL)
+				{
+					m_customHmi->SetVisibility(0);
+				}
+				svscn->EnterFullScreenMode(FULL_SCREEN_3D);
+			break;
 			case 2:
 				if(m_customHmi != NULL)
 				{

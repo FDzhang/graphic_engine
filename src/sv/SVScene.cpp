@@ -3611,7 +3611,46 @@ void SVScene::EnterTopView(Int32 pos)
 
 
 }
+void SVScene::EnterFullScreenMode(unsigned char fullScreenMode)
+{
+	Region tmpRegion;
+	switch(fullScreenMode)
+	{
+		case FULL_SCREEN_3D:
+			tmpRegion.Set(0 + left_plane, XrGetScreenWidth(), 0 + black_plane, XrGetScreenHeight() - black_plane);		
+			m_sceneNode->SetRenderROI(&tmpRegion);
+			SwitchViewLogic(REAR_3D_VIEW);
 
+			if(m_2DAVMNode != NULL)
+			{
+				m_2DAVMNode->SetEnable(0);
+			}
+			if(m_pAdasHmi != NULL)
+			{
+				m_pAdasHmi->SetEnable(0);
+			}
+			
+			m_sceneNode ->SetEnable(1);
+			m_objectNode->SetEnable(1);
+
+			m_2DSingleViewNode->SetEnable(0);
+			if(m_stich_node != NULL)
+			{
+				m_stich_node->SetEnable(0);
+			}
+			if(m_viewNode != NULL)
+			{
+				m_viewNode->SetEnable(0);
+			}
+			if(m_crossImage != NULL)
+			{
+				m_crossImage->SetEnable(0);
+			}
+		break;
+		default:
+		break;
+	}
+}
 void SVScene::EnterCrossView(Int32 pos)
 {
 	FadeInView(1);
