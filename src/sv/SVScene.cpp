@@ -3619,6 +3619,7 @@ void SVScene::EnterFullScreenMode(unsigned char fullScreenMode)
 		case FULL_SCREEN_3D:
 			tmpRegion.Set(0 + left_plane, XrGetScreenWidth(), 0 + black_plane, XrGetScreenHeight() - black_plane);		
 			m_sceneNode->SetRenderROI(&tmpRegion);
+			m_objectNode->SetRenderROI(&tmpRegion);
 			SwitchViewLogic(REAR_3D_VIEW);
 
 			if(m_2DAVMNode != NULL)
