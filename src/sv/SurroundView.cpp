@@ -461,6 +461,16 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 	svscn->UpdateExternCalib2DReslt((GLfloat*)pdata,data_size,(GLushort *)pIndex,index_size);
 }
 
+void XRSV::UpdateCtaResult(unsigned char pCtaStatus, void* pCtaRst)
+{
+	if(m_customHmi != NULL && pCtaRst != NULL)
+	{
+		currentHmiMessage.algoResult.ctaStatus = pCtaStatus;
+		currentHmiMessage.algoResult.ctaResult = (Cta_Result_T*)pCtaRst;
+	}
+
+}
+
 void XRSV::MockTouchEvent(unsigned char key_mode, unsigned char key_value)
 {
 	if(m_customHmi != NULL)

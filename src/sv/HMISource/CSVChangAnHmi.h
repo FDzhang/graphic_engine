@@ -21,9 +21,23 @@ typedef enum Changan_Main_Screen_Hmi_Tag
 	CCAG_CAMERA_REAR,
 	CCAG_CAMERA_LEFT,
 	CCAG_CAMERA_RIGHT,
+	CCAG_CTA_WARNING_CAR,
+	CCAG_CTA_SINGLEVIEW_LEFT_WARNING,
+	CCAG_CTA_SINGLEVIEW_RIGHT_WARNING,
+	CCAG_CTA_AVMVIEW_LEFT_WARNING,
+	CCAG_CTA_AVMVIEW_RIGHT_WARNING,	
     CCAG_ICON_NUMS,
 }
 Changan_Main_Screen_Hmi_Tag;
+
+typedef enum Cta_Warning_Flag_Tag
+{
+	CCAG_CTA_NO_WARNIING = 0,
+	CCAG_CTA_LEFT_WARNIING,
+	CCAG_CTA_RIGHT_WARNIING,
+	CCAG_CTA_ALL_WARNIING,
+}
+Cta_Warning_Flag_T;
 
 typedef enum Changan_Track_Cam_Region_Index_Tag
 {
@@ -98,6 +112,8 @@ private:
 	int SetElemProperty();
 	bool SetCustomView(unsigned char viewIndex);
 	unsigned char GetCustomView();
+	int InitCtaElem(Hmi_Message_T* pHmiMsg);
+	int UpdateCtaElem(Hmi_Message_T* pHmiMsg);
 
 private:
 	Hmi_Button_Data_T ccagIconData[CCAG_ICON_NUMS];
@@ -106,8 +122,15 @@ private:
 	int m_stitchRegionWidth;
 	int m_stitchRegionHeight;
 
+	int m_window_width;
+	int m_window_height;
+
 	int m_touchPressIndex;
 	int m_lastTouchPressIndex;
+
+	unsigned char m_cta_warning_car_showFlag;
+	unsigned char m_cta_warning_left_showFlag;
+	unsigned char m_cta_warning_right_showFlag;
 
 public:	
 	static unsigned char m_trackCamVisibility;

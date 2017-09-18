@@ -8,6 +8,7 @@
 enum
 {
 	BUTTON_NORMAL = 0,
+	ICON_CTA_RESULT_NULL = 3,
 };//button error code
 
 enum

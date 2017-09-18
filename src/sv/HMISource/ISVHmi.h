@@ -31,7 +31,7 @@ enum
     ALGO_BSD = 2,
     ALGO_ONLINE_CALIBRATION = 4,
     ALGO_APA = 5,
-    ALGO_CTA,
+    ALGO_CTA = 6,
     ALGO_LDW_BSD = 3,
 };
 
@@ -42,6 +42,13 @@ typedef struct HmiKeyCtrlEventTag
 }
 HmiKeyCtrlEventT;
 
+typedef struct HmiAlgoResultTag
+{
+	Cta_Result_T* ctaResult;
+	unsigned char ctaStatus;
+}
+HmiAlgoResultT;
+
 typedef struct Hmi_Message_Tag
 {
     unsigned char view_model;
@@ -50,6 +57,7 @@ typedef struct Hmi_Message_Tag
     unsigned char hmi_cmd;
     
     int algo_status;
+	HmiAlgoResultT algoResult;
 
 	HmiKeyCtrlEventT keyCtrlEvent;
     

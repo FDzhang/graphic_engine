@@ -37,6 +37,9 @@
 #include "gpu_public_data_struct.h"
 #include "smc.h"
 #include "commondef.h"
+
+#include "cta_embed_interface.h"
+
 /*===========================================================================*\
  * Other Header Files
 \*===========================================================================*/

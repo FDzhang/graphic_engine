@@ -649,6 +649,12 @@ void UpdateAPAResult(APAOverlayStruct *pAPAReslt)
 	g_GearRText.pos[1] = 150;
 }
 
+void UpdateCtaResult(unsigned char pCtaStatus, void* pCtaResult)
+{
+	app.UpdateCtaResult(pCtaStatus, pCtaResult);
+}
+
+
 void UpdateGpuLuminanceBalanceCof(CoefYUV *lb_result)
 {
     AVMData::GetInstance()->m_lumin_para->SetLuminanceCofYUVReslt(lb_result);

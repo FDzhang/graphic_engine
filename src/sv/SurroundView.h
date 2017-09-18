@@ -38,6 +38,7 @@ public:
 	void Update3DParam(float *pose);
 	void Update2DParam(void *pdata,void *pIndex);
 
+	void UpdateCtaResult(unsigned char pCtaStatus, void* pCtaRst);
 
 	void RightTouchUp(int x, int y);
 	void RightTouchDown(int x, int y);

@@ -3,6 +3,9 @@
 
 extern float car_rect[4];
 
+static float leftPanelWidth = 120.0;
+static float topPanelHeight = 80.0;
+
 typedef enum ChanganViewType {
 	CCAG_FRONT_SINGLE_VIEW			= 0x00000000,
 	CCAG_REAR_SINGLE_VIEW			= 0x00000001,
@@ -77,6 +80,8 @@ CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0)
 
 int CSVChanganHmi::Init(int window_width, int window_height)
 {
+	m_window_width = window_width;
+	m_window_height = window_height;
 	m_stitchRegionWidth = 216.0/704.0 * window_width;
 	m_stitchRegionHeight = window_height;
 	SetSurroundViewCamElem();
@@ -202,13 +207,14 @@ int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
 	ccagIcon[CCAG_CAMERA_LEFT]->Update();
 	ccagIcon[CCAG_CAMERA_RIGHT]->Update();
 
+	InitCtaElem(&hmiMsg);
+	UpdateCtaElem(&hmiMsg);
+
     return 0;
 }
 
 int CSVChanganHmi::SetSurroundViewCamElem()
 {
-	float leftPanelWidth = 120.0;
-
 	ccagIconData[CCAG_RED_TRACK].width = 378.0;
 	ccagIconData[CCAG_RED_TRACK].height = 487.0;
 	ccagIconData[CCAG_RED_TRACK].pos[0] = (m_stitchRegionWidth - ccagIconData[CCAG_RED_TRACK].width)/2.0 + leftPanelWidth;
@@ -388,6 +394,196 @@ int CSVChanganHmi::SetSurroundViewCamElem()
 	return BUTTON_NORMAL;
 }
 
+int CSVChanganHmi::InitCtaElem(Hmi_Message_T* pHmiMsg)
+{
+	static unsigned char initFlag = 0;
+	
+	if(initFlag == 1)
+	{
+		return BUTTON_NORMAL;
+	}
+
+	if(pHmiMsg->algoResult.ctaResult == NULL)
+	{
+		return ICON_CTA_RESULT_NULL;
+	}
+
+	if(pHmiMsg->algoResult.ctaStatus == 0)
+	{
+		return BUTTON_NORMAL;
+	}
+
+	initFlag = 1;
+
+	float pos_x,pos_y;
+	float ctaWarningWidth = 90.0;
+	float ctaWarningHeight = 90.0;
+	pos_x = (1.0 + car_rect[0]) * (m_stitchRegionWidth)/2.0 + leftPanelWidth - ctaWarningWidth;
+	pos_y = (1.0 - car_rect[3]) * (m_stitchRegionHeight)/2.0- topPanelHeight;
+
+	ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].width = ctaWarningWidth;
+	ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].height = ctaWarningHeight;
+	ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].pos[0] = pos_x;
+    ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].pos[1] = pos_y;
+	ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].show_flag = 1;
+    ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].icon_type = STATIC_ICON;
+    ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].show_icon_num = 0;
+    ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].icon_file_name[0] = new char [50];
+
+	sprintf(ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].icon_file_name[0],"%sCar/avm_view_left_warning.dds",XR_RES);  //white_track
+
+	ccagIcon[CCAG_CTA_AVMVIEW_LEFT_WARNING] = new HMIButton(&ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING], m_uiNode);
+	ccagIconData[CCAG_CTA_AVMVIEW_LEFT_WARNING].delegate_func = NULL;
+
+	
+	pos_x = (1.0 + car_rect[2]) * (m_stitchRegionWidth)/2.0 + leftPanelWidth;
+
+	ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].width = ctaWarningWidth;
+	ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].height = ctaWarningHeight;
+	ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].pos[0] = pos_x;
+    ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].pos[1] = pos_y;
+	ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].show_flag = 1;
+    ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].icon_type = STATIC_ICON;
+    ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].show_icon_num = 0;
+    ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].icon_file_name[0] = new char [50];
+
+	sprintf(ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].icon_file_name[0],"%sCar/avm_view_right_warning.dds",XR_RES);  //white_track
+
+	ccagIcon[CCAG_CTA_AVMVIEW_RIGHT_WARNING] = new HMIButton(&ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING], m_uiNode);
+	ccagIconData[CCAG_CTA_AVMVIEW_RIGHT_WARNING].delegate_func = NULL;
+
+	ctaWarningWidth = 191.0;
+	ctaWarningHeight = 124.0;
+	
+	pos_x = m_stitchRegionWidth + leftPanelWidth + (m_window_width - (m_stitchRegionWidth + leftPanelWidth) - ctaWarningWidth) * 0.5;
+	pos_y = topPanelHeight;
+
+	ccagIconData[CCAG_CTA_WARNING_CAR].width = ctaWarningWidth;
+	ccagIconData[CCAG_CTA_WARNING_CAR].height = ctaWarningHeight;
+	ccagIconData[CCAG_CTA_WARNING_CAR].pos[0] = pos_x;
+    ccagIconData[CCAG_CTA_WARNING_CAR].pos[1] = pos_y;
+	ccagIconData[CCAG_CTA_WARNING_CAR].show_flag = 1;
+    ccagIconData[CCAG_CTA_WARNING_CAR].icon_type = STATIC_ICON;
+    ccagIconData[CCAG_CTA_WARNING_CAR].show_icon_num = 0;
+    ccagIconData[CCAG_CTA_WARNING_CAR].icon_file_name[0] = new char [50];
+
+	sprintf(ccagIconData[CCAG_CTA_WARNING_CAR].icon_file_name[0],"%sCar/single_view_warning_car.dds",XR_RES);  //white_track
+
+	ccagIcon[CCAG_CTA_WARNING_CAR] = new HMIButton(&ccagIconData[CCAG_CTA_WARNING_CAR], m_uiNode);
+	ccagIconData[CCAG_CTA_WARNING_CAR].delegate_func = NULL;
+
+	pos_x = pos_x + ctaWarningWidth;
+	pos_y = pos_y + ctaWarningHeight * 1/4;
+
+	ctaWarningWidth = 128.0;
+	ctaWarningHeight = 150.0;
+
+	ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].width = ctaWarningWidth;
+	ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].height = ctaWarningHeight;
+	ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].pos[0] = pos_x;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].pos[1] = pos_y;
+	ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].show_flag = 1;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].icon_type = STATIC_ICON;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].show_icon_num = 0;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].icon_file_name[0] = new char [50];
+
+	sprintf(ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].icon_file_name[0],"%sCar/avm_view_right_warning.dds",XR_RES);  //white_track
+
+	ccagIcon[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING] = new HMIButton(&ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING], m_uiNode);
+	ccagIconData[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING].delegate_func = NULL;
+
+	pos_x = pos_x - 191.0;
+	pos_y = pos_y;
+	
+	pos_x = pos_x - ctaWarningWidth;
+
+	ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].width = ctaWarningWidth;
+	ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].height = ctaWarningHeight;
+	ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].pos[0] = pos_x;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].pos[1] = pos_y;
+	ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].show_flag = 1;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].icon_type = STATIC_ICON;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].show_icon_num = 0;
+    ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].icon_file_name[0] = new char [50];
+
+	sprintf(ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].icon_file_name[0],"%sCar/avm_view_left_warning.dds",XR_RES);  //white_track
+
+	ccagIcon[CCAG_CTA_SINGLEVIEW_LEFT_WARNING] = new HMIButton(&ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING], m_uiNode);
+	ccagIconData[CCAG_CTA_SINGLEVIEW_LEFT_WARNING].delegate_func = NULL;
+
+
+	return BUTTON_NORMAL;
+}
+
+int CSVChanganHmi::UpdateCtaElem(Hmi_Message_T* pHmiMsg)
+{
+	if(pHmiMsg->algoResult.ctaResult == NULL)
+	{
+		return ICON_CTA_RESULT_NULL;
+	}
+
+	switch(pHmiMsg->algoResult.ctaResult->l32AlarmStatus)
+	{
+		case CCAG_CTA_NO_WARNIING:			
+			m_cta_warning_car_showFlag = 0;
+			m_cta_warning_left_showFlag = 0;
+			m_cta_warning_right_showFlag = 0;
+			break;
+		case CCAG_CTA_LEFT_WARNIING:
+			m_cta_warning_car_showFlag = 1;
+			m_cta_warning_left_showFlag = 1;
+			m_cta_warning_right_showFlag = 0;
+			break;
+		case CCAG_CTA_RIGHT_WARNIING:
+			m_cta_warning_car_showFlag = 1;
+			m_cta_warning_left_showFlag = 0;
+			m_cta_warning_right_showFlag = 1;
+			break;
+		case CCAG_CTA_ALL_WARNIING:
+			m_cta_warning_car_showFlag = 1;
+			m_cta_warning_left_showFlag = 1;
+			m_cta_warning_right_showFlag = 1;
+			break;
+	
+		default:
+			m_cta_warning_car_showFlag = 0;
+			m_cta_warning_left_showFlag = 0;
+			m_cta_warning_right_showFlag = 0;
+			break;
+	}
+	
+	if(pHmiMsg->algoResult.ctaStatus == 0)
+	{
+		m_cta_warning_car_showFlag = 0;
+		m_cta_warning_left_showFlag = 0;
+		m_cta_warning_right_showFlag = 0;
+	}
+	
+	if(ccagIcon[CCAG_CTA_AVMVIEW_LEFT_WARNING]
+		&& ccagIcon[CCAG_CTA_AVMVIEW_RIGHT_WARNING]
+		&& ccagIcon[CCAG_CTA_WARNING_CAR]
+		&& ccagIcon[CCAG_CTA_SINGLEVIEW_LEFT_WARNING]
+		&& ccagIcon[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING])
+	{
+		ccagIcon[CCAG_CTA_AVMVIEW_LEFT_WARNING]->SetVisibility(m_cta_warning_left_showFlag);
+		ccagIcon[CCAG_CTA_AVMVIEW_LEFT_WARNING]->Update();
+		
+		ccagIcon[CCAG_CTA_AVMVIEW_RIGHT_WARNING]->SetVisibility(m_cta_warning_right_showFlag);
+		ccagIcon[CCAG_CTA_AVMVIEW_RIGHT_WARNING]->Update();
+		
+		ccagIcon[CCAG_CTA_WARNING_CAR]->SetVisibility(m_cta_warning_car_showFlag);
+		ccagIcon[CCAG_CTA_WARNING_CAR]->Update();
+		
+		ccagIcon[CCAG_CTA_SINGLEVIEW_LEFT_WARNING]->SetVisibility(m_cta_warning_left_showFlag);
+		ccagIcon[CCAG_CTA_SINGLEVIEW_LEFT_WARNING]->Update();
+
+		ccagIcon[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING]->SetVisibility(m_cta_warning_right_showFlag);
+		ccagIcon[CCAG_CTA_SINGLEVIEW_RIGHT_WARNING]->Update();
+		
+	}
+		
+	return BUTTON_NORMAL;
+}
 int CSVChanganHmi::ProcessAvmStatus()
 {
 	static unsigned char lastAvmDisplayView = 100;
