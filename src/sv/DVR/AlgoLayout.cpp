@@ -269,7 +269,7 @@ namespace GUI
         Layout_Event_Payload_T* payload = NULL;
         AvmEvent* event = RequestEvent(&payload);
         //填充有效数据
-        payload->header.msg_id = ALGO_FCW_BUTTON;
+        payload->header.msg_id = ALGO_CTA_BUTTON;
         payload->body.onlyNotify = true;
         PostEvent(event);
     }
