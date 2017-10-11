@@ -74,8 +74,7 @@ unsigned char CSVChanganHmi::m_storeTrackRegion = 0;
 
 CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0)
 {
-
-
+    memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);
 }
 
 int CSVChanganHmi::Init(int window_width, int window_height)
