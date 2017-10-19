@@ -407,6 +407,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 	PLDRadarResult RadarPldRslt;
 
 	RadarPldRslt.nParkingGarageNum=0;
+	unsigned int time_stamp = AVMData::GetInstance()->m_p_can_data->GetTimeStamp();
 
 	if(m_sonar_parking_lot[front_right_side_sonar].parking_lot_type != PARKING_LOT_NOT_SIUTABLE)
 		//&&fabs(m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_near_bottom+1])<2500)
@@ -425,7 +426,9 @@ void SVNodeSonar::SetRadarPLDReslt()
     	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].x = m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top]/1000.0 ;
         RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1]/1000.0;
 		
+		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nlocation = 0;
 		
+		RadarPldRslt.stHeader.nTimeStamp = time_stamp;
 		RadarPldRslt.nParkingGarageNum++;
 
 	}
@@ -448,7 +451,9 @@ void SVNodeSonar::SetRadarPLDReslt()
     	RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].x = m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top]/1000.0;
         RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1]/1000.0;
 		
+		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nlocation = 1;
 		
+		RadarPldRslt.stHeader.nTimeStamp = time_stamp;
 		RadarPldRslt.nParkingGarageNum++;
 
 	}
