@@ -42,8 +42,6 @@ namespace GUI
         {"CGPUPanel", "algo_panel", 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoPanel), NULL, NULL},
         {"CGPUButton" , "ldw" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoLdw) , (PFOnEvent)(&AlgoLayout::OnEventLdw), NULL},
         {"CGPUButton" , "bsd" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoBsd) , (PFOnEvent)(&AlgoLayout::OnEventBsd), NULL},
-        //{"CGPUButton" , "online" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoOnline) , (PFOnEvent)(&AlgoLayout::OnEventOnline), NULL},
-        //{"CGPUButton" , "apa" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApa) , (PFOnEvent)(&AlgoLayout::OnEventApa), NULL},
         {"CGPUButton" , "APA_IN" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApaIn) , (PFOnEvent)(&AlgoLayout::OnEventApaIn), NULL},
         {"CGPUButton" , "APA_OUT" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApaOut) , (PFOnEvent)(&AlgoLayout::OnEventApaOut), NULL},
         {"CGPUButton" , "fcw" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoFCW) , (PFOnEvent)(&AlgoLayout::OnEventFCW), NULL},
@@ -77,34 +75,24 @@ namespace GUI
     };
     static IGUITexture ldw_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 140, 100, 70},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 140, 100, 70},
+        {XR_RES_ALGO"algo_ldw.dds", 0, 140, 100, 70},
+        {XR_RES_ALGO"algo_ldw_clicked.dds", 0, 140, 100, 70},
     };
     static IGUITexture bsd_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 210, 100, 70},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 210, 100, 70},
-    };
-    static IGUITexture online_array_texture[] =
-    {
-        {XR_RES_HMI"BC64.dds", 0, 280, 100, 70},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 280, 100, 70},
-    };
-    static IGUITexture apa_array_texture[] =
-    {
-        {XR_RES_HMI"BC64.dds", 0, 350, 100, 70},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 350, 100, 70},
+        {XR_RES_ALGO"algo_bsd.dds", 0, 210, 100, 70},
+        {XR_RES_ALGO"algo_bsd_clicked.dds", 0, 210, 100, 70},
     };
     static IGUITexture fcw_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 420, 100, 70},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 420, 100, 70},
+        {XR_RES_ALGO"algo_fcw.dds", 0, 420, 100, 70},
+        {XR_RES_ALGO"algo_fcw_clicked.dds", 0, 420, 100, 70},
     };
     
-    static IGUITexture media_array_texture[] =
+    static IGUITexture mediaBtn_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 490, 100, 70},
-        {XR_RES_HMI"media_btn_clicked.dds", 0, 490, 100, 70},
+        {XR_RES_ALGO"algo_media_btn.dds", 0, 490, 100, 70},
+        {XR_RES_ALGO"algo_media_btn_clicked.dds", 0, 490, 100, 70},
     };
     static IGUITexture mediaPanel_array_texture[] = {
         {XR_RES_ALGO"algo_media_panel.dds", 76, 524, 175, 113},
@@ -121,13 +109,13 @@ namespace GUI
     };
     static IGUITexture apaIn_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 280, 100, 70},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 280, 100, 70},
+        {XR_RES_ALGO"algo_apaIn.dds", 0, 280, 100, 70},
+        {XR_RES_ALGO"algo_apaIn_clicked.dds", 0, 280, 100, 70},
     };
     static IGUITexture apaOut_array_texture[] =
     {
-        {XR_RES_HMI"BC64.dds", 0, 350, 100, 70},
-        {XR_RES_ALGO"algo_btn_clicked.dds", 0, 350, 100, 70},
+        {XR_RES_ALGO"algo_apaOut.dds", 0, 350, 100, 70},
+        {XR_RES_ALGO"algo_apaOut_clicked.dds", 0, 350, 100, 70},
     };
 
     void AlgoLayout::InitAlgoPanel(IGUIElement* algo_panel, const GUI_HANDLE_T parentId)
@@ -154,8 +142,6 @@ namespace GUI
     void AlgoLayout::OnEventLdw(IGUIElement* ldw_button)
     {
         //处理按钮逻辑
-        //m_online_button->Reset();
-        //m_apa_button->Reset();
         m_fcw_button->Reset();
         m_apaIn_button->Reset();
         m_apaOut_button->Reset();
@@ -182,8 +168,6 @@ namespace GUI
     void AlgoLayout::OnEventBsd(IGUIElement* bsd_button)
     {
         //处理按钮逻辑关系
-        //m_online_button->Reset();
-        //m_apa_button->Reset();
         m_fcw_button->Reset();
         m_apaIn_button->Reset();
         m_apaOut_button->Reset();
@@ -195,63 +179,7 @@ namespace GUI
         payload->body.onlyNotify = true;
         PostEvent(event);
     }
-    void AlgoLayout::InitAlgoOnline(IGUIElement* online_button, const GUI_HANDLE_T parentId)
-    {
-        online_button->Attach(m_node, parentId);
-        online_button->SetTexture(online_array_texture, GUI_BUTTON_EFFECT_LOCK);
-        online_button->Create(online_array_texture[0].pos_x,
-                              online_array_texture[0].pos_y,
-                              online_array_texture[0].element_width,
-                              online_array_texture[0].element_height
-            );
-        m_online_button = dynamic_cast<CGPUButton*>(online_button);
-    }
-    void AlgoLayout::OnEventOnline(IGUIElement* play_button)
-    {
-        //处理按钮逻辑关系
-        m_ldw_button->Reset();
-        m_bsd_button->Reset();
-        m_apa_button->Reset();
-        m_fcw_button->Reset();
-        //m_apaIn_button->Reset();
-        //m_apaOut_button->Reset();
-        
-        Layout_Event_Payload_T* payload = NULL;
-        AvmEvent* event = RequestEvent(&payload);
-        //填充有效数据
-        payload->header.msg_id = ALGO_ONLINE_BUTTON;
-        payload->body.onlyNotify = true;
-        PostEvent(event);
-    }
-    void AlgoLayout::InitAlgoApa(IGUIElement* apa_button, const GUI_HANDLE_T parentId)
-    {
-        apa_button->Attach(m_node, parentId);
-        apa_button->SetTexture(apa_array_texture, GUI_BUTTON_EFFECT_LOCK);
-        apa_button->Create(apa_array_texture[0].pos_x,
-                           apa_array_texture[0].pos_y,
-                           apa_array_texture[0].element_width,
-                           apa_array_texture[0].element_height
-            );
-
-        m_apa_button = dynamic_cast<CGPUButton*>(apa_button);
-    }
-    void AlgoLayout::OnEventApa(IGUIElement* play_button)
-    {
-        //处理按钮逻辑
-        m_ldw_button->Reset();
-        m_bsd_button->Reset();
-        m_online_button->Reset();
-        m_fcw_button->Reset();
-        //m_apaIn_button->Reset();
-        //m_apaOut_button->Reset();
-        
-        Layout_Event_Payload_T* payload = NULL;
-        AvmEvent* event = RequestEvent(&payload);
-        //填充有效数据
-        payload->header.msg_id = ALGO_APA_BUTTON;
-        payload->body.onlyNotify = true;
-        PostEvent(event);
-    }
+    
     void AlgoLayout::InitAlgoFCW(IGUIElement* fcw_button, const GUI_HANDLE_T parentId)
     {        
         fcw_button->Attach(m_node, parentId);
@@ -277,11 +205,11 @@ namespace GUI
     void AlgoLayout::InitAlgoMedia(IGUIElement* media_button, const GUI_HANDLE_T parentId)
     {
         media_button->Attach(m_node, parentId);
-        media_button->SetTexture(media_array_texture, GUI_BUTTON_EFFECT_LOCK);
-        media_button->Create(media_array_texture[0].pos_x,
-                             media_array_texture[0].pos_y,
-                             media_array_texture[0].element_width,
-                             media_array_texture[0].element_height
+        media_button->SetTexture(mediaBtn_array_texture, GUI_BUTTON_EFFECT_LOCK);
+        media_button->Create(mediaBtn_array_texture[0].pos_x,
+                             mediaBtn_array_texture[0].pos_y,
+                             mediaBtn_array_texture[0].element_width,
+                             mediaBtn_array_texture[0].element_height
             );
 
         m_media_button = dynamic_cast<CGPUButton*>(media_button);
@@ -325,8 +253,6 @@ namespace GUI
         m_media_button->Reset();
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        //m_online_button->Reset();
-        //m_apa_button->Reset();
         m_fcw_button->Reset();
         OnEventMedia(m_media_panel);
         m_apaIn_button->Reset();
@@ -357,15 +283,11 @@ namespace GUI
         //处理按钮逻辑
         m_ldw_button->Enable(is_record);
         m_bsd_button->Enable(is_record);
-        //m_online_button->Enable(is_record);
-        //m_apa_button->Enable(is_record);
         m_fcw_button->Enable(is_record);
         m_apaIn_button->Enable(is_record);
         m_apaOut_button->Enable(is_record);
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        //m_online_button->Reset();
-        //m_apa_button->Reset();
         m_fcw_button->Reset();
         m_playback_button->Reset();
         m_apaIn_button->Reset();
@@ -399,8 +321,6 @@ namespace GUI
         m_media_button->Reset();
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        //m_online_button->Reset();
-        //m_apa_button->Reset();
         m_fcw_button->Reset();
         m_apaOut_button->Reset();
         
@@ -431,8 +351,6 @@ namespace GUI
         m_media_button->Reset();
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        //m_online_button->Reset();
-        //m_apa_button->Reset();
         m_fcw_button->Reset();
         m_apaIn_button->Reset();
         

@@ -9,3 +9,6 @@ CMakeFiles/
 *.out
 *.so*
 *.la*
+GPATH
+GRTAGS
+GTAGS
