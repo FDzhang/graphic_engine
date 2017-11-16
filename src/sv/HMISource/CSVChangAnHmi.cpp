@@ -601,7 +601,7 @@ int CSVChanganHmi::InitLccElem()
 	unsigned char eps_status = AVMData::GetInstance()->m_p_can_data->Get_Eps_Status();
 	unsigned char lcc_enable = AVMData::GetInstance()->m_p_can_data->Get_Lcc_Enable();
 	
-	if(eps_status == 1
+	if(eps_status == 2
 		&& lcc_enable == 1)
 	{
 		m_lccIconData.width = 87.0;
@@ -633,7 +633,7 @@ int CSVChanganHmi::UpdateLccElem()
 	static int displayCnt = 0;
 	int cntMaxValue = 40;
 
-	if(eps_status == 1
+	if(eps_status == 2
 		&& lcc_enable == 1)
 	{
 		m_lccIconVisibility = 1;
