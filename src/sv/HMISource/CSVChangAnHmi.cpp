@@ -1,4 +1,5 @@
 #include "CSVChangAnHmi.h"
+#include "../AVMData.h"
 #include "gpu_log.h"
 
 extern float car_rect[4];
@@ -72,9 +73,10 @@ unsigned int CSVChanganHmi::m_isCarRegion = 0;
 unsigned char CSVChanganHmi::m_currentViewState = 0;
 unsigned char CSVChanganHmi::m_storeTrackRegion = 0;
 
-CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0)
+CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0),m_lccIconVisibility(0)
 {
     memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);
+	memset(m_lccIcon, 0, sizeof(HMIButton*));
 }
 
 int CSVChanganHmi::Init(int window_width, int window_height)
@@ -208,6 +210,9 @@ int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
 
 	InitCtaElem(&hmiMsg);
 	UpdateCtaElem(&hmiMsg);
+
+	InitLccElem();
+	UpdateLccElem();
 
     return 0;
 }
@@ -583,6 +588,77 @@ int CSVChanganHmi::UpdateCtaElem(Hmi_Message_T* pHmiMsg)
 		
 	return BUTTON_NORMAL;
 }
+
+int CSVChanganHmi::InitLccElem()
+{
+	static unsigned char initLccStatus = 0;
+
+	if(initLccStatus == 1)
+	{
+		return BUTTON_NORMAL;
+	}
+
+	unsigned char eps_status = AVMData::GetInstance()->m_p_can_data->Get_Eps_Status();
+	unsigned char lcc_enable = AVMData::GetInstance()->m_p_can_data->Get_Lcc_Enable();
+	
+	if(eps_status == 1
+		&& lcc_enable == 1)
+	{
+		m_lccIconData.width = 87.0;
+		m_lccIconData.height = 87.0;
+		m_lccIconData.pos[0]  = 0.0;
+		m_lccIconData.pos[1]  = 0.0;
+		m_lccIconData.show_flag = m_lccIconVisibility;
+		m_lccIconData.icon_type = 0;
+		m_lccIconData.delegate_func = 0;
+		m_lccIconData.icon_file_name[0] = new char[50];
+		sprintf(m_lccIconData.icon_file_name[0],"%sCar/lcc_reminder_icon.dds",XR_RES);  
+		
+		m_lccIcon = new HMIButton(&m_lccIconData, m_uiNode);
+		
+		initLccStatus = 1;
+	}
+		
+	return BUTTON_NORMAL;
+}
+int CSVChanganHmi::UpdateLccElem()
+{
+	if(m_lccIcon == NULL)
+	{
+		return BUTTON_NORMAL;
+	}
+	unsigned char eps_status = AVMData::GetInstance()->m_p_can_data->Get_Eps_Status();
+	unsigned char lcc_enable = AVMData::GetInstance()->m_p_can_data->Get_Lcc_Enable();
+	static int displayCnt = 0;
+	int cntMaxValue = 40;
+
+	if(eps_status == 1
+		&& lcc_enable == 1)
+	{
+		m_lccIconVisibility = 1;
+	}
+	else
+	{
+		if(m_lccIconVisibility == 1)
+		{
+			if(displayCnt > cntMaxValue)
+			{
+				m_lccIconVisibility = 0;
+				displayCnt = 0;
+			}
+			else
+			{
+				displayCnt++;
+			}
+		}
+	}
+
+	m_lccIcon->SetVisibility(m_lccIconVisibility);
+	m_lccIcon->Update();
+	
+	return BUTTON_NORMAL;
+}
+
 int CSVChanganHmi::ProcessAvmStatus()
 {
 	static unsigned char lastAvmDisplayView = 100;
@@ -695,6 +771,38 @@ int CSVChanganHmi::SetElemProperty()
 	ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(m_rearCamVisibility);
 	ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(m_leftCamVisibility);
 	ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(m_rightCamVisibility);
+
+	/*static int displayCnt = 0;
+	int cntMaxValue = 100;
+
+	if(m_trackCamVisibility == 1)
+	{
+		if(displayCnt > cntMaxValue)
+		{
+			ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);
+			ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);
+			ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);
+			ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);
+			ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);
+			ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);
+			displayCnt = 1000;
+		}
+		else
+		{
+			displayCnt++;
+		}
+	}
+	else
+	{
+		displayCnt = 0;
+	}*/
+	ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);
+	ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);
+	ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);
+	ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);
+	ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);
+	ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);
+	
 
 	ccagIconData[CCAG_RED_TRACK_CAMERA].show_icon_num = m_currentTrackCamRegionIndex + m_isTrackRegion*CCAG_TRACK_CAMERA_REGION_NUMS;
 	

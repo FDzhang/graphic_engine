@@ -82,6 +82,8 @@ public:
 	
 	float * Get_Sonar_dist_list(void);
 	float Get_Drive_Dist(void);
+	unsigned char Get_Eps_Status();
+	unsigned char Get_Lcc_Enable();
 	
 	void CalcDriveDist(void);
 	

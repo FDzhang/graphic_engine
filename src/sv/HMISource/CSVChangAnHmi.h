@@ -114,10 +114,17 @@ private:
 	unsigned char GetCustomView();
 	int InitCtaElem(Hmi_Message_T* pHmiMsg);
 	int UpdateCtaElem(Hmi_Message_T* pHmiMsg);
+	int InitLccElem();
+	int UpdateLccElem();
 
 private:
 	Hmi_Button_Data_T ccagIconData[CCAG_ICON_NUMS];
     HMIButton* ccagIcon[CCAG_ICON_NUMS];
+
+	Hmi_Button_Data_T m_lccIconData;
+	HMIButton* 		  m_lccIcon;
+	unsigned char     m_lccIconVisibility;
+	
 	
 	int m_stitchRegionWidth;
 	int m_stitchRegionHeight;

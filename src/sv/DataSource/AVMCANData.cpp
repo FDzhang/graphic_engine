@@ -145,6 +145,16 @@ void AVMCANData::Get_Wheel_Pulse(unsigned short *pwheelpulse)
     }
 
 }
+
+unsigned char AVMCANData::Get_Eps_Status()
+{
+	return m_CAN_Data.Eps_status;
+}
+unsigned char AVMCANData::Get_Lcc_Enable()
+{
+	return m_CAN_Data.lcc_enable;
+}
+
 CAN_DATA AVMCANData::GetCANData(void)
 {
    return m_CAN_Data;

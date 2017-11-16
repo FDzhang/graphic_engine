@@ -68,6 +68,8 @@ class ISVHmi
 {
 public:
     ISVHmi();
+    
+	//ISVHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
     virtual ~ISVHmi();
     virtual int Init(int window_width, int window_height);
     virtual int Update(Hmi_Message_T& hmiMsg);
