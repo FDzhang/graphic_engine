@@ -653,9 +653,11 @@ int CSVChanganHmi::UpdateLccElem()
 		}
 	}
 
-	m_lccIcon->SetVisibility(m_lccIconVisibility);
-	m_lccIcon->Update();
-	
+	if(m_lccIcon)
+	{
+		m_lccIcon->SetVisibility(m_lccIconVisibility);
+		m_lccIcon->Update();
+	}	
 	return BUTTON_NORMAL;
 }
 
