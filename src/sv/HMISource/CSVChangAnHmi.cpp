@@ -606,8 +606,8 @@ int CSVChanganHmi::InitLccElem()
 	{
 		m_lccIconData.width = 87.0;
 		m_lccIconData.height = 87.0;
-		m_lccIconData.pos[0]  = (m_stitchRegionWidth)/2.0 - m_lccIconData.width/2.0+ 100.0;
-		m_lccIconData.pos[1]  = (1.0 - car_rect[1]) * (m_stitchRegionHeight)/2.0 + 80.0;
+		m_lccIconData.pos[0]  = 3.5 * 1280.0 - m_lccIconData.width/2.0 + 100.0;
+		m_lccIconData.pos[1]  = (1.0 - car_rect[1]) * (m_stitchRegionHeight)/2.0;
 		m_lccIconData.show_flag = m_lccIconVisibility;
 		m_lccIconData.icon_type = 0;
 		m_lccIconData.delegate_func = 0;
