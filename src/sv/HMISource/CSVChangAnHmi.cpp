@@ -85,7 +85,7 @@ int CSVChanganHmi::Init(int window_width, int window_height)
 	m_window_height = window_height;
 	m_stitchRegionWidth = 216.0/704.0 * window_width;
 	m_stitchRegionHeight = window_height;
-	SetSurroundViewCamElem();
+	//SetSurroundViewCamElem();
     return true;
 }
 unsigned char CSVChanganHmi::GetCustomView()
@@ -196,17 +196,17 @@ int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
 		return 0;
 	}
 	
-	ProcessIconTouchEvent();
-	ProcessAvmStatus();
-	SetElemProperty();
+	//ProcessIconTouchEvent();
+	//ProcessAvmStatus();
+	//SetElemProperty();
 
-	ccagIcon[CCAG_RED_TRACK]->Update();
-	ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();
+	//ccagIcon[CCAG_RED_TRACK]->Update();
+	//ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();
 
-	ccagIcon[CCAG_CAMERA_FRONT]->Update();
-	ccagIcon[CCAG_CAMERA_REAR]->Update();
-	ccagIcon[CCAG_CAMERA_LEFT]->Update();
-	ccagIcon[CCAG_CAMERA_RIGHT]->Update();
+	//ccagIcon[CCAG_CAMERA_FRONT]->Update();
+	//ccagIcon[CCAG_CAMERA_REAR]->Update();
+	//ccagIcon[CCAG_CAMERA_LEFT]->Update();
+	//ccagIcon[CCAG_CAMERA_RIGHT]->Update();
 
 	InitCtaElem(&hmiMsg);
 	UpdateCtaElem(&hmiMsg);
@@ -657,7 +657,7 @@ int CSVChanganHmi::UpdateLccElem()
 	{
 		m_lccIcon->SetVisibility(m_lccIconVisibility);
 		m_lccIcon->Update();
-	}	
+	}		
 	return BUTTON_NORMAL;
 }
 
