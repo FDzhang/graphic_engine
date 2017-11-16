@@ -195,7 +195,7 @@ int XRSV::UpdateHmiData()
 
 	if(vehicle_speed > 15.0)
 	{
-		custom_hmi_visibility = 0;
+		//custom_hmi_visibility = 0;
 	}
 	if(m_currentAlgoStatus == ALGO_LDW
 	|| m_currentAlgoStatus == ALGO_BSD
@@ -204,7 +204,7 @@ int XRSV::UpdateHmiData()
 	|| m_currentAlgoStatus == ALGO_CTA
 	|| m_currentAlgoStatus == ALGO_LDW_BSD)
 	{
-		custom_hmi_visibility = 0;
+		//custom_hmi_visibility = 0;
 	}
 
 	

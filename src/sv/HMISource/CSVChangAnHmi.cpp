@@ -75,7 +75,7 @@ unsigned char CSVChanganHmi::m_storeTrackRegion = 0;
 
 CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0),m_lccIconVisibility(0)
 {
-    memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);
+    //memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);
 	m_lccIcon = NULL;
 }
 
@@ -85,7 +85,7 @@ int CSVChanganHmi::Init(int window_width, int window_height)
 	m_window_height = window_height;
 	m_stitchRegionWidth = 0.35 * window_width;//216.0/704.0 * window_width;
 	m_stitchRegionHeight = window_height;
-	SetSurroundViewCamElem();
+	//SetSurroundViewCamElem();
     return true;
 }
 unsigned char CSVChanganHmi::GetCustomView()
@@ -196,17 +196,17 @@ int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
 		return 0;
 	}
 	
-	ProcessIconTouchEvent();
-	ProcessAvmStatus();
-	SetElemProperty();
+	//ProcessIconTouchEvent();
+	//ProcessAvmStatus();
+	//SetElemProperty();
 
-	ccagIcon[CCAG_RED_TRACK]->Update();
-	ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();
+	//ccagIcon[CCAG_RED_TRACK]->Update();
+	//ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();
 
-	ccagIcon[CCAG_CAMERA_FRONT]->Update();
-	ccagIcon[CCAG_CAMERA_REAR]->Update();
-	ccagIcon[CCAG_CAMERA_LEFT]->Update();
-	ccagIcon[CCAG_CAMERA_RIGHT]->Update();
+	//ccagIcon[CCAG_CAMERA_FRONT]->Update();
+	//ccagIcon[CCAG_CAMERA_REAR]->Update();
+	//ccagIcon[CCAG_CAMERA_LEFT]->Update();
+	//ccagIcon[CCAG_CAMERA_RIGHT]->Update();
 
 	InitCtaElem(&hmiMsg);
 	UpdateCtaElem(&hmiMsg);
@@ -610,6 +610,7 @@ int CSVChanganHmi::InitLccElem()
 		m_lccIconData.pos[1]  = (1.0 - car_rect[1]) * (m_stitchRegionHeight)/2.0 + m_lccIconData.height/2.0 - 10.0;
 		m_lccIconData.show_flag = m_lccIconVisibility;
 		m_lccIconData.icon_type = 0;
+		m_lccIconData.show_icon_num = 0;
 		m_lccIconData.delegate_func = 0;
 		m_lccIconData.icon_file_name[0] = new char[50];
 		sprintf(m_lccIconData.icon_file_name[0],"%sCar/lcc_reminder_icon.dds",XR_RES);  
