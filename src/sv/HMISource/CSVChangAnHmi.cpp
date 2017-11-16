@@ -4,7 +4,7 @@
 
 extern float car_rect[4];
 
-static float leftPanelWidth = 120.0;
+static float leftPanelWidth = 100.0;
 static float topPanelHeight = 80.0;
 
 typedef enum ChanganViewType {
@@ -83,7 +83,7 @@ int CSVChanganHmi::Init(int window_width, int window_height)
 {
 	m_window_width = window_width;
 	m_window_height = window_height;
-	m_stitchRegionWidth = 216.0/704.0 * window_width;
+	m_stitchRegionWidth = 0.35 * window_width;//216.0/704.0 * window_width;
 	m_stitchRegionHeight = window_height;
 	SetSurroundViewCamElem();
     return true;
@@ -244,7 +244,7 @@ int CSVChanganHmi::SetSurroundViewCamElem()
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_FRONT][CCAG_ELEM_Y];
 	
-	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + (ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width)/2.0 + 5.0;
+	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X] = ccagIconData[CCAG_RED_TRACK].pos[0] + (ccagIconData[CCAG_RED_TRACK].width - ccagIconData[CCAG_RED_TRACK_CAMERA].width)/2.0;
 	m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_Y] = ccagIconData[CCAG_RED_TRACK].pos[1] + ccagIconData[CCAG_RED_TRACK].height - ccagIconData[CCAG_RED_TRACK_CAMERA].height/2.0 - 10.0;
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_X];
 	m_trackCamRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_Y] = m_trackCamIconRegion[CCAG_TRACK_CAMERA_REGION_REAR][CCAG_ELEM_Y];
@@ -606,8 +606,8 @@ int CSVChanganHmi::InitLccElem()
 	{
 		m_lccIconData.width = 87.0;
 		m_lccIconData.height = 87.0;
-		m_lccIconData.pos[0]  = 3.5 * 1280.0 - m_lccIconData.width/2.0 + 100.0;
-		m_lccIconData.pos[1]  = (1.0 - car_rect[1]) * (m_stitchRegionHeight)/2.0;
+		m_lccIconData.pos[0]  = 0.35 * 1280.0/2.0 - m_lccIconData.width/2.0 + 100.0;
+		m_lccIconData.pos[1]  = (1.0 - car_rect[1]) * (m_stitchRegionHeight)/2.0 + m_lccIconData.height/2.0 - 10.0;
 		m_lccIconData.show_flag = m_lccIconVisibility;
 		m_lccIconData.icon_type = 0;
 		m_lccIconData.delegate_func = 0;
@@ -796,14 +796,15 @@ int CSVChanganHmi::SetElemProperty()
 	else
 	{
 		displayCnt = 0;
-	}*/
+	}
+	*/
 	ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);
 	ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);
 	ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);
 	ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);
 	ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);
 	ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);
-	
+
 
 	ccagIconData[CCAG_RED_TRACK_CAMERA].show_icon_num = m_currentTrackCamRegionIndex + m_isTrackRegion*CCAG_TRACK_CAMERA_REGION_NUMS;
 	
