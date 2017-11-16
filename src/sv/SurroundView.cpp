@@ -305,7 +305,7 @@ LutData,MAX_NAME_LENGTH);
 
 	temp = svscn->InitNode(sv_config,m_pAdasMdl,m_adas_mdl_num);
 
-	//InitHmi(width, height);
+	InitHmi(width, height);
 
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
