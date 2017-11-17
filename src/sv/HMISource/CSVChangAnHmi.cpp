@@ -600,7 +600,6 @@ int CSVChanganHmi::InitLccElem()
 
 	unsigned char eps_status = AVMData::GetInstance()->m_p_can_data->Get_Eps_Status();
 	unsigned char lcc_enable = AVMData::GetInstance()->m_p_can_data->Get_Lcc_Enable();
-	lcc_enable = 1;
 
 	if(lcc_enable == 1)
 	{
@@ -632,7 +631,6 @@ int CSVChanganHmi::UpdateLccElem()
 	unsigned char lcc_enable = AVMData::GetInstance()->m_p_can_data->Get_Lcc_Enable();
 	static int displayCnt = 0;
 	int cntMaxValue = 20;
-	lcc_enable = 1;
 
 	if(lcc_enable == 1)
 	{
