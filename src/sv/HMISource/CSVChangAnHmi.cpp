@@ -600,14 +600,13 @@ int CSVChanganHmi::InitLccElem()
 
 	unsigned char eps_status = AVMData::GetInstance()->m_p_can_data->Get_Eps_Status();
 	unsigned char lcc_enable = AVMData::GetInstance()->m_p_can_data->Get_Lcc_Enable();
-	
-	if(eps_status == 1
-		&& lcc_enable == 1)
+
+	if(lcc_enable == 1)
 	{
-		m_lccIconData.width = 87.0;
-		m_lccIconData.height = 87.0;
-		m_lccIconData.pos[0]  = 0.35 * 1280.0/2.0 - m_lccIconData.width/2.0 + 100.0;
-		m_lccIconData.pos[1]  = (1.0 - car_rect[1]) * (m_stitchRegionHeight)/2.0 + m_lccIconData.height/2.0 - 10.0;
+		m_lccIconData.width = 70.0;
+		m_lccIconData.height = 70.0;
+		m_lccIconData.pos[0]  = m_stitchRegionWidth/2.0 - m_lccIconData.width/2.0 + 100.0;
+		m_lccIconData.pos[1]  = (1.0 - car_rect[1]) * (m_stitchRegionHeight)/2.0 + m_lccIconData.height/2.0 + 110.0;
 		m_lccIconData.show_flag = m_lccIconVisibility;
 		m_lccIconData.icon_type = 0;
 		m_lccIconData.show_icon_num = 0;
@@ -631,10 +630,9 @@ int CSVChanganHmi::UpdateLccElem()
 	unsigned char eps_status = AVMData::GetInstance()->m_p_can_data->Get_Eps_Status();
 	unsigned char lcc_enable = AVMData::GetInstance()->m_p_can_data->Get_Lcc_Enable();
 	static int displayCnt = 0;
-	int cntMaxValue = 40;
+	int cntMaxValue = 20;
 
-	if(eps_status == 1
-		&& lcc_enable == 1)
+	if(lcc_enable == 1)
 	{
 		m_lccIconVisibility = 1;
 	}
