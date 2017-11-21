@@ -1,266 +1,0 @@
-[1mdiff --git a/src/sv/HMI/HMIButton.cpp b/src/sv/HMI/HMIButton.cpp[m
-[1mindex ab510ff..ba64364 100755[m
-[1m--- a/src/sv/HMI/HMIButton.cpp[m
-[1m+++ b/src/sv/HMI/HMIButton.cpp[m
-[36m@@ -90,6 +90,10 @@[m [mint HMIButton::Update()[m
- }[m
- int HMIButton::onClickListener(unsigned int pos_x, unsigned int pos_y, unsigned char action)[m
- {[m
-[32m+[m[32m    if(BUTTON_HIDE == m_buttonVisibleStatus)[m[41m[m
-[32m+[m[32m    {[m[41m[m
-[32m+[m[32m        return BUTTON_NORMAL;[m[41m[m
-[32m+[m[32m    }[m[41m[m
- 	static int  touch_action = action;[m
- 	static int  touch_pos_x = 0;[m
- 	static int  touch_pos_y = 0;[m
-[1mdiff --git a/src/sv/HMISource/CSVChangAnHmi.cpp b/src/sv/HMISource/CSVChangAnHmi.cpp[m
-[1mindex 012c23a..0a10dee 100755[m
-[1m--- a/src/sv/HMISource/CSVChangAnHmi.cpp[m
-[1m+++ b/src/sv/HMISource/CSVChangAnHmi.cpp[m
-[36m@@ -73,6 +73,8 @@[m [munsigned int CSVChanganHmi::m_isCarRegion = 0;[m
- unsigned char CSVChanganHmi::m_currentViewState = 0;[m
- unsigned char CSVChanganHmi::m_storeTrackRegion = 0;[m
- [m
-[32m+[m[32munsigned int CSVChanganHmi::m_start_count_time = 0;[m[41m[m
-[32m+[m[41m[m
- CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0),m_lccIconVisibility(0)[m
- {[m
-     //memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);[m
-[36m@@ -85,7 +87,8 @@[m [mint CSVChanganHmi::Init(int window_width, int window_height)[m
- 	m_window_height = window_height;[m
- 	m_stitchRegionWidth = 0.35 * window_width;//216.0/704.0 * window_width;[m
- 	m_stitchRegionHeight = window_height;[m
-[31m-	//SetSurroundViewCamElem();[m
-[32m+[m	[32mm_camera_icons_visibility = 1;[m[41m[m
-[32m+[m	[32mSetSurroundViewCamElem();[m[41m[m
-     return true;[m
- }[m
- unsigned char CSVChanganHmi::GetCustomView()[m
-[36m@@ -168,14 +171,14 @@[m [mint CSVChanganHmi::ProcessIconTouchEvent()[m
- 	int y = 0;[m
- 	int touchType = 0;[m
- 	if(GetTouchEventInfo(x,y,touchType))[m
-[31m-	{  [m
-[31m-		if(m_isTrackRegion && m_isCarRegion == 0)[m
-[32m+[m	[32m{[m[41m[m
-[32m+[m		[32mif(m_isTrackRegion && m_isCarRegion == 0 && m_camera_icons_visibility == 1)[m[41m[m
- 		{[m
- 			ProcessTrackCamRegionTouchEvent(x,y,touchType);[m
-[31m-			ProcessCarRegionTouchEvent(x,y,touchType);[m
- 		}[m
-[32m+[m		[32mProcessCarRegionTouchEvent(x,y,touchType);[m[41m[m
- 		ccagIcon[CCAG_RED_TRACK_CAMERA]->onClickListener(x,y,touchType);[m
-[31m-		if(m_isTrackRegion == 0 || m_isCarRegion == 1)[m
-[32m+[m		[32mif(m_isTrackRegion == 0 || m_isCarRegion == 1 && m_camera_icons_visibility == 1)[m[41m[m
- 		{[m
- 			ccagIcon[CCAG_CAMERA_FRONT]->onClickListener(x,y,touchType);[m
- 			ccagIcon[CCAG_CAMERA_REAR]->onClickListener(x,y,touchType);[m
-[36m@@ -190,23 +193,40 @@[m [mint CSVChanganHmi::ProcessIconTouchEvent()[m
- 	return 0;[m
- }[m
- int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)[m
-[31m-{   [m
-[32m+[m[32m{[m[41m[m
- 	if(m_visibilityStatus == 0)[m
- 	{[m
- 		return 0;[m
- 	}[m
-[32m+[m[41m[m
-[32m+[m	[32mstatic unsigned int initStartCountTime = 0;[m[41m[m
-[32m+[m	[32mif(initStartCountTime == 0)[m[41m[m
-[32m+[m	[32m{[m[41m[m
-[32m+[m	[32m    m_start_count_time == XrGetTime();[m[41m[m
-[32m+[m		[32minitStartCountTime = 1;[m[41m[m
-[32m+[m	[32m}[m[41m[m
- 	[m
-[31m-	//ProcessIconTouchEvent();[m
-[31m-	//ProcessAvmStatus();[m
-[31m-	//SetElemProperty();[m
-[32m+[m	[32mProcessIconTouchEvent();[m[41m[m
-[32m+[m	[32mProcessAvmStatus();[m[41m[m
-[32m+[m	[32mSetElemProperty();[m[41m[m
- [m
-[31m-	//ccagIcon[CCAG_RED_TRACK]->Update();[m
-[31m-	//ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();[m
-[32m+[m	[32mm_current_time = XrGetTime();[m[41m[m
-[32m+[m	[32mif(initStartCountTime == 1 && m_current_time - m_start_count_time >= 10000)[m[41m[m
-[32m+[m	[32m{[m[41m[m
-[32m+[m	[32m    m_camera_icons_visibility = 0;[m[41m[m
-[32m+[m	[32m}[m[41m[m
-[32m+[m	[32melse[m[41m[m
-[32m+[m	[32m{[m[41m[m
-[32m+[m	[32m    m_camera_icons_visibility = 1;[m[41m[m
-[32m+[m	[32m}[m[41m[m
- [m
-[31m-	//ccagIcon[CCAG_CAMERA_FRONT]->Update();[m
-[31m-	//ccagIcon[CCAG_CAMERA_REAR]->Update();[m
-[31m-	//ccagIcon[CCAG_CAMERA_LEFT]->Update();[m
-[31m-	//ccagIcon[CCAG_CAMERA_RIGHT]->Update();[m
-[32m+[m	[32mccagIcon[CCAG_RED_TRACK]->Update();[m[41m[m
-[32m+[m	[32mccagIcon[CCAG_RED_TRACK_CAMERA]->Update();[m[41m[m
-[32m+[m[41m[m
-[32m+[m	[32mccagIcon[CCAG_CAMERA_FRONT]->Update();[m[41m[m
-[32m+[m	[32mccagIcon[CCAG_CAMERA_REAR]->Update();[m[41m[m
-[32m+[m	[32mccagIcon[CCAG_CAMERA_LEFT]->Update();[m[41m[m
-[32m+[m	[32mccagIcon[CCAG_CAMERA_RIGHT]->Update();[m[41m[m
- [m
- 	InitCtaElem(&hmiMsg);[m
- 	UpdateCtaElem(&hmiMsg);[m
-[36m@@ -718,16 +738,20 @@[m [mint CSVChanganHmi::ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int p[m
-             && touch_pos_y > CAR_RECT_Y  [m
-             && touch_pos_y < CAR_RECT_Y +CAR_RECT_HEIGHT )[m
-     {[m
-[31m-        m_trackColor = 1;[m
-[31m-        m_isCarRegion = 1;[m
-[31m-        m_frontCamVisibility = 1;[m
-[31m-        m_rearCamVisibility = 1;[m
-[31m-        m_leftCamVisibility = 1;[m
-[31m-        m_rightCamVisibility = 1;[m
-[31m-        m_frontCamColor = 0;[m
-[31m-        m_rearCamColor = 0;[m
-[31m-        m_leftCamColor = 0;[m
-[31m-        m_rightCamColor = 0;[m
-[32m+[m		[32mif(m_isTrackRegion && m_isCarRegion == 0)[m[41m[m
-[32m+[m		[32m{[m[41m[m
-[32m+[m	[32m        m_trackColor = 1;[m[41m[m
-[32m+[m	[32m        m_isCarRegion = 1;[m[41m[m
-[32m+[m	[32m        m_frontCamVisibility = 1;[m[41m[m
-[32m+[m	[32m        m_rearCamVisibility = 1;[m[41m[m
-[32m+[m	[32m        m_leftCamVisibility = 1;[m[41m[m
-[32m+[m	[32m        m_rightCamVisibility = 1;[m[41m[m
-[32m+[m	[32m        m_frontCamColor = 0;[m[41m[m
-[32m+[m	[32m        m_rearCamColor = 0;[m[41m[m
-[32m+[m	[32m        m_leftCamColor = 0;[m[41m[m
-[32m+[m	[32m        m_rightCamColor = 0;[m[41m[m
-[32m+[m		[32m}[m[41m[m
-[32m+[m		[32mm_start_count_time = XrGetTime();[m[41m[m
-     }[m
- [m
- 	return BUTTON_NORMAL;[m
-[36m@@ -758,52 +782,32 @@[m [mint CSVChanganHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned[m
- 		{[m
- 			m_currentTrackCamRegionIndex = index;[m
- 			m_currentViewState = m_currentTrackCamRegionIndex;[m
-[31m-                        m_storeTrackRegion = m_currentTrackCamRegionIndex;[m
-[32m+[m[32m            m_storeTrackRegion = m_currentTrackCamRegionIndex;[m[41m[m
-[32m+[m			[32mm_start_count_time = XrGetTime();[m[41m[m
- 		}[m
- 	}[m
- 	return BUTTON_NORMAL;[m
- }[m
- int CSVChanganHmi::SetElemProperty()[m
- {[m
-[31m-	ccagIcon[CCAG_RED_TRACK]->SetVisibility(m_trackVisibility);[m
-[31m-	ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(m_trackCamVisibility);[m
-[31m-	ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(m_frontCamVisibility);[m
-[31m-	ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(m_rearCamVisibility);[m
-[31m-	ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(m_leftCamVisibility);[m
-[31m-	ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(m_rightCamVisibility);[m
-[31m-[m
-[31m-	/*static int displayCnt = 0;[m
-[31m-	int cntMaxValue = 100;[m
-[31m-[m
-[31m-	if(m_trackCamVisibility == 1)[m
-[31m-	{[m
-[31m-		if(displayCnt > cntMaxValue)[m
-[31m-		{[m
-[31m-			ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);[m
-[31m-			ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);[m
-[31m-			ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);[m
-[31m-			ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);[m
-[31m-			ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);[m
-[31m-			ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);[m
-[31m-			displayCnt = 1000;[m
-[31m-		}[m
-[31m-		else[m
-[31m-		{[m
-[31m-			displayCnt++;[m
-[31m-		}[m
-[31m-	}[m
-[32m+[m[32m    if(m_camera_icons_visibility == 0)[m[41m[m
-[32m+[m[32m    {[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_RED_TRACK]->SetVisibility(0);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);[m[41m[m
-[32m+[m[32m    }[m[41m[m
- 	else[m
- 	{[m
-[31m-		displayCnt = 0;[m
-[32m+[m	[32m    ccagIcon[CCAG_RED_TRACK]->SetVisibility(m_trackVisibility);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(m_trackCamVisibility);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(m_frontCamVisibility);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_REAR]->SetVisibility(m_rearCamVisibility);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(m_leftCamVisibility);[m[41m[m
-[32m+[m		[32mccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(m_rightCamVisibility);[m[41m[m
- 	}[m
-[31m-	*/[m
-[31m-	ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);[m
-[31m-	ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);[m
-[31m-	ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);[m
-[31m-	ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);[m
-[31m-	ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);[m
-[31m-	ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);[m
-[31m-[m
- [m
- 	ccagIconData[CCAG_RED_TRACK_CAMERA].show_icon_num = m_currentTrackCamRegionIndex + m_isTrackRegion*CCAG_TRACK_CAMERA_REGION_NUMS;[m
- 	[m
-[36m@@ -926,6 +930,7 @@[m [mvoid OnPressTrackCam()[m
- 	CSVChanganHmi::m_leftCamColor = 0;[m
- 	CSVChanganHmi::m_rightCamColor = 0;[m
- 	CSVChanganHmi::m_isCarRegion = 0;[m
-[32m+[m	[32mCSVChanganHmi::m_start_count_time = XrGetTime();[m[41m[m
- [m
- }[m
- void OnPressFrontCam()[m
-[36m@@ -944,6 +949,7 @@[m [mvoid OnPressFrontCam()[m
- 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_FRONT;[m
- 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;[m
- 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;[m
-[32m+[m	[32mCSVChanganHmi::m_start_count_time = XrGetTime();[m[41m[m
- }[m
- void OnPressRearCam()[m
- {[m
-[36m@@ -963,7 +969,7 @@[m [mvoid OnPressRearCam()[m
- 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_REAR;[m
- 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;[m
- 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;[m
-[31m-[m
-[32m+[m	[32mCSVChanganHmi::m_start_count_time = XrGetTime();[m[41m[m
- }[m
- void OnPressLeftCam()[m
- {[m
-[36m@@ -981,7 +987,7 @@[m [mvoid OnPressLeftCam()[m
- 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_LEFT;[m
- 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;[m
- 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;[m
-[31m-[m
-[32m+[m	[32mCSVChanganHmi::m_start_count_time = XrGetTime();[m[41m[m
- }[m
- void OnPressRightCam()[m
- {[m
-[36m@@ -999,5 +1005,5 @@[m [mvoid OnPressRightCam()[m
- 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_RIGHT;[m
- 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;[m
- 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;[m
-[31m-[m
-[32m+[m[32m    CSVChanganHmi::m_start_count_time = XrGetTime();[m[41m[m
- }[m
-[1mdiff --git a/src/sv/HMISource/CSVChangAnHmi.h b/src/sv/HMISource/CSVChangAnHmi.h[m
-[1mindex 3042075..ce9a940 100755[m
-[1m--- a/src/sv/HMISource/CSVChangAnHmi.h[m
-[1m+++ b/src/sv/HMISource/CSVChangAnHmi.h[m
-[36m@@ -138,8 +138,11 @@[m [mprivate:[m
- 	unsigned char m_cta_warning_car_showFlag;[m
- 	unsigned char m_cta_warning_left_showFlag;[m
- 	unsigned char m_cta_warning_right_showFlag;[m
-[32m+[m	[32munsigned char m_camera_icons_visibility;[m[41m[m
-[32m+[m	[32munsigned int m_current_time;[m[41m[m
- [m
- public:	[m
-[32m+[m	[32mstatic unsigned int m_start_count_time;[m[41m[m
- 	static unsigned char m_trackCamVisibility;[m
- 	static unsigned char m_trackVisibility;[m
- 	static unsigned char m_frontCamVisibility;[m
