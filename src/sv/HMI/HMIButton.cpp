@@ -90,6 +90,10 @@ int HMIButton::Update()
 }
 int HMIButton::onClickListener(unsigned int pos_x, unsigned int pos_y, unsigned char action)
 {
+    if(BUTTON_HIDE == m_buttonVisibleStatus)
+    {
+        return BUTTON_NORMAL;
+    }
 	static int  touch_action = action;
 	static int  touch_pos_x = 0;
 	static int  touch_pos_y = 0;

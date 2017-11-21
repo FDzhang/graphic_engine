@@ -138,8 +138,11 @@ private:
 	unsigned char m_cta_warning_car_showFlag;
 	unsigned char m_cta_warning_left_showFlag;
 	unsigned char m_cta_warning_right_showFlag;
+	unsigned char m_camera_icons_visibility;
+	unsigned int m_current_time;
 
 public:	
+	static unsigned int m_start_count_time;
 	static unsigned char m_trackCamVisibility;
 	static unsigned char m_trackVisibility;
 	static unsigned char m_frontCamVisibility;

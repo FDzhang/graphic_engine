@@ -73,6 +73,8 @@ unsigned int CSVChanganHmi::m_isCarRegion = 0;
 unsigned char CSVChanganHmi::m_currentViewState = 0;
 unsigned char CSVChanganHmi::m_storeTrackRegion = 0;
 
+unsigned int CSVChanganHmi::m_start_count_time = 0;
+
 CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0),m_lccIconVisibility(0)
 {
     //memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);
@@ -85,7 +87,8 @@ int CSVChanganHmi::Init(int window_width, int window_height)
 	m_window_height = window_height;
 	m_stitchRegionWidth = 0.35 * window_width;//216.0/704.0 * window_width;
 	m_stitchRegionHeight = window_height;
-	//SetSurroundViewCamElem();
+	m_camera_icons_visibility = 1;
+	SetSurroundViewCamElem();
     return true;
 }
 unsigned char CSVChanganHmi::GetCustomView()
@@ -168,14 +171,14 @@ int CSVChanganHmi::ProcessIconTouchEvent()
 	int y = 0;
 	int touchType = 0;
 	if(GetTouchEventInfo(x,y,touchType))
-	{  
-		if(m_isTrackRegion && m_isCarRegion == 0)
+	{
+		if(m_isTrackRegion && m_isCarRegion == 0 && m_camera_icons_visibility == 1)
 		{
 			ProcessTrackCamRegionTouchEvent(x,y,touchType);
-			ProcessCarRegionTouchEvent(x,y,touchType);
 		}
+		ProcessCarRegionTouchEvent(x,y,touchType);
 		ccagIcon[CCAG_RED_TRACK_CAMERA]->onClickListener(x,y,touchType);
-		if(m_isTrackRegion == 0 || m_isCarRegion == 1)
+		if((m_isTrackRegion == 0 || m_isCarRegion == 1) && m_camera_icons_visibility == 1)
 		{
 			ccagIcon[CCAG_CAMERA_FRONT]->onClickListener(x,y,touchType);
 			ccagIcon[CCAG_CAMERA_REAR]->onClickListener(x,y,touchType);
@@ -190,23 +193,40 @@ int CSVChanganHmi::ProcessIconTouchEvent()
 	return 0;
 }
 int CSVChanganHmi::Update(Hmi_Message_T& hmiMsg)
-{   
+{
 	if(m_visibilityStatus == 0)
 	{
 		return 0;
 	}
+
+	static unsigned int initStartCountTime = 0;
+	if(initStartCountTime == 0)
+	{
+	    m_start_count_time = XrGetTime();
+		initStartCountTime = 1;
+	}
 	
-	//ProcessIconTouchEvent();
-	//ProcessAvmStatus();
-	//SetElemProperty();
+	ProcessIconTouchEvent();
+	ProcessAvmStatus();
+	SetElemProperty();
 
-	//ccagIcon[CCAG_RED_TRACK]->Update();
-	//ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();
+	m_current_time = XrGetTime();
+	if(initStartCountTime == 1 && m_current_time - m_start_count_time >= 10000)
+	{
+	    m_camera_icons_visibility = 0;
+	}
+	else
+	{
+	    m_camera_icons_visibility = 1;
+	}
 
-	//ccagIcon[CCAG_CAMERA_FRONT]->Update();
-	//ccagIcon[CCAG_CAMERA_REAR]->Update();
-	//ccagIcon[CCAG_CAMERA_LEFT]->Update();
-	//ccagIcon[CCAG_CAMERA_RIGHT]->Update();
+	ccagIcon[CCAG_RED_TRACK]->Update();
+	ccagIcon[CCAG_RED_TRACK_CAMERA]->Update();
+
+	ccagIcon[CCAG_CAMERA_FRONT]->Update();
+	ccagIcon[CCAG_CAMERA_REAR]->Update();
+	ccagIcon[CCAG_CAMERA_LEFT]->Update();
+	ccagIcon[CCAG_CAMERA_RIGHT]->Update();
 
 	InitCtaElem(&hmiMsg);
 	UpdateCtaElem(&hmiMsg);
@@ -718,16 +738,20 @@ int CSVChanganHmi::ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int p
             && touch_pos_y > CAR_RECT_Y  
             && touch_pos_y < CAR_RECT_Y +CAR_RECT_HEIGHT )
     {
-        m_trackColor = 1;
-        m_isCarRegion = 1;
-        m_frontCamVisibility = 1;
-        m_rearCamVisibility = 1;
-        m_leftCamVisibility = 1;
-        m_rightCamVisibility = 1;
-        m_frontCamColor = 0;
-        m_rearCamColor = 0;
-        m_leftCamColor = 0;
-        m_rightCamColor = 0;
+		if(m_isTrackRegion && m_isCarRegion == 0)
+		{
+	        m_trackColor = 1;
+	        m_isCarRegion = 1;
+	        m_frontCamVisibility = 1;
+	        m_rearCamVisibility = 1;
+	        m_leftCamVisibility = 1;
+	        m_rightCamVisibility = 1;
+	        m_frontCamColor = 0;
+	        m_rearCamColor = 0;
+	        m_leftCamColor = 0;
+	        m_rightCamColor = 0;
+		}
+		m_start_count_time = XrGetTime();
     }
 
 	return BUTTON_NORMAL;
@@ -758,52 +782,32 @@ int CSVChanganHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned 
 		{
 			m_currentTrackCamRegionIndex = index;
 			m_currentViewState = m_currentTrackCamRegionIndex;
-                        m_storeTrackRegion = m_currentTrackCamRegionIndex;
+            m_storeTrackRegion = m_currentTrackCamRegionIndex;
+			m_start_count_time = XrGetTime();
 		}
 	}
 	return BUTTON_NORMAL;
 }
 int CSVChanganHmi::SetElemProperty()
 {
-	ccagIcon[CCAG_RED_TRACK]->SetVisibility(m_trackVisibility);
-	ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(m_trackCamVisibility);
-	ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(m_frontCamVisibility);
-	ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(m_rearCamVisibility);
-	ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(m_leftCamVisibility);
-	ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(m_rightCamVisibility);
-
-	/*static int displayCnt = 0;
-	int cntMaxValue = 100;
-
-	if(m_trackCamVisibility == 1)
-	{
-		if(displayCnt > cntMaxValue)
-		{
-			ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);
-			ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);
-			ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);
-			ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);
-			ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);
-			ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);
-			displayCnt = 1000;
-		}
-		else
-		{
-			displayCnt++;
-		}
-	}
+    if(m_camera_icons_visibility == 0)
+    {
+		ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);
+		ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);
+		ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);
+		ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);
+		ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);
+		ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);
+    }
 	else
 	{
-		displayCnt = 0;
+	    ccagIcon[CCAG_RED_TRACK]->SetVisibility(m_trackVisibility);
+		ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(m_trackCamVisibility);
+		ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(m_frontCamVisibility);
+		ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(m_rearCamVisibility);
+		ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(m_leftCamVisibility);
+		ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(m_rightCamVisibility);
 	}
-	*/
-	ccagIcon[CCAG_RED_TRACK]->SetVisibility(0);
-	ccagIcon[CCAG_RED_TRACK_CAMERA]->SetVisibility(0);
-	ccagIcon[CCAG_CAMERA_FRONT]->SetVisibility(0);
-	ccagIcon[CCAG_CAMERA_REAR]->SetVisibility(0);
-	ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(0);
-	ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(0);
-
 
 	ccagIconData[CCAG_RED_TRACK_CAMERA].show_icon_num = m_currentTrackCamRegionIndex + m_isTrackRegion*CCAG_TRACK_CAMERA_REGION_NUMS;
 	
@@ -926,6 +930,7 @@ void OnPressTrackCam()
 	CSVChanganHmi::m_leftCamColor = 0;
 	CSVChanganHmi::m_rightCamColor = 0;
 	CSVChanganHmi::m_isCarRegion = 0;
+	CSVChanganHmi::m_start_count_time = XrGetTime();
 
 }
 void OnPressFrontCam()
@@ -944,6 +949,7 @@ void OnPressFrontCam()
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_FRONT;
 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
+	CSVChanganHmi::m_start_count_time = XrGetTime();
 }
 void OnPressRearCam()
 {
@@ -963,7 +969,7 @@ void OnPressRearCam()
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_REAR;
 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
-
+	CSVChanganHmi::m_start_count_time = XrGetTime();
 }
 void OnPressLeftCam()
 {
@@ -981,7 +987,7 @@ void OnPressLeftCam()
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_LEFT;
 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
-
+	CSVChanganHmi::m_start_count_time = XrGetTime();
 }
 void OnPressRightCam()
 {
@@ -999,5 +1005,5 @@ void OnPressRightCam()
 	CSVChanganHmi::m_currentViewState = CCAG_CAMERA_REGION_RIGHT;
 	CSVChanganHmi::m_currentTrackCamRegionIndex = CCAG_TRACK_CAMERA_REGION_FRONT;
 	CSVChanganHmi::m_storeTrackRegion = CCAG_TRACK_CAMERA_REGION_FRONT;
-
+    CSVChanganHmi::m_start_count_time = XrGetTime();
 }
