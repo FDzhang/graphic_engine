@@ -236,44 +236,133 @@ void AVMData::GetVehicleParam(SV_VEHICLE_PARAM_T **pVehicleData)
 
 void AVMData::Get3dViewRegion(Region** pRegion)
 {
-
+	*pRegion = &m_3dViewRegion;
 }
 void AVMData::GetStitchViewRegion(Region** pRegion)
 {
-
+	*pRegion = &m_stitchViewRegion;
 }
 void AVMData::GetSingleViewRegion(Region** pRegion)
 {
-
+	*pRegion = &m_singleViewRegion;
 }
 void AVMData::GetObjectViewRegion(Region** pRegion)
 {
-
+	*pRegion = &m_objectViewRegion;
 }
 void AVMData::GetBevConfig(BEV_CONFIG_T* pConfig)
 {
-
+	pConfig = (BEV_CONFIG_T*)malloc(sizeof(BEV_CONFIG_T));
 }
 void AVMData::GetCarTransparentStatus(unsigned char& pCarTranspStatus)
 {
+	pCarTranspStatus = 1;
 }
 
 void AVMData::Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
 {
+	*pCameraParams = &m_3dViewCameraParams;
 }
 void AVMData::GetObjectViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
 {
+	*pCameraParams = &m_objectViewCameraParams;
 }
 void AVMData::GetStitchViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
 {
+	*pCameraParams = &m_stitchViewCameraParams;
 }
 void AVMData::GetSingleViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
 {
+	*pCameraParams = &m_singleViewCameraParams;
+}
+void AVMData::Set3dViewRegion(Region* pRegion)
+{
+	if(pRegion != NULL)
+	{
+		m_3dViewRegion = *pRegion;
+	}
+}
+void AVMData::SetStitchViewRegion(Region* pRegion)
+{
+	if(pRegion != NULL)
+	{
+		m_stitchViewRegion = *pRegion;
+	}
+}
+void AVMData::SetSingleViewRegion(Region* pRegion)
+{
+	if(pRegion != NULL)
+	{
+		m_singleViewRegion = *pRegion;
+	}
+}
+void AVMData::SetObjectViewRegion(Region* pRegion)
+{
+	if(pRegion != NULL)
+	{
+		m_objectViewRegion = *pRegion;
+	}
+}
+void AVMData::SetObjectViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
+{
+	if(pCameraParams != NULL)
+	{
+		m_objectViewCameraParams = *pCameraParams;
+	}
+}
+void AVMData::SetStitchViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
+{
+	if(pCameraParams != NULL)
+	{
+		m_stitchViewCameraParams = *pCameraParams;
+	}
+}
+void AVMData::SetSingleViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
+{
+	if(pCameraParams != NULL)
+	{
+		m_singleViewCameraParams = *pCameraParams;		
+	}
+}
+void AVMData::Set3dViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
+{
+	if(pCameraParams != NULL)
+	{
+		m_3dViewCameraParams = *pCameraParams;		
+	}
+}
+void AVMData::SetAnimationManager(IAnimationManager* pAm)
+{
+	if(pAm != NULL)
+	{
+		m_am = pAm;
+	}
+}
+	
+void AVMData::GetAnimationManager(IAnimationManager** pAm)
+{
+	*pAm = m_am;
+}
+void AVMData::GetSv2dData(GlSV2D** pGlSv2d)
+{	
+	*pGlSv2d = m_sv2dData;
+}
 
+void AVMData::SetSv2dData(GlSV2D* pGlSv2d)
+{
+	if(pGlSv2d != NULL)
+	{
+		m_sv2dData = pGlSv2d;
+	}
 }
 void AVMData::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
 {
-
+	if(pPose != NULL
+		&& pWidth != NULL
+		&& pHeight != NULL)
+	{
+		
+	}
 }
 
 //input world unit is meter,

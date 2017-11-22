@@ -122,6 +122,7 @@ public:
 	
 	void GetBevConfig(BEV_CONFIG_T* pConfig);
 	void GetCarTransparentStatus(unsigned char& pCarTranspStatus);
+
 	void Get3dViewRegion(Region** pRegion);
 	void GetStitchViewRegion(Region** pRegion);
 	void GetSingleViewRegion(Region** pRegion);
@@ -130,6 +131,23 @@ public:
 	void GetStitchViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 	void GetSingleViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 	void Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
+
+	void Set3dViewRegion(Region* pRegion);
+	void SetStitchViewRegion(Region* pRegion);
+	void SetSingleViewRegion(Region* pRegion);
+	void SetObjectViewRegion(Region* pRegion);
+	void SetObjectViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
+	void SetStitchViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
+	void SetSingleViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
+	void Set3dViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
+
+
+	void SetAnimationManager(class IAnimationManager* pAm);
+	void GetAnimationManager(class IAnimationManager** pAm);
+	void GetSv2dData(class GlSV2D** pGlSv2d);
+	void SetSv2dData(class GlSV2D* pGlSv2d);
+
+
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 
 	void cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord,unsigned char unitmm=0);
@@ -156,7 +174,17 @@ private:
 	float m_rear_single_view_rect[4];
 	Calib_3D_Para m_calib_3d;
     
-
+	Region m_singleViewRegion;
+	Region m_3dViewRegion;
+	Region m_stitchViewRegion;
+	Region m_objectViewRegion;
+	Region m_fadeRegion;
+	SurroundViewCameraParamsT m_stitchViewCameraParams;
+	SurroundViewCameraParamsT m_objectViewCameraParams;
+	SurroundViewCameraParamsT m_3dViewCameraParams;
+	SurroundViewCameraParamsT m_singleViewCameraParams;
+	class GlSV2D* m_sv2dData;
+	class IAnimationManager* m_am;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

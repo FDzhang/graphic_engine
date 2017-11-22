@@ -69,6 +69,14 @@ static char CARLIGHTTEX[]=XR_RES"Car/light.tga";
 static char *CARDOORMODEL[4] = {XR_RES"Car/driver_door.mqo",XR_RES"Car/driver_assist_door.mqo",XR_RES"Car/left_rear.mqo",XR_RES"Car/right_rear.mqo"};
 static char *CARDOORWINDOWMODEL[4] = {XR_RES"Car/driver_door_w.mqo",XR_RES"Car/driver_assist_door_w.mqo",XR_RES"Car/left_rear_w.mqo",XR_RES"Car/right_rear_w.mqo"};
 
+CAvmObjectViewNode::CAvmObjectViewNode()
+{
+
+}
+CAvmObjectViewNode::~CAvmObjectViewNode()
+{
+
+}
 int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 {
     if(pXrcore == NULL)
@@ -272,7 +280,8 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 		10.0,	0.2,	0,
 		20.0,	0.15,	-0.1,
 		24.0,	0.0,	0.0};
-		
+	
+	AVMData::GetInstance()->GetAnimationManager(&m_am);
 	m_am->CreateKeyAnimation(key, sizeof(key)/12,2, &m_wheelRot);
 		
 	IAProperty* val=0;
@@ -295,8 +304,8 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_objViewCameraId = m_objViewNode->CreateCamera(m_objViewCameraParams->fovx, m_objViewCameraParams->aspect, 
 													m_objViewCameraParams->znear, m_objViewCameraParams->zfar, &m_objViewCamera);
 
-	const float SCENE_CAMERA_DEFAULT_HEIGHT = 3600.0;
-	m_objViewCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+	const float objectCameraDefaultHeight = 3600.0;
+	m_objViewCamera->SetPosition(0, 0, objectCameraDefaultHeight);
 	m_objViewCamera->LookAt(0.0,0,-0.0);
 	m_objViewNode->SetCamera(m_objViewCameraId);
     
@@ -317,7 +326,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 }
 int CAvmObjectViewNode::UpdateNode()
 {
-
+	return AVM_OBJVIEW_NORMAL;
 }
 int CAvmObjectViewNode::SetVisibility(unsigned char pVisibilityFlag)
 {

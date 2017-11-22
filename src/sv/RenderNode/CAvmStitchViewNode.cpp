@@ -31,6 +31,14 @@ static char CAR2DICONBMP[] = XR_RES"Car/sv_car_icon.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 
+CAvmStitchViewNode::CAvmStitchViewNode()
+{
+
+}
+CAvmStitchViewNode::~CAvmStitchViewNode()
+{
+
+}
 int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 {	
 	if(pXrcore == NULL)
@@ -61,6 +69,7 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 
 	m_stitchViewNode->SetRenderROI(stitchViewRegion);
 
+	AVMData::GetInstance()->GetSv2dData(&m_SV2DData);
 	int displayChannel = 2;
 
 	m_renderDelegate = new RenderDelegateSV2D();
@@ -176,8 +185,8 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 	int m_stitchViewCameraId = m_stitchViewNode->CreateCamera(m_stitchViewCameraParams->fovx, m_stitchViewCameraParams->aspect, m_stitchViewCameraParams->znear, m_stitchViewCameraParams->zfar, &m_stitchViewCamera);
 	
 	m_stitchViewCamera->Set2DCamera(1);
-	const float OBJ_CAMERA_DEFAULT_HEIGHT = 3600.0;
-	m_stitchViewCamera->SetPosition(0,0,OBJ_CAMERA_DEFAULT_HEIGHT);
+	const float stitchCameraHeight = 3600.0;
+	m_stitchViewCamera->SetPosition(0,0,stitchCameraHeight);
 	m_stitchViewCamera->LookAt(0.0,0.0,-0.0);
 	m_stitchViewCamera->RotateAround(0,45);
 	m_stitchViewNode->SetCamera(m_stitchViewCameraId);

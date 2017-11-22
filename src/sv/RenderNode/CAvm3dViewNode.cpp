@@ -38,6 +38,15 @@ static char skyBA[]	= XR_RES"skyfbaex.mqo";
 static char skyFC[]	= XR_RES"skyfbcylinder.mqo";
 static char skyBC[]	= XR_RES"skyfbcylinder.mqo";
 
+CAvm3dViewNode::CAvm3dViewNode()
+{
+
+}
+CAvm3dViewNode::~CAvm3dViewNode()
+{
+	
+}
+
 int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 {
 	if(pXrcore == NULL)
@@ -116,11 +125,11 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 	modelId = m_3dViewNode->LoadModelFromFile(skyBA ,SVMTL[3], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
 	m_renderDelegate->ProcessModel(pImdl, "5");
 	
-	modelId = m_3dViewNode->LoadModelFromFile(skyFC,SVMTL[2], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
-	m_renderDelegate->ProcessModel(pImdl, "6");
+	//modelId = m_3dViewNode->LoadModelFromFile(skyFC,SVMTL[2], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
+	//m_renderDelegate->ProcessModel(pImdl, "6");
 
-	modelId = m_3dViewNode->LoadModelFromFile(skyBC ,SVMTL[3], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
-	m_renderDelegate->ProcessModel(pImdl, "7");
+	//modelId = m_3dViewNode->LoadModelFromFile(skyBC ,SVMTL[3], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
+	//m_renderDelegate->ProcessModel(pImdl, "7");
 
 	/////////////////////////////cameraScene//////////////////
 
@@ -129,8 +138,8 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 												m_3dViewCameraParams->znear, m_3dViewCameraParams->zfar, &m_3dViewCamera);
 	//m_freeModeFOV = m_3dViewCameraParams->fovx; //------wjx---------
 	//camera->SetOrientation(0, 0, 0);
-	const float SCENE_CAMERA_DEFAULT_HEIGHT = 3600.0;
-	m_3dViewCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
+	const float sceneCameraDefualtHeight = 3600.0;
+	m_3dViewCamera->SetPosition(0, 0, sceneCameraDefualtHeight);
 	m_3dViewCamera->LookAt(0.0,0.0,0.0);
 	//camera->RotateAround(2,2);
 	m_3dViewNode->SetCamera(m_3dViewCameraId);
@@ -139,7 +148,7 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 }
 int CAvm3dViewNode::UpdateNode()
 {
-
+	return AVM_3DVIEW_NORMAL;
 }
 int CAvm3dViewNode::SetVisibility(unsigned char pVisibilityFlag)
 {

@@ -31,6 +31,13 @@ static char CAR2DICONBMP[] = XR_RES"Car/sv_car_icon.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 
+CAvmSingleViewNode::CAvmSingleViewNode()
+{
+}
+CAvmSingleViewNode::~CAvmSingleViewNode()
+{
+}
+
 int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 {	
 	if(pXrcore == NULL)
@@ -59,8 +66,9 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
  	Region* singleViewRegion;
 	AVMData::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 	m_singleViewNode->SetRenderROI(singleViewRegion);
-	
-	
+			
+	AVMData::GetInstance()->GetSv2dData(&m_SV2DData);
+
 	m_renderDelegate = new RenderDelegateSV2D();
 	m_renderDelegate->Init();
 	//step 1. prepare for Material ,different camera input image 
@@ -112,6 +120,23 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	m_singleViewCamera->SetPosition(0,0,SINGLEVIEW_CAMERA_DEFAULT_HEIGHT);
 	m_singleViewCamera->LookAt(0.0,0.0,-0.0);
 	m_singleViewCamera->RotateAround(0,45);
+	return AVM_SINGLEVIEW_NORMAL;
+}
+int CAvmSingleViewNode::UpdateNode()
+{
+	return AVM_SINGLEVIEW_NORMAL;
+}
+int CAvmSingleViewNode::SetVisibility(unsigned char pVisibilityFlag)
+{	
+	if(m_singleViewNode == NULL)
+    {
+        return AVM_SINGLEVIEW_NODE_INIT_FAILED;
+    }
+
+	m_singleViewNode->SetEnable(pVisibilityFlag);
+    //AVMData::GetInstance()->Set3dViewGuideLineVisibility(pVisibilityFlag);
+	//AVMData::GetInstance()->Set3dViewRadarVisibility(pVisibilityFlag);
+	m_visibilityFlag = pVisibilityFlag;
 	return AVM_SINGLEVIEW_NORMAL;
 }
 int CAvmSingleViewNode::ResetSingleViewNodeRegion(Region* pRegion)

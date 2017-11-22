@@ -41,6 +41,7 @@ enum
 
 class CAvmStitchViewNode
 {
+public:
 	CAvmStitchViewNode();
 	virtual ~CAvmStitchViewNode();
 	virtual int InitNode(class IXrCore* pXrcore);

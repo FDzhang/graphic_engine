@@ -38,6 +38,7 @@ enum
 
 class CAvmObjectViewNode
 {
+public:
 	CAvmObjectViewNode();
 	virtual ~CAvmObjectViewNode();
 	virtual int InitNode(class IXrCore* pXrcore);

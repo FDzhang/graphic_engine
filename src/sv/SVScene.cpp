@@ -2776,6 +2776,18 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	InitViewNode();
 
 	//	InitSingleViewNode(m_SV2DData);
+/*
+	AVMData::GetInstance()->Set3dViewRegion(&RightReg);
+	SurroundViewCameraParamsT m_objectViewCameraParams;
+	m_objectViewCameraParams.fovx = 35;//35;
+	m_objectViewCameraParams.aspect = 1.05;//1.28265302;
+	m_objectViewCameraParams.znear = 4.0f;
+	m_objectViewCameraParams.zfar = 12000.0f;
+	AVMData::GetInstance()->Set3dViewCameraParams(&m_objectViewCameraParams);
+
+	avm3dViewNode = new CAvm3dViewNode();
+	avm3dViewNode->InitNode(g_pIXrCore);
+	avm3dViewNode->SetVisibility(1);*/
 
 #ifndef ALI
     m_2DAVMNode->SetClear(TRUE,TRUE);
