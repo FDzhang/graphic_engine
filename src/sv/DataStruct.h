@@ -274,6 +274,14 @@ enum eCofIlluminace{
  eLeftRear,eRightRear, eRearLeft,eRearRight,eLeftFront,eRightFront,eFrontLeft, eFrontRight,
 };
 
+typedef struct SurroundViewCameraParamsTag
+{
+	float fovx; 
+	float aspect; 
+	float znear; 
+	float zfar;
+}
+SurroundViewCameraParamsT;
 
 
 /*===========================================================================*\

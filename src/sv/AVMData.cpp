@@ -111,7 +111,9 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	m_pAVMData->m_lumin_para = new AVMLuminanceData;
 	m_pAVMData->m_2D_lut = new AVM2DLUT;
 	m_pAVMData->m_p_can_data = new AVMCANData;
-	m_pAVMData->m_process_info = new AVMProcessingInfo;
+	m_pAVMData->m_process_info = new AVMProcessingInfo;	
+	m_pAVMData->m_usc_data= new AVMUSCData;
+	
     if(config.platform_config == PLATFORM_PC_IMAGE)
     {
         pCamSource = new CImageCameraSourceRender;
@@ -173,6 +175,7 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
     }
 	m_pAVMData->m_cam_source->Init(config.file_path);
 	m_pAVMData->m_p_can_data->Init();
+	m_pAVMData->m_usc_data->Init(config.pSmc->bev_decoder_param, config.pSmc->bev_display_param, config.pSmc->bev_3d_param, config.pSmc->bev_ui_param);
 
 	memcpy(m_pAVMData->m_front_single_view_rect,config.front_single_view_rect,4*sizeof(float));
 	memcpy(m_pAVMData->m_rear_single_view_rect,config.rear_single_view_rect,4*sizeof(float));
@@ -229,6 +232,34 @@ void AVMData::GetVehicleParam(SV_VEHICLE_PARAM_T **pVehicleData)
 {
 
 	*pVehicleData = &m_pAVMData->m_Veh_Data;
+}
+
+void AVMData::Get3dViewRegion(Region** pRegion)
+{
+
+}
+void AVMData::GetObjectViewRegion(Region** pRegion)
+{
+
+}
+void AVMData::GetBevConfig(BEV_CONFIG_T* pConfig)
+{
+
+}
+void AVMData::GetCarTransparentStatus(unsigned char& pCarTranspStatus)
+{
+}
+
+void AVMData::Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
+{
+}
+void AVMData::GetObjectViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
+{
+}
+
+void AVMData::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
+{
+
 }
 
 //input world unit is meter,

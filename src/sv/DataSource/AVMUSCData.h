@@ -1,8 +1,7 @@
-#ifndef __AVM_DATA_H__
-#define __AVM_DATA_H__
-
+#ifndef __AVM_USC_DATA_H__
+#define __AVM_USC_DATA_H__
 /*===========================================================================*\
- * FILE: example.h
+ * FILE: AVMUSCData.h
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -31,34 +30,15 @@
 /*===========================================================================*\
  * Standard Header Files
 \*===========================================================================*/
-#include "DataStruct.h"
-#include "../XrCore/XrSrc/External/XrHeaders.h"
-#include "DataSource/AVMCameraExparam.h"
-#include "DataSource/AVMCameraInternal.h"
-#include "DataSource/AVMLuminanceData.h"
-#include "DataSource/AVM2DLUT.h"
-#include "DataSource/AVMCANData.h"
-#include "DataSource/AVMUSCData.h"
-
-#include "ICameraSourceRender.h"
-
-#include "bev_config.h"
-#include "smc.h"
-//#include "VideoSource/CImageCameraSourceRender.h"
-
-typedef struct Calib_3D_Para_T
-{
-    float model_scale;
-	float model_bottom;
-	float vehicle_length;
-	float vehicle_axis_length;
-	float vehicle_rear_axis_2_bumper;
-
-}Calib_3D_Para;
+#include "../DataStruct.h"
+#include "../../XrCore/XrSrc/External/XrHeaders.h"
 
 /*===========================================================================*\
  * Other Header Files
 \*===========================================================================*/
+
+
+
 
 /*===========================================================================*\
  * Exported Preprocessor #define Constants
@@ -75,85 +55,40 @@ typedef struct Calib_3D_Para_T
 /*===========================================================================*\
  * Exported Object Declarations
 \*===========================================================================*/
-typedef struct
-{
-	float sgxfps;
-	float srcToSgxAvgLatency;
-	float srcToSgxMaxLatency;
-	float algAvgCost_ms;
-	float algMaxCost_ms;
-}ProcessInfoData;
-
-class AVMProcessingInfo
+class AVMUSCData
 {
 public:
-	AVMProcessingInfo()
-	{
-		m_Processing_Data.sgxfps = 0.0f;
-		m_Processing_Data.srcToSgxAvgLatency = 0.0f;
-		m_Processing_Data.srcToSgxMaxLatency = 0.0f;
-		m_Processing_Data.algAvgCost_ms = 0.0f;
-		m_Processing_Data.algMaxCost_ms = 0.0f;
-	};
-	~AVMProcessingInfo();
-	void UpdateFps(float fps);
-	void UpdateFrameLatency(float avg_in_ms, float max_in_ms);
-	void UpdateAlgCost(float avg_in_ms, float max_in_ms);
-	void GetProcessInfo(ProcessInfoData *pInfo);
+
+    AVMUSCData();
+    ~AVMUSCData();
+    	
+    bool Init(Bev_Decoder_Param_T decoder_param, Bev_DISPLAY_Param_T display_param, 
+                Bev_3D_Param_T bev_3d_param, Bev_UI_Param_T ui_param);
+    bool GetDecoderParam(Bev_Decoder_Param_T** decoder_param);
+    bool GetDisplayParam(Bev_DISPLAY_Param_T** display_param);
+    bool GetBev3DParam(Bev_3D_Param_T** bev_3d_param);
+    bool GetUiParam(Bev_UI_Param_T** ui_param);
+
+    bool GetSingleViewRoi(Bev_DISPLAY_Param_Bev_Single_View_Roi_T** single_view_roi);
+    bool SetSingleViewRoi(Bev_DISPLAY_Param_Bev_Single_View_Roi_T* single_view_roi);
+
+    bool GetFrontSingleViewRoi(float* top_left_x, float* top_left_y, float* bottom_right_x, float* bottom_right_y);
+    bool SetFrontSingleViewRoi(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y);
+
+    bool GetRearSingleViewRoi(float* top_left_x, float* top_left_y, float* bottom_right_x, float* bottom_right_y);
+    bool SetRearSingleViewRoi(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y);
+
+    bool GetLeftSingleViewRoi(float* top_left_x, float* top_left_y, float* bottom_right_x, float* bottom_right_y);
+    bool SetLeftSingleViewRoi(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y);
+
+    bool GetRightSingleViewRoi(float* top_left_x, float* top_left_y, float* bottom_right_x, float* bottom_right_y);
+    bool SetRightSingleViewRoi(float top_left_x, float top_left_y, float bottom_right_x, float bottom_right_y);
 	
 private:
-	ProcessInfoData m_Processing_Data;
-};
-
-class AVMData
-{
-public:
-	
-    static AVMData* GetInstance();
-	static void InitConfig(SV_DATA_CONFIG_T config);
-	
-	static void CalcUVTextureSV(float *pWorld,float *texture,int chann);
-	float GetFrontSingleViewRect(int index);
-	float GetRearSingleViewRect(int index);
-	
-	void GetFrontSingleViewRect(float *pData);
-	void GetRearSingleViewRect(float *pData);
-	void GetVehicleParam(SV_VEHICLE_PARAM_T **pVehicleData);
-	
-	void GetBevConfig(BEV_CONFIG_T* pConfig);
-	void GetCarTransparentStatus(unsigned char& pCarTranspStatus);
-	void Get3dViewRegion(Region** pRegion);
-	void GetObjectViewRegion(Region** pRegion);
-	void GetObjectViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-
-	void Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
-
-	void cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord,unsigned char unitmm=0);
-	
-	void cvtWorldPoint2ModelPoint3D(float *out_Model_Coord,float *in_world_coord);
-	
-	void cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,bool rear_single_view);
-		DataExPosParam *m_exParam;
-		AVMCameraInternal *m_camInstrinct;
-		AVMLuminanceData *m_lumin_para;
-		AVM2DLUT *m_2D_lut;
-		AVMUSCData *m_usc_data;
-		AVMCANData *m_p_can_data;
-		ICameraSourceRender *m_cam_source;
-		AVMProcessingInfo *m_process_info;
-
-private:
-    AVMData();
-
-    static AVMData* m_pAVMData;
-	//static CImageCameraSourceRender *m_pCamSourceIMG;
-	SV_VEHICLE_PARAM_T m_Veh_Data;
-	float m_front_single_view_rect[4];
-	float m_rear_single_view_rect[4];
-	Calib_3D_Para m_calib_3d;
-    
-
+    Bev_Decoder_Param_T    m_decoder_param;
+    Bev_DISPLAY_Param_T m_display_param;
+    Bev_3D_Param_T          m_bev_3d_param;
+    Bev_UI_Param_T             m_ui_param;	
 };
 /*===========================================================================*\
  * Exported Function Prototypes
