@@ -238,6 +238,14 @@ void AVMData::Get3dViewRegion(Region** pRegion)
 {
 
 }
+void AVMData::GetStitchViewRegion(Region** pRegion)
+{
+
+}
+void AVMData::GetSingleViewRegion(Region** pRegion)
+{
+
+}
 void AVMData::GetObjectViewRegion(Region** pRegion)
 {
 
@@ -256,7 +264,13 @@ void AVMData::Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
 void AVMData::GetObjectViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
 {
 }
+void AVMData::GetStitchViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
+{
+}
+void AVMData::GetSingleViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
+{
 
+}
 void AVMData::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
 {
 

@@ -26,6 +26,49 @@
 #include "CAvmObjectViewNode.h"
 #include "../AVMData.h"
 
+
+static char GREENTEX[] = XR_RES"green.bmp";
+static char BLUETEX[] = XR_RES"blue.bmp";
+static char CARENV[] = XR_RES"env.bmp";
+
+static char BMWCARMODEL[] = XR_RES"bmw.mqo";
+static char BMWCARTEX[] = XR_RES"texture.dds";
+static char BMWCARTEXMASK[] = XR_RES"carmask.bmp";
+
+static char MirrorModel[]=XR_RES"biekemirror.mqo";
+
+static char VANMODEL[] = XR_RES"van.mqo";
+static char VANWHEELMODEL[] = XR_RES"vanwheel.mqo";
+static char VANRIGHTWHEELMODEL[] = XR_RES"vanwheelright.mqo";
+static char VANTEX[] = XR_RES"truckUV90.tga";
+static char VANTEXMASK[] = XR_RES"van_mask.bmp";
+
+static char TRUCKMODEL[] = XR_RES"truck.mqo";
+static char OTHERTEX[] = XR_RES"texture_other.dds";
+static char OTHERTEXMASK[] = XR_RES"mask_other.bmp";
+
+static char *RADARALARMTEX[4] = {XR_RES"red.dds",XR_RES"orange.dds",XR_RES"yellow.dds",XR_RES"green.dds"};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+static char CAR2DICONBMP[] = XR_RES"Car/sv_car_icon.dds";
+static char CARINTTEX[]=XR_RES"Car/car_int_tex.bmp";
+static char CARTEXMASK[] = XR_RES"Car/mask1.bmp";
+static char CARAMBIENTTEXTMASK[] = XR_RES"Car/car_mask.bmp";
+static char CARTEX[] = XR_RES"Car/car_surface.tga";
+
+static char WHEELMODEL[] = XR_RES"Car/wheel.mqo";
+
+static char CARMODEL[] = XR_RES"Car/frame.mqo";
+static char CARLIGHTMODEL[] = XR_RES"Car/light.mqo";
+static char CARINTMODEL[] = XR_RES"Car/internal.mqo";
+static char CARWINDOWMODEL[] = XR_RES"Car/window.mqo";
+
+static char CARLIGHTON[]=XR_RES"Car/light_on.tga";
+static char CARLIGHTTEX[]=XR_RES"Car/light.tga";
+
+static char *CARDOORMODEL[4] = {XR_RES"Car/driver_door.mqo",XR_RES"Car/driver_assist_door.mqo",XR_RES"Car/left_rear.mqo",XR_RES"Car/right_rear.mqo"};
+static char *CARDOORWINDOWMODEL[4] = {XR_RES"Car/driver_door_w.mqo",XR_RES"Car/driver_assist_door_w.mqo",XR_RES"Car/left_rear_w.mqo",XR_RES"Car/right_rear_w.mqo"};
+
 int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 {
     if(pXrcore == NULL)
@@ -79,7 +122,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	tempmaterialid = m_objViewNode->CreateMaterial(Material_Rigid_Texture, &tempcarmtl);
 	tempcarmtl->SetDiffuseMap(GREENTEX);
 	tempcarmtl->SetEnvironmentMap(BLUETEX);
-	m_3d_ground_Mtl = tempcarmtl;
+	m_3dGroundMtl = tempcarmtl;
 
 	AVMData::GetInstance()->Calc3DGroundPos(pos,&ground_width,&ground_height);
 
@@ -141,16 +184,16 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_CarDoor[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[3]->SetEnable(1);	
 
-	iCarLightMtlId = m_objViewNode->CreateMaterial(Material_RigidColor_Texture, &m_carlightmtl);
-	m_carlightmtl->SetDiffuseMap(CARLIGHTTEX);
+	iCarLightMtlId = m_objViewNode->CreateMaterial(Material_RigidColor_Texture, &m_carLightMtl);
+	m_carLightMtl->SetDiffuseMap(CARLIGHTTEX);
 	
 	//carlightmtl->SetDiffuseMap(CARTEX);
 	
-	m_carlightmtl->SetEnvironmentMap(CARLIGHTON);
-	m_carlightmtl->SetAmbientMap(CARTEXMASK);
+	m_carLightMtl->SetEnvironmentMap(CARLIGHTON);
+	m_carLightMtl->SetAmbientMap(CARTEXMASK);
 	iCarnodeId = m_objViewNode->LoadModelFromFile(CARLIGHTMODEL, iCarLightMtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_CarLight); //envision
 
-	m_carlightmtl->SetAmbientColor(1.0,0.5,0.0,0.0);
+	m_carLightMtl->SetAmbientColor(1.0,0.5,0.0,0.0);
 
 	m_CarLight->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
 	m_CarLight->SetEnable(1);
@@ -162,41 +205,39 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
     door_offset_y = bev_3d_param->car_model_param.door_window_offset_front * 50 * bev_3d_param->car_model_param.car_scale_z;
 
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[0], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z-door_offset_y, 50, &m_Car_Window[0]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[0], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z-door_offset_y, 50, &m_carWindow[0]); //envision
 
-	m_Car_Window[0]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
-	m_Car_Window[0]->SetEnable(1);
+	m_carWindow[0]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
+	m_carWindow[0]->SetEnable(1);
 
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[1], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z-door_offset_y, 50, &m_Car_Window[1]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[1], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z-door_offset_y, 50, &m_carWindow[1]); //envision
 
-	m_Car_Window[1]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
-	m_Car_Window[1]->SetEnable(1);	
+	m_carWindow[1]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
+	m_carWindow[1]->SetEnable(1);	
 
 
     door_offset_y = bev_3d_param->car_model_param.door_window_offset_rear * 50 * bev_3d_param->car_model_param.car_scale_z;
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[2], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y + 20, 50, &m_Car_Window[2]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[2], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y + 20, 50, &m_carWindow[2]); //envision
 
-	m_Car_Window[2]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
-	m_Car_Window[2]->SetEnable(1);	
-
-
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[3], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y + 20, 50, &m_Car_Window[3]); //envision
-
-	m_Car_Window[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
-	m_Car_Window[3]->SetEnable(1);	
+	m_carWindow[2]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
+	m_carWindow[2]->SetEnable(1);	
 
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARWINDOWMODEL, m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_Car_Window[4]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[3], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y + 20, 50, &m_carWindow[3]); //envision
+
+	m_carWindow[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
+	m_carWindow[3]->SetEnable(1);	
 
 
-	m_Car_Window[4]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
-	m_Car_Window[4]->SetEnable(1);
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARWINDOWMODEL, m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_carWindow[4]); //envision
+
+
+	m_carWindow[4]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
+	m_carWindow[4]->SetEnable(1);
 	
-	m_Car_Window[4]->RotateDY(0);	
-
-	g_MaterialAlpha = 0.95;
+	m_carWindow[4]->RotateDY(0);	
 
 #define WHEEL_X_OFFSET 380
 #define WHEEL_Y_OFFSET 30
@@ -232,7 +273,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 		20.0,	0.15,	-0.1,
 		24.0,	0.0,	0.0};
 		
-	m_am->CreateKeyAnimation(key, sizeof(key)/12,2, &wheelRot);
+	m_am->CreateKeyAnimation(key, sizeof(key)/12,2, &m_wheelRot);
 		
 	IAProperty* val=0;
 	
@@ -241,19 +282,20 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	for (int i = 0;i < wheel_max_num; i++)	
 	{
 		m_wheel[i]->GetCAProperty(AP_RX, &val);
-		wheelRot->BindProperty(0, val);
+		m_wheelRot->BindProperty(0, val);
 		if (i%4<2) {
 		m_wheel[i]->GetCAProperty(AP_RY, &val);
-		wheelRot->BindProperty(1, val);
+		m_wheelRot->BindProperty(1, val);
 		}
 	}
-	wheelRot->SetDeltaUpdate(0);
+	m_wheelRot->SetDeltaUpdate(0);
 
-	AVMData::GetInstance()->GetObjectViewCameraParams(&m_objectViewCameraParams);
+	AVMData::GetInstance()->GetObjectViewCameraParams(&m_objViewCameraParams);
 
-	m_objViewCameraId = m_objViewNode->CreateCamera(m_objectViewCameraParams->fovx, m_objectViewCameraParams->aspect, 
-													m_objectViewCameraParams->znear, m_objectViewCameraParams->zfar, &m_objViewCamera);
+	m_objViewCameraId = m_objViewNode->CreateCamera(m_objViewCameraParams->fovx, m_objViewCameraParams->aspect, 
+													m_objViewCameraParams->znear, m_objViewCameraParams->zfar, &m_objViewCamera);
 
+	const float SCENE_CAMERA_DEFAULT_HEIGHT = 3600.0;
 	m_objViewCamera->SetPosition(0, 0, SCENE_CAMERA_DEFAULT_HEIGHT);
 	m_objViewCamera->LookAt(0.0,0,-0.0);
 	m_objViewNode->SetCamera(m_objViewCameraId);
@@ -268,7 +310,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
    
     for(int i =0;i<5;i++)
 	{
-		m_Car_Window[i]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
+		m_carWindow[i]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
 	}
 
     return AVM_OBJVIEW_NORMAL;

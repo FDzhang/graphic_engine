@@ -123,9 +123,12 @@ public:
 	void GetBevConfig(BEV_CONFIG_T* pConfig);
 	void GetCarTransparentStatus(unsigned char& pCarTranspStatus);
 	void Get3dViewRegion(Region** pRegion);
+	void GetStitchViewRegion(Region** pRegion);
+	void GetSingleViewRegion(Region** pRegion);
 	void GetObjectViewRegion(Region** pRegion);
 	void GetObjectViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-
+	void GetStitchViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
+	void GetSingleViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 	void Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 
