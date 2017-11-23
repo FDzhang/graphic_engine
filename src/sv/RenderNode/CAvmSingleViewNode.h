@@ -50,7 +50,7 @@ public:
 	virtual int ResetSingleViewNodeRegion(Region* pRegion);
 
 	int GetAvmSingleViewNode(class ISceneNode* pSingleViewNode);
-	
+	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 
 private:
 	class ISceneNode* m_singleViewNode;	

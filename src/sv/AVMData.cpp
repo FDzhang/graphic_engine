@@ -443,6 +443,99 @@ void AVMProcessingInfo::GetProcessInfo(ProcessInfoData *pInfo)
 	}
 }
 
+void AVMData::SetStitchViewNodeStatus(unsigned char pStatus)
+{
+	m_stitchViewNodeStatus = pStatus;
+}
+void AVMData::GetStitchViewNodeStatus(unsigned char& pStatus)
+{
+	pStatus = m_stitchViewNodeStatus;
+}
+void AVMData::Set3dViewNodeStatus(unsigned char pStatus)
+{
+	m_avm3dViewNodeStatus = pStatus;
+}
+void AVMData::Get3dViewNodeStatus(unsigned char& pStatus)
+{
+	pStatus = m_avm3dViewNodeStatus;
+}
+void AVMData::SetSingleViewNodeStatus(unsigned char pStatus)
+{
+	m_singleViewNodeStatus = pStatus;
+}
+void AVMData::GetSingleViewNodeStatus(unsigned char& pStatus)
+{
+	pStatus = m_singleViewNodeStatus;
+}
+void AVMData::SetObjectViewNodeStatus(unsigned char pStatus)
+{
+	m_objViewNodeStatus = pStatus;
+}
+void AVMData::GetObjectViewNodeStatus(unsigned char& pStatus)
+{
+	pStatus = m_objViewNodeStatus;
+}
+
+void AVMData::Set3dViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avm3dVisibility[pFuncId] = pFlag;
+}
+void AVMData::Get3dViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avm3dVisibility[pFuncId];
+}
+void AVMData::SetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmStitchViewVisibility[pFuncId] = pFlag;
+}
+void AVMData::GetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmStitchViewVisibility[pFuncId];
+}
+void AVMData::SetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmSingleViewVisibility[pFuncId] = pFlag;
+}
+void AVMData::GetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmSingleViewVisibility[pFuncId];
+}
+void AVMData::SetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmObjViewVisibility[pFuncId] = pFlag;
+}
+void AVMData::GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmObjViewVisibility[pFuncId];
+}
+
+void AVMData::SetDisplayViewCmd(unsigned char pCmd)
+{
+	m_displayViewCmd = pCmd;
+}
+void AVMData::GetDisplayViewCmd(unsigned char& pCmd)
+{
+	pCmd = m_displayViewCmd;
+}
+
+void AVMData::SetSingleViewChannel(unsigned char pChannelId)
+{
+	m_singleViewChannel = pChannelId;
+}
+void AVMData::GetSingleViewChannel(unsigned char& pChannelId)
+{
+	pChannelId = m_singleViewChannel;
+}
+
+void AVMData::Set3dViewIndex(unsigned char pIndex)
+{
+	m_avm3dViewIndex = pIndex;
+}
+void AVMData::Get3dViewIndex(unsigned char& pIndex)
+{
+	pIndex = m_avm3dViewIndex;
+}
+
 /*===========================================================================*\
  * External Function Definitions
 \*===========================================================================*/

@@ -146,7 +146,32 @@ public:
 	void GetAnimationManager(class IAnimationManager** pAm);
 	void GetSv2dData(class GlSV2D** pGlSv2d);
 	void SetSv2dData(class GlSV2D* pGlSv2d);
+	void SetStitchViewNodeStatus(unsigned char pStatus);
+	void GetStitchViewNodeStatus(unsigned char& pStatus);
+	void Set3dViewNodeStatus(unsigned char pStatus);
+	void Get3dViewNodeStatus(unsigned char& pStatus);
+	void SetSingleViewNodeStatus(unsigned char pStatus);
+	void GetSingleViewNodeStatus(unsigned char& pStatus);
+	void SetObjectViewNodeStatus(unsigned char pStatus);
+	void GetObjectViewNodeStatus(unsigned char& pStatus);
 
+	void Set3dViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void Get3dViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+
+	void SetDisplayViewCmd(unsigned char pCmd);
+	void GetDisplayViewCmd(unsigned char& pCmd);
+
+	void SetSingleViewChannel(unsigned char pChannelId);
+	void GetSingleViewChannel(unsigned char& pChannelId);
+
+	void Set3dViewIndex(unsigned char pIndex);
+	void Get3dViewIndex(unsigned char& pIndex);
 
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 
@@ -185,6 +210,20 @@ private:
 	SurroundViewCameraParamsT m_singleViewCameraParams;
 	class GlSV2D* m_sv2dData;
 	class IAnimationManager* m_am;
+	
+	unsigned char m_avm3dVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmSingleViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmStitchViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmObjViewVisibility[PROCESS_FUNC_NUMS];
+	
+	unsigned char m_stitchViewNodeStatus;
+	unsigned char m_singleViewNodeStatus;
+	unsigned char m_avm3dViewNodeStatus;
+	unsigned char m_objViewNodeStatus;
+
+	unsigned char m_displayViewCmd;
+	unsigned char m_singleViewChannel;
+	unsigned char m_avm3dViewIndex;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

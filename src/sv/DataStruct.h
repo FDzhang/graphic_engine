@@ -68,6 +68,82 @@ enum
 #define TURN_LIGHT_LEFT 1
 #define TURN_LIGHT_RIGHT 2
 
+
+typedef enum CameraPosition {
+	CameraPosition_Free			= 0x00000000,
+	CameraPosition_Back			= 0x00000001,
+    CameraPosition_Front		= 0x00000002,
+	CameraPosition_Left			= 0x00000003,
+	CameraPosition_Right		= 0x00000004,
+	CameraPosition_Left_Rear	= 0x00000005,
+	CameraPosition_Right_Rear	= 0x00000006,
+	CameraPosition_Left_Front	= 0x00000007,
+	CameraPosition_Right_Front	= 0x00000008,
+	CameraPosition_Left_Rear_Light	= 0x00000009,
+	CameraPosition_Right_Rear_Light	= 0x0000000a,		
+	CameraPosition_BOSCH_Front	= 0x0000000b,	
+	
+	CameraPosition_BOSCH_Front_Top	= 0x000000c,	
+	CameraPosition_BOSCH_Rear_Top_REVERSE	= 0x000000d,	
+	CameraPosition_BOSCH_Rear_Top	= 0x000000e,
+	
+	CameraPosition_Left_Front_Light = 0x000000f,
+	CameraPosition_Right_Front_Light = 0x0000010,
+
+        CameraPosition_BMW_Rear = 0x0000011,
+        CameraPosition_BMW_Left = 0x0000012,
+        CameraPosition_BMW_Right = 0x0000013,
+        CameraPosition_BMW_Left_Front = 0x0000014,
+        CameraPosition_BMW_Right_Front = 0x0000015,
+        CameraPosition_BMW_Left_Rear = 0x0000016,
+        CameraPosition_BMW_Right_Rear = 0x0000017,
+        CameraPosition_BMW_3D_Rear = 0x0000018,
+};
+typedef enum RightViewType {
+	FRONT_SINGLE_VIEW			= 0x00000000,
+	REAR_SINGLE_VIEW			= 0x00000001,
+    LEFT_SINGLE_VIEW		    = 0x00000002,
+	RIGHT_SINGLE_VIEW			= 0x00000003,
+	FRONT_3D_VIEW       		= 0x00000004,
+	REAR_3D_VIEW				= 0x00000005,
+	LEFT_FRONT_3D_VIEW                =0x0000006,
+	RIGHT_FRONT_3D_VIEW				=0x0000007,	
+	LEFT_REAR_3D_VIEW           =0x0008,
+	RIGHT_REAR_3D_VIEW          = 0x00009,
+	LEFT_TURN_SIGNAL_3D_VIEW,
+	RIGHT_TURN_SIGNAL_3D_VIEW,
+	LEFT_REAR_TURN_SIGNAL_3D_VIEW,
+	RIGHT_REAR_TURN_SIGNAL_3D_VIEW,	
+	LEFT_HIGHT_SPEED_TURN_3D_VIEW,
+	RIGHT_HIGHT_SPEED_TURN_3D_VIEW,
+	TOUR_VIEW,
+	BOSH_FRONT_VIEW,
+	BOSH_FRONT_VIEW_TOP,	
+	BOSH_REAR_VIEW_TOP,
+	LEFT_MIRROR_VIEW,
+	RIGHT_MIRROR_VIEW,	
+	CROSS_IMAGE_VIEW,	
+	BMW_REAR_VIEW,
+	BMW_LEFT_VIEW,
+	BMW_RIGHT_VIEW,
+	BMW_LEFT_FRONT_VIEW,
+	BMW_RIGHT_FRONT_VIEW,
+	BMW_LEFT_REAR_VIEW,
+	BMW_RIGHT_REAR_VIEW,
+    BMW_REAR_3D_VIEW,	
+	TOTAL_VIEW_NUM,
+};
+
+typedef enum View_Region_Postion_Tag
+{
+	REGION_POS_TOP = 0,
+	REGION_POS_BOTTOM = 1,
+	REGION_POS_LEFT = 2,
+	REGION_POS_RIGHT = 3,
+}
+View_Region_Postion_T;
+
+
 enum EConfigContent{
 eConfigNum,eFrontVertexNum,eFrontIndexNum,eRearVertexNum,eRearIndexNum,eLeftVertexNum,eLeftIndexNum,eRightVertexNum,eRightIndexNum,eConfigEnd};// Shader uniforms
 
@@ -283,7 +359,14 @@ typedef struct SurroundViewCameraParamsTag
 }
 SurroundViewCameraParamsT;
 
-
+typedef enum VisibilityIndexTag
+{	
+	PROCESS_TURNLIGHT_FUNC,
+	PROCESS_VIEW_DISPLAY_FUNC,
+	PROCESS_GET_STATUS_FUNC,
+	PROCESS_FUNC_NUMS,
+}
+VisibilityIndexT;
 /*===========================================================================*\
  * Exported Object Declarations
 \*===========================================================================*/

@@ -50,7 +50,7 @@ public:
 	virtual int ResetStitchViewNodeRegion(Region* pRegion);
 
 	int GetAvmStitchViewNode(class ISceneNode* pStitchViewNode);
-	
+	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 
 private:
 	class ISceneNode* m_stitchViewNode;	

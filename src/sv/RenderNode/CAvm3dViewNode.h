@@ -48,9 +48,11 @@ public:
 	virtual int UpdateNode();
 	virtual int SetVisibility(unsigned char pVisibilityFlag);
 	virtual int Reset3dViewNodeRegion(Region* pRegion);
-
-	int GetAvm3dViewNode(class ISceneNode* p3dViewNode);
 	
+
+	class ISceneNode*  GetAvm3dViewNode();
+	class ICamera*  GetAvm3dViewCamera();
+	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 
 private:
 	class ISceneNode* m_3dViewNode;	

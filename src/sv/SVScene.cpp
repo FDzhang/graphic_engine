@@ -2776,7 +2776,7 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 	InitViewNode();
 
 	//	InitSingleViewNode(m_SV2DData);
-/*
+
 	AVMData::GetInstance()->Set3dViewRegion(&RightReg);
 	SurroundViewCameraParamsT m_objectViewCameraParams;
 	m_objectViewCameraParams.fovx = 35;//35;
@@ -2787,7 +2787,7 @@ int SVScene::InitNode(BEV_CONFIG_T  pConfig,st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandl
 
 	avm3dViewNode = new CAvm3dViewNode();
 	avm3dViewNode->InitNode(g_pIXrCore);
-	avm3dViewNode->SetVisibility(1);*/
+	avm3dViewNode->SetVisibility(1);
 
 #ifndef ALI
     m_2DAVMNode->SetClear(TRUE,TRUE);

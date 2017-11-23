@@ -146,6 +146,7 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 
     return AVM_3DVIEW_NORMAL;
 }
+
 int CAvm3dViewNode::UpdateNode()
 {
 	return AVM_3DVIEW_NORMAL;
@@ -173,14 +174,27 @@ int CAvm3dViewNode::Reset3dViewNodeRegion(Region* pRegion)
 	m_3dViewNode->SetRenderROI(pRegion);
 	return AVM_3DVIEW_NORMAL;
 }
-int CAvm3dViewNode::GetAvm3dViewNode(ISceneNode* p3dViewNode)
+ISceneNode* CAvm3dViewNode::GetAvm3dViewNode()
 {
     if(m_3dViewNode == NULL)
     {
-        return AVM_3DVIEW_NODE_INIT_FAILED;
+        return NULL;
     }
-    p3dViewNode = m_3dViewNode;
-    return AVM_3DVIEW_NORMAL;
+    return m_3dViewNode;
+}
+ICamera* CAvm3dViewNode::GetAvm3dViewCamera()
+{   
+	if(m_3dViewCamera == NULL)
+    {
+        return NULL;
+    }
+    return m_3dViewCamera;
+
+}
+int CAvm3dViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
+{
+	m_3dViewNode->SetClear(pColorFlag, pDepthFlag);
+	return AVM_3DVIEW_NORMAL;
 }
 
 

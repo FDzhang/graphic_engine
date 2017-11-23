@@ -46,8 +46,9 @@ public:
 	virtual int SetVisibility(unsigned char pVisibilityFlag);
 	virtual int ResetObjViewNodeRegion(Region* pRegion);
 
-	int GetAvmObjViewNode(class ISceneNode* pObjViewNode);
-	
+	class ISceneNode* GetAvmObjViewNode();
+	class ICamera*	  GetAvmObjViewCamera();
+	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 
 private:
 	class ISceneNode* m_objViewNode;	

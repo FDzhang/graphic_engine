@@ -350,14 +350,18 @@ int CAvmObjectViewNode::ResetObjViewNodeRegion(Region* pRegion)
 	return AVM_OBJVIEW_NORMAL;
 }
 
-int CAvmObjectViewNode::GetAvmObjViewNode(class ISceneNode* pObjViewNode)
+ISceneNode* CAvmObjectViewNode::GetAvmObjViewNode()
 {
-    if(m_objViewNode == NULL)
-    {
-        return AVM_OBJVIEW_NODE_INIT_FAILED;
-    }
-    pObjViewNode = m_objViewNode;
-    return AVM_OBJVIEW_NORMAL;
+    return  m_objViewNode;
+}
+ICamera* CAvmObjectViewNode::GetAvmObjViewCamera()
+{
+	return m_objViewCamera;
+}
+int CAvmObjectViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
+{
+	m_objViewNode->SetClear(pColorFlag, pDepthFlag);
+	return AVM_OBJVIEW_NORMAL;
 }
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)

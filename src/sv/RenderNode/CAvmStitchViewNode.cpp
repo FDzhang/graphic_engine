@@ -229,7 +229,11 @@ int CAvmStitchViewNode::GetAvmStitchViewNode(ISceneNode* pStitchViewNode)
     pStitchViewNode = m_stitchViewNode;
     return AVM_STITCHVIEW_NORMAL;
 }
-
+int CAvmStitchViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
+{
+	m_stitchViewNode->SetClear(pColorFlag, pDepthFlag);
+	return AVM_STITCHVIEW_NORMAL;
+}
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)

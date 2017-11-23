@@ -124,6 +124,23 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 }
 int CAvmSingleViewNode::UpdateNode()
 {
+	unsigned char singleViewCmd = 0;
+	AVMData::GetInstance()->GetSingleViewChannel(singleViewCmd);
+		
+    for(int i = eFrontSingle;i<=eRightSingle;i++)
+    {
+        if(i == singleViewCmd + eFrontSingle)
+        {           
+			m_SV2Dplane[i]->SetEnable(1);
+        }
+		else
+		{
+			m_SV2Dplane[i]->SetEnable(0);	
+		}
+    }
+
+	m_renderDelegate->SetChannel(singleViewCmd);
+
 	return AVM_SINGLEVIEW_NORMAL;
 }
 int CAvmSingleViewNode::SetVisibility(unsigned char pVisibilityFlag)
@@ -157,7 +174,11 @@ int CAvmSingleViewNode::GetAvmSingleViewNode(ISceneNode* pSingleViewNode)
     pSingleViewNode = m_singleViewNode;
     return AVM_SINGLEVIEW_NORMAL;
 }
-
+int CAvmSingleViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
+{
+	m_singleViewNode->SetClear(pColorFlag, pDepthFlag);
+	return AVM_SINGLEVIEW_NORMAL;
+}
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
