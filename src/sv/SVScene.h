@@ -8,7 +8,6 @@
 #include "GlSVOverlay.h"
 #include "GlSVRadarAlarm.h"
 #include "GlSVLuminance.h"
-#include "RenderNode/CAvm3dViewNode.h"
 
 #define NONE_CHINESE_WORD 999
 typedef enum SceneMode {
@@ -381,8 +380,6 @@ private:
 	vehicle_param m_veh_param;
     //IMaterial* m_ground_mtl;
     bool m_SwitchViewLogicAgain;
-
-	CAvm3dViewNode* avm3dViewNode;
 
 };
 

@@ -92,6 +92,7 @@ private:
 
 	int							m_carmtlId;
 	int							m_carId;
+	int							m_carInternalId;
 	int							m_iSUVId;
 	int							m_iVanId;
 	int							m_iTruckId;

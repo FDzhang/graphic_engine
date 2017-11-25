@@ -29,6 +29,8 @@
 #include "../RenderNode/CAvmSingleViewNode.h"
 #include "../RenderNode/CAvmStitchViewNode.h"
 #include "../RenderNode/CAvmObjectViewNode.h"
+#include "../RenderNode/CAvmMattsView.h"
+#include "../RenderNode/CAvmLargeSingleView.h"
 #include "../GlSV2D.h"
 
 typedef struct Avm3dViewCameraParamsTag
@@ -157,6 +159,20 @@ int CAvmViewControlModel::InitViewNode()
 	AVMData::GetInstance()->SetSingleViewNodeStatus(initSingleViewNode);
 	AVMData::GetInstance()->Set3dViewNodeStatus(init3dViewNode);
 	AVMData::GetInstance()->SetObjectViewNodeStatus(initObjViewNode);
+
+	float camera_zone[4];
+    camera_zone[REGION_POS_LEFT] = 0.0;
+    camera_zone[REGION_POS_TOP] = 0.5;
+    camera_zone[REGION_POS_RIGHT] = 1.0;
+    camera_zone[REGION_POS_BOTTOM] = 1.0; 
+
+	AVMData::GetInstance()->SetLargeSingleViewRoi(camera_zone, front_camera_index);
+
+	m_avmMattsView = new CAvmMattsView();
+	m_avmMattsView->Init();
+
+	m_avmLargeSingleView = new CAvmLargeSingleView();
+	m_avmLargeSingleView->Init();
 
 	InitDisplayEffect();
 
@@ -326,18 +342,18 @@ int CAvmViewControlModel::InitTourDisplaySecEffect()
 	             4*fTransitionTime,720.0,45.0};
 
 
-   m_am->CreateKeyAnimation(key, sizeof(key)/12, 2, &m_bevTour[0],AnimationStyle_KeySpline,0);
+   m_am->CreateKeyAnimation(key, sizeof(key)/12, 2, &m_bevSecTour[0],AnimationStyle_KeySpline,0);
    m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_RX,&val);
-   m_bevTour[0]->BindProperty(0, val);
+   m_bevSecTour[0]->BindProperty(0, val);
    m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_RY,&val);
-   m_bevTour[0]->BindProperty(1, val);
+   m_bevSecTour[0]->BindProperty(1, val);
 
 
-    m_am->CreateKeyAnimation(key, sizeof(key)/12, 2, &m_bevTour[1],AnimationStyle_KeySpline,0);
+    m_am->CreateKeyAnimation(key, sizeof(key)/12, 2, &m_bevSecTour[1],AnimationStyle_KeySpline,0);
     m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RX,&val);
-    m_bevTour[1]->BindProperty(0, val);
+    m_bevSecTour[1]->BindProperty(0, val);
     m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RY,&val);
-    m_bevTour[1]->BindProperty(1, val);
+    m_bevSecTour[1]->BindProperty(1, val);
 
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
@@ -346,10 +362,9 @@ int CAvmViewControlModel::SetCurrentView()
 {
 	ProcessSingleViewDisplay();
 	Process3dViewDisplay();
-
-	m_avmSingleViewNode->UpdateNode();
-
-	//SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
+	ProcessTourView();
+	ProcessMattsView();
+	ProcessLargeSingleView();
 
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
@@ -358,14 +373,25 @@ int CAvmViewControlModel::SetViewNodeVisibility(VisibilityIndexT pFuncId)
 {
 	unsigned char viewVisibilityFlag = 0;
 	AVMData::GetInstance()->Get3dViewVisibility(pFuncId, viewVisibilityFlag);
-	m_avm3dViewNode->SetVisibility(viewVisibilityFlag);
+	if(m_avm3dViewNode)
+	{
+		m_avm3dViewNode->SetVisibility(viewVisibilityFlag);
+	}
 	AVMData::GetInstance()->GetStitchViewVisibility(pFuncId, viewVisibilityFlag);
-	m_avmStitchViewNode->SetVisibility(viewVisibilityFlag);
+	if(m_avmStitchViewNode)
+	{
+		m_avmStitchViewNode->SetVisibility(viewVisibilityFlag);
+	}
 	AVMData::GetInstance()->GetSingleViewVisibility(pFuncId, viewVisibilityFlag);
-	m_avmSingleViewNode->SetVisibility(viewVisibilityFlag);
+	if(m_avmSingleViewNode)
+	{
+		m_avmSingleViewNode->SetVisibility(viewVisibilityFlag);
+	}
 	AVMData::GetInstance()->GetObjectViewVisibility(pFuncId, viewVisibilityFlag);
-	m_avmObjViewNode->SetVisibility(viewVisibilityFlag);
-
+	if(m_avmObjViewNode)
+	{
+		m_avmObjViewNode->SetVisibility(viewVisibilityFlag);
+	}
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
 }
@@ -401,28 +427,142 @@ int CAvmViewControlModel::ProcessSingleViewDisplay()
 		AVMData::GetInstance()->SetSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
 		AVMData::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 	}
-
-
+	if(m_avmSingleViewNode)
+	{
+		m_avmSingleViewNode->UpdateNode();
+	}
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
 int CAvmViewControlModel::Process3dViewDisplay()
 {
+	static unsigned char processTourView = 0;
 	unsigned char avm3dViewCmd = 0;
+	static unsigned char lastAvm3dViewCmd = 200;
 	AVMData::GetInstance()->GetDisplayViewCmd(avm3dViewCmd);
 
-	if(avm3dViewCmd > RIGHT_SINGLE_VIEW)
+	if(avm3dViewCmd > RIGHT_SINGLE_VIEW
+		&& avm3dViewCmd <= BOSH_REAR_VIEW_TOP
+		&& avm3dViewCmd != TOUR_VIEW
+		&& lastAvm3dViewCmd != avm3dViewCmd)
 	{
 		AVMData::GetInstance()->Set3dViewIndex(avm3dViewCmd);
+		
 		Avm3dViewMode(avm3dViewCmd);
+
+		AVMData::GetInstance()->Set3dViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
+		AVMData::GetInstance()->SetStitchViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
+		AVMData::GetInstance()->SetSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		AVMData::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);	
+		
+		lastAvm3dViewCmd = avm3dViewCmd;
+
+	}
+	else
+	{
+		lastAvm3dViewCmd = avm3dViewCmd;
+	}
+
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+int CAvmViewControlModel::ProcessTourView()
+{
+	static unsigned char processTourView = 0;
+	unsigned char avm3dViewCmd = 0;
+	static unsigned char lastAvm3dViewCmd = 200;
+	AVMData::GetInstance()->GetDisplayViewCmd(avm3dViewCmd);
+
+	if(avm3dViewCmd == TOUR_VIEW
+		&& lastAvm3dViewCmd != avm3dViewCmd)
+	{
+		AVMData::GetInstance()->Set3dViewIndex(avm3dViewCmd);	
+
+		Avm3dViewMode(avm3dViewCmd);
+
 		AVMData::GetInstance()->Set3dViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
 		AVMData::GetInstance()->SetStitchViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
 		AVMData::GetInstance()->SetSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		AVMData::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
-	}
 
+		m_bevSecTour[0]->Start();
+		m_bevSecTour[1]->Start();
+
+		lastAvm3dViewCmd = avm3dViewCmd;
+	}
+	else if(avm3dViewCmd != TOUR_VIEW)
+	{
+		m_bevSecTour[0]->Stop();
+    	m_bevSecTour[1]->Stop(); 
+		lastAvm3dViewCmd = avm3dViewCmd;
+	}
 
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
+int CAvmViewControlModel::ProcessMattsView()
+{
+	unsigned char mattsViewCmd = 0;
+	AVMData::GetInstance()->GetDisplayViewCmd(mattsViewCmd);
+
+	if(mattsViewCmd == MATTS_VIEW)
+	{	
+		mattsViewCmd = four_camera_index;
+		AVMData::GetInstance()->SetSingleViewChannel(mattsViewCmd);
+		AVMData::GetInstance()->Set3dViewVisibility(PROCESS_MATTS_FUNC, 0);
+		AVMData::GetInstance()->SetStitchViewVisibility(PROCESS_MATTS_FUNC, 0);
+		AVMData::GetInstance()->SetSingleViewVisibility(PROCESS_MATTS_FUNC, 1);
+		AVMData::GetInstance()->SetObjectViewVisibility(PROCESS_MATTS_FUNC, 0);
+	}
+	if(m_avmMattsView)
+	{
+		m_avmMattsView->Update();
+	}
+
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+
+int CAvmViewControlModel::ProcessLargeSingleView()
+{
+	unsigned char singleViewCmd = 0;
+	AVMData::GetInstance()->GetDisplayViewCmd(singleViewCmd);
+
+	if(singleViewCmd <= RIGHT_LARGE_SINGLE_VIEW
+		&& singleViewCmd >= FRONT_LARGE_SINGLE_VIEW)
+	{
+		switch(singleViewCmd)
+		{
+		case FRONT_LARGE_SINGLE_VIEW:
+			singleViewCmd = front_camera_index;
+			break;
+		case REAR_LARGE_SINGLE_VIEW:
+			singleViewCmd = rear_camera_index;
+			break;
+		case LEFT_LARGE_SINGLE_VIEW:
+			singleViewCmd =  left_camera_index;
+			break;
+		case RIGHT_LARGE_SINGLE_VIEW:
+			singleViewCmd = right_camera_index;
+			break;
+		default:
+			break;
+		}
+
+		AVMData::GetInstance()->SetSingleViewChannel(singleViewCmd);
+		AVMData::GetInstance()->Set3dViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
+		AVMData::GetInstance()->SetStitchViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
+		AVMData::GetInstance()->SetSingleViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 1);
+		AVMData::GetInstance()->SetObjectViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
+
+		if(m_avmSingleViewNode)
+		{
+			m_avmSingleViewNode->UpdateNode();
+		}
+	}
+	if(m_avmLargeSingleView)
+	{
+		m_avmLargeSingleView->Update();
+	}	
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+
  int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
  {
 	 Avm3dViewCameraParamsT cameraParams[BOSH_REAR_VIEW_TOP - FRONT_3D_VIEW + 1] = 

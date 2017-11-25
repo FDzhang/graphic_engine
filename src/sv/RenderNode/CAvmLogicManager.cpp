@@ -44,9 +44,57 @@ int CAvmLogicManager::InitViewModel()
 }
 int CAvmLogicManager::Update()
 {
-	AVMData::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
+	unsigned char direction = FRONT_SINGLE_VIEW;
+	static int cnt = 0;
+	static int init_flag = 0;
+	static const int START_UP_TURN_TIME = 120;
+	if(init_flag ==1)
+    {
+        if(cnt>= START_UP_TURN_TIME)
+        {       
+			direction = REAR_SINGLE_VIEW;
+			init_flag =2;
+                
+        }
+    }
+    if(init_flag==0)
+    {
+		direction = FRONT_SINGLE_VIEW;
+		init_flag = 1;
+    }
+	if(cnt > START_UP_TURN_TIME)
+	{
+	   direction = FRONT_LARGE_SINGLE_VIEW;
+	   cnt++;
+	}
+	else 
+	{
+	    cnt++;
+	}
+
+	if(cnt > 500)
+	{
+		direction = MATTS_VIEW;
+	}
+	//direction = MATTS_VIEW;
+	//direction = FRONT_SINGLE_VIEW;
+	//direction = FRONT_LARGE_SINGLE_VIEW;
+	AVMData::GetInstance()->SetDisplayViewCmd(direction);
 	avmViewControlModel->SetCurrentView();
-	avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
+	if(direction >= FRONT_LARGE_SINGLE_VIEW
+		&& direction <= RIGHT_LARGE_SINGLE_VIEW)
+	{
+		avmViewControlModel->SetViewNodeVisibility(PROCESS_LARGE_SINGLVIEW_FUNC);
+	}
+	else if(direction == MATTS_VIEW)
+	{		
+		avmViewControlModel->SetViewNodeVisibility(PROCESS_MATTS_FUNC);
+
+	}
+	else
+	{
+		avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
+	}
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }

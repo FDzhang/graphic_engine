@@ -33,6 +33,8 @@
 
 #include "HMISource/CSVChangAnHmi.h"
 
+#include "RenderNode/CAvmLogicManager.h"
+
 SVUI* svui;
 SVScene* svscn;
 #define VK_A 0x41
@@ -307,6 +309,10 @@ LutData,MAX_NAME_LENGTH);
 
 	InitHmi(width, height);
 
+	//m_avmLogicManager = new CAvmLogicManager;
+	//m_avmLogicManager->InitViewModel();
+
+
 	#ifndef EMIRROR
 	//svui->InitNode(sv_config,width,height);
 	#endif
@@ -381,7 +387,10 @@ bool XRSV::update(unsigned int view_control_flag)
     UpdateHmiData();
 
         svscn->Update(view_control_flag,0);
-        
+
+		//m_avmLogicManager->Update();
+
+		
 		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();

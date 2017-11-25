@@ -172,7 +172,22 @@ public:
 
 	void Set3dViewIndex(unsigned char pIndex);
 	void Get3dViewIndex(unsigned char& pIndex);
+	void SetSingleViewNode(class ISceneNode* pSingleViewNode);
+	void GetSingleViewNode(class ISceneNode** pSingleViewNode);
 
+	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
+	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);
+
+	void SetSingleViewVertex(float* pSingleViewVertex[]);
+	void GetSingleViewVertex(float* pSingleViewVertex[]);
+
+	void SetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[]);
+	void GetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[]);
+
+	void SetSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
+	void GetSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
+	void SetLargeSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
+	void GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 
 	void cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord,unsigned char unitmm=0);
@@ -210,6 +225,12 @@ private:
 	SurroundViewCameraParamsT m_singleViewCameraParams;
 	class GlSV2D* m_sv2dData;
 	class IAnimationManager* m_am;
+	class ISceneNode* m_singleViewNode;
+	class IMesh*	  m_singleViewMesh[4];
+	class INode*	  m_singleViewPlaneNode[4];
+	float*			  m_singleViewVertex[4];
+	float*			  m_singleViewRoi[4];
+	float*			  m_largeSingleViewRoi[4];
 	
 	unsigned char m_avm3dVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmSingleViewVisibility[PROCESS_FUNC_NUMS];

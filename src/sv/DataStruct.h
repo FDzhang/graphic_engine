@@ -63,6 +63,7 @@ enum
 	rear_camera_index,
 	left_camera_index,
 	right_camera_index,
+	four_camera_index,
 };
 #define TURN_LIGHT_OFF  0
 #define TURN_LIGHT_LEFT 1
@@ -131,6 +132,11 @@ typedef enum RightViewType {
 	BMW_LEFT_REAR_VIEW,
 	BMW_RIGHT_REAR_VIEW,
     BMW_REAR_3D_VIEW,	
+	FRONT_LARGE_SINGLE_VIEW,
+	REAR_LARGE_SINGLE_VIEW,
+	LEFT_LARGE_SINGLE_VIEW,
+	RIGHT_LARGE_SINGLE_VIEW,
+	MATTS_VIEW,
 	TOTAL_VIEW_NUM,
 };
 
@@ -362,6 +368,8 @@ SurroundViewCameraParamsT;
 typedef enum VisibilityIndexTag
 {	
 	PROCESS_TURNLIGHT_FUNC,
+	PROCESS_MATTS_FUNC,
+	PROCESS_LARGE_SINGLVIEW_FUNC,
 	PROCESS_VIEW_DISPLAY_FUNC,
 	PROCESS_GET_STATUS_FUNC,
 	PROCESS_FUNC_NUMS,

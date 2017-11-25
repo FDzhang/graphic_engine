@@ -801,7 +801,26 @@ switch(id)
              break;
              default:
 			 	XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
+
+
+						   if(channelId == four_camera_index)
+						{
+							mtl_id = pMtl->GetDiffuseMap()->texid;
+							for(camera_index=0;camera_index<4;camera_index++)
+							{
+								if(mtl_id == AVMData::GetInstance()->m_cam_source->GetCameraSourceTextureId(camera_index))
+								{
+									break;
+								}
+							
+							}
+							AVMData::GetInstance()->m_cam_source->UseCameraTexture(camera_index);
+						}
+						else
+						{
 						   AVMData::GetInstance()->m_cam_source->UseCameraTexture(channelId);
+						}
+						
 							for(int i=0;i<3;i++)
                             {
 							    fLumCofL1[i]=1.0;

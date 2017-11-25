@@ -50,7 +50,7 @@ static char OTHERTEXMASK[] = XR_RES"mask_other.bmp";
 static char *RADARALARMTEX[4] = {XR_RES"red.dds",XR_RES"orange.dds",XR_RES"yellow.dds",XR_RES"green.dds"};
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-static char CAR2DICONBMP[] = XR_RES"Car/sv_car_icon.dds";
+/*static char CAR2DICONBMP[] = XR_RES"Car/sv_car_icon.dds";
 static char CARINTTEX[]=XR_RES"Car/car_int_tex.bmp";
 static char CARTEXMASK[] = XR_RES"Car/mask1.bmp";
 static char CARAMBIENTTEXTMASK[] = XR_RES"Car/car_mask.bmp";
@@ -68,7 +68,25 @@ static char CARLIGHTTEX[]=XR_RES"Car/light.tga";
 
 static char *CARDOORMODEL[4] = {XR_RES"Car/driver_door.mqo",XR_RES"Car/driver_assist_door.mqo",XR_RES"Car/left_rear.mqo",XR_RES"Car/right_rear.mqo"};
 static char *CARDOORWINDOWMODEL[4] = {XR_RES"Car/driver_door_w.mqo",XR_RES"Car/driver_assist_door_w.mqo",XR_RES"Car/left_rear_w.mqo",XR_RES"Car/right_rear_w.mqo"};
+*/
+//------------------------------------
+static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
+static char WHEELMODEL[] = XR_RES"envisionwheelsingle.mqo";
+static char WHEELMODELRIGHT[] = XR_RES"rx5wheelsingleright.mqo";
 
+static char CARMODEL[] = XR_RES"envision_frame.mqo";
+static char CARLIGHTMODEL[] = XR_RES"envision_light.mqo";
+static char CARINTMODEL[] = XR_RES"envision_internal.mqo";
+static char CARWINDOWMODEL[] = XR_RES"envision_window.mqo";
+
+static char CARLIGHTTEX[]=XR_RES"envision_light.tga";
+static char CARINTTEX[]=XR_RES"envision_int_tex.bmp";
+static char *CARDOORMODEL[4] = {XR_RES"envision_driver_door.mqo",XR_RES"envision_driver_assist_door.mqo",XR_RES"envision_left_rear.mqo",XR_RES"envision_right_rear.mqo"};
+static char *CARDOORWINDOWMODEL[4] = {XR_RES"envision_driver_door_w.mqo",XR_RES"envision_driver_assist_door_w.mqo",XR_RES"envision_left_rear_w.mqo",XR_RES"envision_right_rear_w.mqo"};
+static char CARTEX[] = XR_RES"envision_white.tga";
+static char CARAMBIENTTEXTMASK[] = XR_RES"envision_mask.bmp";
+static char CARLIGHTON[]=XR_RES"envision_light_on.tga";
+static char CARTEXMASK[] = XR_RES"mask1.bmp";
 CAvmObjectViewNode::CAvmObjectViewNode()
 {
 
@@ -105,6 +123,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 
 	IMaterial* carmtl;
 	IMaterial *carlightmtl;
+	IMaterial *carInternalMtl;
 	float door_offset_x;
 	float door_offset_y;
 
@@ -152,6 +171,17 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 		m_ground->RotateDX(90);	
 		m_ground->SetEnable(1);
 	}
+
+    m_carInternalId = m_objViewNode->CreateMaterial(Material_RigidColor_Texture, &carInternalMtl);
+	carInternalMtl->SetDiffuseMap(CARINTTEX);
+	carInternalMtl->SetEnvironmentMap(CARENV);
+	carInternalMtl->SetAmbientMap(CARTEXMASK);
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARINTMODEL, m_carInternalId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_CarInternal); //envision
+
+	m_CarInternal->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
+	m_CarInternal->SetEnable(1);
+	
+	m_CarInternal->RotateDY(0);
 
 	m_carmtlId = m_objViewNode->CreateMaterial(Material_Glossy, &carmtl);
 	carmtl->SetDiffuseMap(CARTEX);

@@ -74,7 +74,7 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	//step 1. prepare for Material ,different camera input image 
 	IRenderEffect* pIEffect;
 	int SV2DMTL;
-	SV2DMTL = m_singleViewNode->CreateMaterial(Material_Custom, &m_SVSingleMtl);
+/*	SV2DMTL = m_singleViewNode->CreateMaterial(Material_Custom, &m_SVSingleMtl);
 	m_SVSingleMtl->CreateMaterialEffect(&pIEffect);
 	
 	AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_SVSingleMtl,front_camera_index); 
@@ -82,12 +82,16 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	pIEffect->InitShaderFromFile("Effect_SV2D", VertexName, FragShaderName,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
 	pIEffect->SetRenderDelegate(m_renderDelegate);
 	
-	
+	*/ //Original Code
+
     for(int i = eFrontSingle;i<=eRightSingle;i++)
     {
 	//step 2 prepare mesh for 2D stiching
 
 		m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
+
+		AVMData::GetInstance()->SetSingleViewRoi(pData, i - eFrontSingle);
+
 		meshid = m_singleViewNode->CreateMesh(ModelType_Null, 1,0,0,MeshName[i-eFrontSingle], &(m_singleViewMesh[i - eFrontSingle]));
 		m_singleViewMesh[i - eFrontSingle]->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
 		m_SV2DData->GetIndexBuffer(i,&pIndex,&BufferSize); 	
@@ -100,7 +104,16 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 		//step 3 combine mesh and material(video texture) together.
 		materialID = 5;
 
-		
+		//--------------------
+		SV2DMTL = m_singleViewNode->CreateMaterial(Material_Custom, &m_SVSingleMtl);
+		m_SVSingleMtl->CreateMaterialEffect(&pIEffect);
+	
+		AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_SVSingleMtl,i - eFrontSingle); 
+
+		pIEffect->InitShaderFromFile("Effect_SV2D", VertexName, FragShaderName,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
+		pIEffect->SetRenderDelegate(m_renderDelegate);
+	   //--------------------- new code
+
 		modelId = m_singleViewNode->CreateModel(0, SV2DMTL, -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
 		m_SV2Dplane[i]->SetMesh(meshid);
 		m_SV2Dplane[i]->SetName(MeshName[i-eFrontSingle]);		
@@ -120,6 +133,12 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	m_singleViewCamera->SetPosition(0,0,SINGLEVIEW_CAMERA_DEFAULT_HEIGHT);
 	m_singleViewCamera->LookAt(0.0,0.0,-0.0);
 	m_singleViewCamera->RotateAround(0,45);
+
+	AVMData::GetInstance()->SetSingleViewNode(m_singleViewNode);
+	AVMData::GetInstance()->SetSingleViewPlaneNode(m_SV2Dplane);
+	AVMData::GetInstance()->SetSingleViewVertex(m_singleviewVertex);
+	AVMData::GetInstance()->SetSingleViewMesh(m_singleViewMesh);
+
 	return AVM_SINGLEVIEW_NORMAL;
 }
 int CAvmSingleViewNode::UpdateNode()

@@ -88,6 +88,8 @@ private:
 	unsigned char m_vehicleId;
 	unsigned char m_fullScreenMode;
 
+	class CAvmLogicManager*           m_avmLogicManager;
+
 };
 
 #endif /* XR_SV_H_ */

@@ -77,7 +77,7 @@ unsigned int CSVChanganHmi::m_start_count_time = 0;
 
 CSVChanganHmi::CSVChanganHmi():m_touchPressIndex(0),m_lccIconVisibility(0)
 {
-    //memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);
+    memset(ccagIcon, 0, sizeof(HMIButton*) * CCAG_ICON_NUMS);
 	m_lccIcon = NULL;
 }
 

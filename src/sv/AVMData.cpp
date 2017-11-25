@@ -357,12 +357,41 @@ void AVMData::SetSv2dData(GlSV2D* pGlSv2d)
 }
 void AVMData::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
 {
-	if(pPose != NULL
-		&& pWidth != NULL
-		&& pHeight != NULL)
+    float car_point[4];
+	GpuCvPoint2D32f car_rect[2];
+	GpuCvPoint2D32f car_rect_world[2];
+	float pModelPoint[6];
+	float pWorldPint[6];
+	
+    int i=0;
+
+	for(i=0;i<4;i++)
 	{
+	    m_2D_lut->GetCarRect(&car_point[i],i);
 		
 	}
+
+	car_rect[0].x = car_point[rect_left];
+	car_rect[0].y = car_point[rect_top];
+	car_rect[1].x = car_point[rect_right];
+	car_rect[1].y = car_point[rect_bottom];
+	
+    for(i = 0;i<2;i++)
+    {
+	    m_2D_lut->CvtPointImage2Wolrd(car_rect[i],&car_rect_world[i]);
+
+		pWorldPint[3*i] = car_rect_world[i].x;
+	    pWorldPint[3*i+1] = car_rect_world[i].y;
+        pWorldPint[3*i+2] = 0;
+		
+        cvtWorldPoint2ModelPoint3D(&pModelPoint[3*i],&pWorldPint[3*i]);
+    }
+
+	*pWidth = pModelPoint[3]-pModelPoint[0];
+	*pHeight = pModelPoint[2]-pModelPoint[5];
+	pPose[0] = (pModelPoint[3]+pModelPoint[0])/2.0;
+	pPose[1] = pModelPoint[1];
+	pPose[2] = (pModelPoint[2]+pModelPoint[5])/2.0;
 }
 
 //input world unit is meter,
@@ -534,6 +563,102 @@ void AVMData::Set3dViewIndex(unsigned char pIndex)
 void AVMData::Get3dViewIndex(unsigned char& pIndex)
 {
 	pIndex = m_avm3dViewIndex;
+}
+
+void AVMData::SetSingleViewNode(class ISceneNode* pSingleViewNode)
+{
+	m_singleViewNode = pSingleViewNode;
+}
+void AVMData::GetSingleViewNode(class ISceneNode** pSingleViewNode)
+{
+	*pSingleViewNode = m_singleViewNode;
+}
+
+void AVMData::SetSingleViewMesh(class IMesh* pSingleViewMesh[])
+{
+	m_singleViewMesh[0] = pSingleViewMesh[0];
+	m_singleViewMesh[1] = pSingleViewMesh[1];
+	m_singleViewMesh[2] = pSingleViewMesh[2];
+	m_singleViewMesh[3] = pSingleViewMesh[3];
+}
+void AVMData::GetSingleViewMesh(class IMesh* pSingleViewMesh[])
+{
+	pSingleViewMesh[0] = m_singleViewMesh[0];
+	pSingleViewMesh[1] = m_singleViewMesh[1];
+	pSingleViewMesh[2] = m_singleViewMesh[2];
+	pSingleViewMesh[3] = m_singleViewMesh[3];
+}
+
+void AVMData::SetSingleViewVertex(float* pSingleViewVertex[])
+{
+	m_singleViewVertex[0] = pSingleViewVertex[0];
+	m_singleViewVertex[1] = pSingleViewVertex[1];
+	m_singleViewVertex[2] = pSingleViewVertex[2];
+	m_singleViewVertex[3] = pSingleViewVertex[3];
+}
+void AVMData::GetSingleViewVertex(float* pSingleViewVertex[])
+{
+	pSingleViewVertex[0] = m_singleViewVertex[0];
+	pSingleViewVertex[1] = m_singleViewVertex[1];
+	pSingleViewVertex[2] = m_singleViewVertex[2];
+	pSingleViewVertex[3] = m_singleViewVertex[3];
+}
+
+void AVMData::SetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[])
+{
+	m_singleViewPlaneNode[0] = pSingleViewPlaneNode[eFrontSingle];
+	m_singleViewPlaneNode[1] = pSingleViewPlaneNode[eRearSingle];
+	m_singleViewPlaneNode[2] = pSingleViewPlaneNode[eLeftSingle];
+	m_singleViewPlaneNode[3] = pSingleViewPlaneNode[eRightSingle];
+}
+void AVMData::GetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[])
+{
+	pSingleViewPlaneNode[0] = m_singleViewPlaneNode[0];
+	pSingleViewPlaneNode[1] = m_singleViewPlaneNode[1];
+	pSingleViewPlaneNode[2] = m_singleViewPlaneNode[2];
+	pSingleViewPlaneNode[3] = m_singleViewPlaneNode[3];
+}
+
+void AVMData::SetSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+
+	static unsigned initFlag[4] = {0};
+	if(initFlag[pViewIndex] == 0)
+	{
+		m_singleViewRoi[pViewIndex] = new float[28];
+		initFlag[pViewIndex] = 1;
+	}
+	
+	memcpy(m_singleViewRoi[pViewIndex], pSingleViewRoi, sizeof(float)*28);
+}
+void AVMData::GetSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+	*pSingleViewRoi = m_singleViewRoi[pViewIndex];
+}
+
+void AVMData::SetLargeSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+
+	static unsigned initFlag[4] = {0};
+	if(initFlag[pViewIndex] == 0)
+	{
+		m_largeSingleViewRoi[pViewIndex] = new float[4];
+		initFlag[pViewIndex] = 1;
+	}
+	
+	memcpy(m_largeSingleViewRoi[pViewIndex], pSingleViewRoi, sizeof(float)*4);
+}
+void AVMData::GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+	*pSingleViewRoi = m_largeSingleViewRoi[pViewIndex];
 }
 
 /*===========================================================================*\
