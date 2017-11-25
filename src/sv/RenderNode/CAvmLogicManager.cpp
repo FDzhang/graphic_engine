@@ -44,7 +44,7 @@ int CAvmLogicManager::InitViewModel()
 }
 int CAvmLogicManager::Update()
 {
-	unsigned char direction = FRONT_SINGLE_VIEW;
+	unsigned char direction = TOUR_VIEW;
 	static int cnt = 0;
 	static int init_flag = 0;
 	static const int START_UP_TURN_TIME = 120;
@@ -59,7 +59,7 @@ int CAvmLogicManager::Update()
     }
     if(init_flag==0)
     {
-		direction = FRONT_SINGLE_VIEW;
+		direction = TOUR_VIEW;
 		init_flag = 1;
     }
 	if(cnt > START_UP_TURN_TIME)
@@ -74,7 +74,7 @@ int CAvmLogicManager::Update()
 
 	if(cnt > 500)
 	{
-		direction = MATTS_VIEW;
+		direction = FRONT_SINGLE_VIEW;
 	}
 	//direction = MATTS_VIEW;
 	//direction = FRONT_SINGLE_VIEW;

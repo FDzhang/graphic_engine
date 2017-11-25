@@ -31,6 +31,7 @@
 #include "../RenderNode/CAvmObjectViewNode.h"
 #include "../RenderNode/CAvmMattsView.h"
 #include "../RenderNode/CAvmLargeSingleView.h"
+#include "../RenderNode/CAvmTimeStitcherNode.h"
 #include "../GlSV2D.h"
 
 typedef struct Avm3dViewCameraParamsTag
@@ -50,7 +51,8 @@ typedef struct Avm3dViewCameraParamsTag
 Avm3dViewCameraParamsT;
 
 CAvmViewControlModel::CAvmViewControlModel():m_avm3dViewNode(0),m_avmSingleViewNode(0), 
-											m_avmStitchViewNode(0), m_avmObjViewNode(0)
+											m_avmStitchViewNode(0), m_avmObjViewNode(0),
+											m_avmTimeStitcherNode(0)
 {
 
 }
@@ -65,7 +67,21 @@ int CAvmViewControlModel::InitViewNode()
 	unsigned char initSingleViewNode = 0;
 	unsigned char initObjViewNode = 0;
 
-	m_avmStitchViewNode= new CAvmStitchViewNode;
+
+	unsigned char carTransparentStatus = 1;
+	AVMData::GetInstance()->SetCarTransparentStatus(carTransparentStatus);
+
+	AVMData::GetInstance()->GetCarTransparentStatus(carTransparentStatus);
+
+	if(carTransparentStatus == 0)
+	{
+		m_avmStitchViewNode = new CAvmStitchViewNode;
+	}
+	else
+	{
+		m_avmTimeStitcherNode = new CAvmTimeStitcherNode;
+	}
+
 	m_avmSingleViewNode= new CAvmSingleViewNode;
 	m_avm3dViewNode= new CAvm3dViewNode;
 	m_avmObjViewNode= new CAvmObjectViewNode;
@@ -135,11 +151,24 @@ int CAvmViewControlModel::InitViewNode()
 	m_3dViewCameraParams.zfar = 12000.0f;
 	AVMData::GetInstance()->Set3dViewCameraParams(&m_3dViewCameraParams);
 
-	if(m_avmStitchViewNode->InitNode(m_xrCore) == AVM_STITCHVIEW_NORMAL)
+
+	if(m_avmStitchViewNode)
 	{
-		m_avmStitchViewNode->SetClear(TRUE,TRUE);
-		initStitchViewNode = 1;
+		if(m_avmStitchViewNode->InitNode(m_xrCore) == AVM_STITCHVIEW_NORMAL)
+		{
+			m_avmStitchViewNode->SetClear(TRUE,TRUE);
+			initStitchViewNode = 1;
+		}
 	}
+	if(m_avmTimeStitcherNode)
+	{
+		if(m_avmTimeStitcherNode->InitNode(m_xrCore) == AVM_STITCHVIEW_NORMAL)
+		{
+			m_avmTimeStitcherNode->SetClear(TRUE,TRUE);
+			initStitchViewNode = 1;
+		}
+	}
+
 	if(m_avmSingleViewNode->InitNode(m_xrCore) == AVM_SINGLEVIEW_NORMAL)
 	{
 		m_avmSingleViewNode->SetClear(FALSE, FALSE);
@@ -381,6 +410,10 @@ int CAvmViewControlModel::SetViewNodeVisibility(VisibilityIndexT pFuncId)
 	if(m_avmStitchViewNode)
 	{
 		m_avmStitchViewNode->SetVisibility(viewVisibilityFlag);
+	}
+	if(m_avmTimeStitcherNode)
+	{
+		m_avmTimeStitcherNode->SetVisibility(viewVisibilityFlag);
 	}
 	AVMData::GetInstance()->GetSingleViewVisibility(pFuncId, viewVisibilityFlag);
 	if(m_avmSingleViewNode)

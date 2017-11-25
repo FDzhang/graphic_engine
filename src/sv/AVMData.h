@@ -122,6 +122,8 @@ public:
 	
 	void GetBevConfig(BEV_CONFIG_T* pConfig);
 	void GetCarTransparentStatus(unsigned char& pCarTranspStatus);
+	void SetCarTransparentStatus(unsigned char pCarTranspStatus);
+
 
 	void Get3dViewRegion(Region** pRegion);
 	void GetStitchViewRegion(Region** pRegion);
@@ -231,7 +233,7 @@ private:
 	float*			  m_singleViewVertex[4];
 	float*			  m_singleViewRoi[4];
 	float*			  m_largeSingleViewRoi[4];
-	
+
 	unsigned char m_avm3dVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmSingleViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmStitchViewVisibility[PROCESS_FUNC_NUMS];
@@ -245,6 +247,8 @@ private:
 	unsigned char m_displayViewCmd;
 	unsigned char m_singleViewChannel;
 	unsigned char m_avm3dViewIndex;
+
+	unsigned char m_carTranspStatus;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

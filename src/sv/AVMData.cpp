@@ -256,9 +256,12 @@ void AVMData::GetBevConfig(BEV_CONFIG_T* pConfig)
 }
 void AVMData::GetCarTransparentStatus(unsigned char& pCarTranspStatus)
 {
-	pCarTranspStatus = 1;
+	pCarTranspStatus = m_carTranspStatus;
 }
-
+void AVMData::SetCarTransparentStatus(unsigned char pCarTranspStatus)
+{
+	m_carTranspStatus = pCarTranspStatus;
+}
 void AVMData::Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
 {
 	*pCameraParams = &m_3dViewCameraParams;

@@ -61,6 +61,7 @@ private:
 	class CAvm3dViewNode* m_avm3dViewNode;
 	class CAvmSingleViewNode* m_avmSingleViewNode;
 	class CAvmStitchViewNode* m_avmStitchViewNode;
+	class CAvmTimeStitcherNode* m_avmTimeStitcherNode;
 	class CAvmObjectViewNode* m_avmObjViewNode;
 	class CAvmMattsView*      m_avmMattsView;
 	class CAvmLargeSingleView* m_avmLargeSingleView;
