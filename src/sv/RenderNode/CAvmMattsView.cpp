@@ -151,6 +151,10 @@ int CAvmMattsView::SetVertextValue(float* pVertex, int pViewIndex)
 
 	return MATTS_VIEW_NORMAL;
 }
+int CAvmMattsView::ResetMattsViewRegion()
+{
+	return MATTS_VIEW_NORMAL;
+}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

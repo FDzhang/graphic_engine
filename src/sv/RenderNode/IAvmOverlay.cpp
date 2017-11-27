@@ -1,5 +1,5 @@
 /*===========================================================================*\
- * FILE: CAvmLogicManager.h
+ * FILE: IAvmOverlay.cpp
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -23,49 +23,22 @@
  *   None.
  *
 \*===========================================================================*/
+#include "IAvmOverlay.h"
+#include "../AVMData.h"
 
-#ifndef _CAVM_LOGIC_CONTROL_H_
-#define _CAVM_LOGIC_CONTROL_H_
-
-#include "../../XrCore/XrSrc/External/XrHeaders.h"
-#include "../DataStruct.h"
-
-typedef enum AvmLogicManagerErrorCodeTag
+int IAvmOverlay::Init(class ISceneNode* pRootNode)
 {
-	AVM_LOGIC_CONTROL_NORMAL,
-	AVM_LOGIC_VIEW_MODEL_INIT_FAILED,
-
-};
-
-class CAvmLogicManager
+	return AVM_OVERLAY_NORMAL;
+}
+int IAvmOverlay::Update()
 {
-public:
-	CAvmLogicManager();
-	virtual ~CAvmLogicManager();
-	virtual int Init();
-	virtual int Update();
-
-private:
-	virtual int InitViewModel();
-	virtual int InitOverlayModel();
-	virtual int InitAlgoHmiModel();
-	virtual int UpdateViewModel();
-	virtual int UpdateOverlayModel();
-	virtual int UpdateAlgoHmiModel();
-private:
-	class CAvmViewControlModel* avmViewControlModel;
-
-private:
-
-};
-
-#endif // _CAVM_LOGIC_CONTROL_H_
-
+	return AVM_OVERLAY_NORMAL;
+}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  11/23/17   Jensen Wang   Create the CAvmLogicManager class.
+ *  11/01/17   Jensen Wang   Create the IAvmOverlay class.
 \*===========================================================================*/

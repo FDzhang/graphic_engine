@@ -69,6 +69,13 @@ void AVMCANData::Get_Right_Wheel_Speed(float * Vehicle_Speed)
 {
     *Vehicle_Speed = m_CAN_Data.right_wheel_speed;
 }
+void AVMCANData::Get_Wheel_Speed(float* Front_Right_Wheel_Speed, float* Front_Left_Wheel_Speed, float* Rear_Right_Wheel_Speed, float* Rear_Left_Wheel_Speed)
+{
+    *Front_Right_Wheel_Speed =  m_CAN_Data.right_wheel_speed;
+    *Front_Left_Wheel_Speed =  m_CAN_Data.left_wheel_speed;
+    *Rear_Right_Wheel_Speed =  m_CAN_Data.right_wheel_speed;
+    *Rear_Left_Wheel_Speed =  m_CAN_Data.left_wheel_speed;
+}    
 
 void AVMCANData::Get_Door_State( unsigned char * Driver_Door_State, unsigned char * Passenger_Door_State,  unsigned char * Rear_Right_Door_State, unsigned char * Rear_Left_Door_State)
 {

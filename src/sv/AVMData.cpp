@@ -663,6 +663,22 @@ void AVMData::GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewI
 		pViewIndex = 0;
 	*pSingleViewRoi = m_largeSingleViewRoi[pViewIndex];
 }
+void AVMData::GetTimeStitcherNode(class SVNode2DStich**	pTimeStitchNode)
+{
+	*pTimeStitchNode = m_timeStitchNode;
+}
+void AVMData::SetTimeStitcherNode(class SVNode2DStich*	pTimeStitchNode)
+{
+	m_timeStitchNode = pTimeStitchNode;
+}
+void AVMData::GetApaOverlayResult(APAOverlayStruct* pAPAReslt)
+{
+	*pAPAReslt = m_apaReslt;
+}
+void AVMData::SetApaOverlayResult(APAOverlayStruct pAPAReslt)
+{
+	m_apaReslt = pAPAReslt;
+}
 
 /*===========================================================================*\
  * External Function Definitions

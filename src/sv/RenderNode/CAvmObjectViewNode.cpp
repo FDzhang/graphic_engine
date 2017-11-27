@@ -24,6 +24,7 @@
  *
 \*===========================================================================*/
 #include "CAvmObjectViewNode.h"
+#include "../SVNode2DStich.h"
 #include "../AVMData.h"
 
 
@@ -123,7 +124,6 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 
 	IMaterial* carmtl;
 	IMaterial *carlightmtl;
-	IMaterial *carInternalMtl;
 	float door_offset_x;
 	float door_offset_y;
 
@@ -159,7 +159,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	if(isCarTransparentMode)
 	{
 		int lisenceMeshId = m_objViewNode->CreateMesh(ModelType_Plane_Dynamic, 2,2, 0, "ground", &m_groundmesh);
-		int groundId = m_objViewNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default, 0,0,0,1.0, &m_ground);
+		int groundId = m_objViewNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default, pos[0],pos[1],pos[2],1.0, &m_ground);
 		m_ground->SetMesh(lisenceMeshId);
 		m_ground->SetEnable(1);
 	}
@@ -172,6 +172,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 		m_ground->SetEnable(1);
 	}
 
+	IMaterial* carInternalMtl;
     m_carInternalId = m_objViewNode->CreateMaterial(Material_RigidColor_Texture, &carInternalMtl);
 	carInternalMtl->SetDiffuseMap(CARINTTEX);
 	carInternalMtl->SetEnvironmentMap(CARENV);
@@ -356,6 +357,145 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 }
 int CAvmObjectViewNode::UpdateNode()
 {
+	ProcessDoorStatus();
+	ProcessWheelTurn();
+	ProcessWheelRoll();
+
+	unsigned char carTransparentStatus = 0;
+	AVMData::GetInstance()->GetCarTransparentStatus(carTransparentStatus);
+	if(carTransparentStatus)
+	{
+		static SVNode2DStich* timeStitchNode =  NULL;
+		if(timeStitchNode == NULL)
+		{
+			AVMData::GetInstance()->GetTimeStitcherNode(&timeStitchNode);
+		}
+		m_3dGroundMtl->SetDiffuseMap(timeStitchNode->GetGroundTextureId());
+	}
+	return AVM_OBJVIEW_NORMAL;
+}
+int CAvmObjectViewNode::ProcessWheelTurn()
+{
+	IAProperty *val;
+	float wheel_angle = 0.0;
+	float steeringWheel = 0.0;
+	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steeringWheel);
+
+	wheel_angle = -(steeringWheel/600.0)*60.0*3.1415926/180.0;
+
+	int wheelNumbers = 0;
+	wheelNumbers = 4;
+
+    for (int i=0;i<wheelNumbers;i++)
+	{
+
+	   if (i%4<2) {
+	   m_wheel[i]->GetCAProperty(AP_RY, &val);
+	   val->Set(wheel_angle);
+	   }
+	}
+
+	return AVM_OBJVIEW_NORMAL;
+}
+int CAvmObjectViewNode::ProcessWheelRoll()
+{
+	static int vehicleState = 1;
+    static float vehicleSpeed = 0.0;
+    static float lastVehicleSpeed = 0.0;
+
+	unsigned char gearState = 0;
+	float speed = 0.0;
+
+	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gearState);
+	AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
+
+    if(vehicleSpeed > 6.29 )
+    {
+        vehicleSpeed = 0.0;
+    }
+    if(GEAR_R == gearState)
+    {
+        vehicleState = -1;
+    }
+    else
+    {
+        vehicleState = 1;
+    }
+
+    vehicleSpeed += (0.005 * speed) ;
+
+    IAProperty* val=0;
+	int wheelNumbers = 0;
+	wheelNumbers = 4;
+
+    for (int i=0;i<wheelNumbers;i++)
+    {
+        m_wheel[i]->GetCAProperty(AP_RX, &val);
+        val->Set(vehicleState * vehicleSpeed);
+    }
+	return AVM_OBJVIEW_NORMAL;
+}
+int CAvmObjectViewNode::ProcessDoorStatus()
+{
+	static unsigned char preDriverDoorState = 100;
+	static unsigned char prePassengerDoorState = 100;
+	static unsigned char preRearRightDoorState = 100;
+	static unsigned char preRearLeftDoorState = 100;
+
+	unsigned char driverDoorState = 0;
+	unsigned char passengerDoorState = 0;
+	unsigned char rearRightDoorState = 0;
+	unsigned char rearLeftDoorState = 0;
+	AVMData::GetInstance()->m_p_can_data->Get_Door_State(&driverDoorState, &passengerDoorState, &rearRightDoorState, &rearLeftDoorState);
+
+	if(preDriverDoorState != driverDoorState)
+	{
+		if(DOOR_OPEN == driverDoorState)
+			DoorAction(DRIVER_DOOR_POS,DOOR_OPEN);
+		else
+			DoorAction(DRIVER_DOOR_POS,DOOR_CLOSE);
+
+		preDriverDoorState = driverDoorState;
+	}
+
+	if(prePassengerDoorState != passengerDoorState)
+	{
+		if(DOOR_OPEN == passengerDoorState)
+			DoorAction(PASSENGER_DOOR_POS,DOOR_OPEN * (-1));
+		else
+			DoorAction(PASSENGER_DOOR_POS,DOOR_CLOSE);
+
+		prePassengerDoorState = passengerDoorState;
+	}
+
+	if(preRearRightDoorState != rearRightDoorState)
+	{
+		if(DOOR_OPEN == rearRightDoorState)
+			DoorAction(REAR_RIGHT_DOOR_POS,DOOR_OPEN * (-1));
+		else
+			DoorAction(REAR_RIGHT_DOOR_POS,DOOR_CLOSE);
+
+		preRearRightDoorState = rearRightDoorState;
+
+	}
+
+	if(preRearLeftDoorState != rearLeftDoorState)
+	{
+		if(DOOR_OPEN == rearLeftDoorState)
+			DoorAction(REAR_LEFT_DOOR_POS,DOOR_OPEN);
+		else
+			DoorAction(REAR_LEFT_DOOR_POS,DOOR_CLOSE);
+
+		preRearLeftDoorState = rearLeftDoorState;
+	}
+
+
+	return AVM_OBJVIEW_NORMAL;
+}
+int CAvmObjectViewNode::DoorAction(int pDoorIndex,int pDoorState, float pRotateAngle)
+{
+   	m_CarDoor[pDoorIndex]->RotateY(pDoorState*pRotateAngle);
+	m_carWindow[pDoorIndex]->RotateY(pDoorState*pRotateAngle);
 	return AVM_OBJVIEW_NORMAL;
 }
 int CAvmObjectViewNode::SetVisibility(unsigned char pVisibilityFlag)

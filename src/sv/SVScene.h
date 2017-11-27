@@ -91,12 +91,6 @@ DisplayModeT;
 #define TURN_LIGHT_COLOR_G  0.4
 #define TURN_LIGHT_COLOR_B  0.01
 
-#define DOOR_OPEN 1
-#define DOOR_CLOSE 0
-#define  DRIVER_DOOR_POS 0
-#define  PASSENGER_DOOR_POS 1
-#define REAR_LEFT_DOOR_POS  2
-#define REAR_RIGHT_DOOR_POS  3
 
 #define GEAR_P  0
 #define GEAR_R  3

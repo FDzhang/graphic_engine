@@ -45,7 +45,8 @@ public:
 	virtual int UpdateNode();
 	virtual int SetVisibility(unsigned char pVisibilityFlag);
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
-
+private:
+	int AddOverlay(class IAvmOverlay * pOverlay);
 private:
 	class IXrCore*       m_xrCore;
 	class ISceneNode*   m_stitchViewNode;
@@ -66,6 +67,8 @@ private:
 	int			m_stitchViewCameraId;
 
 	unsigned char m_visibilityFlag;
+
+	class IAvmOverlay*			m_overlay;
 
 };
 #endif // _CAVM_TIMESTITCHER_NODE_H_

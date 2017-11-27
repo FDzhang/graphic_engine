@@ -1,5 +1,5 @@
 /*===========================================================================*\
- * FILE: CAvmLargeSingleView.h
+ * FILE: IAvmOverlay.h
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -24,45 +24,29 @@
  *
 \*===========================================================================*/
 
-#ifndef _CAVM_LARGE_SINGLEVIEW_H_
-#define _CAVM_LARGE_SINGLEVIEW_H_
+#ifndef _IAVM_OVERLAY_H_
+#define _IAVM_OVERLAY_H_
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 
-typedef enum AvmLargeSingleViewErrorCodeTag
+typedef enum AvmOverlayErrorCodeTag
 {
-	LARGE_SINGLE_VIEW_NORMAL = 0,
-
-	LARGE_SINGLE_VIEW_INIT_FAILED = 1,
+	AVM_OVERLAY_NORMAL,
+	AVM_OVERLAY_GET_NODE_FALIED,
 };
 
-class CAvmLargeSingleView
+class IAvmOverlay
 {
 public:
-	CAvmLargeSingleView();
-	~CAvmLargeSingleView();
-	
-	virtual int Init();
+
+	virtual int Init(class ISceneNode* pRootNode);
 	virtual int Update();
 
-	int ResetLargeViewRegion();
-private:
-	int SetVertextValue(float* pVertex, int pViewIndex);
-	int SetLargeViewVertextValue(float* pVertex, int pViewIndex);
-private:
-	class ISceneNode* m_singleViewNode;
-	class INode*	  m_singleViewPlaneNode[4];
-	class IMesh*	  m_singleViewMesh[4];
-	float*			  m_singleViewVertex[4];
-
-	Region			  m_largeViewRegion;
-	float*			  m_singleViewRoi[4];
-
-	unsigned char     m_lastLargeViewCmd;
-
+protected:
+	class ISceneNode* m_rootNode;
 };
 
-#endif // _CAVM_LARGE_SINGLEVIEW_H_
+#endif // _IAVM_OVERLAY_H_
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
@@ -70,5 +54,5 @@ private:
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  11/24/17   Jensen Wang   Create the CAvmLargeSingleView class.
+ *  11/28/17   Jensen Wang   Create the IAvmOverlay class.
 \*===========================================================================*/

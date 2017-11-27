@@ -309,8 +309,9 @@ LutData,MAX_NAME_LENGTH);
 
 	InitHmi(width, height);
 
-	//m_avmLogicManager = new CAvmLogicManager;
-	//m_avmLogicManager->InitViewModel();
+	m_avmLogicManager = NULL;
+	m_avmLogicManager = new CAvmLogicManager;
+	m_avmLogicManager->Init();
 
 
 	#ifndef EMIRROR
@@ -388,9 +389,11 @@ bool XRSV::update(unsigned int view_control_flag)
 
         svscn->Update(view_control_flag,0);
 
-		//m_avmLogicManager->Update();
+		if(m_avmLogicManager)
+		{
+			m_avmLogicManager->Update();
 
-		
+		}
 		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();

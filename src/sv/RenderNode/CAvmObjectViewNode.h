@@ -45,11 +45,15 @@ public:
 	virtual int UpdateNode();
 	virtual int SetVisibility(unsigned char pVisibilityFlag);
 	virtual int ResetObjViewNodeRegion(Region* pRegion);
+	virtual int ProcessDoorStatus();
+	virtual int ProcessWheelTurn();
+	virtual int ProcessWheelRoll();
 
 	class ISceneNode* GetAvmObjViewNode();
 	class ICamera*	  GetAvmObjViewCamera();
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
-
+private:
+	int DoorAction(int pDoorIndex,int pDoorState, float pRotateAngle = 40.0);
 private:
 	class ISceneNode* m_objViewNode;	
 	int         m_objViewNodeId;

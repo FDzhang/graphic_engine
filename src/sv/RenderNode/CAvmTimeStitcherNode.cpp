@@ -28,6 +28,7 @@
 #include "../SVDelegate.h"
 #include "../SVNode2DStich.h"
 #include "../GlSV2D.h"
+#include "CAvmApaBevOverlay.h"
 
 static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
@@ -73,6 +74,8 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	m_timeStitchNode = new SVNode2DStich;
 
 	m_timeStitchNode->Init();
+
+	AVMData::GetInstance()->SetTimeStitcherNode(m_timeStitchNode);
 
 	m_renderDelegate = new RenderDelegateSV2D;
 
@@ -156,10 +159,51 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	m_stitchViewCamera->RotateAround(0,45);
 	m_stitchViewNode->SetCamera(m_stitchViewCameraId);
 
+	m_overlay = new CAvmApaBevOverlay;
+
 	return TIME_STITCHER_NORMAL;
 }
 int CAvmTimeStitcherNode::UpdateNode()
 {
+	float steer_angle;
+	unsigned char gear_state;
+	float speed;
+	float left_wheel_speed=0.0,right_wheel_speed=0.0;
+	float rear_left_wheel_speed=0.0,rear_right_wheel_speed=0.0;
+	float yawRate = 0.0;
+
+	static unsigned char timeInitFlag = 0;
+	static int lastTime = 0;
+	static int timeInterval = 0;
+	int currentTime;
+
+	currentTime = XrGetTime();
+	if(timeInitFlag == 0)
+	{
+		timeInitFlag =1;
+		timeInterval = 0;
+		
+	}
+	else
+	{
+		timeInterval = currentTime-lastTime;
+	}
+
+	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);		
+	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
+	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Speed(&left_wheel_speed, &right_wheel_speed, &rear_right_wheel_speed, &rear_left_wheel_speed);	
+	AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
+	AVMData::GetInstance()->m_p_can_data->Get_Yaw_Rate(&yawRate);
+
+	m_timeStitchNode->Update(steer_angle, speed,
+						left_wheel_speed, right_wheel_speed,
+						gear_state,timeInterval, yawRate);
+	m_stitchViewMtl->SetDiffuseMap(m_timeStitchNode->GetStichFrameTextureId());
+
+	lastTime = currentTime;
+
+	AddOverlay(m_overlay);
+
 	return TIME_STITCHER_NORMAL;
 }
 int CAvmTimeStitcherNode::SetVisibility(unsigned char pVisibilityFlag)
@@ -181,6 +225,25 @@ int CAvmTimeStitcherNode::SetVisibility(unsigned char pVisibilityFlag)
 int CAvmTimeStitcherNode::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
 {
 	m_stitchViewNode->SetClear(pColorFlag, pDepthFlag);
+	return TIME_STITCHER_NORMAL;
+}
+int CAvmTimeStitcherNode::AddOverlay(IAvmOverlay * pOverlay)
+{
+	unsigned char apaControl = 1;
+	static unsigned char apaInitFlag = 0;
+	if(apaControl == 1
+		&& apaInitFlag == 0)
+	{
+		pOverlay->Init(m_stitchViewNode);
+		apaInitFlag = 1;
+	}
+
+	if(apaInitFlag == 1
+		&& pOverlay)
+	{
+		pOverlay->Update();
+	}
+	
 	return TIME_STITCHER_NORMAL;
 }
 /*===========================================================================*\

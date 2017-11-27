@@ -190,6 +190,13 @@ public:
 	void GetSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
 	void SetLargeSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
 	void GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
+
+	void GetTimeStitcherNode(class SVNode2DStich**	pTimeStitchNode);
+	void SetTimeStitcherNode(class SVNode2DStich*	pTimeStitchNode);
+	
+	void GetApaOverlayResult(APAOverlayStruct* pAPAReslt);
+	void SetApaOverlayResult(APAOverlayStruct pAPAReslt);
+	
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 
 	void cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_coord,unsigned char unitmm=0);
@@ -234,6 +241,8 @@ private:
 	float*			  m_singleViewRoi[4];
 	float*			  m_largeSingleViewRoi[4];
 
+	APAOverlayStruct       m_apaReslt;
+
 	unsigned char m_avm3dVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmSingleViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmStitchViewVisibility[PROCESS_FUNC_NUMS];
@@ -249,6 +258,8 @@ private:
 	unsigned char m_avm3dViewIndex;
 
 	unsigned char m_carTranspStatus;
+
+	class SVNode2DStich*	m_timeStitchNode;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

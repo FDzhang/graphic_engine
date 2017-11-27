@@ -4993,6 +4993,10 @@ int SVScene::Update(int view_control_flag, int param2)
 
 
     m_APA_overlay->Update(g_APA_Result);
+	
+	AVMData::GetInstance()->SetApaOverlayResult(g_APA_Result);
+	
+
     time_pre = time_now;
 #endif
     if(speed > SINGLE_VIEW_TO_3D_GATE-5)

@@ -101,24 +101,24 @@ int CAvmViewControlModel::InitViewNode()
     float single2D_region[4];
     float scene3D_region[4];
 
-    float stich_region_width = 216.0/704.0 *  XrGetScreenWidth();
+    float stich_region_width = 0.35 *  XrGetScreenWidth();
 
-	float black_width = 0.0;
+	float black_width = 80.0;
 
-	stich2D_region[REGION_POS_LEFT] = 0.0;
-	stich2D_region[REGION_POS_RIGHT] = stich_region_width ;
+	stich2D_region[REGION_POS_LEFT] = 100.0;
+	stich2D_region[REGION_POS_RIGHT] = 100.0 + stich_region_width ;
 	stich2D_region[REGION_POS_TOP] = 0+black_width;
 	stich2D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	single2D_region[REGION_POS_LEFT] = stich_region_width;
+	single2D_region[REGION_POS_LEFT] = stich_region_width + 100.0;
 	single2D_region[REGION_POS_RIGHT] = XrGetScreenWidth();
-	single2D_region[REGION_POS_TOP] = 0+black_width + 60;
-	single2D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width - 60;
+	single2D_region[REGION_POS_TOP] = 0+black_width;
+	single2D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	scene3D_region[REGION_POS_LEFT] = stich_region_width;
+	scene3D_region[REGION_POS_LEFT] = stich_region_width + 100.0;
 	scene3D_region[REGION_POS_RIGHT] = XrGetScreenWidth();
 	scene3D_region[REGION_POS_TOP] = 0+black_width + 60;
-	scene3D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width - 60;
+	scene3D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 	
 	Stich2DReg.Set(stich2D_region[REGION_POS_LEFT],stich2D_region[REGION_POS_RIGHT],stich2D_region[REGION_POS_TOP],stich2D_region[REGION_POS_BOTTOM]);
     SceneViewReg.Set(scene3D_region[REGION_POS_LEFT],scene3D_region[REGION_POS_RIGHT],scene3D_region[REGION_POS_TOP] ,scene3D_region[REGION_POS_BOTTOM]);
@@ -389,6 +389,7 @@ int CAvmViewControlModel::InitTourDisplaySecEffect()
 
 int CAvmViewControlModel::SetCurrentView()
 {
+	ProcessTimeStitcher();
 	ProcessSingleViewDisplay();
 	Process3dViewDisplay();
 	ProcessTourView();
@@ -428,7 +429,20 @@ int CAvmViewControlModel::SetViewNodeVisibility(VisibilityIndexT pFuncId)
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
 }
-
+int CAvmViewControlModel::ProcessTimeStitcher()
+{
+	if(m_avmTimeStitcherNode
+		&& m_avmObjViewNode)
+	{
+		unsigned char carTransparentStatus = 0;
+		AVMData::GetInstance()->GetCarTransparentStatus(carTransparentStatus);
+		if(carTransparentStatus)
+		{
+			m_avmTimeStitcherNode->UpdateNode();
+		}
+	}
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
 int CAvmViewControlModel::ProcessSingleViewDisplay()
 {
 	unsigned char singleViewCmd = 0;
@@ -495,6 +509,14 @@ int CAvmViewControlModel::Process3dViewDisplay()
 		lastAvm3dViewCmd = avm3dViewCmd;
 	}
 
+	if(avm3dViewCmd > RIGHT_SINGLE_VIEW
+		&& avm3dViewCmd <= BOSH_REAR_VIEW_TOP)
+	{		
+		if(m_avmObjViewNode)
+		{
+			m_avmObjViewNode->UpdateNode();
+		}
+	}
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
 int CAvmViewControlModel::ProcessTourView()

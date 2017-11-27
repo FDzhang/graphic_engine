@@ -68,6 +68,7 @@ public:
 	void Get_Left_Wheel_Speed(float * Vehicle_Speed);
 	void Get_Right_Wheel_Speed(float * Vehicle_Speed);
 	
+	void Get_Wheel_Speed(float* Front_Right_Wheel_Speed, float* Front_Left_Wheel_Speed, float* Rear_Right_Wheel_Speed, float* Rear_Left_Wheel_Speed);
 	void Get_Door_State( unsigned char * Driver_Door_State, unsigned char * Passenger_Door_State,  unsigned char * Rear_Right_Door_State, unsigned char * Rear_Left_Door_State);
 	
 	void Get_Steer_Angle(float *Steer_Angle);

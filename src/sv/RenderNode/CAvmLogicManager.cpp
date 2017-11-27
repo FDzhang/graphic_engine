@@ -35,15 +35,46 @@ CAvmLogicManager::~CAvmLogicManager()
 {
 
 }
-int CAvmLogicManager::InitViewModel()
+int CAvmLogicManager::Init()
 {
-	avmViewControlModel = new CAvmViewControlModel;
-	avmViewControlModel->InitViewNode();
+	InitViewModel();
+	InitOverlayModel();
+	InitAlgoHmiModel();
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 int CAvmLogicManager::Update()
 {
+	UpdateViewModel();
+	UpdateOverlayModel();
+	UpdateAlgoHmiModel();
+
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+
+int CAvmLogicManager::InitViewModel()
+{
+	avmViewControlModel = NULL;
+	avmViewControlModel = new CAvmViewControlModel;
+	avmViewControlModel->InitViewNode();
+
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+int CAvmLogicManager::InitOverlayModel()
+{
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+int CAvmLogicManager::InitAlgoHmiModel()
+{
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+
+int CAvmLogicManager::UpdateViewModel()
+{
+	if(avmViewControlModel == NULL)
+	{
+		return AVM_LOGIC_VIEW_MODEL_INIT_FAILED;
+	}
 	unsigned char direction = TOUR_VIEW;
 	static int cnt = 0;
 	static int init_flag = 0;
@@ -96,6 +127,14 @@ int CAvmLogicManager::Update()
 		avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
 	}
 
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+int CAvmLogicManager::UpdateOverlayModel()
+{
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+int CAvmLogicManager::UpdateAlgoHmiModel()
+{
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 /*===========================================================================*\

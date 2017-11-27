@@ -41,6 +41,7 @@ public:
 	~CAvmMattsView();
 	virtual int Init();
 	virtual int Update();
+	int ResetMattsViewRegion();
 private:
 	int SetVertextValue(float* pVertex, int pViewIndex);
 private:

@@ -26,7 +26,7 @@
 #include "CAvmLargeSingleView.h"
 #include "../AVMData.h"
 
-CAvmLargeSingleView::CAvmLargeSingleView()
+CAvmLargeSingleView::CAvmLargeSingleView():m_lastLargeViewCmd(255)
 {
 }
 CAvmLargeSingleView::~CAvmLargeSingleView()
@@ -56,25 +56,22 @@ int CAvmLargeSingleView::Update()
 	unsigned char largeViewCmd = 0;
 
 	AVMData::GetInstance()->GetDisplayViewCmd(largeViewCmd);
-
-	static unsigned char lastLargeViewCmd = 255;
-
 	
 	if(largeViewCmd >= FRONT_LARGE_SINGLE_VIEW
 		&& largeViewCmd <= RIGHT_LARGE_SINGLE_VIEW)
 	{
-		if(lastLargeViewCmd != largeViewCmd)
+		if(m_lastLargeViewCmd != largeViewCmd)
 		{
 			AVMData::GetInstance()->GetLargeSingleViewRoi(m_singleViewRoi, largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			SetLargeViewVertextValue(m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			m_singleViewNode->SetRenderROI(&m_largeViewRegion);
-			lastLargeViewCmd = largeViewCmd;
+			m_lastLargeViewCmd = largeViewCmd;
 		}
 	}
 	else if(largeViewCmd >= FRONT_SINGLE_VIEW
 		&& largeViewCmd <= RIGHT_SINGLE_VIEW)
 	{
-		if(lastLargeViewCmd != largeViewCmd)
+		if(m_lastLargeViewCmd != largeViewCmd)
 		{
 			float* vertexData;
 			
@@ -85,7 +82,7 @@ int CAvmLargeSingleView::Update()
 			AVMData::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 			m_singleViewNode->SetRenderROI(singleViewRegion);
 
-			lastLargeViewCmd = largeViewCmd;
+			m_lastLargeViewCmd = largeViewCmd;
 		}
 	}
 
@@ -122,6 +119,11 @@ int CAvmLargeSingleView::SetLargeViewVertextValue(float* pVertex, int pViewIndex
 		m_singleViewMesh[pViewIndex]->UnLockData();
 	}
 
+	return LARGE_SINGLE_VIEW_NORMAL;
+}
+int CAvmLargeSingleView::ResetLargeViewRegion()
+{
+	
 	return LARGE_SINGLE_VIEW_NORMAL;
 }
 /*===========================================================================*\

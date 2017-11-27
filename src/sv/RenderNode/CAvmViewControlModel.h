@@ -56,6 +56,7 @@ private:
 	int ProcessTourView();
 	int ProcessMattsView();
 	int ProcessLargeSingleView();
+	int ProcessTimeStitcher();
 
 private:
 	class CAvm3dViewNode* m_avm3dViewNode;
