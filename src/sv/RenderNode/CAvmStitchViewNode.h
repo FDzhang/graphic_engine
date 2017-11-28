@@ -52,6 +52,8 @@ public:
 	int GetAvmStitchViewNode(class ISceneNode* pStitchViewNode);
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 
+	int AddOverlay(class IAvmOverlay * pOverlay);
+
 private:
 	class ISceneNode* m_stitchViewNode;	
 	int         m_stitchViewNodeId;
@@ -71,7 +73,7 @@ private:
 	class IMaterial*			m_SV2DMtl;
 	class IMesh*				m_planeMesh;
 	class GlSV2D*				m_SV2DData;
-
+	class IAvmOverlay*			m_overlay;
 
 };
 

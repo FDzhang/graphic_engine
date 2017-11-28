@@ -26,10 +26,11 @@
 #include "CAvmLogicManager.h"
 #include "CAvmViewControlModel.h"
 #include "../AVMData.h"
+#include "../SVNodeAdasHmi.h"
 
 CAvmLogicManager::CAvmLogicManager()
 {
-	
+	m_adasHmi = new SVNodeAdasHMI;
 }
 CAvmLogicManager::~CAvmLogicManager()
 {
@@ -51,12 +52,17 @@ int CAvmLogicManager::Update()
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
-
+int CAvmLogicManager::SetAdasHmiParams(st_ADAS_Mdl_HMI_T** pAdasMdl, int hmiNums)
+{
+	m_adasMdl = pAdasMdl;
+	m_hmiNums = hmiNums;
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
 int CAvmLogicManager::InitViewModel()
 {
-	avmViewControlModel = NULL;
-	avmViewControlModel = new CAvmViewControlModel;
-	avmViewControlModel->InitViewNode();
+	m_avmViewControlModel = NULL;
+	m_avmViewControlModel = new CAvmViewControlModel;
+	m_avmViewControlModel->InitViewNode();
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
@@ -66,12 +72,20 @@ int CAvmLogicManager::InitOverlayModel()
 }
 int CAvmLogicManager::InitAlgoHmiModel()
 {
+	BEV_CONFIG_T bevConfig;
+	AVMData::GetInstance()->GetBevConfig(&bevConfig);
+
+	ISceneNode* singleViewNode;
+	ISceneNode* stitchViewNode;
+	AVMData::GetInstance()->GetSingleViewNode(&singleViewNode);
+	AVMData::GetInstance()->GetStitchViewNode(&stitchViewNode);
+	m_adasHmi->Init(bevConfig,singleViewNode,stitchViewNode,m_adasMdl,m_hmiNums);
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 
 int CAvmLogicManager::UpdateViewModel()
 {
-	if(avmViewControlModel == NULL)
+	if(m_avmViewControlModel == NULL)
 	{
 		return AVM_LOGIC_VIEW_MODEL_INIT_FAILED;
 	}
@@ -95,7 +109,7 @@ int CAvmLogicManager::UpdateViewModel()
     }
 	if(cnt > START_UP_TURN_TIME)
 	{
-	   direction = FRONT_LARGE_SINGLE_VIEW;
+	   AVMData::GetInstance()->GetDisplayViewCmd(direction);
 	   cnt++;
 	}
 	else 
@@ -103,28 +117,21 @@ int CAvmLogicManager::UpdateViewModel()
 	    cnt++;
 	}
 
-	if(cnt > 500)
-	{
-		direction = FRONT_SINGLE_VIEW;
-	}
-	//direction = MATTS_VIEW;
-	//direction = FRONT_SINGLE_VIEW;
-	//direction = FRONT_LARGE_SINGLE_VIEW;
 	AVMData::GetInstance()->SetDisplayViewCmd(direction);
-	avmViewControlModel->SetCurrentView();
+	m_avmViewControlModel->SetCurrentView();
 	if(direction >= FRONT_LARGE_SINGLE_VIEW
 		&& direction <= RIGHT_LARGE_SINGLE_VIEW)
 	{
-		avmViewControlModel->SetViewNodeVisibility(PROCESS_LARGE_SINGLVIEW_FUNC);
+		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_LARGE_SINGLVIEW_FUNC);
 	}
 	else if(direction == MATTS_VIEW)
 	{		
-		avmViewControlModel->SetViewNodeVisibility(PROCESS_MATTS_FUNC);
+		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_MATTS_FUNC);
 
 	}
 	else
 	{
-		avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
+		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
 	}
 
 	return AVM_LOGIC_CONTROL_NORMAL;
@@ -135,6 +142,7 @@ int CAvmLogicManager::UpdateOverlayModel()
 }
 int CAvmLogicManager::UpdateAlgoHmiModel()
 {
+	m_adasHmi->Update();
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 /*===========================================================================*\

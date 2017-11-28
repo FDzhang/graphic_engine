@@ -26,6 +26,7 @@
 #include "CAvmStitchViewNode.h"
 #include "../AVMData.h"
 #include "../GlSV2D.h"
+#include "CAvmApaBevOverlay.h"
 
 static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
@@ -191,10 +192,14 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 	m_stitchViewCamera->RotateAround(0,45);
 	m_stitchViewNode->SetCamera(m_stitchViewCameraId);
 	
+	m_overlay = new CAvmApaBevOverlay;
+
 	return AVM_STITCHVIEW_NORMAL; 
 }
 int CAvmStitchViewNode::UpdateNode()
 {
+	AddOverlay(m_overlay);
+
 	return AVM_STITCHVIEW_NORMAL;
 }
 int CAvmStitchViewNode::SetVisibility(unsigned char pVisibilityFlag)
@@ -234,7 +239,24 @@ int CAvmStitchViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthF
 	m_stitchViewNode->SetClear(pColorFlag, pDepthFlag);
 	return AVM_STITCHVIEW_NORMAL;
 }
+int CAvmStitchViewNode::AddOverlay(IAvmOverlay * pOverlay)
+{
+	unsigned char apaControl = 1;
+	static unsigned char apaInitFlag = 0;
+	if(apaControl == 1
+		&& apaInitFlag == 0)
+	{
+		pOverlay->Init(m_stitchViewNode);
+		apaInitFlag = 1;
+	}
 
+	if(pOverlay)
+	{
+		pOverlay->Update();
+	}
+	
+	return AVM_STITCHVIEW_NORMAL;
+}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

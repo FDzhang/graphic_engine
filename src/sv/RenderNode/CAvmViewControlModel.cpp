@@ -36,7 +36,8 @@
 
 typedef struct Avm3dViewCameraParamsTag
 {
-	char  viewIndex[50];
+	//char  viewIndex[50];
+	unsigned char viewIndex;
 	float postion_x;
 	float postion_y;
 	float postion_z;
@@ -363,27 +364,40 @@ int CAvmViewControlModel::InitTourDisplaySecEffect()
 {
 	IAProperty* val=0;
 
-#define fTransitionTime 1.0
+#define fTransitionTime 4.0
 
-	float key[]={0 ,0.0,30.0, 
-	             2*fTransitionTime,180.0,90.0,   
-	             3*fTransitionTime,360.0,30.0  ,	
-	             4*fTransitionTime,720.0,45.0};
+	float key[]={0 ,0.0,30.0, 0,0,0,
+	             fTransitionTime ,180.0,90.0, 0,0,0,
+	             2*fTransitionTime,360.0,30.0 ,0,0,0,
+		         2*fTransitionTime+1,360.0,45.0 ,0,0,0,
+		         2*fTransitionTime+2,360.0,45.0 ,0,0,0,
+    };
+
+    m_am->CreateKeyAnimation(key, sizeof(key)/24, 5, &m_bevSecTour[0],AnimationStyle_KeyLinear,0);
+    m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_RX,&val);
+    m_bevSecTour[0]->BindProperty(0, val);
+    m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_RY,&val);
+    m_bevSecTour[0]->BindProperty(1, val);
+    m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_CamAtX,&val);
+    m_bevSecTour[0]->BindProperty(2, val);
+    m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_CamAtY,&val);
+    m_bevSecTour[0]->BindProperty(3, val);
+    m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_CamAtZ,&val);
+    m_bevSecTour[0]->BindProperty(4, val);
 
 
-   m_am->CreateKeyAnimation(key, sizeof(key)/12, 2, &m_bevSecTour[0],AnimationStyle_KeySpline,0);
-   m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_RX,&val);
-   m_bevSecTour[0]->BindProperty(0, val);
-   m_avmObjViewNode->GetAvmObjViewCamera()->GetCAProperty(AP_RY,&val);
-   m_bevSecTour[0]->BindProperty(1, val);
-
-
-    m_am->CreateKeyAnimation(key, sizeof(key)/12, 2, &m_bevSecTour[1],AnimationStyle_KeySpline,0);
+    m_am->CreateKeyAnimation(key, sizeof(key)/24, 5, &m_bevSecTour[1],AnimationStyle_KeyLinear,0);
     m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RX,&val);
     m_bevSecTour[1]->BindProperty(0, val);
     m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RY,&val);
     m_bevSecTour[1]->BindProperty(1, val);
-
+	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_CamAtX,&val);
+	m_bevSecTour[1]->BindProperty(2, val);
+	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_CamAtY,&val);
+	m_bevSecTour[1]->BindProperty(3, val);
+	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_CamAtZ,&val);
+	m_bevSecTour[1]->BindProperty(4, val);
+	
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
 
@@ -488,7 +502,7 @@ int CAvmViewControlModel::Process3dViewDisplay()
 	AVMData::GetInstance()->GetDisplayViewCmd(avm3dViewCmd);
 
 	if(avm3dViewCmd > RIGHT_SINGLE_VIEW
-		&& avm3dViewCmd <= BOSH_REAR_VIEW_TOP
+		&& avm3dViewCmd <= BMW_REAR_3D_VIEW
 		&& avm3dViewCmd != TOUR_VIEW
 		&& lastAvm3dViewCmd != avm3dViewCmd)
 	{
@@ -620,24 +634,34 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 
  int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
  {
-	 Avm3dViewCameraParamsT cameraParams[BOSH_REAR_VIEW_TOP - FRONT_3D_VIEW + 1] = 
-	{   {"FRONT_3D_VIEW", 0.0, 0.0, 2600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
-		{"REAR_3D_VIEW", 0.0, 0.0, 3600.0, 0.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Free},
-		{"LEFT_FRONT_3D_VIEW", 1000.0, 100.0, 2000.0, 800.0, 100.0, 500.0, -10.0, 75.0, 0.0, CameraPosition_Left},
-		{"RIGHT_FRONT_3D_VIEW", 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 0.0, 25.0, 0.0, CameraPosition_Right},
-		{"LEFT_REAR_3D_VIEW", -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 25.0, CameraPosition_Left_Rear},
-		{"RIGHT_REAR_3D_VIEW", 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Rear},
-		{"LEFT_TURN_SIGNAL_3D_VIEW", -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Left_Front},
-		{"RIGHT_TURN_SIGNAL_3D_VIEW", 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Right_Front},
-		{"LEFT_REAR_TURN_SIGNAL_3D_VIEW", -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Left_Rear_Light},
-		{"RIGHT_REAR_TURN_SIGNAL_3D_VIEW", 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Right_Rear_Light},
-		{"LEFT_HIGHT_SPEED_TURN_3D_VIEW", 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Left_Front_Light},
-		{"RIGHT_HIGHT_SPEED_TURN_3D_VIEW", -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Front_Light},
-		{"TOUR_VIEW", 0.0, 0.0, 2600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
-		{"BOSH_FRONT_VIEW", 0.0, -500.0, -20.0, 0.0, -500.0, -40.0, 0.0, 0.0, 0.0, CameraPosition_BOSCH_Front},
-		{"BOSH_FRONT_VIEW_TOP", 0.0, 800.0, -520.0, 0.0, 800.0, -1040.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Front_Top},
-		{"BOSH_REAR_VIEW_TOP", 0.0, 400.0, 560.0, 0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE}
-	 };
+	 Avm3dViewCameraParamsT cameraParams[BMW_REAR_3D_VIEW - FRONT_3D_VIEW + 1] = 
+	{   {FRONT_3D_VIEW, 0.0, 0.0, 2600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
+		{REAR_3D_VIEW, 0.0, 0.0, 3600.0, 0.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Free},
+		{LEFT_FRONT_3D_VIEW, 1000.0, 100.0, 2000.0, 800.0, 100.0, 500.0, -10.0, 75.0, 0.0, CameraPosition_Left},
+		{RIGHT_FRONT_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 0.0, 25.0, 0.0, CameraPosition_Right},
+		{LEFT_REAR_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 25.0, CameraPosition_Left_Rear},
+		{RIGHT_REAR_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Rear},
+		{LEFT_TURN_SIGNAL_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Left_Front},
+		{RIGHT_TURN_SIGNAL_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Right_Front},
+		{LEFT_REAR_TURN_SIGNAL_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Left_Rear_Light},
+		{RIGHT_REAR_TURN_SIGNAL_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Right_Rear_Light},
+		{LEFT_HIGHT_SPEED_TURN_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Left_Front_Light},
+		{RIGHT_HIGHT_SPEED_TURN_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Front_Light},
+		{TOUR_VIEW, 0.0, 0.0, 2600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
+		{BOSH_FRONT_VIEW, 0.0, -500.0, -20.0, 0.0, -500.0, -40.0, 0.0, 0.0, 0.0, CameraPosition_BOSCH_Front},
+		{BOSH_FRONT_VIEW_TOP, 0.0, 800.0, -520.0, 0.0, 800.0, -1040.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Front_Top},
+		{BOSH_REAR_VIEW_TOP, 0.0, 400.0, 560.0, 0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
+		{LEFT_MIRROR_VIEW, 0.0, 400.0, 560.0, 0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
+		{RIGHT_MIRROR_VIEW, 0.0, 400.0, 560.0, 0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
+	 	{BMW_REAR_VIEW, -3600.0, 0.0, 0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear},
+		{BMW_LEFT_VIEW, -3600.0, -100.0, 0.0, 0.25*(-3600.0), -100.0, 0.0, 0.0, 38.0, 0.0,CameraPosition_BMW_Left},
+		{BMW_RIGHT_VIEW, 3600.0, -100.0, 0.0, 0.25*(-3600.0), -100.0, 0.0, 0.0, 38.0, 0.0, CameraPosition_BMW_Right},
+		{BMW_LEFT_FRONT_VIEW, -2000.0, -100.0, -2250.0,  0.25*(-2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Front},
+		{BMW_RIGHT_FRONT_VIEW, 2000.0, -100.0, -2250.0,  0.25*(-2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Front},
+		{BMW_LEFT_REAR_VIEW, -1150.0, -100.0, 2950.0, 0.5*(-1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Rear},
+		{BMW_RIGHT_REAR_VIEW, 1150.0, -100.0, 2950.0, 0.5*(-1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Rear},
+	    {BMW_REAR_3D_VIEW, 0.0, 0.0, -3600.0, 0.0, 0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear},
+	};
 
 
 	m_avm3dViewNode->GetAvm3dViewCamera()->SetPosition(cameraParams[pViewIndex - FRONT_3D_VIEW].postion_x, cameraParams[pViewIndex - FRONT_3D_VIEW].postion_y, cameraParams[pViewIndex - FRONT_3D_VIEW].postion_z);

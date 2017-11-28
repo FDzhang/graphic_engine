@@ -30,7 +30,6 @@ typedef enum ChanganViewType {
 	CCAG_BOSH_REAR_VIEW_TOP,
 	CCAG_LEFT_MIRROR_VIEW,
 	CCAG_RIGHT_MIRROR_VIEW,	
-	CCAG_CROSS_IMAGE_VIEW,	
 	CCAG_BMW_REAR_VIEW,
 	CCAG_BMW_LEFT_VIEW,
 	CCAG_BMW_RIGHT_VIEW,
@@ -39,6 +38,7 @@ typedef enum ChanganViewType {
 	CCAG_BMW_LEFT_REAR_VIEW,
 	CCAG_BMW_RIGHT_REAR_VIEW,
 	CCAG_BMW_REAR_3D_VIEW,
+	CCAG_CROSS_IMAGE_VIEW,	
 	CCAG_TOTAL_VIEW_NUM,
 };
 
@@ -808,7 +808,7 @@ int CSVChanganHmi::SetElemProperty()
 		ccagIcon[CCAG_CAMERA_LEFT]->SetVisibility(m_leftCamVisibility);
 		ccagIcon[CCAG_CAMERA_RIGHT]->SetVisibility(m_rightCamVisibility);
 	}
-
+	
 	ccagIconData[CCAG_RED_TRACK_CAMERA].show_icon_num = m_currentTrackCamRegionIndex + m_isTrackRegion*CCAG_TRACK_CAMERA_REGION_NUMS;
 	
 	ccagIconData[CCAG_RED_TRACK].show_icon_num = m_trackColor;

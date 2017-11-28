@@ -26,6 +26,7 @@
 #include "CAvmObjectViewNode.h"
 #include "../SVNode2DStich.h"
 #include "../AVMData.h"
+#include "gpu_log.h"
 
 
 static char GREENTEX[] = XR_RES"green.bmp";
@@ -131,7 +132,6 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	Int32 tempmaterialid,modelid;
     float ground_width, ground_height;
 	INode *ground;
-	IMesh *groundmesh;
 
 	Bev_3D_Param_T*  bev_3d_param;
     AVMData::GetInstance()->m_usc_data->GetBev3DParam(&bev_3d_param);
@@ -158,14 +158,16 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 
 	if(isCarTransparentMode)
 	{
-		int lisenceMeshId = m_objViewNode->CreateMesh(ModelType_Plane_Dynamic, 2,2, 0, "ground", &m_groundmesh);
+		int lisenceMeshId = m_objViewNode->CreateMesh(ModelType_Plane_Dynamic, 2,2, 0, "ground", &m_groundMesh);
 		int groundId = m_objViewNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default, pos[0],pos[1],pos[2],1.0, &m_ground);
 		m_ground->SetMesh(lisenceMeshId);
 		m_ground->SetEnable(1);
+		Calc3DGroundTexture();
+
 	}
 	else
 	{
-		int lisenceMeshId = m_objViewNode->CreateMesh(ModelType_Plane, ground_width/2.0,ground_height/2.0, 0, "ground", &groundmesh);
+		int lisenceMeshId = m_objViewNode->CreateMesh(ModelType_Plane, ground_width/2.0,ground_height/2.0, 0, "ground", &m_groundMesh);
 		int groundId = m_objViewNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default, pos[0],pos[1],pos[2],1.0, &m_ground);
 		m_ground->SetMesh(lisenceMeshId);
 		m_ground->RotateDX(90);	
@@ -209,16 +211,16 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_CarDoor[1]->SetEnable(1);	
 	//m_CarDoor[0]->RotateDY(60);
 
-	door_offset_y =  bev_3d_param->car_model_param.door_offset_rear * 50 * bev_3d_param->car_model_param.car_scale_z + 65.0;
+	door_offset_y =  bev_3d_param->car_model_param.door_offset_rear * 50 * bev_3d_param->car_model_param.car_scale_z;
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORMODEL[2], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x + 5.0, bev_3d_param->car_model_param.car_pos_y - 10.0, bev_3d_param->car_model_param.car_pos_z+door_offset_y - 25, 50, &m_CarDoor[2]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORMODEL[2], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y, 50, &m_CarDoor[2]); //envision
 
 
 	m_CarDoor[2]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[2]->SetEnable(1);	
 
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORMODEL[3], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x - 5.0, bev_3d_param->car_model_param.car_pos_y - 10.0, bev_3d_param->car_model_param.car_pos_z+door_offset_y - 25, 50, &m_CarDoor[3]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORMODEL[3], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y, 50, &m_CarDoor[3]); //envision
 
 	m_CarDoor[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[3]->SetEnable(1);	
@@ -258,13 +260,13 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 
     door_offset_y = bev_3d_param->car_model_param.door_window_offset_rear * 50 * bev_3d_param->car_model_param.car_scale_z;
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[2], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y + 20, 50, &m_carWindow[2]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[2], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y, 50, &m_carWindow[2]); //envision
 
 	m_carWindow[2]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_carWindow[2]->SetEnable(1);	
 
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[3], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y + 20, 50, &m_carWindow[3]); //envision
+	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORWINDOWMODEL[3], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y, 50, &m_carWindow[3]); //envision
 
 	m_carWindow[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_carWindow[3]->SetEnable(1);	
@@ -342,6 +344,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
     
     m_Car->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
     m_CarLight->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
+    m_CarInternal->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
 		
     m_CarDoor[0]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
     m_CarDoor[1]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
@@ -433,6 +436,112 @@ int CAvmObjectViewNode::ProcessWheelRoll()
         m_wheel[i]->GetCAProperty(AP_RX, &val);
         val->Set(vehicleState * vehicleSpeed);
     }
+	return AVM_OBJVIEW_NORMAL;
+}
+int CAvmObjectViewNode::Calc3DGroundTexture()
+{
+	float car_rect_image[4];
+	float car_rect_adjust[4];
+	float texture[4];
+	float *pVertexData;
+	XRVertexLayout data_format;
+    int icount;
+	IMesh *groundmesh;
+	float pos[3];
+	float ground_width,ground_height;
+	Calc3DGroundPos(pos,&ground_width,&ground_height);
+
+	for (int i =0; i<4;i++)
+	{
+		AVMData::GetInstance()->m_2D_lut->GetCarRect(&car_rect_image[i],i);
+		AVMData::GetInstance()->m_2D_lut->GetCarShadowAdjust(&car_rect_adjust[i],i);
+	    car_rect_adjust[i]=car_rect_image[i]+car_rect_adjust[i];
+	}
+
+	SVNode2DStich* stitchNode;
+	AVMData::GetInstance()->GetTimeStitcherNode(&stitchNode);
+	if(stitchNode)
+    {
+		stitchNode->CalcShadowTextureCoord(car_rect_image,car_rect_adjust,texture);
+	}
+	else
+	{
+		return AVM_OBJVIEW_NODE_INIT_FAILED;
+	}
+	m_ground->GetMesh(&groundmesh);
+	m_groundMesh->LockData(&pVertexData,&data_format,&icount);
+    pVertexData[0] = pos[0]-ground_width/2.0;
+    pVertexData[1] = pos[1];
+	pVertexData[2] = pos[2]-ground_height/2.0;
+	pVertexData[6]=texture[rect_left];
+	pVertexData[7]=1-texture[rect_bottom];
+	
+    pVertexData[8] = pos[0]+ground_width/2.0;
+	
+    pVertexData[9] = pos[1];
+	pVertexData[10] = pos[2]-ground_height/2.0;	
+	pVertexData[14]=texture[rect_right];
+	pVertexData[15]=1-texture[rect_bottom];
+	pVertexData[16] = pos[0]-ground_width/2.0;
+	
+    pVertexData[17] = pos[1];
+	pVertexData[18] = pos[2]+ground_height/2.0;
+	pVertexData[22]=texture[rect_left];
+	pVertexData[23]=1-texture[rect_top];	
+	pVertexData[24] = pos[0]+ground_width/2.0;
+	
+    pVertexData[25] = pos[1];
+	pVertexData[26] = pos[2]+ground_height/2.0;
+	pVertexData[30]=texture[rect_right];
+	pVertexData[31]=1-texture[rect_top];		
+
+	
+    groundmesh->UnLockData();
+
+	return AVM_OBJVIEW_NORMAL;
+}
+int CAvmObjectViewNode::Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight)
+{
+	float car_point[4];
+	GpuCvPoint2D32f car_rect[2];
+    float car_adjust_point[4];
+	GpuCvPoint2D32f car_rect_world[2];
+	float pModelPoint[6];
+	float pWorldPint[6];
+	
+    int i=0;
+
+
+	for(i=0;i<4;i++)
+	{
+	    AVMData::GetInstance()->m_2D_lut->GetCarRect(&car_point[i],i);
+		
+	    //AVMData::GetInstance()->m_2D_lut->GetCarShadowAdjust(&car_adjust_point[i],i);
+		//car_point[i]+=car_adjust_point[i];
+	}
+
+	car_rect[0].x = car_point[rect_left];
+	car_rect[0].y = car_point[rect_top];
+	car_rect[1].x = car_point[rect_right];
+	car_rect[1].y = car_point[rect_bottom];
+	
+    for(i = 0;i<2;i++)
+    {
+	    AVMData::GetInstance()->m_2D_lut->CvtPointImage2Wolrd(car_rect[i],&car_rect_world[i]);
+
+		pWorldPint[3*i] = car_rect_world[i].x;
+	    pWorldPint[3*i+1] = car_rect_world[i].y;
+        pWorldPint[3*i+2] = 0;
+		
+        AVMData::GetInstance()->cvtWorldPoint2ModelPoint3D(&pModelPoint[3*i],&pWorldPint[3*i]);
+    }
+
+	*pWidth = pModelPoint[3]-pModelPoint[0];
+	*pHeight = pModelPoint[2]-pModelPoint[5];
+    pPose[0] = (pModelPoint[3]+pModelPoint[0])/2.0;
+    pPose[1] = pModelPoint[1];
+    pPose[2] = (pModelPoint[2]+pModelPoint[5])/2.0;
+
 	return AVM_OBJVIEW_NORMAL;
 }
 int CAvmObjectViewNode::ProcessDoorStatus()

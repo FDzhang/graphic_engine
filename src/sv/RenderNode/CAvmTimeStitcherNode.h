@@ -69,7 +69,7 @@ private:
 	unsigned char m_visibilityFlag;
 
 	class IAvmOverlay*			m_overlay;
-
+	class SVNodeSonar*			m_sonarNode;
 };
 #endif // _CAVM_TIMESTITCHER_NODE_H_
 

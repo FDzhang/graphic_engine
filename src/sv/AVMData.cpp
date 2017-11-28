@@ -252,8 +252,13 @@ void AVMData::GetObjectViewRegion(Region** pRegion)
 }
 void AVMData::GetBevConfig(BEV_CONFIG_T* pConfig)
 {
-	pConfig = (BEV_CONFIG_T*)malloc(sizeof(BEV_CONFIG_T));
+	*pConfig = m_bevConfig;
 }
+void AVMData::SetBevConfig(BEV_CONFIG_T pConfig)
+{
+	m_bevConfig = pConfig;
+}
+
 void AVMData::GetCarTransparentStatus(unsigned char& pCarTranspStatus)
 {
 	pCarTranspStatus = m_carTranspStatus;
@@ -575,6 +580,14 @@ void AVMData::SetSingleViewNode(class ISceneNode* pSingleViewNode)
 void AVMData::GetSingleViewNode(class ISceneNode** pSingleViewNode)
 {
 	*pSingleViewNode = m_singleViewNode;
+}
+void AVMData::SetStitchViewNode(class ISceneNode* pStitchViewNode)
+{
+	m_stitchViewNode = pStitchViewNode;
+}
+void AVMData::GetStitchViewNode(class ISceneNode** pStitchViewNode)
+{
+	*pStitchViewNode = m_stitchViewNode;
 }
 
 void AVMData::SetSingleViewMesh(class IMesh* pSingleViewMesh[])

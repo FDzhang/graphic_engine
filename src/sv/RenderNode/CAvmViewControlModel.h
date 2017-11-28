@@ -42,15 +42,18 @@ public:
 	CAvmViewControlModel();
 	virtual ~CAvmViewControlModel();
 	virtual int InitViewNode();
-	virtual int InitDisplayEffect();
-	virtual int InitBevDisplayEffect();
-	virtual int InitTourDisplaySecEffect();
+
 	virtual int SetCurrentView();
 	virtual int SetViewNodeVisibility(VisibilityIndexT pFuncId);
 
+private:
 	virtual int ProcessSingleViewDisplay();
 	virtual int Process3dViewDisplay();
 	virtual int Avm3dViewMode(unsigned char pViewIndex);
+		
+	virtual int InitDisplayEffect();
+	virtual int InitBevDisplayEffect();
+	virtual int InitTourDisplaySecEffect();
 
 private:
 	int ProcessTourView();

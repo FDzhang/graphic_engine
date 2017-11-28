@@ -134,6 +134,9 @@ CRenderDevice* g_pXrRenderDevice=0;
 CRenderContext* g_pXrRenderContext=0;
 CRenderTarget*	pFrame_buffer;
 extern float g_TextureStep;
+
+extern APAOverlayStruct g_APA_Result;
+
 BEV_CONFIG_T sv_config;
 
  extern GLuint uiConfigBin[4][9];
@@ -181,6 +184,7 @@ int XRSV::InitHmi(int screen_width, int screen_height)
 {
 	m_customHmi = new CSVChanganHmi();
 	m_customHmi->Init(screen_width, screen_height);
+	m_customHmi->SetAvmDisplayView(0);
 
 	return 0;
 }
@@ -227,7 +231,14 @@ int XRSV::UpdateHmiData()
 	m_customHmi->Update(currentHmiMessage);
 	unsigned char currentViewIndex = 0;
 	m_customHmi->GetCurrentView(currentViewIndex);
-
+	
+	static unsigned char lastViewIndex = 255;
+	if(lastViewIndex != currentViewIndex)
+	{
+		AVMData::GetInstance()->SetDisplayViewCmd(currentViewIndex);
+		lastViewIndex = currentViewIndex;
+	}
+	
 	if(svscn)
 	{
 		svscn->SetTouchSelectView(currentViewIndex);
@@ -299,19 +310,26 @@ LutData,MAX_NAME_LENGTH);
 
 	AVMData::GetInstance()->InitConfig(m_sv_data_config);
 
-	svscn = new SVScene();
+	svscn = NULL;
+	svui = NULL;
 
-	svui = new SVUI();
+	//svscn = new SVScene();
 
-	svui->svscn = svscn;
+	//svui = new SVUI();
 
-	temp = svscn->InitNode(sv_config,m_pAdasMdl,m_adas_mdl_num);
+	//svui->svscn = svscn;
 
-	InitHmi(width, height);
+	//temp = svscn->InitNode(sv_config,m_pAdasMdl,m_adas_mdl_num);
+
+
+	AVMData::GetInstance()->SetBevConfig(sv_config);
 
 	m_avmLogicManager = NULL;
 	m_avmLogicManager = new CAvmLogicManager;
+	m_avmLogicManager->SetAdasHmiParams(m_pAdasMdl, m_adas_mdl_num);
 	m_avmLogicManager->Init();
+
+	InitHmi(width, height);
 
 
 	#ifndef EMIRROR
@@ -340,7 +358,7 @@ bool XRSV::update(unsigned int view_control_flag)
 		start = XrGetTime();
 		//Set_Frame_TimeStamp(start-pre_time_start);
 		Set_Frame_TimeStamp(AVMData::GetInstance()->m_p_can_data->GetTimeStamp());
-        switch(view_control_flag)
+        /*switch(view_control_flag)
         {
 			case FULL_SCREEN_3D:
 				if(m_fullScreenMode == 0)
@@ -384,49 +402,21 @@ bool XRSV::update(unsigned int view_control_flag)
 				m_fullScreenMode = 0;
                 break;
         }
+*/
+    	UpdateHmiData();
 
-    UpdateHmiData();
-
-        svscn->Update(view_control_flag,0);
+        //svscn->Update(view_control_flag,0);
 
 		if(m_avmLogicManager)
 		{
+			AVMData::GetInstance()->SetApaOverlayResult(g_APA_Result);
 			m_avmLogicManager->Update();
 
 		}
 		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();
-#ifndef EMIRROR
-        if(init_flag ==1)
-        {
-            if(cnt>= START_UP_TURN_TIME)
-            {
-                bevSecTour[0]->Stop();
-    			bevSecTour[1]->Stop();
-				//svscn->SwitchViewLogic(BOSH_FRONT_VIEW);
-				//svscn->SwitchViewLogic(REAR_SINGLE_VIEW);
-				svscn->SwitchViewLogic(FRONT_3D_VIEW);
-				init_flag =2;
 
-            }
-            else
-            {
-				if(m_customHmi != NULL)
-				{
-					m_customHmi->SetVisibility(0);
-				}
-            }
-        }
-        if(init_flag==0)
-        {
-            bevSecTour[0]->Start();
-			bevSecTour[1]->Start();
-			svscn->SwitchViewLogic(TOUR_VIEW);
-
-			init_flag = 1;
-        }
-#endif
 
 		g_pIXrCore->Update();
 		timestamp2 = XrGetTime();

@@ -121,6 +121,7 @@ public:
 	void GetVehicleParam(SV_VEHICLE_PARAM_T **pVehicleData);
 	
 	void GetBevConfig(BEV_CONFIG_T* pConfig);
+	void SetBevConfig(BEV_CONFIG_T pConfig);
 	void GetCarTransparentStatus(unsigned char& pCarTranspStatus);
 	void SetCarTransparentStatus(unsigned char pCarTranspStatus);
 
@@ -176,6 +177,8 @@ public:
 	void Get3dViewIndex(unsigned char& pIndex);
 	void SetSingleViewNode(class ISceneNode* pSingleViewNode);
 	void GetSingleViewNode(class ISceneNode** pSingleViewNode);
+	void SetStitchViewNode(class ISceneNode* pStitchViewNode);
+	void GetStitchViewNode(class ISceneNode** pStitchViewNode);
 
 	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
 	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);
@@ -258,6 +261,9 @@ private:
 	unsigned char m_avm3dViewIndex;
 
 	unsigned char m_carTranspStatus;
+	class ISceneNode* m_stitchViewNode;
+
+	BEV_CONFIG_T		   m_bevConfig;
 
 	class SVNode2DStich*	m_timeStitchNode;
 };

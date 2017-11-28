@@ -573,8 +573,6 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	carlightmtl->SetAmbientMap(CARTEXMASK);
 	iCarnodeId = object_render_node->LoadModelFromFile(CARINTMODEL, iCarLightMtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z, 50, &m_CarInternal); //envision
 
-
-
 	m_CarInternal->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
 	m_CarInternal->SetEnable(1);
 	
@@ -941,6 +939,9 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
     m_Car->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
 	m_CarLight->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
 	m_CarInternal->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
+
+	Log_Error("---------CAR_MODEL_SCALE_X: %0.5f, CAR_MODEL_SCALE_Y: %0.5f, CAR_MODEL_SCALE_Y: %0.5f",pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y,pConfig.smc_hmi.CAR_MODEL_SCALE_X);
+
 	m_CarDoor[0]->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
 
 	m_CarDoor[1]->SetScale(pConfig.smc_hmi.CAR_MODEL_SCALE_X, pConfig.smc_hmi.CAR_MODEL_SCALE_Y, pConfig.smc_hmi.CAR_MODEL_SCALE_Z);
@@ -4993,8 +4994,6 @@ int SVScene::Update(int view_control_flag, int param2)
 
 
     m_APA_overlay->Update(g_APA_Result);
-	
-	AVMData::GetInstance()->SetApaOverlayResult(g_APA_Result);
 	
 
     time_pre = time_now;

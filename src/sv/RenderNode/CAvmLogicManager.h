@@ -45,6 +45,8 @@ public:
 	virtual int Init();
 	virtual int Update();
 
+	int SetAdasHmiParams(st_ADAS_Mdl_HMI_T** pAdasMdl, int hmiNums);
+
 private:
 	virtual int InitViewModel();
 	virtual int InitOverlayModel();
@@ -53,8 +55,10 @@ private:
 	virtual int UpdateOverlayModel();
 	virtual int UpdateAlgoHmiModel();
 private:
-	class CAvmViewControlModel* avmViewControlModel;
-
+	class CAvmViewControlModel* m_avmViewControlModel;
+	class SVNodeAdasHMI*		m_adasHmi;
+	st_ADAS_Mdl_HMI_T **			m_adasMdl;
+	int m_hmiNums;
 private:
 
 };

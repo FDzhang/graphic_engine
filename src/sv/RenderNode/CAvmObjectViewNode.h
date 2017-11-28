@@ -54,6 +54,8 @@ public:
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 private:
 	int DoorAction(int pDoorIndex,int pDoorState, float pRotateAngle = 40.0);
+	int Calc3DGroundTexture();
+	int Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 private:
 	class ISceneNode* m_objViewNode;	
 	int         m_objViewNodeId;
@@ -64,7 +66,7 @@ private:
 
     class IMesh*				m_planeMesh;
 	class IMesh*				m_wheelMesh;
-	class IMesh*				m_groundmesh;
+	class IMesh*				m_groundMesh;
 	class IMesh*				m_pMeshStichGround[2];
 
 	class IRenderTarget*		m_groundRT[2];

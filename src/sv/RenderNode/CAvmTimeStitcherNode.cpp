@@ -27,6 +27,7 @@
 #include "../AVMData.h"
 #include "../SVDelegate.h"
 #include "../SVNode2DStich.h"
+#include "SVNodeSonar.h"
 #include "../GlSV2D.h"
 #include "CAvmApaBevOverlay.h"
 
@@ -159,7 +160,14 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	m_stitchViewCamera->RotateAround(0,45);
 	m_stitchViewNode->SetCamera(m_stitchViewCameraId);
 
+	AVMData::GetInstance()->SetStitchViewNode(m_stitchViewNode);
+
 	m_overlay = new CAvmApaBevOverlay;
+
+	m_sonarNode = new SVNodeSonar;
+	BEV_CONFIG_T bevConfig;
+	AVMData::GetInstance()->GetBevConfig(&bevConfig);
+    m_sonarNode->Init(&bevConfig,m_stitchViewNode);
 
 	return TIME_STITCHER_NORMAL;
 }
@@ -168,8 +176,8 @@ int CAvmTimeStitcherNode::UpdateNode()
 	float steer_angle;
 	unsigned char gear_state;
 	float speed;
-	float left_wheel_speed=0.0,right_wheel_speed=0.0;
-	float rear_left_wheel_speed=0.0,rear_right_wheel_speed=0.0;
+	float left_wheel_speed=0,right_wheel_speed=0;
+	float rear_left_wheel_speed=0,rear_right_wheel_speed=0;
 	float yawRate = 0.0;
 
 	static unsigned char timeInitFlag = 0;
@@ -188,6 +196,7 @@ int CAvmTimeStitcherNode::UpdateNode()
 	{
 		timeInterval = currentTime-lastTime;
 	}
+	timeInterval=(int)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()/1000);
 
 	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);		
 	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
@@ -203,6 +212,11 @@ int CAvmTimeStitcherNode::UpdateNode()
 	lastTime = currentTime;
 
 	AddOverlay(m_overlay);
+	
+	float *pdist=	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
+	m_sonarNode->Update(steer_angle, speed,
+						left_wheel_speed, right_wheel_speed,
+						gear_state,timeInterval, yawRate, pdist);
 
 	return TIME_STITCHER_NORMAL;
 }
