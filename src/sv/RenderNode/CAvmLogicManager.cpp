@@ -118,8 +118,8 @@ int CAvmLogicManager::UpdateViewModel()
 	    cnt++;
 	}
 */
-	//AVMData::GetInstance()->SetDisplayViewCmd(direction);
-
+	AVMData::GetInstance()->GetDisplayViewCmd(direction);
+	//Log_Error("----------direction: %d", direction);
 	m_avmViewControlModel->SetCurrentView();
 	if(direction >= FRONT_LARGE_SINGLE_VIEW
 		&& direction <= RIGHT_LARGE_SINGLE_VIEW)

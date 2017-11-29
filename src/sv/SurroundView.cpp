@@ -236,7 +236,7 @@ int XRSV::UpdateHmiData()
 	unsigned char currentViewIndex = 0;
 	m_customHmi->GetCurrentView(currentViewIndex);
 
-	static unsigned char lastViewIndex = 255;
+	static unsigned char lastViewIndex = currentViewIndex;
 	if(lastViewIndex != currentViewIndex)
 	{
 		AVMData::GetInstance()->SetDisplayViewCmd(currentViewIndex);
