@@ -145,6 +145,7 @@ int CAvmLogicManager::UpdateAlgoHmiModel()
 	m_adasHmi->Update();
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

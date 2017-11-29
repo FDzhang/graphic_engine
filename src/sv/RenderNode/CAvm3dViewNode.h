@@ -53,7 +53,8 @@ public:
 	class ISceneNode*  GetAvm3dViewNode();
 	class ICamera*  GetAvm3dViewCamera();
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
-
+private:
+	int UpdateExternCalibReslt();
 private:
 	class ISceneNode* m_3dViewNode;	
 	int         m_3dViewNodeId;

@@ -151,7 +151,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	tempcarmtl->SetEnvironmentMap(BLUETEX);
 	m_3dGroundMtl = tempcarmtl;
 
-	AVMData::GetInstance()->Calc3DGroundPos(pos,&ground_width,&ground_height);
+	Calc3DGroundPos(pos,&ground_width,&ground_height);
 
     unsigned char isCarTransparentMode = 0;
     AVMData::GetInstance()->GetCarTransparentStatus(isCarTransparentMode);
@@ -159,7 +159,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	if(isCarTransparentMode)
 	{
 		int lisenceMeshId = m_objViewNode->CreateMesh(ModelType_Plane_Dynamic, 2,2, 0, "ground", &m_groundMesh);
-		int groundId = m_objViewNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default, pos[0],pos[1],pos[2],1.0, &m_ground);
+		int groundId = m_objViewNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default, 0.0,0.0,0.0,1.0, &m_ground);
 		m_ground->SetMesh(lisenceMeshId);
 		m_ground->SetEnable(1);
 		Calc3DGroundTexture();

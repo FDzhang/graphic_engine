@@ -80,7 +80,9 @@ AVMData* AVMData::m_pAVMData;
 
 AVMData::AVMData()
 {
-;
+	m_2dParamUpdateFlag = 0;
+	m_3dParamUpdateFlag = 0;
+	m_seamDataChangeFlag = 0;
 
 }
 AVMData* AVMData::GetInstance()
@@ -691,6 +693,42 @@ void AVMData::GetApaOverlayResult(APAOverlayStruct* pAPAReslt)
 void AVMData::SetApaOverlayResult(APAOverlayStruct pAPAReslt)
 {
 	m_apaReslt = pAPAReslt;
+}
+void AVMData::SetStitchAngle(unsigned char pSeamChangedFlag, unsigned char* pSeamChangeFlag,GLfloat* pVertex)
+{
+	m_seamDataChangeFlag = pSeamChangedFlag;
+
+	m_seamUpdateFlag = pSeamChangeFlag;
+	m_seamUpdateData = pVertex;
+}
+void AVMData::GetStitchAngle(unsigned char& pSeamChangedFlag, unsigned char** pSeamChangeFlag,GLfloat** pVertex)
+{
+	pSeamChangedFlag = m_seamDataChangeFlag;
+
+	*pSeamChangeFlag = m_seamUpdateFlag;
+	*pVertex = m_seamUpdateData;
+}
+void AVMData::Set2DParam(unsigned char pUpdateFlag, GLfloat *pData,GLushort *pIndex)
+{
+	m_2dParamUpdateFlag = pUpdateFlag;
+	m_2dParamData = pData;
+	m_2dParamIndex = pIndex;
+}
+void AVMData::Set3DParam(unsigned char pUpdateFlag, float *pos)
+{
+	m_3dParamUpdateFlag = pUpdateFlag;
+	m_3dParamPos = pos;
+}
+void AVMData::Get2DParam(unsigned char& pUpdateFlag, GLfloat **pData,GLushort **pIndex)
+{
+	pUpdateFlag = m_2dParamUpdateFlag;
+	*pData = m_2dParamData;
+	*pIndex = m_2dParamIndex;
+}
+void AVMData::Get3DParam(unsigned char& pUpdateFlag, float **pos)
+{
+	pUpdateFlag = m_3dParamUpdateFlag;
+	*pos  = m_3dParamPos;
 }
 
 /*===========================================================================*\

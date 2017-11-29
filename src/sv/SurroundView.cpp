@@ -451,7 +451,16 @@ bool XRSV::update(unsigned int view_control_flag)
 
 void XRSV::Update3DParam(float *pose)
 {
-	svscn->UpdateExternCalibReslt(pose);
+	if(svscn)
+	{
+		svscn->UpdateExternCalibReslt(pose);
+	}
+	else
+	{
+		unsigned char updateFlag = 1;
+		AVMData::GetInstance()->Set3DParam(updateFlag, pose);
+	}
+	Log_Error("Update3DParam");
 }
 
 void XRSV::Update2DParam(void *pdata,void *pIndex)
@@ -460,7 +469,16 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 	int index_size = 0;
 	data_size = AVMData::GetInstance()->m_2D_lut->GetDataTotalCnt();
 	index_size = AVMData::GetInstance()->m_2D_lut->GetIndexTotalCnt();
-	svscn->UpdateExternCalib2DReslt((GLfloat*)pdata,data_size,(GLushort *)pIndex,index_size);
+	if(svscn)
+	{
+		svscn->UpdateExternCalib2DReslt((GLfloat*)pdata,data_size,(GLushort *)pIndex,index_size);
+	}
+	else
+	{
+		unsigned char updateFlag = 1;
+		AVMData::GetInstance()->Set2DParam(updateFlag, (GLfloat*)pdata, (GLushort *)pIndex);
+	}
+	Log_Error("Update3DParam");
 }
 
 void XRSV::UpdateCtaResult(unsigned char pCtaStatus, void* pCtaRst)
@@ -518,7 +536,16 @@ void XRSV::Pinch(float distance)
 }
 void XRSV::UpdateStichAngle(unsigned char seam_change_flag[],float *pVertex)
 {
-	svscn->UpdateStich2DReslt(seam_change_flag,pVertex);
+	if(svscn)
+	{
+		svscn->UpdateStich2DReslt(seam_change_flag,pVertex);
+	}
+	else
+	{
+		unsigned char seamDataChangeFlag = 1;
+		AVMData::GetInstance()->SetStitchAngle(seamDataChangeFlag, seam_change_flag, pVertex);
+	}
+	Log_Error("UpdateStichAngle");
 }
 
 void XRSV::DoubleTouchDown(int x, int y)

@@ -199,6 +199,16 @@ public:
 	
 	void GetApaOverlayResult(APAOverlayStruct* pAPAReslt);
 	void SetApaOverlayResult(APAOverlayStruct pAPAReslt);
+
+	
+	void SetStitchAngle(unsigned char pSeamChangedFlag, unsigned char* pSeamChangeFlag,GLfloat* pVertex);
+	void GetStitchAngle(unsigned char& pSeamChangedFlag, unsigned char** pSeamChangeFlag,GLfloat** pVertex);
+
+	void Set2DParam(unsigned char pUpdateFlag, GLfloat *pData,GLushort *pIndex);
+	void Set3DParam(unsigned char pUpdateFlag, float *pos);
+
+	void Get2DParam(unsigned char& pUpdateFlag, GLfloat **pData,GLushort **pIndex);
+	void Get3DParam(unsigned char& pUpdateFlag, float **pos);
 	
 	void Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
 
@@ -266,6 +276,16 @@ private:
 	BEV_CONFIG_T		   m_bevConfig;
 
 	class SVNode2DStich*	m_timeStitchNode;
+	unsigned char*			m_seamUpdateFlag;
+	GLfloat*				m_seamUpdateData;
+	unsigned char 			m_seamDataChangeFlag;
+
+	unsigned char 			m_2dParamUpdateFlag;
+	GLfloat*				m_2dParamData;
+	GLushort*				m_2dParamIndex;
+
+	unsigned char			m_3dParamUpdateFlag;
+	float*					m_3dParamPos;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

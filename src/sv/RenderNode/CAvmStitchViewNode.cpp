@@ -257,6 +257,7 @@ int CAvmStitchViewNode::AddOverlay(IAvmOverlay * pOverlay)
 	
 	return AVM_STITCHVIEW_NORMAL;
 }
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

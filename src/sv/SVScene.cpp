@@ -536,7 +536,6 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	scale[2]= m_bev_config.smc_hmi.CAR_MODEL_SCALE_Z;
 
 
-
 	ISceneNode*	object_render_node;
 	object_render_node = m_objectNode;
 	tempmaterialid = object_render_node->CreateMaterial(Material_Rigid_Texture, &tempcarmtl);
@@ -583,17 +582,10 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	carmtl->SetAmbientMap(RX5TEXMASK);
 	m_carId = object_render_node->LoadModelFromFile(CARMODEL, m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z, 50, &m_Car); //envision
 
-
-
 	m_Car->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
 	m_Car->SetEnable(1);
 
 	m_Car->RotateDY(0);
-
-
-
-
-
 
     door_offset_x = 13*50*pConfig.smc_hmi.CAR_MODEL_SCALE_X;
 #ifdef RX5_CAR_MODEL	
@@ -610,16 +602,10 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORMODEL[0], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X-door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z-door_offset_y, 50, &m_CarDoor[0]); //envision
 
-
-
 	m_CarDoor[0]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[0]->SetEnable(1);
 
-
-
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORMODEL[1], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X+door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z-door_offset_y, 50, &m_CarDoor[1]); //envision
-
-
 
 	m_CarDoor[1]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[1]->SetEnable(1);
@@ -641,15 +627,10 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORMODEL[2], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X-door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z+door_offset_y, 50, &m_CarDoor[2]); //envision
 
-
-
 	m_CarDoor[2]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[2]->SetEnable(1);
 
-
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORMODEL[3], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X+door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z+door_offset_y, 50, &m_CarDoor[3]); //envision
-
-
 
 	m_CarDoor[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[3]->SetEnable(1);
@@ -673,9 +654,6 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	m_CarLight->RotateDY(0);
 
 
-
-
-
     door_offset_x = 13*50*pConfig.smc_hmi.CAR_MODEL_SCALE_X;
 #ifdef RX5_CAR_MODEL	
     door_offset_y = 9.5*50*pConfig.smc_hmi.CAR_MODEL_SCALE_Z;
@@ -691,15 +669,11 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORWINDOWMODEL[0], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X-door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z-door_offset_y, 50, &m_Car_Window[0]); //envision
 
-
-
 	m_Car_Window[0]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_Car_Window[0]->SetEnable(1);
 
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORWINDOWMODEL[1], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X+door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z-door_offset_y, 50, &m_Car_Window[1]); //envision
-
-
 
 	m_Car_Window[1]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_Car_Window[1]->SetEnable(1);
@@ -730,22 +704,16 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARDOORWINDOWMODEL[3], m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X+door_offset_x, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z+door_offset_y, 50, &m_Car_Window[3]); //envision
 
-
-
 	m_Car_Window[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_Car_Window[3]->SetEnable(1);
 
 
 	iCarnodeId = object_render_node->LoadModelFromFile(CARWINDOWMODEL, m_carmtlId, -1, InsertFlag_Default, pConfig.smc_hmi.CAR_MODEL_POSITION_X, pConfig.smc_hmi.CAR_MODEL_POSITION_Y, pConfig.smc_hmi.CAR_MODEL_POSITION_Z, 50, &m_Car_Window[4]); //envision
 
-
-
 	m_Car_Window[4]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
 	m_Car_Window[4]->SetEnable(1);
 
 	m_Car_Window[4]->RotateDY(0);
-
-
 
 	g_MaterialAlpha = 0.95;
 
@@ -761,9 +729,6 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	m_SUV->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
 	m_SUV->SetEnable(0);
 
-
-
-
 	iVanmtlId = object_render_node->CreateMaterial(Material_Glossy_Color, &carmtl);
 	carmtl->SetDiffuseMap(VANTEX);
 	carmtl->SetEnvironmentMap(CARENV);
@@ -773,13 +738,10 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
 	m_VAN->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
 	m_VAN->SetEnable(0);
 
-
-
 	iTruckMtlId = object_render_node->CreateMaterial(Material_Glossy_Color, &carmtl);
 	carmtl->SetDiffuseMap(OTHERTEX);
 	carmtl->SetEnvironmentMap(CARENV);
 	carmtl->SetAmbientMap(OTHERTEXMASK);
-
 
 	m_iTruckId = object_render_node->LoadModelFromFile(TRUCKMODEL, iTruckMtlId, -1, InsertFlag_Default, -50, 80, -520, 22, &m_TRUCK);
 	m_TRUCK->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);

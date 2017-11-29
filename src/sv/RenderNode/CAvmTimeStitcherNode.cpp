@@ -204,6 +204,7 @@ int CAvmTimeStitcherNode::UpdateNode()
 	AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
 	AVMData::GetInstance()->m_p_can_data->Get_Yaw_Rate(&yawRate);
 
+	UpdateStich2DReslt();
 	m_timeStitchNode->Update(steer_angle, speed,
 						left_wheel_speed, right_wheel_speed,
 						gear_state,timeInterval, yawRate);
@@ -213,7 +214,7 @@ int CAvmTimeStitcherNode::UpdateNode()
 
 	AddOverlay(m_overlay);
 	
-	float *pdist=	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
+	float *pdist =	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
 	m_sonarNode->Update(steer_angle, speed,
 						left_wheel_speed, right_wheel_speed,
 						gear_state,timeInterval, yawRate, pdist);
@@ -258,6 +259,59 @@ int CAvmTimeStitcherNode::AddOverlay(IAvmOverlay * pOverlay)
 		pOverlay->Update();
 	}
 	
+	return TIME_STITCHER_NORMAL;
+}
+int CAvmTimeStitcherNode::UpdateStich2DReslt()
+{
+	IMesh *pMeshTemp;
+   // sv2Ddelegate->Update2DCalibRslt(pData,data_size,pIndex,index_size);
+	float *pTemp;
+	unsigned int BufSize;
+	unsigned int totalBufSize=0;
+	unsigned char* pSeamChangeFlag;
+	unsigned char pSeamDataChangeFlag;
+	GLfloat* pVertex;
+	AVMData::GetInstance()->GetStitchAngle(pSeamDataChangeFlag, &pSeamChangeFlag, &pVertex);
+
+	if(pSeamDataChangeFlag == 1)
+	{
+		for(int i=0;i<4;i++)
+		{
+	   
+			m_SV2DData->GetVertexBuffer(eFrontLeftMesh+i,&pTemp,&BufSize);
+			if(1== pSeamChangeFlag[i])
+			{
+				memcpy(pTemp,pVertex+7*totalBufSize,BufSize*7*sizeof(GLfloat));
+	   	
+				m_timeStitchNode->UpdateStich2DReslt(i);
+			}
+		   
+			totalBufSize+=BufSize;
+		}
+		AVMData::GetInstance()->SetStitchAngle(0, pSeamChangeFlag, pVertex);
+	}
+	
+	return TIME_STITCHER_NORMAL;
+
+}
+int CAvmTimeStitcherNode::UpdateExternCalib2DReslt()
+{
+	GLfloat *pData;
+	int data_size;
+	GLushort *pIndex;
+	int index_size;
+	unsigned char updateFlag = 0;
+    IMesh *pMeshTemp;
+
+	AVMData::GetInstance()->Get2DParam(updateFlag, &pData, &pIndex);
+	if(updateFlag == 1)
+	{
+		AVMData::GetInstance()->m_2D_lut->UpdateLUT(pData,pIndex);
+
+    	m_timeStitchNode->Update2DStichRslt();
+
+		AVMData::GetInstance()->Set2DParam(0, pData, pIndex);
+	}
 	return TIME_STITCHER_NORMAL;
 }
 /*===========================================================================*\
