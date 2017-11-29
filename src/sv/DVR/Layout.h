@@ -39,7 +39,7 @@ namespace GUI
     /*
      * \brief CGUILayout 集成了Gpu构建hmi的基础功能
      */
-    class ILayout : public LogHelper<ILayout>
+    class ILayout : public LogHelper
     {
     protected:
         typedef void  (ILayout::*PFCreateElement)(IGUIElement*, const GUI_HANDLE_T parentId);

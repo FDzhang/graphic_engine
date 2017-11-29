@@ -33,7 +33,7 @@ namespace GUI
     DEFINE_NAMED_STATIC_LOGCTRL_CONFIG(CAvmEventLayout_Logctl, 1, "ILayout", LogName);
 
     ILayout::ILayout(const char* className)
-        :LogHelper<ILayout>(&CAvmEventLayout_Logctl, LogName, &GetGlobalConfig())
+        :LogHelper(&CAvmEventLayout_Logctl, LogName, &GetGlobalConfig())
         ,m_node(NULL), m_node_id(0)
         ,m_origin_element_info(NULL)
         ,m_origin_table_size(0)
