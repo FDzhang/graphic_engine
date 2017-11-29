@@ -27,6 +27,7 @@
 #include "CAvmViewControlModel.h"
 #include "../AVMData.h"
 #include "../SVNodeAdasHmi.h"
+#include "gpu_log.h"
 
 CAvmLogicManager::CAvmLogicManager()
 {
@@ -89,11 +90,11 @@ int CAvmLogicManager::UpdateViewModel()
 	{
 		return AVM_LOGIC_VIEW_MODEL_INIT_FAILED;
 	}
-	unsigned char direction = TOUR_VIEW;
+	unsigned char direction = REAR_LARGE_SINGLE_VIEW;
 	static int cnt = 0;
 	static int init_flag = 0;
 	static const int START_UP_TURN_TIME = 120;
-	if(init_flag ==1)
+	/*if(init_flag ==1)
     {
         if(cnt>= START_UP_TURN_TIME)
         {       
@@ -116,8 +117,9 @@ int CAvmLogicManager::UpdateViewModel()
 	{
 	    cnt++;
 	}
+*/
+	//AVMData::GetInstance()->SetDisplayViewCmd(direction);
 
-	AVMData::GetInstance()->SetDisplayViewCmd(direction);
 	m_avmViewControlModel->SetCurrentView();
 	if(direction >= FRONT_LARGE_SINGLE_VIEW
 		&& direction <= RIGHT_LARGE_SINGLE_VIEW)

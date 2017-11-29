@@ -137,25 +137,26 @@ bool CSVChanganHmi::SetCustomView(unsigned char viewIndex)
 			tempViewIndex = CCAG_BMW_RIGHT_REAR_VIEW; //right rear 3d
 		}
 	}
-        else if(m_isTrackRegion == 0 || m_isCarRegion == 1)
+    else if(m_isTrackRegion == 0 || m_isCarRegion == 1)
+    {
+        if(tempViewIndex == CCAG_CAMERA_REGION_FRONT)
         {
-            if(tempViewIndex == CCAG_CAMERA_REGION_FRONT)
-            {
-            	tempViewIndex = CCAG_FRONT_SINGLE_VIEW; //front 3d
-            }
-            else if(tempViewIndex == CCAG_CAMERA_REGION_REAR)
-            {
-            	tempViewIndex = CCAG_REAR_SINGLE_VIEW; //rear 3d          	
-            }
-            else if(tempViewIndex == CCAG_CAMERA_REGION_LEFT)
-            {
-            	tempViewIndex = CCAG_LEFT_SINGLE_VIEW; //left front 3d
-            }
-            else if(tempViewIndex == CCAG_CAMERA_REGION_RIGHT)
-            {
-            	tempViewIndex = CCAG_RIGHT_SINGLE_VIEW; //right front 3d
-            }
+        	tempViewIndex = CCAG_FRONT_SINGLE_VIEW; //front 3d
         }
+        else if(tempViewIndex == CCAG_CAMERA_REGION_REAR)
+        {
+        	tempViewIndex = CCAG_REAR_SINGLE_VIEW; //rear 3d          	
+        }
+        else if(tempViewIndex == CCAG_CAMERA_REGION_LEFT)
+        {
+        	tempViewIndex = CCAG_LEFT_SINGLE_VIEW; //left front 3d
+        }
+        else if(tempViewIndex == CCAG_CAMERA_REGION_RIGHT)
+        {
+        	tempViewIndex = CCAG_RIGHT_SINGLE_VIEW; //right front 3d
+        }
+    }
+
 	
 	SetCurrentView(tempViewIndex);
 }

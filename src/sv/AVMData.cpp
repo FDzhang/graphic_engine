@@ -34,6 +34,8 @@
 #include "VideoSource/CVideoCameraSourceRender.h"
 #include "VideoSource/CJ6CameraSourceRender.h"
 #include "VideoSource/CVideoBufferCameraSourceRender.h"
+
+#include "gpu_log.h"
 /*===========================================================================*\
  * Other Header Files
 \*===========================================================================*/

@@ -62,7 +62,7 @@ int CAvmLargeSingleView::Update()
 	{
 		if(m_lastLargeViewCmd != largeViewCmd)
 		{
-			AVMData::GetInstance()->GetLargeSingleViewRoi(m_singleViewRoi, largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
+			AVMData::GetInstance()->GetLargeSingleViewRoi(&m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			SetLargeViewVertextValue(m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			m_singleViewNode->SetRenderROI(&m_largeViewRegion);
 			m_lastLargeViewCmd = largeViewCmd;

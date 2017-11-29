@@ -35,6 +35,7 @@
 
 #include "RenderNode/CAvmLogicManager.h"
 
+
 SVUI* svui;
 SVScene* svscn;
 #define VK_A 0x41
@@ -184,7 +185,6 @@ int XRSV::InitHmi(int screen_width, int screen_height)
 {
 	m_customHmi = new CSVChanganHmi();
 	m_customHmi->Init(screen_width, screen_height);
-	m_customHmi->SetAvmDisplayView(0);
 
 	return 0;
 }
@@ -224,14 +224,18 @@ int XRSV::UpdateHmiData()
 	if(svscn)
 	{
 		svscn->GetCurrentDisplayView(current_avm_display_view);
-
-		m_customHmi->SetAvmDisplayView(current_avm_display_view);
+		
 	}
+	else
+	{
+		current_avm_display_view = DatabaseGetAvmViewType();
+	}
+	m_customHmi->SetAvmDisplayView(current_avm_display_view);
 
 	m_customHmi->Update(currentHmiMessage);
 	unsigned char currentViewIndex = 0;
 	m_customHmi->GetCurrentView(currentViewIndex);
-	
+
 	static unsigned char lastViewIndex = 255;
 	if(lastViewIndex != currentViewIndex)
 	{
@@ -403,6 +407,15 @@ bool XRSV::update(unsigned int view_control_flag)
                 break;
         }
 */
+		unsigned char displayCmd = DatabaseGetAvmViewType();
+		static unsigned char lastDisplayCmd = 255;
+
+		if(lastDisplayCmd != displayCmd)
+		{
+			AVMData::GetInstance()->SetDisplayViewCmd(displayCmd);
+			lastDisplayCmd = displayCmd;
+		}
+
     	UpdateHmiData();
 
         //svscn->Update(view_control_flag,0);
