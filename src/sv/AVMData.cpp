@@ -254,6 +254,11 @@ void AVMData::GetObjectViewRegion(Region** pRegion)
 {
 	*pRegion = &m_objectViewRegion;
 }
+void AVMData::GetLinearViewRegion(Region** pRegion)
+{
+	*pRegion = &m_linearViewRegion;
+}
+
 void AVMData::GetBevConfig(BEV_CONFIG_T* pConfig)
 {
 	*pConfig = m_bevConfig;
@@ -287,6 +292,11 @@ void AVMData::GetSingleViewCameraParams(SurroundViewCameraParamsT** pCameraParam
 {
 	*pCameraParams = &m_singleViewCameraParams;
 }
+void AVMData::GetLinearViewCameraParams(SurroundViewCameraParamsT** pCameraParams)
+{
+	*pCameraParams = &m_linearViewCameraParams;
+}
+
 void AVMData::Set3dViewRegion(Region* pRegion)
 {
 	if(pRegion != NULL)
@@ -315,6 +325,14 @@ void AVMData::SetObjectViewRegion(Region* pRegion)
 		m_objectViewRegion = *pRegion;
 	}
 }
+void AVMData::SetLinearViewRegion(Region* pRegion)
+{
+	if(pRegion != NULL)
+	{
+		m_linearViewRegion = *pRegion;
+	}
+}
+
 void AVMData::SetObjectViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
 {
 	if(pCameraParams != NULL)
@@ -343,6 +361,14 @@ void AVMData::Set3dViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
 		m_3dViewCameraParams = *pCameraParams;		
 	}
 }
+void AVMData::SetLinearViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
+{
+	if(pCameraParams != NULL)
+	{
+		m_linearViewCameraParams = *pCameraParams;		
+	}
+}
+
 void AVMData::SetAnimationManager(IAnimationManager* pAm)
 {
 	if(pAm != NULL)
@@ -548,6 +574,14 @@ void AVMData::SetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char pF
 void AVMData::GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
 {
 	pFlag = m_avmObjViewVisibility[pFuncId];
+}
+void AVMData::Set180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avm180DegreeViewVisibility[pFuncId] = pFlag;
+}
+void AVMData::Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avm180DegreeViewVisibility[pFuncId];
 }
 
 void AVMData::SetDisplayViewCmd(unsigned char pCmd)

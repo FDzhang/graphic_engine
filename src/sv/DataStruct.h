@@ -56,6 +56,13 @@
 /*===========================================================================*\
  * Exported Type Declarations
 \*===========================================================================*/
+typedef enum GpuErrorCodeTag
+{
+	LINEAR_VIEW_NODE_NORMAL,
+	LINEAR_VIEW_NODE_INIT_FAILED,
+	GPU_ERROR_CODE_NUMS,
+}
+GpuErrorCodeT;
 
 enum
 {

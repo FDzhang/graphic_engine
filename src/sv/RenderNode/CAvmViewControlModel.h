@@ -60,6 +60,7 @@ private:
 	int ProcessMattsView();
 	int ProcessLargeSingleView();
 	int ProcessTimeStitcher();
+	int Process180DegreeView();
 
 private:
 	class CAvm3dViewNode* m_avm3dViewNode;
@@ -69,6 +70,7 @@ private:
 	class CAvmObjectViewNode* m_avmObjViewNode;
 	class CAvmMattsView*      m_avmMattsView;
 	class CAvmLargeSingleView* m_avmLargeSingleView;
+	class CAvmLinearViewNode*  m_avm180DegreeView;
 
 	class IScrollingAnimation*	m_scrollX;
 	class IScrollingAnimation*	m_scrollY;

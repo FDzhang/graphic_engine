@@ -90,11 +90,11 @@ int CAvmLogicManager::UpdateViewModel()
 	{
 		return AVM_LOGIC_VIEW_MODEL_INIT_FAILED;
 	}
-	unsigned char direction = REAR_LARGE_SINGLE_VIEW;
-	static int cnt = 0;
+	unsigned char direction = FRONT_3D_VIEW;
+/*	static int cnt = 0;
 	static int init_flag = 0;
 	static const int START_UP_TURN_TIME = 120;
-	/*if(init_flag ==1)
+	if(init_flag ==1)
     {
         if(cnt>= START_UP_TURN_TIME)
         {       

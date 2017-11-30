@@ -129,21 +129,24 @@ public:
 	void Get3dViewRegion(Region** pRegion);
 	void GetStitchViewRegion(Region** pRegion);
 	void GetSingleViewRegion(Region** pRegion);
-	void GetObjectViewRegion(Region** pRegion);
+	void GetObjectViewRegion(Region** pRegion);	
+	void GetLinearViewRegion(Region** pRegion);
 	void GetObjectViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 	void GetStitchViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 	void GetSingleViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 	void Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
+	void GetLinearViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
 
 	void Set3dViewRegion(Region* pRegion);
 	void SetStitchViewRegion(Region* pRegion);
 	void SetSingleViewRegion(Region* pRegion);
-	void SetObjectViewRegion(Region* pRegion);
+	void SetObjectViewRegion(Region* pRegion);	
+	void SetLinearViewRegion(Region* pRegion);
 	void SetObjectViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
 	void SetStitchViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
 	void SetSingleViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
 	void Set3dViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
-
+	void SetLinearViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
 
 	void SetAnimationManager(class IAnimationManager* pAm);
 	void GetAnimationManager(class IAnimationManager** pAm);
@@ -166,6 +169,8 @@ public:
 	void GetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
 	void SetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
 	void GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void Set180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
 
 	void SetDisplayViewCmd(unsigned char pCmd);
 	void GetDisplayViewCmd(unsigned char& pCmd);
@@ -241,10 +246,14 @@ private:
 	Region m_stitchViewRegion;
 	Region m_objectViewRegion;
 	Region m_fadeRegion;
+	Region m_linearViewRegion;
+
 	SurroundViewCameraParamsT m_stitchViewCameraParams;
 	SurroundViewCameraParamsT m_objectViewCameraParams;
 	SurroundViewCameraParamsT m_3dViewCameraParams;
-	SurroundViewCameraParamsT m_singleViewCameraParams;
+	SurroundViewCameraParamsT m_singleViewCameraParams;	
+	SurroundViewCameraParamsT m_linearViewCameraParams;
+
 	class GlSV2D* m_sv2dData;
 	class IAnimationManager* m_am;
 	class ISceneNode* m_singleViewNode;
@@ -260,6 +269,7 @@ private:
 	unsigned char m_avmSingleViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmStitchViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmObjViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avm180DegreeViewVisibility[PROCESS_FUNC_NUMS];
 	
 	unsigned char m_stitchViewNodeStatus;
 	unsigned char m_singleViewNodeStatus;
