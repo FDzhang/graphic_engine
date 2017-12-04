@@ -49,6 +49,14 @@
 /*===========================================================================*\
  * Exported Type Declarations
 \*===========================================================================*/
+enum
+{
+    roi_start_x_index = 0,
+	roi_end_x_index,
+    roi_start_y_index,
+	roi_end_y_index,
+
+};
 
 /*===========================================================================*\
  * Exported Object Declarations
@@ -74,6 +82,21 @@ public:
 	void Init(Smc_Cal_T *pIntParam);
 	void Init(Cam_Model_Intrinsic *pCamIntMdl);
 
+	Cam_Model * GetFullCameraModel(int camera_index,float *pCameraR,float *pCam_T);
+    void SetUndistLinearCameraModel(int camera_index,Cam_Model* pLinearMdl);
+    
+    
+    void SetUndistCyliCameraModel(int camera_index,Cam_Model_Cyli* pCyliMdl);
+    
+    Cam_Model *GetUndistLinearCameraModel(int camera_index);
+    
+    
+    Cam_Model_Cyli *GetUndistCyliCameraModel(int camera_index);
+	void MapImgPtFish2Cylic(int camera_index,float *pSrc,float *pDst);
+	void MapImgPtFish2Linear(int camera_index,float *pSrc, float *pDst);
+    void SetUndistCamROI(int camera_index,int start_x,int start_y,int end_x,int end_y);
+	void SetLinearCamROI(int camera_index,int start_x,int start_y,int end_x,int end_y);
+
 private:
 	void InitLutMemory(void);
 	int get_camera_config(CAMERA_CFG *cam_model, BEV_CONFIG_T pconfig);
@@ -83,6 +106,14 @@ private:
 	//Cam_Model m_cam_fisheye_instrict[4];
     CAMERA_CFG m_cam_cfg_fisheye[4];
 	float *m_camera_lut[4];
+
+	Cam_Model *mp_full_cam_model[4];
+
+	Cam_Model *mp_undist_linear_mdl[4];
+	Cam_Model_Cyli *mp_undist_Cyli_mdel[4];
+	
+    int m_undist_cam_roi[4][4];
+	int m_linear_cam_roi[4][4];
 
 };
 /*===========================================================================*\

@@ -816,6 +816,19 @@ switch(id)
 							}
 							AVMData::GetInstance()->m_cam_source->UseCameraTexture(camera_index);
 						}
+						else if(channelId == left_right_camera_index)
+						{
+							mtl_id = pMtl->GetDiffuseMap()->texid;
+							for(camera_index=left_camera_index;camera_index<= right_camera_index;camera_index++)
+							{
+								if(mtl_id == AVMData::GetInstance()->m_cam_source->GetCameraSourceTextureId(camera_index))
+								{
+									break;
+								}
+							
+							}
+							AVMData::GetInstance()->m_cam_source->UseCameraTexture(camera_index);
+						}
 						else
 						{
 						   AVMData::GetInstance()->m_cam_source->UseCameraTexture(channelId);

@@ -35,6 +35,27 @@ enum
 	AVM_VIEWCONTROLMODEL_NORMAL,
 
 };
+typedef enum ViewNodeNameTag
+{
+	AVM_3D_VIEW_NODE = 0,
+	AVM_SINGLE_VIEW_NODE,
+	AVM_STITCH_VIEW_NODE,
+	AVM_TIME_STITCHER_VIEW_NODE,
+	AVM_OBJECT_VIEW_NODE,
+	AVM_MATTS_VIEW_NODE,
+	AVM_LARGESINGLE_VIEW_NODE,
+	AVM_LINEAR_180VIEW_NODE,
+	AVM_LEFT_RIGHT_VIEW_NODE,
+	AVM_VIEW_NODE_NUMS,
+}
+ViewNodeNameT;
+
+typedef struct ViewNodeVisibilityTag
+{
+	VisibilityIndexT funcId;
+	unsigned char flag;
+}
+ViewNodeVisibilityT;
 
 class CAvmViewControlModel
 {
@@ -63,6 +84,9 @@ private:
 	int ProcessLargeSingleView();
 	int ProcessTimeStitcher();
 	int Process180DegreeView();
+	int ProcessLeftRightView();
+
+	int SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVisibility[AVM_VIEW_NODE_NUMS]);
 
 private:
 	class CAvm3dViewNode* m_avm3dViewNode;
@@ -73,6 +97,7 @@ private:
 	class CAvmMattsView*      m_avmMattsView;
 	class CAvmLargeSingleView* m_avmLargeSingleView;
 	class CAvmLinearViewNode*  m_avm180DegreeView;
+	class CAvmLeftRightView* m_avmLeftRightView;
 
 	class IScrollingAnimation*	m_scrollX;
 	class IScrollingAnimation*	m_scrollY;

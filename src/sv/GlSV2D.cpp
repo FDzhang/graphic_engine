@@ -179,6 +179,21 @@ GLfloat fBottomView[]={
     };
 
 
+typedef enum SvCamTypeTag
+{
+	CAM_FRONT_LINEAR,
+	CAM_REAR_LINEAR,
+	CAM_LEFT_LINEAR,
+	CAM_RIGHT_LINEAR,
+
+	CAM_FRONT_FISHEYE,
+	CAM_REAR_FISHEYE,
+	CAM_LEFT_FISHEYE,
+	CAM_RIGHT_FISHEYE,
+
+	CAM_TYPE_NUM,
+}
+SvCamTypeT;
 
 
 /****************************************
@@ -211,6 +226,84 @@ GlSV2D::GlSV2D()
     }
 
 	
+}
+int GlSV2D::InitLinear()
+{
+	 GLfloat *pf_car_pose;
+
+	 #ifdef _READ_BIN_FILE_
+
+	 for(int i=0;i<8;i++)
+	 {
+		 AVMData::GetInstance()->m_2D_lut->GetLutData(&m_pfVertexBuff[i],i);
+		 AVMData::GetInstance()->m_2D_lut->GetLutIndex(&m_pucIndexBuff[i],i);
+	 
+
+	 }
+
+    AVMData::GetInstance()->m_2D_lut->GetLutConfig(&uiConfig,0);
+    AVMData::GetInstance()->m_2D_lut->GetLutConfig(&uiConfigAlpha,1);	 
+
+	 #endif
+
+	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[0],rect_left);
+	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[1],rect_top);
+	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[7],rect_right);
+	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[15],rect_bottom);
+
+
+    fCarView[8] = fCarView[1];
+    fCarView[14] = fCarView[0];
+	fCarView[21] = fCarView[7];
+    fCarView[22] = fCarView[15];
+
+	 
+	//m_pfVertexBuff[eSingleViewMesh] = fVerticesSingleView;
+    m_pfVertexBuff[eCarImageMesh] = fCarView;
+	for(int i=eFrontSingle;i<eRightSingle;i++)
+	{
+	     m_pfVertexBuff[i]= fVerticesSingleView+28*(i-eFrontSingle);
+		 
+		 m_pucIndexBuff[i] = RectIndex;
+	}	 //
+
+#if 1
+
+    InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
+		&m_pfVertexBuff[eLeftSingle],&m_pucIndexBuff[eLeftSingle],
+		&m_SideViewVertSize[left_camera_index],&m_SideViewIndexSize[left_camera_index]);
+	InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
+	&m_pfVertexBuff[eRightSingle],&m_pucIndexBuff[eRightSingle],
+		&m_SideViewVertSize[right_camera_index],&m_SideViewIndexSize[right_camera_index]);
+	/*InitFrontRearViewBuffer(FRONT_CLC_VIEW_MESH_WIDTH,FRONT_CLC_VIEW_MESH_HEIGHT,
+		&m_pfVertexBuff[eFrontSingle],&m_pucIndexBuff[eFrontSingle],
+		&m_SideViewVertSize[front_camera_index],&m_SideViewIndexSize[front_camera_index]);
+    InitFrontRearViewBuffer(REAR_CLC_VIEW_MESH_WIDTH,REAR_CLC_VIEW_MESH_HEIGHT,
+		&m_pfVertexBuff[eRearSingle],&m_pucIndexBuff[eRearSingle],
+		&m_SideViewVertSize[rear_camera_index],&m_SideViewIndexSize[rear_camera_index]);
+*/
+	//GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+	GenerateSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
+	GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+	//GenerateFrontRearSingleViewLUT(front_camera_index,m_pfVertexBuff[eFrontSingle]);
+	//GenerateFrontRearSingleViewLUT(rear_camera_index,m_pfVertexBuff[eRearSingle]);
+
+#else
+	int ret = 0;	
+	ret = InitFrontRearSingleViewCamLUT(front_camera_index);
+	ret = InitFrontRearSingleViewCamLUT(rear_camera_index);
+
+	ret = InitSideViewParams(&m_pfVertexBuff[eLeftSingle], &m_pucIndexBuff[eLeftSingle], left_camera_index);
+	ret = InitSideViewParams(&m_pfVertexBuff[eRightSingle], &m_pucIndexBuff[eRightSingle], right_camera_index);
+	ret = InitSideViewParams(&m_pfVertexBuff[eFrontSingle], &m_pucIndexBuff[eFrontSingle], front_camera_index);
+	ret = InitSideViewParams(&m_pfVertexBuff[eRearSingle], &m_pucIndexBuff[eRearSingle], rear_camera_index);
+
+#endif
+	m_pucIndexBuff[eCarImageMesh] = RectIndex;
+	//m_pucIndexBuff[eRightBottomMesh] = RectIndex;
+
+	m_camType = CAM_LEFT_LINEAR;
+	return 0;
 }
 
 int GlSV2D::Init()
@@ -306,4 +399,347 @@ int GlSV2D::GetIndexBuffer(int Index,GLushort **pIndexBuffer, unsigned int *BufS
 	}	
 	return 0;
 }
+
+extern "C" FLT_T Cam_Lut_Linear[];
+//for side single view undistortion and turn function
+int GlSV2D::InitSideViewBuffer(int width,int height,GLfloat **pData,GLushort **pIndex,unsigned int *puiVertSize,unsigned int *puiIndexSize)
+{
+	GLushort *pIndexTemp;
+	float Rot[3]={-1.57,0,0};
+	*pData = (GLfloat*)malloc(width*height*7*4);
+	int x, y;
+	*pIndex = (GLushort*)malloc((width-1)*(height-1)*6*2);
+	*puiIndexSize = (width-1)*(height-1)*6;
+	*puiVertSize = width*height*7;
+	
+	int slotId=0;
+	pIndexTemp = *pIndex;
+
+	//FILE* temp_file = fopen("text_wjx_index.txt","w");
+
+	for (y=0; y<width-1; y++) {
+		for (x=0; x<height-1; x++) {
+
+			pIndexTemp[slotId] = y*width + x;
+			pIndexTemp[slotId + 1] = y*width + x + 1;
+			pIndexTemp[slotId + 2] = (y + 1)*width + x;
+			pIndexTemp[slotId + 3] = y*width + x + 1;
+			pIndexTemp[slotId + 4] = (y + 1)*width + x + 1;
+			pIndexTemp[slotId + 5] = (y + 1)*width + x;
+
+			/*fprintf(temp_file, "%d,",pIndexTemp[slotId]);
+			fprintf(temp_file, "%d,",pIndexTemp[slotId + 1]);
+			fprintf(temp_file, "%d,",pIndexTemp[slotId + 2]);
+			fprintf(temp_file, "%d,",pIndexTemp[slotId + 3]);
+			fprintf(temp_file, "%d,",pIndexTemp[slotId + 4]);
+			fprintf(temp_file, "%d,\n",pIndexTemp[slotId + 5]);
+			*/
+			slotId+=6;
+		}
+	}
+
+    if(slotId == *puiIndexSize)
+    {
+        printf("\r\n succeed in size check");
+    }
+
+	//fclose(temp_file);
+
+	return 0;
+
+	
+}
+
+int GlSV2D::InitFrontRearViewBuffer(int width,int height,GLfloat **pData,GLushort **pIndex,unsigned int *puiVertSize,unsigned int *puiIndexSize)
+{
+	GLushort *pIndexTemp;
+	float Rot[3]={-1.57,0,0};
+	*pData = (GLfloat*)malloc(width*height*7*4);
+	int x, y;
+	*pIndex = (GLushort*)malloc((width-1)*(height-1)*6*2);
+	*puiIndexSize = (width-1)*(height-1)*6;
+	*puiVertSize = width*height*7;
+	
+	int slotId=0;
+	pIndexTemp = *pIndex;
+
+	for (y=0; y<width-1; y++) {
+		for (x=0; x<height-1; x++) {
+
+			pIndexTemp[slotId] = y*width + x;
+			pIndexTemp[slotId + 1] = y*width + x + 1;
+			pIndexTemp[slotId + 2] = (y + 1)*width + x;
+			pIndexTemp[slotId + 3] = y*width + x + 1;
+			pIndexTemp[slotId + 4] = (y + 1)*width + x + 1;
+			pIndexTemp[slotId + 5] = (y + 1)*width + x;
+
+			slotId+=6;
+
+		}
+	}
+
+    if(slotId == *puiIndexSize)
+    {
+        printf("\r\n succeed in size check");
+    }
+
+	return 0;
+
+	
+}
+int GlSV2D::GenerateFrontRearSingleViewLUT(int camera_index,float *pVert)
+{
+    Cam_Model *pRealCam;
+	int vertex_num;
+    float prsource[3];
+	float ptsource[3];
+    int config[7]={FRONT_CLC_VIEW_ROI_START_X,
+		FRONT_CLC_VIEW_ROI_START_Y,
+		FRONT_CLC_VIEW_ROI_END_X,
+		FRONT_CLC_VIEW_ROI_END_Y,
+		FRONT_CLC_VIEW_MESH_WIDTH, 
+		FRONT_CLC_VIEW_MESH_HEIGHT,0};
+	float roll = CLC_CAM_PITCH;
+	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
+	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+    pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
+
+	m_cam_clc[camera_index] = new Cam_Model_Cyli;
+    if(camera_index == rear_camera_index)
+		roll = REAR_CLC_CAM_PITCH;
+	Cam_Init_Cyli(m_cam_clc[camera_index],
+		CLC_CAM_WIDTH,CLC_CAM_HEIGHT,
+		CLC_CAM_CX,CLC_CAM_CY,
+		roll*deg2rad,CLC_CAM_ROLL*deg2rad,CLC_CAM_YAW*deg2rad);
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCyliCameraModel(camera_index,m_cam_clc[camera_index]);
+    if(camera_index == rear_camera_index)
+    {
+        config[0] = REAR_CLC_VIEW_ROI_START_X;
+		config[1] = REAR_CLC_VIEW_ROI_START_Y;
+		config[2] = REAR_CLC_VIEW_ROI_END_X;
+		config[3] = REAR_CLC_VIEW_ROI_END_Y;
+		config[6] =1 ;
+		
+    }
+	
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCamROI(camera_index,config[0],config[1],config[2],config[3]);
+	Cam_MapImage_Fish2Cyli_GenerateGPULUT(
+		pRealCam, 
+		m_cam_clc[camera_index],
+		config[0],
+		config[1],
+		config[2],
+		config[3],
+		config[4], 
+		config[5],
+		config[6],
+		&vertex_num,
+		pVert);
+
+	return 0;
+
+
+}
+
+int GlSV2D::InitFrontRearSingleViewCamLUT(int camera_index)
+{
+    Cam_Model *pRealCam;
+	int vertex_num;
+    float prsource[3];
+	float ptsource[3];
+    int config[7]={FRONT_CLC_VIEW_ROI_START_X,
+		FRONT_CLC_VIEW_ROI_START_Y,
+		FRONT_CLC_VIEW_ROI_END_X,
+		FRONT_CLC_VIEW_ROI_END_Y,
+		FRONT_CLC_VIEW_MESH_WIDTH, 
+		FRONT_CLC_VIEW_MESH_HEIGHT,0};
+	float roll = CLC_CAM_PITCH;
+	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
+	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+    pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
+
+	m_cam_clc[camera_index] = new Cam_Model_Cyli;
+    if(camera_index == rear_camera_index)
+		roll = REAR_CLC_CAM_PITCH;
+	Cam_Init_Cyli(m_cam_clc[camera_index],
+		CLC_CAM_WIDTH,CLC_CAM_HEIGHT,
+		CLC_CAM_CX,CLC_CAM_CY,
+		roll*deg2rad,CLC_CAM_ROLL*deg2rad,CLC_CAM_YAW*deg2rad);
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCyliCameraModel(camera_index,m_cam_clc[camera_index]);
+    if(camera_index == rear_camera_index)
+    {
+        config[0] = REAR_CLC_VIEW_ROI_START_X;
+		config[1] = REAR_CLC_VIEW_ROI_START_Y;
+		config[2] = REAR_CLC_VIEW_ROI_END_X;
+		config[3] = REAR_CLC_VIEW_ROI_END_Y;
+		config[6] =1 ;
+		
+    }
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCamROI(camera_index,config[0],config[1],config[2],config[3]);
+
+
+	return 0;
+
+
+}
+int GlSV2D::GenerateSideSingleViewLUT(int camera_index,float *pVert)
+{
+    Cam_Model *pRealCam;
+    float view_angle = 90.0;
+	int vertex_num;
+    float pR[3]={RIGHT_LINEAR_CAM_R_X,RIGHT_LINEAR_CAM_R_Y,RIGHT_LINEAR_CAM_R_Z};
+	float pT[3] = {RIGHT_LINEAR_CAM_T_X,RIGHT_LINEAR_CAM_T_Y,RIGHT_LINEAR_CAM_T_Z};
+    float prsource[3];
+	float ptsource[3];
+    int config[6]={RIGHT_SIDE_VIEW_ROI_START_X,
+		RIGHT_SIDE_VIEW_ROI_START_Y,
+		RIGHT_SIDE_VIEW_ROI_END_X,
+		RIGHT_SIDE_VIEW_ROI_END_Y,
+		RIGHT_SIDE_VIEW_MESH_WIDTH, 
+		RIGHT_SIDE_VIEW_MESH_HEIGHT};
+	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
+	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+    pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
+	m_cam_linear[camera_index] = new Cam_Model;
+
+	Cam_Init(m_cam_linear[camera_index], 
+		LINEAR_CAMERA_WIDTH,LINEAR_CAMERA_HEIGHT,
+		LINEAR_CAMERA_CX, LINEAR_CAMERA_CY, 
+		LINEAR_CAMERA_SKEW_C, LINEAR_CAMERA_SKEW_D, LINEAR_CAMERA_SKER_E, 
+		Cam_Lut_Linear,
+		LINEAR_CAMERA_HFOV*deg2rad, 
+		LINEAR_CAMERA_VFOV*deg2rad, 
+		true, 
+		pR, 
+		pT
+		);
+	FLT_T a[3]={RIGHT_LINEAR_CAM_ROT_X*deg2rad, RIGHT_LINEAR_CAM_ROT_Y*deg2rad, RIGHT_LINEAR_CAM_ROT_Z*deg2rad};
+    //FLT_T a[3] = {-pR[0], view_angle * deg2rad - pR[1], -pR[2]};
+    if(camera_index == left_camera_index)
+    {
+        config[0] = LEFT_SIDE_VIEW_ROI_START_X;
+		config[1] = LEFT_SIDE_VIEW_ROI_START_Y;
+		config[2] = LEFT_SIDE_VIEW_ROI_END_X;
+		config[3] = LEFT_SIDE_VIEW_ROI_END_Y;
+        a[0]=LEFT_LINEAR_CAM_ROT_X*deg2rad;
+		a[1]=LEFT_LINEAR_CAM_ROT_Y*deg2rad;
+		a[2]=LEFT_LINEAR_CAM_ROT_Z*deg2rad;
+		
+    }
+	m_linear_cam[camera_index][0]=a[0];
+	m_linear_cam[camera_index][1]=a[1];
+	m_linear_cam[camera_index][2]=a[2];
+
+	Cam_UpdateViewRotation(m_cam_linear[camera_index], a);
+	AVMData::GetInstance()->m_camInstrinct->SetUndistLinearCameraModel(camera_index,m_cam_linear[camera_index]);
+	AVMData::GetInstance()->m_camInstrinct->SetLinearCamROI(camera_index,config[0],config[1],config[2],config[3]);
+
+	Cam_MapImage_GenerateGPULUT(
+		pRealCam, 
+		m_cam_linear[camera_index],
+		config[0],
+		config[1],
+		config[2],
+		config[3],
+		config[4], 
+		config[5],
+		&vertex_num,
+		pVert);
+
+	return 0;
+
+
+}
+void GlSV2D::AdjustSideSingleViewLUT(int camera_index,unsigned char adjust_port,unsigned char adjust_direct)
+{
+	FLT_T a[3]={0*deg2rad, 0*deg2rad, 0*deg2rad};
+    float pR[3]={RIGHT_LINEAR_CAM_R_X,RIGHT_LINEAR_CAM_R_Y,RIGHT_LINEAR_CAM_R_Z};
+	float pT[3] = {RIGHT_LINEAR_CAM_T_X,RIGHT_LINEAR_CAM_T_Y,RIGHT_LINEAR_CAM_T_Z};
+	float prsource[3];
+	float ptsource[3];
+	Cam_Model *pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
+    int vertex_num;
+    float *pVert;
+
+	if(camera_index == right_camera_index)
+	{
+	     pVert=m_pfVertexBuff[eRightSingle];
+		 	
+	}
+	else
+	{
+	
+	    pVert=m_pfVertexBuff[eLeftSingle];
+	}
+    if(adjust_port >=POS_X_ADJ)
+    {
+    
+    	Cam_Init(m_cam_linear[camera_index], 
+    		LINEAR_CAMERA_WIDTH,LINEAR_CAMERA_HEIGHT,
+    		LINEAR_CAMERA_CX, LINEAR_CAMERA_CY, 
+    		LINEAR_CAMERA_SKEW_C, LINEAR_CAMERA_SKEW_D, LINEAR_CAMERA_SKER_E, 
+    		Cam_Lut_Linear,
+    		LINEAR_CAMERA_HFOV*deg2rad, 
+    		LINEAR_CAMERA_VFOV*deg2rad, 
+    		true, 
+    		pR, 
+    		pT
+    		);	
+    }
+	else
+	{
+	    if(adjust_port==ROT_X_ADJ)
+	    {
+	        if(adjust_direct == ADJUST_DIRECT_POS)
+	        {
+	            a[0] = ANGLE_ADJUST_STEP*deg2rad;
+	        }
+			else
+			{
+			    a[0] = -ANGLE_ADJUST_STEP*deg2rad;
+			}
+	    }
+	    else if(adjust_port==ROT_Y_ADJ)
+	    {
+	        if(adjust_direct == ADJUST_DIRECT_POS)
+	        {
+	            a[1] = ANGLE_ADJUST_STEP*deg2rad;
+	        }
+			else
+			{
+			    a[1] = -ANGLE_ADJUST_STEP*deg2rad;
+			}
+	    }
+	    else if(adjust_port==ROT_Z_ADJ)
+	    {
+	        if(adjust_direct == ADJUST_DIRECT_POS)
+	        {
+	            a[2] = ANGLE_ADJUST_STEP*deg2rad;
+	        }
+			else
+			{
+			    a[2] = -ANGLE_ADJUST_STEP*deg2rad;
+			}
+	    }
+
+		
+	    Cam_UpdateViewRotation(m_cam_linear[camera_index], a);
+    	m_linear_cam[camera_index][0]+=a[0];
+    	m_linear_cam[camera_index][1]+=a[1];
+    	m_linear_cam[camera_index][2]+=a[2];		
+	}
+	Cam_MapImage_GenerateGPULUT(
+		pRealCam, 
+		m_cam_linear[camera_index],
+		RIGHT_SIDE_VIEW_ROI_START_X,
+		RIGHT_SIDE_VIEW_ROI_START_Y,
+		RIGHT_SIDE_VIEW_ROI_END_X,
+		RIGHT_SIDE_VIEW_ROI_END_Y,
+		RIGHT_SIDE_VIEW_MESH_WIDTH, 
+		RIGHT_SIDE_VIEW_MESH_HEIGHT,
+		&vertex_num,
+		pVert);
+
+}
+
 

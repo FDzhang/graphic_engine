@@ -139,6 +139,11 @@ int CAvmLogicManager::UpdateViewModel()
 		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_MATTS_FUNC);
 
 	}
+	else if(direction >= TOTAL_VIEW_NUM)
+	{
+		AVMData::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
+		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
+	}
 	else
 	{
 		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);

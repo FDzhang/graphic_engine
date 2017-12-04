@@ -346,6 +346,36 @@ void AVMCameraInternal::GetCameraInstrinct(Cam_Model_Intrinsic **matrix,int came
     	*matrix=&(m_cam_fisheye_instrict[camera_index]);
 }
 
+Cam_Model * AVMCameraInternal::GetFullCameraModel(int camera_index,float *pCameraR,float *pCam_T)
+{
+	 int i=0;
+	if(mp_full_cam_model[camera_index]!= NULL)
+	{
+	    return mp_full_cam_model[camera_index];
+	}
+	
+	
+	mp_full_cam_model[camera_index] = new Cam_Model;
+
+	Cam_Init(mp_full_cam_model[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
+		m_cam_cfg_fisheye[camera_index].CAM_INT_CY, 
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_C,
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_D, 
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_E, 
+		m_camera_lut[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_HFOV,
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT, 
+		pCameraR, 
+		pCam_T
+		);
+
+	return mp_full_cam_model[camera_index];
+}
+
 void AVMCameraInternal::MapCamRay2ImagePointGpu(float *pWld,float *pTex,int camera_index)
 {
 
@@ -358,6 +388,89 @@ void AVMCameraInternal::MapCamRay2ImagePointGpu(float *pWld,float *pTex,int came
     pTex[1]/=m_cam_cfg_fisheye[camera_index].CAM_INT_H;
 
 
+}
+void AVMCameraInternal::SetUndistLinearCameraModel(int camera_index,Cam_Model* pLinearMdl)
+{
+    mp_undist_linear_mdl[camera_index] = pLinearMdl;
+
+}
+
+void AVMCameraInternal::SetUndistCyliCameraModel(int camera_index,Cam_Model_Cyli* pCyliMdl)
+{
+    mp_undist_Cyli_mdel[camera_index] = pCyliMdl;
+
+}
+Cam_Model *AVMCameraInternal::GetUndistLinearCameraModel(int camera_index)
+{
+    return mp_undist_linear_mdl[camera_index];
+}
+
+Cam_Model_Cyli *AVMCameraInternal::GetUndistCyliCameraModel(int camera_index)
+{
+    return mp_undist_Cyli_mdel[camera_index];
+}
+void AVMCameraInternal::SetUndistCamROI(int camera_index,int start_x,int start_y,int end_x,int end_y)
+{
+    m_undist_cam_roi[camera_index][roi_start_x_index]=start_x;
+    m_undist_cam_roi[camera_index][roi_end_x_index]=end_x;
+    m_undist_cam_roi[camera_index][roi_start_y_index]=start_y;
+    m_undist_cam_roi[camera_index][roi_end_y_index]=end_y;
+
+}
+void AVMCameraInternal::SetLinearCamROI(int camera_index,int start_x,int start_y,int end_x,int end_y)
+{
+	m_linear_cam_roi[camera_index][roi_start_x_index]=start_x;
+    m_linear_cam_roi[camera_index][roi_end_x_index]=end_x;
+    m_linear_cam_roi[camera_index][roi_start_y_index]=start_y;
+    m_linear_cam_roi[camera_index][roi_end_y_index]=end_y;
+}
+void AVMCameraInternal::MapImgPtFish2Linear(int camera_index,float *pSrc, float *pDst)
+{
+	if(pSrc == NULL)
+	{
+		return ;
+	}
+
+	float pSrcImage[2],pDistImage[2];
+
+	//convert texture coordinate 2 image coord
+    pSrcImage[0]=(pSrc[0])*mp_full_cam_model[camera_index]->cam_int.w;
+	pSrcImage[1]=(pSrc[1])*mp_full_cam_model[camera_index]->cam_int.h;
+	Cam_MapImagePoints_Fish2Linear(pDistImage,pSrcImage,1,mp_full_cam_model[camera_index],mp_undist_linear_mdl[camera_index]);
+
+	float img_width  = m_linear_cam_roi[camera_index][roi_end_x_index] - m_linear_cam_roi[camera_index][roi_start_x_index];
+	float img_height = m_linear_cam_roi[camera_index][roi_end_y_index] - m_linear_cam_roi[camera_index][roi_start_y_index];
+	float img_start_pos_x = m_linear_cam_roi[camera_index][roi_start_x_index];
+	float img_start_pos_y = m_linear_cam_roi[camera_index][roi_start_y_index];
+
+	pDst[0] = -1.0+2.0*(pDistImage[0]-img_start_pos_x)/img_width;
+	pDst[1] = 1.0-2.0*(pDistImage[1]-img_start_pos_y)/img_height;
+}
+void AVMCameraInternal::MapImgPtFish2Cylic(int camera_index,float *pSrc,float *pDst)
+{
+    float pSrcImage[2],pDistImage[2];
+	float w,h;
+	float x0,y0;
+	//convert texture coordinate 2 image coord
+    pSrcImage[0]=(pSrc[0])*mp_full_cam_model[camera_index]->cam_int.w;
+	pSrcImage[1]=(pSrc[1])*mp_full_cam_model[camera_index]->cam_int.h;
+	Cam_MapImagePoints_Fish2Cyli(pDistImage,pSrcImage,1,mp_full_cam_model[camera_index],mp_undist_Cyli_mdel[camera_index]);
+    w= m_undist_cam_roi[camera_index][roi_end_x_index]- m_undist_cam_roi[camera_index][roi_start_x_index];
+	h= m_undist_cam_roi[camera_index][roi_end_y_index]- m_undist_cam_roi[camera_index][roi_start_y_index];
+    x0= m_undist_cam_roi[camera_index][roi_start_x_index];
+	y0=m_undist_cam_roi[camera_index][roi_start_y_index];
+
+	//according to ROI convert image coord 2 texture coord
+
+	pDst[0] = -1.0+2.0*(pDistImage[0]-x0)/w;
+	pDst[1] = 1.0-2.0*(pDistImage[1]-y0)/h;
+
+    if(camera_index == rear_camera_index)
+    {
+
+	   pDst[0]=-pDst[0];
+    }
+	
 }
 
 

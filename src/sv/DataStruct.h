@@ -60,6 +60,8 @@ typedef enum GpuErrorCodeTag
 {
 	LINEAR_VIEW_NODE_NORMAL,
 	LINEAR_VIEW_NODE_INIT_FAILED,
+	LEFT_RIGHT_VIEW_NORMAL,
+	LEFT_RIGHT_VIEW_NODE_INIT_FAILED,
 	GPU_ERROR_CODE_NUMS,
 }
 GpuErrorCodeT;
@@ -71,6 +73,7 @@ enum
 	left_camera_index,
 	right_camera_index,
 	four_camera_index,
+	left_right_camera_index,
 };
 #define TURN_LIGHT_OFF  0
 #define TURN_LIGHT_LEFT 1

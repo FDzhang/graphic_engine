@@ -60,6 +60,7 @@ public:
 	void Init(char *filename,float vehicle_length,float vehicle_rear_wheel_to_bumper,char *filenameAdjust=NULL);
 	void GetCameraPos(float *pos,int camera_index);
 	void GetCameraPos(float *pos);
+	void GetCameraAngle(float *pos,int camera_index);
 	void InitModleTransformMatrix(XRMat4 *pModelTransform);
 	void Calc3DAVMTransform(XRMat4 *modle,float *Rot, float *intrans,XRVec4 offset,float *scale);
 	int ConvertCameraIndex(int input2DIndex);

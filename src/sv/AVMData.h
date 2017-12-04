@@ -142,6 +142,9 @@ public:
 	void SetSingleViewRegion(Region* pRegion);
 	void SetObjectViewRegion(Region* pRegion);	
 	void SetLinearViewRegion(Region* pRegion);
+	void GetLeftRightViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex);
+	void SetLeftRightViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex);
+
 	void SetObjectViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
 	void SetStitchViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
 	void SetSingleViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
@@ -171,6 +174,9 @@ public:
 	void GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
 	void Set180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
 	void Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+
 
 	void SetDisplayViewCmd(unsigned char pCmd);
 	void GetDisplayViewCmd(unsigned char& pCmd);
@@ -247,6 +253,8 @@ private:
 	Region m_objectViewRegion;
 	Region m_fadeRegion;
 	Region m_linearViewRegion;
+	Region m_leftViewRegion;
+	Region m_rightViewRegion;
 
 	SurroundViewCameraParamsT m_stitchViewCameraParams;
 	SurroundViewCameraParamsT m_objectViewCameraParams;
@@ -270,6 +278,7 @@ private:
 	unsigned char m_avmStitchViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmObjViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avm180DegreeViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmLeftRightViewVisibility[PROCESS_FUNC_NUMS];
 	
 	unsigned char m_stitchViewNodeStatus;
 	unsigned char m_singleViewNodeStatus;

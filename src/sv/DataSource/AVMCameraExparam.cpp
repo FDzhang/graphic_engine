@@ -150,6 +150,13 @@ void DataExPosParam::GetCameraPos(float *pos,int camera_index)
     memcpy(pos,&(m_pos_trans[3*camera_index]),3*sizeof(float));
 
 }
+void DataExPosParam::GetCameraAngle(float *pos,int camera_index)
+{
+    
+    memcpy(pos,&(m_pos_angle[3*camera_index]),3*sizeof(float));
+
+}
+
 void DataExPosParam::GetTransformMatrix(XRMat4 **matrix,int camera_index)
 {
     

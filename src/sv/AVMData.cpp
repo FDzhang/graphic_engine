@@ -332,6 +332,28 @@ void AVMData::SetLinearViewRegion(Region* pRegion)
 		m_linearViewRegion = *pRegion;
 	}
 }
+void AVMData::GetLeftRightViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex)
+{
+	if(viewIndex == left_camera_index)
+	{
+		*pLeftRightViewReg = &m_leftViewRegion; 
+	}
+	else if(viewIndex == right_camera_index)
+	{
+		*pLeftRightViewReg = &m_rightViewRegion; 
+	}	
+}
+void AVMData::SetLeftRightViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex)
+{
+	if(viewIndex == left_camera_index)
+	{
+		m_leftViewRegion = *pLeftRightViewReg; 
+	}
+	else if(viewIndex == right_camera_index)
+	{
+		m_rightViewRegion = *pLeftRightViewReg; 
+	}
+}
 
 void AVMData::SetObjectViewCameraParams(SurroundViewCameraParamsT* pCameraParams)
 {
@@ -582,6 +604,14 @@ void AVMData::Set180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char
 void AVMData::Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
 {
 	pFlag = m_avm180DegreeViewVisibility[pFuncId];
+}
+void AVMData::SetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmLeftRightViewVisibility[pFuncId] = pFlag;
+}
+void AVMData::GetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmLeftRightViewVisibility[pFuncId];
 }
 
 void AVMData::SetDisplayViewCmd(unsigned char pCmd)
