@@ -46,6 +46,8 @@ public:
 	virtual int SetCurrentView();
 	virtual int SetViewNodeVisibility(VisibilityIndexT pFuncId);
 
+	int UpdateStitchAngle();
+
 private:
 	virtual int ProcessSingleViewDisplay();
 	virtual int Process3dViewDisplay();

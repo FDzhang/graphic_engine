@@ -455,14 +455,23 @@ int CAvmViewControlModel::SetViewNodeVisibility(VisibilityIndexT pFuncId)
 		m_avm3dViewNode->SetVisibility(viewVisibilityFlag);
 	}
 	AVMData::GetInstance()->GetStitchViewVisibility(pFuncId, viewVisibilityFlag);
-	if(m_avmStitchViewNode)
+
+	static unsigned char lastViewVisibilityFlag = 255;
+
+	if(viewVisibilityFlag != lastViewVisibilityFlag)
 	{
-		m_avmStitchViewNode->SetVisibility(viewVisibilityFlag);
+		if(m_avmStitchViewNode)
+		{
+			m_avmStitchViewNode->SetVisibility(viewVisibilityFlag);
+		}
+		
+		if(m_avmTimeStitcherNode)
+		{
+			m_avmTimeStitcherNode->SetVisibility(viewVisibilityFlag);
+		}
+		lastViewVisibilityFlag = viewVisibilityFlag;
 	}
-	if(m_avmTimeStitcherNode)
-	{
-		m_avmTimeStitcherNode->SetVisibility(viewVisibilityFlag);
-	}
+	
 	AVMData::GetInstance()->GetSingleViewVisibility(pFuncId, viewVisibilityFlag);
 	if(m_avmSingleViewNode)
 	{
@@ -588,7 +597,7 @@ int CAvmViewControlModel::Process3dViewDisplay()
 	}
 
 	if(avm3dViewCmd > RIGHT_SINGLE_VIEW
-		&& avm3dViewCmd <= BOSH_REAR_VIEW_TOP)
+		&& avm3dViewCmd <= BMW_REAR_3D_VIEW)
 	{		
 		if(m_avmObjViewNode)
 		{
@@ -746,6 +755,15 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 
 	 return AVM_VIEWCONTROLMODEL_NORMAL;
  }
+int CAvmViewControlModel::UpdateStitchAngle()
+{
+	if(m_avmTimeStitcherNode)
+	{
+		m_avmTimeStitcherNode->UpdateStich2DReslt();
+	}
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+
+}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

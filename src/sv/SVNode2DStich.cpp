@@ -3,6 +3,7 @@
 #include "SVNode2DStich.h"
 #include "SVDelegate.h"
 #include "GlSV2D.h"
+#include "gpu_log.h"
 /*----------------------------------------------
 
 
@@ -506,7 +507,8 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 		{
 		
 	//	printf("yaw_rate = %f",yaw_rate);
-			m_vehicle_motion->revMotion2KframePredictVCS(vehicle_state,(int32_t)Get_Frame_TimeStamp(),m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.02);
+	 		m_vehicle_motion->revMotion2KframePredictVCS(vehicle_state,(int32_t)Get_Frame_TimeStamp(),m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.02);
+			//m_vehicle_motion->revMotion2KframePredictVCS(vehicle_state,(int32_t)(AVMData::GetInstance()->m_p_can_data->GetTimeStamp()),m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.5);
 
 		}	   
 	  // m_vehicle_motion->Motion2KframePredictVCS(vehicle_state,40000,m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.3);
@@ -683,7 +685,6 @@ int SVNode2DStich::Update(float steering_wheel_angle,float vehicle_speed,float l
 	
 	update_key_flag = ProcessGroundCoord(steering_wheel_angle,vehicle_speed,left_wheel_speed,right_wheel_speed,gear_state,time_offset,yaw_rate);
 	UpdateGoundTextureCoord(m_Car_rect);	
-
 	
 	//sprintf(gpu_debug_texbox.text_content[0],"left_wheel%f,",left_wheel_speed);
 	
@@ -754,7 +755,6 @@ int SVNode2DStich::Update(float steering_wheel_angle,float vehicle_speed,float l
 	
 	}
 
-	
 	update_key_frame_sures = update_key_flag;
 
 

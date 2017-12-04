@@ -53,6 +53,14 @@ int CAvmLogicManager::Update()
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
+int CAvmLogicManager::UpdateStitchAngle()
+{
+	if(m_avmViewControlModel)
+	{
+		m_avmViewControlModel->UpdateStitchAngle();
+	}
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
 int CAvmLogicManager::SetAdasHmiParams(st_ADAS_Mdl_HMI_T** pAdasMdl, int hmiNums)
 {
 	m_adasMdl = pAdasMdl;

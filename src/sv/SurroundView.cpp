@@ -557,8 +557,11 @@ void XRSV::UpdateStichAngle(unsigned char seam_change_flag[],float *pVertex)
 	{
 		unsigned char seamDataChangeFlag = 1;
 		AVMData::GetInstance()->SetStitchAngle(seamDataChangeFlag, seam_change_flag, pVertex);
+		if(m_avmLogicManager)
+		{
+			m_avmLogicManager->UpdateStitchAngle();
+		}
 	}
-	Log_Error("UpdateStichAngle");
 }
 
 void XRSV::DoubleTouchDown(int x, int y)

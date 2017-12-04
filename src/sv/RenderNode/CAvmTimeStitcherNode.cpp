@@ -30,6 +30,7 @@
 #include "SVNodeSonar.h"
 #include "../GlSV2D.h"
 #include "CAvmApaBevOverlay.h"
+#include "gpu_log.h"
 
 static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
@@ -182,7 +183,7 @@ int CAvmTimeStitcherNode::UpdateNode()
 
 	static unsigned char timeInitFlag = 0;
 	static int lastTime = 0;
-	static int timeInterval = 0;
+	int timeInterval = 0;
 	int currentTime;
 
 	currentTime = XrGetTime();
@@ -200,15 +201,15 @@ int CAvmTimeStitcherNode::UpdateNode()
 
 	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);		
 	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
-	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Speed(&left_wheel_speed, &right_wheel_speed, &rear_right_wheel_speed, &rear_left_wheel_speed);	
+	AVMData::GetInstance()->m_p_can_data->Get_Wheel_Speed(&right_wheel_speed, &left_wheel_speed, &rear_right_wheel_speed, &rear_left_wheel_speed);	
 	AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
 	AVMData::GetInstance()->m_p_can_data->Get_Yaw_Rate(&yawRate);
 
-	UpdateStich2DReslt();
 	m_timeStitchNode->Update(steer_angle, speed,
 						left_wheel_speed, right_wheel_speed,
 						gear_state,timeInterval, yawRate);
 	m_stitchViewMtl->SetDiffuseMap(m_timeStitchNode->GetStichFrameTextureId());
+	//m_stitchViewMtl->SetDiffuseMap(m_timeStitchNode->GetKeyFrameTextureId());
 
 	lastTime = currentTime;
 
@@ -273,7 +274,7 @@ int CAvmTimeStitcherNode::UpdateStich2DReslt()
 	GLfloat* pVertex;
 	AVMData::GetInstance()->GetStitchAngle(pSeamDataChangeFlag, &pSeamChangeFlag, &pVertex);
 
-	if(pSeamDataChangeFlag == 1)
+	//if(pSeamDataChangeFlag == 1)
 	{
 		for(int i=0;i<4;i++)
 		{
