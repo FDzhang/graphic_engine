@@ -90,6 +90,7 @@ private:
 
 	class CAvmLogicManager*           m_avmLogicManager;
 
+	class CGpuAvmEventDelegate* m_surroundViewClickEvent;
 };
 
 #endif /* XR_SV_H_ */

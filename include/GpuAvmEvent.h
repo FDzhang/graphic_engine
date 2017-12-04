@@ -29,6 +29,8 @@
 
 #define DLL_PUBLIC __attribute__ ((visibility ("default")))
 #define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+
+#define SURROUND_VIEW_EVENT_NAME "surround_view_event"
 /*********************************************************************************
  * \brief Gpu event payload data结构体
  *　　　  msg header使用的是Tcp传输控制头，目的在提供手机通过SystemManager透传的可能性
@@ -128,6 +130,7 @@ typedef enum
     ALGO_RECORD_BUTTON,
     ALGO_WIFI_BUTTON,
     ALGO_CTA_BUTTON,
+    FULL_SCREEN_3D_TOUCHED = 0x50,
 }ALGO_EVENT_ELEMENT_ID_T;
 
 typedef enum
@@ -152,6 +155,13 @@ typedef enum
     DVR_MEDIA_VIEW_BUTTON, /*回放展现的view形式*/
     DVR_MEDIA_MAX_NUM = 0xFFFFFFFF
 }DVR_EVENT_ELEMENT_ID_T;
+
+typedef enum
+{
+	SURROUND_VIEW_3D_FULL_SCREEN= 0x40,
+}
+SURROUND_VIEW_EVENT_ELEMENT_ID_T;
+
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
  *------------------------------------------------------------------------------------------

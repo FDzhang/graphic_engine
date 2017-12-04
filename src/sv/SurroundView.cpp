@@ -32,6 +32,9 @@
 #include "gpu_log.h"
 
 #include "HMISource/CSVChangAnHmi.h"
+#include "CGpuAvmEventDelegate.h"
+#include "event/AvmEvent.h"
+#include "IF_Algo.h"
 
 #include "RenderNode/CAvmLogicManager.h"
 
@@ -185,6 +188,8 @@ int XRSV::InitHmi(int screen_width, int screen_height)
 {
 	m_customHmi = new CSVChanganHmi();
 	m_customHmi->Init(screen_width, screen_height);
+
+	m_surroundViewClickEvent = new CGpuAvmEventDelegate(ALGOHMI_EVENT_NAME);
 
 	return 0;
 }
@@ -521,6 +526,21 @@ void XRSV::SingleTouchDown(int x, int y)
 	if(m_customHmi != NULL)
 	{
 		m_customHmi->SetSingleTouchDownEvent(x, y);
+
+		if(m_fullScreenMode)
+		{
+			if(m_surroundViewClickEvent)
+			{
+				Layout_Event_Payload_T* tmp_payload = NULL;
+				tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+				memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+				tmp_payload->header.msg_id = FULL_SCREEN_3D_TOUCHED;
+			    tmp_payload->body.onlyNotify = true;
+				m_surroundViewClickEvent->PostEventPayload(tmp_payload);
+				
+				free(tmp_payload);
+			}
+		}
 	}
 	
 }
