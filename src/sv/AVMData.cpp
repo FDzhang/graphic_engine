@@ -657,6 +657,22 @@ void AVMData::GetStitchViewNode(class ISceneNode** pStitchViewNode)
 {
 	*pStitchViewNode = m_stitchViewNode;
 }
+void AVMData::Set3dViewNode(class ISceneNode* p3dViewNode)
+{
+	m_3dViewNode = p3dViewNode;
+}
+void AVMData::Get3dViewNode(class ISceneNode** p3dViewNode)
+{
+	*p3dViewNode = m_3dViewNode;
+}
+void AVMData::SetObjectViewNode(class ISceneNode* pObjViewNode)
+{
+	m_objectViewNode = pObjViewNode;
+}
+void AVMData::GetObjectViewNode(class ISceneNode** pObjViewNode)
+{
+	*pObjViewNode = m_objectViewNode;
+}
 
 void AVMData::SetSingleViewMesh(class IMesh* pSingleViewMesh[])
 {

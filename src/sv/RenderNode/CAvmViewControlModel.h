@@ -46,6 +46,7 @@ typedef enum ViewNodeNameTag
 	AVM_LARGESINGLE_VIEW_NODE,
 	AVM_LINEAR_180VIEW_NODE,
 	AVM_LEFT_RIGHT_VIEW_NODE,
+	AVM_LARGE_3D_VIEW_NODE,
 	AVM_VIEW_NODE_NUMS,
 }
 ViewNodeNameT;
@@ -85,6 +86,7 @@ private:
 	int ProcessTimeStitcher();
 	int Process180DegreeView();
 	int ProcessLeftRightView();
+	int ProcessLarge3dView();
 
 	int SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVisibility[AVM_VIEW_NODE_NUMS]);
 
@@ -98,6 +100,7 @@ private:
 	class CAvmLargeSingleView* m_avmLargeSingleView;
 	class CAvmLinearViewNode*  m_avm180DegreeView;
 	class CAvmLeftRightView* m_avmLeftRightView;
+	class CAvmLarge3dView *  m_avmLarge3dView;
 
 	class IScrollingAnimation*	m_scrollX;
 	class IScrollingAnimation*	m_scrollY;

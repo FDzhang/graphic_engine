@@ -190,6 +190,10 @@ public:
 	void GetSingleViewNode(class ISceneNode** pSingleViewNode);
 	void SetStitchViewNode(class ISceneNode* pStitchViewNode);
 	void GetStitchViewNode(class ISceneNode** pStitchViewNode);
+	void Set3dViewNode(class ISceneNode* p3dViewNode);
+	void Get3dViewNode(class ISceneNode** p3dViewNode);
+	void SetObjectViewNode(class ISceneNode* pObjViewNode);
+	void GetObjectViewNode(class ISceneNode** pObjViewNode);
 
 	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
 	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);
@@ -265,6 +269,8 @@ private:
 	class GlSV2D* m_sv2dData;
 	class IAnimationManager* m_am;
 	class ISceneNode* m_singleViewNode;
+	class ISceneNode* m_3dViewNode;
+	class ISceneNode* m_objectViewNode;
 	class IMesh*	  m_singleViewMesh[4];
 	class INode*	  m_singleViewPlaneNode[4];
 	float*			  m_singleViewVertex[4];

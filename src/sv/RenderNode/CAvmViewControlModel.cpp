@@ -34,8 +34,10 @@
 #include "CAvmTimeStitcherNode.h"
 #include "CAvmLinearViewNode.h"
 #include "CAvmLeftRightView.h"
+#include "CAvmLarge3dView.h"
 
 #include "../GlSV2D.h"
+
 
 typedef struct Avm3dViewCameraParamsTag
 {
@@ -56,7 +58,8 @@ Avm3dViewCameraParamsT;
 
 CAvmViewControlModel::CAvmViewControlModel():m_avm3dViewNode(0),m_avmSingleViewNode(0), 
 											m_avmStitchViewNode(0), m_avmObjViewNode(0),
-											m_avmTimeStitcherNode(0), m_avm180DegreeView(0)
+											m_avmTimeStitcherNode(0), m_avm180DegreeView(0),
+											m_avmLeftRightView(0),m_avmLarge3dView(0)
 {
 
 }
@@ -91,6 +94,7 @@ int CAvmViewControlModel::InitViewNode()
 	m_avmObjViewNode= new CAvmObjectViewNode;
 	m_avm180DegreeView = new CAvmLinearViewNode;
 	m_avmLeftRightView = new CAvmLeftRightView;
+	m_avmLarge3dView = new CAvmLarge3dView;
 
 	
 	m_xrCore = GetXrCoreInterface();
@@ -136,14 +140,14 @@ int CAvmViewControlModel::InitViewNode()
 	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
 	leftViewRegion[REGION_POS_LEFT] = stich_region_width + 100.0;
-	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + 100.0 + (XrGetScreenWidth() - stich_region_width)/2;
-	leftViewRegion[REGION_POS_TOP] = 0+black_width + 60;
-	leftViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width - 60;
+	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + 100.0 + (XrGetScreenWidth() - stich_region_width - 100.0)/2;
+	leftViewRegion[REGION_POS_TOP] = 0+black_width;
+	leftViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 		
-	rightViewRegion[REGION_POS_LEFT] = stich_region_width + 100.0 + (XrGetScreenWidth() - stich_region_width)/2;
+	rightViewRegion[REGION_POS_LEFT] = stich_region_width + 100.0 + (XrGetScreenWidth() - stich_region_width - 100.0)/2;
 	rightViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
-	rightViewRegion[REGION_POS_TOP] = 0+black_width + 60;
-	rightViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width - 60;
+	rightViewRegion[REGION_POS_TOP] = 0+black_width;
+	rightViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 	
 	Stich2DReg.Set(stich2D_region[REGION_POS_LEFT],stich2D_region[REGION_POS_RIGHT],stich2D_region[REGION_POS_TOP],stich2D_region[REGION_POS_BOTTOM]);
     SceneViewReg.Set(scene3D_region[REGION_POS_LEFT],scene3D_region[REGION_POS_RIGHT],scene3D_region[REGION_POS_TOP] ,scene3D_region[REGION_POS_BOTTOM]);
@@ -260,6 +264,9 @@ int CAvmViewControlModel::InitViewNode()
 
 	m_avmLargeSingleView = new CAvmLargeSingleView();
 	m_avmLargeSingleView->Init();
+
+	m_avmLarge3dView = new CAvmLarge3dView();
+	m_avmLarge3dView->Init();
 
 	InitDisplayEffect();
 
@@ -462,6 +469,7 @@ int CAvmViewControlModel::SetCurrentView()
 {
 	ProcessTimeStitcher();
 	ProcessSingleViewDisplay();
+	ProcessLarge3dView();
 	Process3dViewDisplay();
 	ProcessTourView();
 	ProcessMattsView();
@@ -762,6 +770,35 @@ int CAvmViewControlModel::ProcessLeftRightView()
 
 	}
 	
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+
+}
+int CAvmViewControlModel::ProcessLarge3dView()
+{	
+	unsigned char large3dViewCmd = 0;
+	static unsigned char lastLarge3dViewCmd = 255;
+	AVMData::GetInstance()->GetDisplayViewCmd(large3dViewCmd);
+
+	if(large3dViewCmd == TOUR_LARGE_3D_VIEW
+		&& lastLarge3dViewCmd != large3dViewCmd)
+	{
+		AVMData::GetInstance()->Set3dViewIndex(TOUR_VIEW);
+		Avm3dViewMode(TOUR_VIEW);
+		AVMData::GetInstance()->Set3dViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 1);
+		AVMData::GetInstance()->SetStitchViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 0);
+		AVMData::GetInstance()->SetSingleViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 0);
+		AVMData::GetInstance()->SetObjectViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 1);
+		AVMData::GetInstance()->Set180DegreeViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 0);	
+		AVMData::GetInstance()->SetLeftRightViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 0);
+	
+		lastLarge3dViewCmd = large3dViewCmd;
+
+	}
+	if(m_avmLarge3dView)
+	{
+		m_avmLarge3dView->Update();
+	}	
+
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
 }

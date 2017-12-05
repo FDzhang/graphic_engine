@@ -61,8 +61,9 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 	float cameraAspect;
 	m_3dViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_3dViewNode);
 
-	m_3dViewNode->SetClearColor(1.0,1.0,0.0,0.5);
+	m_3dViewNode->SetClearColor(0.0,0.0,0.0,1.0);
 	m_3dViewNode->SetClear(TRUE, TRUE);
+	AVMData::GetInstance()->Set3dViewNode(m_3dViewNode);
     
 	AVMData::GetInstance()->Get3dViewRegion(&avm3dViewAera);
     m_3dViewNode->SetRenderROI(avm3dViewAera);	

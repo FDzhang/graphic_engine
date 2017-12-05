@@ -118,6 +118,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_objViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_objViewNode);
 
 	m_objViewNode->SetClear(FALSE, TRUE);
+	AVMData::GetInstance()->SetObjectViewNode(m_objViewNode);
 
     Region* objViewNodeAera;
     AVMData::GetInstance()->GetObjectViewRegion(&objViewNodeAera);

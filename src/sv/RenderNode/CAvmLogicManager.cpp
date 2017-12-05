@@ -144,6 +144,10 @@ int CAvmLogicManager::UpdateViewModel()
 		AVMData::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
 		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
 	}
+	else if(direction == TOUR_LARGE_3D_VIEW)
+	{
+		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_LARGE_3DVIEW_FUNC);
+	}
 	else
 	{
 		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);

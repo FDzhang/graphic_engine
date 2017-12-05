@@ -47,7 +47,11 @@ int CAvmLargeSingleView::Init()
 	AVMData::GetInstance()->GetSingleViewMesh(m_singleViewMesh);
 	//AVMData::GetInstance()->GetLargeSingleViewRoi(m_singleViewRoi);
 
-	m_largeViewRegion.Set(0.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
+    float stich_region_width = 0.35 *  XrGetScreenWidth();
+
+	float black_width = 80.0;
+	
+	m_largeViewRegion.Set(100.0, XrGetScreenWidth(), black_width, XrGetScreenHeight() - black_width);
 
 	return LARGE_SINGLE_VIEW_NORMAL;
 }
@@ -65,6 +69,7 @@ int CAvmLargeSingleView::Update()
 			AVMData::GetInstance()->GetLargeSingleViewRoi(&m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			SetLargeViewVertextValue(m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			m_singleViewNode->SetRenderROI(&m_largeViewRegion);
+			m_singleViewNode->SetClear(TRUE,TRUE);
 			m_lastLargeViewCmd = largeViewCmd;
 		}
 	}
@@ -81,7 +86,7 @@ int CAvmLargeSingleView::Update()
 			Region* singleViewRegion;
 			AVMData::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 			m_singleViewNode->SetRenderROI(singleViewRegion);
-
+			m_singleViewNode->SetClear(FALSE,FALSE);
 			m_lastLargeViewCmd = largeViewCmd;
 		}
 	}
