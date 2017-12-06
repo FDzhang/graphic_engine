@@ -348,6 +348,9 @@ int GlSV2D::Init()
 //	m_pfVertexBuff[eRightBottomMesh] = fBottomView;
 	m_pucIndexBuff[eCarImageMesh] = RectIndex;
 	//m_pucIndexBuff[eRightBottomMesh] = RectIndex;
+
+	m_camType = CAM_LEFT_FISHEYE;
+
 	
 	return 0;
 }
@@ -360,24 +363,37 @@ int GlSV2D::Update(void)
 
 int GlSV2D::GetVertexBuffer(int Index,float **pVertexBuffer, unsigned int *BufSize)
 {
+	  *pVertexBuffer= m_pfVertexBuff[Index];
+	 
+	 if(Index <= eRightMesh)
+	 {
+		 *BufSize = uiConfig[Index*2+1];
+	 
+	 }
+	 else if(Index <= eRearRightMesh)
+	 {
+		 *BufSize = uiConfigAlpha[(Index-eFrontLeftMesh)*2+1];
+	 
+	 }
+	 else if(Index == eCarImageMesh)
+	 {
+		 *BufSize = 4;
+	 }
+	 else
+	 {
+		 if(m_camType >= CAM_FRONT_FISHEYE && m_camType <= CAM_RIGHT_FISHEYE )
+		 {
+			 *BufSize = 4;
+		 }
+		 else
+		 {
+			 if(Index != eRightSingle&&Index != eLeftSingle)
+			 *BufSize = 4;
+			 else 
+			 *BufSize =m_SideViewVertSize[Index-eFrontSingle];
+		 }
+	 }
 
-	    
-     *pVertexBuffer= m_pfVertexBuff[Index];
-
-	if(Index <= eRightMesh)
-	{
-	    *BufSize = uiConfig[Index*2+1];
-	
-	}
-	else if(Index <= eRearRightMesh)
-	{
-	    *BufSize = uiConfigAlpha[(Index-eFrontLeftMesh)*2+1];
-	
-	}
-	else
-	{
-	    *BufSize = 4;
-	}
 	return 0;
 }
 int GlSV2D::GetIndexBuffer(int Index,GLushort **pIndexBuffer, unsigned int *BufSize)
@@ -393,10 +409,26 @@ int GlSV2D::GetIndexBuffer(int Index,GLushort **pIndexBuffer, unsigned int *BufS
 	    *BufSize = uiConfigAlpha[(Index-eFrontLeftMesh)*2+2];
 	
 	}
+	else if(Index == eCarImageMesh)
+	{
+		 *BufSize = 6;
+	}
 	else
 	{
-	    *BufSize = 6;
-	}	
+	
+		if(m_camType >= CAM_FRONT_FISHEYE && m_camType <= CAM_RIGHT_FISHEYE )
+		{
+			*BufSize = 6;
+		}
+		else
+		{
+			if(Index != eRightSingle&&Index!=eLeftSingle)
+				*BufSize = 6;
+			else
+				*BufSize = m_SideViewIndexSize[Index-eFrontSingle];
+		}
+	}
+
 	return 0;
 }
 

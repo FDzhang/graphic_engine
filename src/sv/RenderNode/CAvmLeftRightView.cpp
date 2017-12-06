@@ -72,7 +72,7 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 	m_leftRightViewNode[1]->SetRenderROI(viewRegion);
 
 	m_SV2DData = new GlSV2D;
-	m_SV2DData->Init();
+	m_SV2DData->InitLinear();
 			
 	m_renderDelegate = new RenderDelegateSV2D();
 	m_renderDelegate->Init();
