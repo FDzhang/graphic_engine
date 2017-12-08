@@ -57,7 +57,7 @@ namespace GUI
             PFDeCreateElement   DeCreateElement; //控件释放方法(默认不实现，除非存在自定义资源需要释放)
         };
     public:
-        ILayout(const char* className);
+        ILayout(const char* className,IGUINode* uiNode = NULL);
         virtual ~ILayout();
         //! 控件事件分发， 静态表索引，抛出特定消息
         void Dispatch(const EVENT_HANDLE_T eventId, const uint32_t type);

@@ -32,9 +32,9 @@ namespace GUI
     const char* LogName = "ILayout";
     DEFINE_NAMED_STATIC_LOGCTRL_CONFIG(CAvmEventLayout_Logctl, 1, "ILayout", LogName);
 
-    ILayout::ILayout(const char* className)
+    ILayout::ILayout(const char* className,IGUINode* uiNode)
         :LogHelper(&CAvmEventLayout_Logctl, LogName, &GetGlobalConfig())
-        ,m_node(NULL), m_node_id(0)
+        ,m_node(uiNode), m_node_id(0)
         ,m_origin_element_info(NULL)
         ,m_origin_table_size(0)
         ,m_eventType(AvmEvent::Invalid_Event_Type)
@@ -117,8 +117,12 @@ namespace GUI
         rootId[0] = -1;
 
         //! 第二步　在Layout Node上创建元素对象
-        IXrCore* core = GetXrCoreInterface();
-        m_node_id = core->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_node);
+        if(m_node == NULL)
+        {
+        	IXrCore* core = GetXrCoreInterface();
+        	m_node_id = core->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_node);
+    	}
+		
         if(m_node == NULL)
         {
             LOGERROR("failed to create ui node");

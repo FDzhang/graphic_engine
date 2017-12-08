@@ -740,7 +740,7 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 		AVMData::GetInstance()->SetSingleViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 1);
 		AVMData::GetInstance()->SetObjectViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
 		AVMData::GetInstance()->Set180DegreeViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
-		AVMData::GetInstance()->SetLeftRightViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 1);
+		AVMData::GetInstance()->SetLeftRightViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
 
 		if(m_avmSingleViewNode)
 		{
