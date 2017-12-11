@@ -29,6 +29,9 @@
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 #include "../DataStruct.h"
+#include<vector>
+
+using namespace std;
 
 typedef enum AvmLogicManagerErrorCodeTag
 {
@@ -36,6 +39,8 @@ typedef enum AvmLogicManagerErrorCodeTag
 	AVM_LOGIC_VIEW_MODEL_INIT_FAILED,
 
 };
+
+class ISVHmi;
 
 class CAvmLogicManager
 {
@@ -52,14 +57,24 @@ private:
 	virtual int InitViewModel();
 	virtual int InitOverlayModel();
 	virtual int InitAlgoHmiModel();
+	virtual int InitHmi();
+	virtual int AddHmi(ISVHmi* pSvHmi, vector<ISVHmi*>* pHmi);
+
 	virtual int UpdateViewModel();
 	virtual int UpdateOverlayModel();
 	virtual int UpdateAlgoHmiModel();
+	virtual int UpdateHmi();
+
+	virtual int RemoveHmi(vector<ISVHmi*>* pHmi);
 private:
 	class CAvmViewControlModel* m_avmViewControlModel;
 	class SVNodeAdasHMI*		m_adasHmi;
 	st_ADAS_Mdl_HMI_T **			m_adasMdl;
 	int m_hmiNums;
+
+	ISVHmi* m_cameraHmi;
+	vector<ISVHmi*> m_avmHmi;
+	vector<ISVHmi*> m_dvrHmi;
 private:
 
 };

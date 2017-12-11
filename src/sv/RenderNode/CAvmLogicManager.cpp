@@ -27,6 +27,8 @@
 #include "CAvmViewControlModel.h"
 #include "../AVMData.h"
 #include "../SVNodeAdasHmi.h"
+#include "../HMISource/ISVHmi.h"
+#include "../HMISource/CSVChangAnHmi.h"
 #include "gpu_log.h"
 
 CAvmLogicManager::CAvmLogicManager()
@@ -42,7 +44,8 @@ int CAvmLogicManager::Init()
 	InitViewModel();
 	InitOverlayModel();
 	InitAlgoHmiModel();
-
+	//InitHmi();
+	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 int CAvmLogicManager::Update()
@@ -50,6 +53,7 @@ int CAvmLogicManager::Update()
 	UpdateViewModel();
 	UpdateOverlayModel();
 	UpdateAlgoHmiModel();
+	//UpdateHmi();
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
@@ -89,6 +93,31 @@ int CAvmLogicManager::InitAlgoHmiModel()
 	AVMData::GetInstance()->GetSingleViewNode(&singleViewNode);
 	AVMData::GetInstance()->GetStitchViewNode(&stitchViewNode);
 	m_adasHmi->Init(bevConfig,singleViewNode,stitchViewNode,m_adasMdl,m_hmiNums);
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+
+int CAvmLogicManager::InitHmi()
+{
+	m_cameraHmi = new CSVChanganHmi();
+
+	m_cameraHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
+	
+	AddHmi(m_cameraHmi, &m_avmHmi);
+	
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+int CAvmLogicManager::AddHmi(ISVHmi* pSvHmi, vector<ISVHmi*>* pHmi)
+{
+	(*pHmi).push_back(pSvHmi);
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+int CAvmLogicManager::UpdateHmi()
+{
+	for(vector<ISVHmi*>::iterator index = m_avmHmi.begin(); index != m_avmHmi.end(); index++)
+	{
+		(*index)->SetVisibility(1);
+	}
+
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 
@@ -164,7 +193,25 @@ int CAvmLogicManager::UpdateAlgoHmiModel()
 	m_adasHmi->Update();
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
-
+int CAvmLogicManager::RemoveHmi(vector<ISVHmi*>* pHmi)
+{
+	if((*pHmi).empty())
+	{
+		return AVM_LOGIC_CONTROL_NORMAL;
+	}
+	for(vector<ISVHmi*>::iterator index = (*pHmi).begin(); index != (*pHmi).end(); index++)
+	{
+		if((*index) != NULL)
+		{
+			delete *index;
+			*index = NULL;
+		}
+	}
+	
+	(*pHmi).clear();
+	
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

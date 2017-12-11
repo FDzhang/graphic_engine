@@ -87,7 +87,7 @@ int CAvmLarge3dView::Update()
 
 			AVMData::GetInstance()->GetObjectViewRegion(&avmObjViewRegion);
 			m_objViewNode->SetRenderROI(avmObjViewRegion);
-			m_objViewNode->SetClear(TRUE, FALSE);
+			m_objViewNode->SetClear(FALSE, TRUE);
 			
 			m_lastLargeViewCmd = largeViewCmd;
 		}

@@ -15,10 +15,19 @@ ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0)
 	}
 }
 
+IUINode* ISVHmi::GetSvHmiNode(int& pUiNodeId)
+{
+	pUiNodeId = m_uiNodeId;
+
+	return m_uiNode;
+}
+
+
 ISVHmi::~ISVHmi()
 {
-    delete m_uiNode;
+    g_pIXrCore->ReleaseRenderNode(m_uiNodeId);
 }
+
 int ISVHmi::Init(int window_width, int window_height)
 {
     return HMI_SUCCESS;

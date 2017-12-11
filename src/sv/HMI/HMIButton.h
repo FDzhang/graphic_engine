@@ -47,7 +47,9 @@ typedef struct Hmi_Button_Data_Tag
     unsigned char icon_type; //0: static icon, 1: dynamic icon
     bool show_flag;
     char *icon_file_name[MAX_BUTTON_IMAGE_NUM];
+	
 	void (*delegate_func)();
+	IActionTrigger*    trigger;
 }
 Hmi_Button_Data_T;
 
@@ -77,7 +79,7 @@ Hmi_Button_Slot_T;
 	testButton = new HMIButton(&testButtonData,uiNode);
 */
 
-class HMIButton
+class HMIButton: public IEventResponder
 {
 public:
 	HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode);
@@ -108,12 +110,30 @@ public:
 	int ButtonHide();
 
 private:
+	
+	virtual Boolean OnTouchEvent(
+	/* [in] */Int32 layerId,
+	/* [in] */Int32 x,
+	/* [in] */Int32 y,
+	/* [in] */Int32 type);
+
+	virtual String GetName();
+	virtual Void SetName(
+		/* [in] */ String name); 
+
+	virtual Void* GetRealType() { return (Void*)this; }
+
+	void SetOnClickDelegate(IActionTrigger* trigger);
+
+private:
 	Hmi_Button_Slot_T* m_buttonSlot;
 	IUINode*		   m_uiNode;	
 	int                m_uiNodeId;
 	int                m_buttonId;
 	int                m_buttonVisibleStatus;
 
+	IActionTrigger*    m_trigger;
+	String			   m_name;
 
 };
 

@@ -39,6 +39,7 @@ HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode)
 
 HMIButton::~HMIButton()
 {
+	Log_Error("------------HMIButton: Free");
     ISpirit* ButtonLayer = m_uiNode->GetSpirit(m_buttonId);
 	if(ButtonLayer && m_buttonSlot->iconMtl)
 	{
@@ -135,6 +136,8 @@ int HMIButton::ButtonEffectClick()
 int HMIButton::SetShowIconNum(unsigned int index)
 {
     m_buttonSlot->buttonData->show_icon_num = index;
+	
+	m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num]);
     return BUTTON_NORMAL; 
 }
 int HMIButton::SetX(float pos)
@@ -169,17 +172,59 @@ int HMIButton::SetVisibility(unsigned int flag)
         flag = 1;
     }
     m_buttonVisibleStatus = flag;
+	ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	buttonLayer->SetEnable(m_buttonVisibleStatus);
+	
     return BUTTON_NORMAL; 
 }
 int HMIButton::ButtonShow()
 {
     m_buttonVisibleStatus = BUTTON_SHOW;
+	ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	buttonLayer->SetEnable(m_buttonVisibleStatus);
     return BUTTON_NORMAL;  
 }
 
 int HMIButton::ButtonHide()
 {
     m_buttonVisibleStatus = BUTTON_HIDE;
+	ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	buttonLayer->SetEnable(m_buttonVisibleStatus);
     return BUTTON_NORMAL;  
 }
+
+Boolean HMIButton::OnTouchEvent(
+	/* [in] */Int32 layerId,
+	/* [in] */Int32 x,
+	/* [in] */Int32 y,
+	/* [in] */Int32 type)
+{
+	if (type == TouchEvent_Down) {
+		if (m_trigger) m_trigger->OnPress(layerId);
+	}
+	else if (type == TouchEvent_Up) {
+		if (m_trigger) m_trigger->OnRelease(layerId, true);
+	}
+	return TRUE;
+}
+
+Void HMIButton::SetOnClickDelegate(IActionTrigger* trigger)
+{
+	ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	if (buttonLayer) buttonLayer->SetEventResponder(this);
+	m_trigger = trigger;
+}
+String HMIButton::GetName()
+{
+	return m_name;
+}
+
+Void HMIButton::SetName(String name)
+{
+	if (!m_name) {m_name = new CHAR[MaxNameLen];
+	}
+	if (!m_name) return;
+	strcpy(m_name, name);
+}
+
 

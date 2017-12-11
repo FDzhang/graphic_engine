@@ -69,7 +69,6 @@ class ISVHmi
 public:
     ISVHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
     
-	//ISVHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
     virtual ~ISVHmi();
     virtual int Init(int window_width, int window_height);
     virtual int Update(Hmi_Message_T& hmiMsg);
@@ -86,6 +85,8 @@ public:
     bool GetCurrentView(unsigned char &viewIndex);
     bool SetAvmDisplayView(unsigned char viewIndex);
     bool GetAvmDisplayView(unsigned char &viewIndex);
+
+	IUINode* GetSvHmiNode(int& pUiNodeId);
 public:
     IUINode* m_uiNode;	
     int      m_uiNodeId;

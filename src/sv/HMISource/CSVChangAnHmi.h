@@ -99,6 +99,7 @@ class CSVChanganHmi : public ISVHmi
 public:
 
 	CSVChanganHmi();
+	~CSVChanganHmi();
     virtual int Init(int window_width, int window_height);
     virtual int Update(Hmi_Message_T& hmiMsg);
     virtual int ReturnHmiMsg(Hmi_Message_T* pHmiMsg);
