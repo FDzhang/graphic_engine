@@ -59,6 +59,8 @@ public:
 	virtual xr_state SetDefaultLightDirection(Float32 x, Float32 y, Float32 z)=0;
 	virtual xr_state GetDefaultLightDirection(Float32* x, Float32* y, Float32* z)=0;
 	virtual Boolean IsOpaque()=0;
+
+	virtual Int32 Release() = 0;
 };
 
 #endif  //__IMATERIAL_H__

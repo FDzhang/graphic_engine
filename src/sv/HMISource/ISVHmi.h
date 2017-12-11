@@ -67,7 +67,7 @@ Hmi_Message_T;
 class ISVHmi
 {
 public:
-    ISVHmi();
+    ISVHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
     
 	//ISVHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
     virtual ~ISVHmi();

@@ -2,23 +2,19 @@
 
 extern IXrCore* g_pIXrCore;
 
-ISVHmi::ISVHmi():m_viewState(0)
-{
-    m_uiNodeId = g_pIXrCore->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_uiNode);
-}
-/*ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0)
+ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0)
 {
 	if(pUiNode == NULL)
-	{
+    {
     	m_uiNodeId = g_pIXrCore->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_uiNode);
 	}
 	else
 	{
-		m_uiNodeId = pUiNode;
 		m_uiNode = pUiNode;
+		m_uiNodeId = pUiNodeId;
 	}
+}
 
-}*/
 ISVHmi::~ISVHmi()
 {
     delete m_uiNode;
