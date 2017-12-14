@@ -397,6 +397,45 @@ void SVNodeSonar::DrawParkLot(void)
 
 
 }
+float  SVNodeSonar::CaculateSpace(int left_right_flag,float pos_x_farthest)
+{
+    int sonar_index;
+	int element_num;
+	int elenment_index;
+	float distance = 6000;
+	float distance_current = 0;
+    if(left_right_flag == PARKING_LOT_ON_THE_LEFT)
+    {
+        sonar_index = front_right_side_sonar;
+    }	
+	else
+	{
+	    sonar_index = front_left_side_sonar;
+	}
+
+	element_num = (m_sonar_obj_list_end[sonar_index]+MAX_SONAR_OBJ_NUM-m_sonar_obj_list_start[sonar_index])%MAX_SONAR_OBJ_NUM;
+
+	for(int i=0;i<element_num;i++)
+	{
+	    elenment_index =(m_sonar_obj_list_end[sonar_index]+MAX_SONAR_OBJ_NUM-i)%MAX_SONAR_OBJ_NUM; 
+        if(m_sonar_obj_list[sonar_index][2*elenment_index]>=pos_x_farthest)
+        {
+            distance_current = fabs( m_sonar_obj_list[sonar_index][2*elenment_index +1]);
+            
+            if (distance_current< distance)
+            {
+                distance = distance_current;
+            }
+        }
+		else
+		{
+		    break;
+		}
+	
+      }
+	return distance;
+}
+
 void SVNodeSonar::SetRadarPLDReslt()
 {
     Radar_PLD_Result *pRadarPldRslt=NULL;
@@ -427,6 +466,8 @@ void SVNodeSonar::SetRadarPLDReslt()
         RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_right_side_sonar].lot_point[2*rect_point_far_top+1]/1000.0;
 		
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nlocation = 0;
+
+		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum+2].psSlotPoints[0].x = m_sonar_parking_lot[front_right_side_sonar].space_distance/1000.0;
 		
 		RadarPldRslt.stHeader.nTimeStamp = time_stamp;
 		RadarPldRslt.nParkingGarageNum++;
@@ -452,7 +493,9 @@ void SVNodeSonar::SetRadarPLDReslt()
         RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].psSlotPoints[3].y =  m_sonar_parking_lot[front_left_side_sonar].lot_point[2*rect_point_far_top+1]/1000.0;
 		
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nlocation = 1;
-		
+
+        RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum+2].psSlotPoints[0].x = m_sonar_parking_lot[front_right_side_sonar].space_distance/1000.0;
+		 
 		RadarPldRslt.stHeader.nTimeStamp = time_stamp;
 		RadarPldRslt.nParkingGarageNum++;
 
@@ -961,7 +1004,6 @@ unsigned char SVNodeSonar::CheckParkinglotSizewithType(sonar_parking_lot_t *pPar
 	}
 
 	
-	fprintf(stdout,"\r\n park_lot width(%f),height( %f)",pParklotData->lot_width,pParklotData->lot_length);
 	g_plot_size[0]=pParklotData->lot_width;
 	g_plot_size[1]=pParklotData->lot_length;
 	
@@ -1712,12 +1754,21 @@ void SVNodeSonar::ProcessLotData(int sonar_index,int park_lot_index)
     m_sonar_parking_lot[park_lot_index].show_flag=1;
 
     CheckParkinglotSizewithType(&m_sonar_parking_lot[park_lot_index]);
+
 	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_top]=m_sonar_parking_lot[park_lot_index].lot_end_pos[0] ;
 	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_top+1]=m_sonar_parking_lot[park_lot_index].lot_end_pos[1] ;
 	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom]=m_sonar_parking_lot[park_lot_index].lot_start_pos[0] ;
 	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom+1]=m_sonar_parking_lot[park_lot_index].lot_start_pos[1] ;
 	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_top]=m_sonar_parking_lot[park_lot_index].lot_end_pos[0] ;
 	m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_far_bottom]=m_sonar_parking_lot[park_lot_index].lot_start_pos[0] ;
+	if(park_lot_index == front_left_side_sonar)
+	{
+	    m_sonar_parking_lot[park_lot_index].space_distance = CaculateSpace(PARKING_LOT_ON_THE_LEFT,m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom]);
+	}
+	else
+	{
+	    m_sonar_parking_lot[park_lot_index].space_distance = CaculateSpace(PARKING_LOT_ON_THE_RIGHT,m_sonar_parking_lot[park_lot_index].lot_point[2*rect_point_near_bottom]);	
+	}
 
 	if(m_sonar_parking_lot[park_lot_index].lot_end_pos[1]>0)
 	{
