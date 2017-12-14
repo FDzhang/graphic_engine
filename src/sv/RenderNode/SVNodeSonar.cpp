@@ -467,7 +467,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nlocation = 0;
 
-		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum+2].psSlotPoints[0].x = m_sonar_parking_lot[front_right_side_sonar].space_distance/1000.0;
+		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].sReservIF_data_Single_Radar_Lot.float32_IF_1=m_sonar_parking_lot[front_right_side_sonar].space_distance/1000.0;
 		
 		RadarPldRslt.stHeader.nTimeStamp = time_stamp;
 		RadarPldRslt.nParkingGarageNum++;
@@ -494,7 +494,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 		
 		RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].nlocation = 1;
 
-        RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum+2].psSlotPoints[0].x = m_sonar_parking_lot[front_right_side_sonar].space_distance/1000.0;
+        RadarPldRslt.gstParkingLotList[RadarPldRslt.nParkingGarageNum].sReservIF_data_Single_Radar_Lot.float32_IF_1 = m_sonar_parking_lot[front_right_side_sonar].space_distance/1000.0;
 		 
 		RadarPldRslt.stHeader.nTimeStamp = time_stamp;
 		RadarPldRslt.nParkingGarageNum++;
