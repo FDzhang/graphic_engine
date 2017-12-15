@@ -1,4 +1,5 @@
 #include "ISVHmi.h"
+//#include "gpu_log.h"
 
 extern IXrCore* g_pIXrCore;
 
@@ -25,6 +26,7 @@ IUINode* ISVHmi::GetSvHmiNode(int& pUiNodeId)
 
 ISVHmi::~ISVHmi()
 {
+	//Log_Message("--------delete ISVHmi!!!");
     g_pIXrCore->ReleaseRenderNode(m_uiNodeId);
 }
 

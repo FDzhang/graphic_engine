@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include "event/RawAvmEvent.h"
+#include "event/ofilm_msg_type.h"
+#include "event/AvmEventTypes.h"
 #include "log/LogHelper.hpp"
 #include "log/log.h"
 #include "utils/utils.h"
@@ -20,6 +22,9 @@ class CGpuAvmEventDelegate
 
 public:
     CGpuAvmEventDelegate(const char* className);
+	
+	CGpuAvmEventDelegate(AvmEventType eventType);
+	
     virtual ~CGpuAvmEventDelegate();
 
     /*
@@ -35,6 +40,8 @@ public:
      * \brief 函数内部已完成event 请求，可直接post 指定数据
      */
     bool PostEventPayload(Layout_Event_Payload_T* payload);
+
+	bool PostEventPayload(void* payload, uint32_t payloadSize);
 
 private:
     /*

@@ -29,9 +29,10 @@
 #include "../SVNodeAdasHmi.h"
 #include "../HMISource/ISVHmi.h"
 #include "../HMISource/CSVChangAnHmi.h"
+#include "../HMISource/CSVDvrBaseHmi.h"
 #include "gpu_log.h"
 
-CAvmLogicManager::CAvmLogicManager()
+CAvmLogicManager::CAvmLogicManager():m_dvrBaseHmi(0)
 {
 	m_adasHmi = new SVNodeAdasHMI;
 }
@@ -98,25 +99,37 @@ int CAvmLogicManager::InitAlgoHmiModel()
 
 int CAvmLogicManager::InitHmi()
 {
-	m_cameraHmi = new CSVChanganHmi();
+	//m_cameraHmi = new CSVChanganHmi();
 
-	m_cameraHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
-	
-	AddHmi(m_cameraHmi, &m_avmHmi);
+	//m_cameraHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
+
+	if(m_dvrBaseHmi == NULL)
+	{
+		m_dvrBaseHmi = new CSVDvrBaseHmi();	
+		AddHmi(m_dvrBaseHmi, &m_avmHmi);
+	}
 	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 int CAvmLogicManager::AddHmi(ISVHmi* pSvHmi, vector<ISVHmi*>* pHmi)
 {
-	(*pHmi).push_back(pSvHmi);
+	if(pSvHmi)
+	{
+		pSvHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
+		
+		(*pHmi).push_back(pSvHmi);
+	}
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 int CAvmLogicManager::UpdateHmi()
 {
-	for(vector<ISVHmi*>::iterator index = m_avmHmi.begin(); index != m_avmHmi.end(); index++)
+	Hmi_Message_T hmiMsg;
+
+	for(vector<ISVHmi*>::iterator hmiObj = m_avmHmi.begin(); hmiObj != m_avmHmi.end(); hmiObj++)
 	{
-		(*index)->SetVisibility(1);
+		(*hmiObj)->Update(hmiMsg);
 	}
+	//RemoveHmi(&m_avmHmi, m_dvrBaseHmi);
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
@@ -193,23 +206,30 @@ int CAvmLogicManager::UpdateAlgoHmiModel()
 	m_adasHmi->Update();
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
-int CAvmLogicManager::RemoveHmi(vector<ISVHmi*>* pHmi)
+int CAvmLogicManager::RemoveHmi(vector<ISVHmi*>* pHmi, ISVHmi* pHmiObj)
 {
 	if((*pHmi).empty())
 	{
 		return AVM_LOGIC_CONTROL_NORMAL;
 	}
-	for(vector<ISVHmi*>::iterator index = (*pHmi).begin(); index != (*pHmi).end(); index++)
+	for(vector<ISVHmi*>::iterator index = (*pHmi).begin(); index != (*pHmi).end(); )
 	{
+	
 		if((*index) != NULL)
 		{
-			delete *index;
-			*index = NULL;
+			if(*index == pHmiObj) 
+			{	
+				delete *index;
+				*index = NULL;
+          		index = (*pHmi).erase(index);  
+      		}
+			else  
+            {
+            	index ++ ; 
+			}
 		}
 	}
-	
-	(*pHmi).clear();
-	
+		
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 /*===========================================================================*\
@@ -219,4 +239,5 @@ int CAvmLogicManager::RemoveHmi(vector<ISVHmi*>* pHmi)
  *   Date        userid       Description
  * ----------- ----------    -----------
  *  11/23/17   Jensen Wang   Create the CAvmLogicManager class.
+ *  12/15/17   Jensen Wang   add the Hmi init, update, remove function.
 \*===========================================================================*/

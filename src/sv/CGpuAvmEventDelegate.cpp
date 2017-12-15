@@ -12,6 +12,19 @@ CGpuAvmEventDelegate::CGpuAvmEventDelegate(const char* className):m_className(cl
 		Log_Error("m_className: %s", m_className);
     }
 }
+CGpuAvmEventDelegate::CGpuAvmEventDelegate(AvmEventType eventType)
+{
+	m_eventType = eventType;
+
+	Log_Error("---------m_eventType1:%d", m_eventType);
+
+	if (AvmRequestEvent(m_eventType) == NULL)
+	{
+		Log_Error("Request %d cmd event error!", __func__, eventType);
+		m_eventType = AvmEvent::Invalid_Event_Type;
+	}
+
+}
 
 CGpuAvmEventDelegate::~CGpuAvmEventDelegate()
 {
@@ -103,6 +116,48 @@ bool CGpuAvmEventDelegate::PostEventPayload(Layout_Event_Payload_T* payload)
         if(raw_event->payload)
         {
             memcpy((Layout_Event_Payload_T*)raw_event->payload, payload, sizeof(Layout_Event_Payload_T));
+        }
+        else
+        {
+            Log_Error("%s: the event payload got is null!", __func__);
+            return false;
+        }
+        
+        AvmPostEvent(*avm_event, NULL);
+        AvmEventReleaseAndTrace(*avm_event);
+    }
+    return true;
+}
+bool CGpuAvmEventDelegate::PostEventPayload(void* payload, uint32_t payloadSize)
+{
+    if(payload == NULL)
+    {
+        Log_Error("%s: the event payload is null!", __func__);
+        return false;
+    }
+    else
+    {
+        if(m_eventType == AvmEvent::Invalid_Event_Type)
+        {
+            Log_Error("%s: a wrong avm event type id", __func__);
+            return false;
+        }
+        
+        AvmEvent* avm_event = AvmRequestEvent(m_eventType);
+        
+        if(avm_event == NULL)
+        {
+            Log_Error("%s: the avm event requested is failed", __func__);
+            return false;
+        }
+        
+        RawAvmEvent* raw_event = avm_event->GetRawEvent();
+        
+        if(raw_event->payload)
+        {
+            memcpy(raw_event->payload, payload, payloadSize);
+			Log_Error("---------size: %d, p[0]: %d", payloadSize, ((Ctrl_Cmd_T*)raw_event->payload)->parameter[0]);
+			Log_Error("---------m_eventType:%d", m_eventType);
         }
         else
         {

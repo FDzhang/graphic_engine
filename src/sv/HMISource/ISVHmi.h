@@ -64,6 +64,18 @@ typedef struct Hmi_Message_Tag
 }
 Hmi_Message_T;
 
+#define ACTION_TRIGGER_EVENT_CONSTRUCTION(className, eventDelegateName, eventType, palyloadStruct, payloadName) \
+	private: \
+	CGpuAvmEventDelegate* eventDelegateName; \ 
+	palyloadStruct* payloadName; \
+	public: \
+	className()\
+	{ \
+		eventDelegateName = new CGpuAvmEventDelegate(eventType); \
+		payloadName = new palyloadStruct; \
+	} 
+
+
 class ISVHmi
 {
 public:
@@ -87,7 +99,7 @@ public:
     bool GetAvmDisplayView(unsigned char &viewIndex);
 
 	IUINode* GetSvHmiNode(int& pUiNodeId);
-public:
+protected:
     IUINode* m_uiNode;	
     int      m_uiNodeId;
     unsigned int m_visibilityStatus;

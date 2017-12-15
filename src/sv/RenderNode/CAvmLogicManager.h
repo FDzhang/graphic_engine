@@ -65,7 +65,7 @@ private:
 	virtual int UpdateAlgoHmiModel();
 	virtual int UpdateHmi();
 
-	virtual int RemoveHmi(vector<ISVHmi*>* pHmi);
+	virtual int RemoveHmi(vector<ISVHmi*>* pHmi, ISVHmi* pHmiObj);
 private:
 	class CAvmViewControlModel* m_avmViewControlModel;
 	class SVNodeAdasHMI*		m_adasHmi;
@@ -73,6 +73,9 @@ private:
 	int m_hmiNums;
 
 	ISVHmi* m_cameraHmi;
+	ISVHmi* m_dvrBaseHmi;
+	ISVHmi* m_dvrSettingTab;
+	
 	vector<ISVHmi*> m_avmHmi;
 	vector<ISVHmi*> m_dvrHmi;
 private:

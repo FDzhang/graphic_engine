@@ -24,7 +24,7 @@ extern IXrCore* g_pIXrCore;
 ---------functions---------------
 
 /************************************************/
-
+static IActionTrigger* trigger = NULL;
 
 HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode)
 {
@@ -39,7 +39,6 @@ HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode)
 
 HMIButton::~HMIButton()
 {
-	Log_Error("------------HMIButton: Free");
     ISpirit* ButtonLayer = m_uiNode->GetSpirit(m_buttonId);
 	if(ButtonLayer && m_buttonSlot->iconMtl)
 	{
@@ -70,6 +69,10 @@ int HMIButton::Init()
 
     m_buttonVisibleStatus = BUTTON_SHOW;
 
+    if(m_buttonSlot->buttonData->trigger)
+    {
+        SetOnClickDelegate(m_buttonSlot->buttonData->trigger);
+    }
     return BUTTON_NORMAL;                                                                
 }
 

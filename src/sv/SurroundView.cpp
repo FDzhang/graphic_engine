@@ -338,7 +338,7 @@ LutData,MAX_NAME_LENGTH);
 	m_avmLogicManager->SetAdasHmiParams(m_pAdasMdl, m_adas_mdl_num);
 	m_avmLogicManager->Init();
 
-	InitHmi(width, height);
+	//InitHmi(width, height);
 
 
 	#ifndef EMIRROR
