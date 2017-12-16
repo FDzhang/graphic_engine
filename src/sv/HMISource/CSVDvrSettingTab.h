@@ -21,14 +21,12 @@ class CSVDvrSettingTab : public ISVHmi
 public:
 
 	CSVDvrSettingTab(IUINode* pUiNode = NULL, int pUiNodeId = -1);
-	
-	virtual int Init(int window_width, int window_height);
-	virtual int Update(Hmi_Message_T& hmiMsg);
-	virtual int ReturnHmiMsg(Hmi_Message_T* hmi_msg);
-	virtual int DestroyHMIElems();
+	HMI_BASE_INHERITANCE_FUNC()
+
+	virtual int SetElementsVisibility(unsigned char pFlag);
 private:
 	int SetHmiParams();
-
+	int RefreshHmi();
 private:
 	Hmi_Button_Data_T m_baseButtonData[DVR_SETTING_TAB_ELEMEMT_NUM];
     HMIButton* m_baseButton[DVR_SETTING_TAB_ELEMEMT_NUM];
@@ -37,6 +35,9 @@ private:
 	float m_buttonSize[DVR_SETTING_TAB_ELEMEMT_NUM][BUTTON_SIZE];
 
 	IActionTrigger*	m_trigger[DVR_SETTING_TAB_ELEMEMT_NUM];
+
+	unsigned char m_buttonStatus[DVR_SETTING_TAB_ELEMEMT_NUM];
+	unsigned char m_buttonVisibility[DVR_SETTING_TAB_ELEMEMT_NUM];
 
 public:	
 };

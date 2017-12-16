@@ -101,6 +101,11 @@ bool ISVHmi::GetAvmDisplayView(unsigned char &viewIndex)
 {
     viewIndex = m_avmDisplayViewState;
 }
+int ISVHmi::SetElementsVisibility(unsigned char pFlag)
+{
+	return HMI_SUCCESS;
+}
+
 int ISVHmi::MockTouchEvent(Hmi_Message_T& hmiMsg)
 {
 	return HMI_NO_MOCK_DATA;

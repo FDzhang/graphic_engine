@@ -22,6 +22,8 @@ private:
 CSVDvrSettingTab::CSVDvrSettingTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	memset(m_trigger, NULL, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
+	memset(m_buttonStatus, 0, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(unsigned char));
+	memset(m_buttonVisibility, 1, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 }
 	
 int CSVDvrSettingTab::SetHmiParams()
@@ -139,13 +141,33 @@ int CSVDvrSettingTab::Init(int window_width, int window_height)
 }
 int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
 {
+	RefreshHmi();
+
 	return HMI_SUCCESS;
 }
+int CSVDvrSettingTab::RefreshHmi()
+{
+	for(int i = DVR_SETTING_TAB_TIME_SETTING; i < DVR_SETTING_TAB_ELEMEMT_NUM; i++)
+	{
+		m_baseButton[i]->SetShowIconNum(m_buttonStatus[i]);
+		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+		m_baseButton[i]->Update();
+	}
+	return HMI_SUCCESS;
+}
+int CSVDvrSettingTab::SetElementsVisibility(unsigned char pFlag)
+{
+
+	memset(m_buttonVisibility, pFlag, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(unsigned char));
+
+	return HMI_SUCCESS;
+}
+
 int CSVDvrSettingTab::ReturnHmiMsg(Hmi_Message_T* hmi_msg)
 {
 	return HMI_SUCCESS;
 }
-int CSVDvrSettingTab::DestroyHMIElems()
+int CSVDvrSettingTab::DestroyHmiElems()
 {
 	return HMI_SUCCESS;
 }

@@ -2,7 +2,6 @@
 #define _CSV_DVR_BASE_HMI_H_
 
 #include "ISVHmi.h"
-#include "../CGpuAvmEventDelegate.h"
 
 typedef enum DvrBaseHmiElementTag
 {
@@ -21,13 +20,11 @@ class CSVDvrBaseHmi : public ISVHmi
 public:
 
 	CSVDvrBaseHmi();
-	
-	virtual int Init(int window_width, int window_height);
-	virtual int Update(Hmi_Message_T& hmiMsg);
-	virtual int ReturnHmiMsg(Hmi_Message_T* hmi_msg);
-	virtual int DestroyHMIElems();
+	HMI_BASE_INHERITANCE_FUNC()
+
 private:
 	int SetHmiParams();
+	int RefreshHmi();
 private:
 	Hmi_Button_Data_T m_baseButtonData[DVR_BASE_ELEMEMT_NUM];
     HMIButton* m_baseButton[DVR_BASE_ELEMEMT_NUM];
@@ -42,10 +39,19 @@ private:
 	unsigned char m_buttonVisibility[DVR_BASE_ELEMEMT_NUM];
 
 	ISVHmi* m_dvrSettingTab;
+	ISVHmi* m_dvrRecordTab;
+	ISVHmi* m_dvrPlaybackTab;
+
+	unsigned char m_dvrSettingTabVisibility;
+	unsigned char m_dvrRecordTabVisibility;
+	unsigned char m_dvrPlaybackTabVisibility;
+
+	int     m_windowHeight;
+	int     m_windowWidth;
 	
 public:	
 	int SetDvrStatus(unsigned char pDvrStatus);
-	int RefreshHmi();
+	
 };
 
 

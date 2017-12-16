@@ -12,6 +12,7 @@
 #include "../HMI/HMILDWLine.h"
 #include "../HMI/HMISingleviewRect.h"
 #include "../HMI/HMIBSDRadarIcon.h"
+#include "../CGpuAvmEventDelegate.h"
 
 enum
 {
@@ -76,16 +77,24 @@ Hmi_Message_T;
 	} 
 
 
+#define HMI_BASE_INHERITANCE_FUNC() \
+	public: \
+	virtual int Init(int window_width, int window_height); \ 
+	virtual int Update(Hmi_Message_T& hmiMsg); \
+	virtual int ReturnHmiMsg(Hmi_Message_T* hmi_msg); \
+	virtual int DestroyHmiElems(); 
+	
+
 class ISVHmi
 {
 public:
     ISVHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
     
     virtual ~ISVHmi();
-    virtual int Init(int window_width, int window_height);
-    virtual int Update(Hmi_Message_T& hmiMsg);
-    virtual int ReturnHmiMsg(Hmi_Message_T* pHmiMsg);
-    virtual int DestroyHmiElems();
+
+	HMI_BASE_INHERITANCE_FUNC()
+
+	virtual int SetElementsVisibility(unsigned char pFlag);
 
 	virtual int MockTouchEvent(Hmi_Message_T& hmiMsg);
 
