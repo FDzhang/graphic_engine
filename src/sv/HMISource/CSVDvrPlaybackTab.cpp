@@ -337,6 +337,10 @@ int CSVDvrPlaybackTab::RefreshHmi()
 int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
 {
 	memset(m_buttonVisibility, pFlag, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
+	for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+	{
+		m_baseButton[i]->SetVisibility(pFlag);
+	}
 
 	return HMI_SUCCESS;
 }

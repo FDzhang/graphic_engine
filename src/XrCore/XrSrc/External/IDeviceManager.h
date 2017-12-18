@@ -39,6 +39,7 @@ public:
 	virtual Int32 CreateRenderTarget(Int32 width, Int32 height, XRBufferFormat foramt, XRBufferFormat depth,
      /* [out] */ class IRenderTarget** ppIRenderTarget)=0;
 
+	virtual xr_state UpdateTexture(Void* pData, CTexture* pTexture) = 0;
 
 };
 

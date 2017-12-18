@@ -12,6 +12,9 @@
 #include "../HMI/HMILDWLine.h"
 #include "../HMI/HMISingleviewRect.h"
 #include "../HMI/HMIBSDRadarIcon.h"
+#include "../HMI/HMIButton.h"
+#include "../HMI/HMIImageGridList.h"
+
 #include "../CGpuAvmEventDelegate.h"
 
 enum
@@ -50,6 +53,14 @@ typedef struct HmiAlgoResultTag
 }
 HmiAlgoResultT;
 
+typedef struct HmiDvrTabMsgTag
+{
+	void* tabMsgTable;
+	int  objNum; 
+}
+HmiDvrTabMsgT;
+
+
 typedef struct Hmi_Message_Tag
 {
     unsigned char view_model;
@@ -61,6 +72,8 @@ typedef struct Hmi_Message_Tag
 	HmiAlgoResultT algoResult;
 
 	HmiKeyCtrlEventT keyCtrlEvent;
+
+	HmiDvrTabMsgT dvrTabMsg;
     
 }
 Hmi_Message_T;

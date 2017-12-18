@@ -16,8 +16,6 @@ CGpuAvmEventDelegate::CGpuAvmEventDelegate(AvmEventType eventType)
 {
 	m_eventType = eventType;
 
-	Log_Error("---------m_eventType1:%d", m_eventType);
-
 	if (AvmRequestEvent(m_eventType) == NULL)
 	{
 		Log_Error("Request %d cmd event error!", __func__, eventType);
@@ -156,8 +154,6 @@ bool CGpuAvmEventDelegate::PostEventPayload(void* payload, uint32_t payloadSize)
         if(raw_event->payload)
         {
             memcpy(raw_event->payload, payload, payloadSize);
-			Log_Error("---------size: %d, p[0]: %d", payloadSize, ((Ctrl_Cmd_T*)raw_event->payload)->parameter[0]);
-			Log_Error("---------m_eventType:%d", m_eventType);
         }
         else
         {

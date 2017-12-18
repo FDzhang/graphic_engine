@@ -29,6 +29,8 @@ private:
 	Hmi_Button_Data_T m_baseButtonData[DVR_BASE_ELEMEMT_NUM];
     HMIButton* m_baseButton[DVR_BASE_ELEMEMT_NUM];
 
+	Hmi_Message_T  m_hmiMsg;
+
 	float m_buttonPos[DVR_BASE_ELEMEMT_NUM][BUTTON_POS];
 	float m_buttonSize[DVR_BASE_ELEMEMT_NUM][BUTTON_SIZE];
 
@@ -41,10 +43,12 @@ private:
 	ISVHmi* m_dvrSettingTab;
 	ISVHmi* m_dvrRecordTab;
 	ISVHmi* m_dvrPlaybackTab;
+	ISVHmi* m_dvrFileListTab;
 
 	unsigned char m_dvrSettingTabVisibility;
 	unsigned char m_dvrRecordTabVisibility;
 	unsigned char m_dvrPlaybackTabVisibility;
+	unsigned char m_dvrFileListVisibility;
 
 	int     m_windowHeight;
 	int     m_windowWidth;

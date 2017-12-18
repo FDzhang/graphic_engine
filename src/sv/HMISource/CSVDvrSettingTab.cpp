@@ -1,24 +1,90 @@
 #include "CSVDvrSettingTab.h"
+#include "DVR_GUI_OBJ.h"
+#include "gpu_log.h"
 
-class CTimeSelectorFirstActionTrigger : public IActionTrigger
+class CTimeFirstSelectorActionTrigger : public IActionTrigger
 {
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeFirstSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
-	CTimeSelectorFirstActionTrigger() 
-	{ 
-		;
-	}
+
 	virtual Void OnPress(Int32 id)
 	{
-		int i = 0;
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
+		m_dvrCmd->parameter[1] = GUI_SETUP_SPLIT_TIME_1MIN;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CTimeSelectorFirstActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 
 	}
-private:
-	//class CGpuAvmEventDelegate* m_titleIconEventDel;
 };
 
+class CTimeSecondSelectorActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeSecondSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
+		m_dvrCmd->parameter[1] = GUI_SETUP_SPLIT_TIME_3MIN;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CTimeSecondSelectorActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+};
+
+class CTimeThirdSelectorActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeThirdSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
+		m_dvrCmd->parameter[1] = GUI_SETUP_SPLIT_TIME_5MIN;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CTimeThirdSelectorActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+};
+
+class CSdFormatActionTrigger  : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CSdFormatActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_FORMAT_CARD;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CSdFormatActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+};
+	
 CSVDvrSettingTab::CSVDvrSettingTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	memset(m_trigger, NULL, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
@@ -49,7 +115,8 @@ int CSVDvrSettingTab::SetHmiParams()
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_FIRST].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_FIRST].icon_file_name[0],"%sCar/DVR/time_setting_first.dds",XR_RES);
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_FIRST].icon_file_name[1],"%sCar/DVR/time_setting_first_press.dds",XR_RES);
-		
+	m_trigger[DVR_SETTING_TAB_TIME_SETTING_FIRST] = new CTimeFirstSelectorActionTrigger;
+	
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_SECOND].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_SECOND].show_flag = 1;
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_SECOND].show_icon_num = 0;
@@ -57,7 +124,7 @@ int CSVDvrSettingTab::SetHmiParams()
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_SECOND].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_SECOND].icon_file_name[0],"%sCar/DVR/time_setting_second.dds",XR_RES);
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_SECOND].icon_file_name[1],"%sCar/DVR/time_setting_second_press.dds",XR_RES);
-
+	m_trigger[DVR_SETTING_TAB_TIME_SETTING_SECOND] = new CTimeSecondSelectorActionTrigger;
 		
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_THIRD].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_THIRD].show_flag = 1;
@@ -66,6 +133,7 @@ int CSVDvrSettingTab::SetHmiParams()
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_THIRD].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_THIRD].icon_file_name[0],"%sCar/DVR/time_setting_third.dds",XR_RES);
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING_THIRD].icon_file_name[1],"%sCar/DVR/time_setting_third_press.dds",XR_RES);
+	m_trigger[DVR_SETTING_TAB_TIME_SETTING_THIRD] = new CTimeThirdSelectorActionTrigger;
 
 	m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_TITLE].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_TITLE].show_flag = 1;
@@ -80,6 +148,8 @@ int CSVDvrSettingTab::SetHmiParams()
 	m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[0],"%sCar/DVR/sd_format_normal.dds",XR_RES);
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[1],"%sCar/DVR/sd_format_press.dds",XR_RES);	
+	m_trigger[DVR_SETTING_TAB_SD_FORMAT_NORMAL] = new CSdFormatActionTrigger;
+
 
 	for(int i = DVR_SETTING_TAB_TIME_SETTING; i < DVR_SETTING_TAB_ELEMEMT_NUM; i++)
 	{
@@ -141,6 +211,53 @@ int CSVDvrSettingTab::Init(int window_width, int window_height)
 }
 int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
 {
+	DVR_GRAPHIC_UIOBJ* settigTabMsg = NULL;
+	
+	/*DVR_GRAPHIC_UIOBJ setup_gui_table[] =
+	{
+		{ GUI_OBJ_ID_MAIN_MENU_TAB, "main_menu", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_MAIN_MENU_TAB_SETUP },
+		{ GUI_OBJ_ID_SETUP_SPLIT_TIME, "split_time", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_SETUP_SPLIT_TIME_1MIN },
+		{ GUI_OBJ_ID_SETUP_VIDEO_QUALITY, "video_quality", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_SETUP_VIDEO_QUALITY_SFINE },
+		{ GUI_OBJ_ID_SETUP_PHOTO_QUALITY, "photo_quality", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_SETUP_PHOTO_QUALITY_SFINE },
+		{ GUI_OBJ_ID_SETUP_FORMAT_CARD, "format_card", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, 0 },
+		{ GUI_OBJ_ID_DIALOG, "dialog", 1, 0, GUI_OBJ_STATUS_TYPE_ADDRESS, (unsigned int)&m_dialog },
+		{ GUI_OBJ_ID_WARNING, "warning", 1, 0, GUI_OBJ_STATUS_TYPE_VALUE, GUI_WARNING_NONE }
+	};*/
+		
+	if((DVR_GRAPHIC_UIOBJ*) hmiMsg.dvrTabMsg.tabMsgTable)
+	{
+		settigTabMsg = (DVR_GRAPHIC_UIOBJ*) hmiMsg.dvrTabMsg.tabMsgTable;
+		for(int i = 0; i < hmiMsg.dvrTabMsg.objNum; i++)
+		{			
+			switch(settigTabMsg[i].Id)
+			{
+			case GUI_OBJ_ID_SETUP_SPLIT_TIME:
+				m_buttonStatus[DVR_SETTING_TAB_TIME_SETTING_FIRST] = 0;
+				m_buttonStatus[DVR_SETTING_TAB_TIME_SETTING_SECOND] = 0;
+				m_buttonStatus[DVR_SETTING_TAB_TIME_SETTING_THIRD] = 0;
+				if(settigTabMsg[i].uStatus.ObjVal == GUI_SETUP_SPLIT_TIME_1MIN)
+				{
+					m_buttonStatus[DVR_SETTING_TAB_TIME_SETTING_FIRST] = BUTTON_ON_IMAGE;
+				}
+				else if(settigTabMsg[i].uStatus.ObjVal == GUI_SETUP_SPLIT_TIME_3MIN)
+				{
+					m_buttonStatus[DVR_SETTING_TAB_TIME_SETTING_SECOND] = BUTTON_ON_IMAGE;
+				}
+				else if(settigTabMsg[i].uStatus.ObjVal == GUI_SETUP_SPLIT_TIME_5MIN)
+				{
+					m_buttonStatus[DVR_SETTING_TAB_TIME_SETTING_THIRD] = BUTTON_ON_IMAGE;
+				}
+				break;
+			case GUI_OBJ_ID_SETUP_FORMAT_CARD:
+				m_buttonStatus[DVR_SETTING_TAB_SD_FORMAT_NORMAL] = 0;
+				break;
+			default:
+				break;
+			}	
+		}
+
+	}
+	
 	RefreshHmi();
 
 	return HMI_SUCCESS;
@@ -159,6 +276,10 @@ int CSVDvrSettingTab::SetElementsVisibility(unsigned char pFlag)
 {
 
 	memset(m_buttonVisibility, pFlag, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(unsigned char));
+	for(int i = DVR_SETTING_TAB_TIME_SETTING; i < DVR_SETTING_TAB_ELEMEMT_NUM; i++)
+	{
+		m_baseButton[i]->SetVisibility(pFlag);
+	}
 
 	return HMI_SUCCESS;
 }
