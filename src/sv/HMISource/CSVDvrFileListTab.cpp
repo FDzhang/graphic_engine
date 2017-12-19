@@ -2,7 +2,7 @@
 #include "DVR_GUI_OBJ.h"
 
 static int imageItemId[IMAGE_GRID_LIST_ITEM_NUM];
-
+static int editStatus = GUI_SWITCH_STATE_OFF;
 
 class CLoopRecTabActionTrigger : public IActionTrigger
 {
@@ -176,7 +176,16 @@ public:
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_SEL;
+
+		if(editStatus == GUI_SWITCH_STATE_OFF)
+		{
+			m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_SEL_TO_PLAY;
+		}
+		else if(editStatus == GUI_SWITCH_STATE_ON)
+		{		
+			m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_SEL;
+		}
+
 		for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
 		{
 			if(id == imageItemId[i])
@@ -614,6 +623,8 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
 					m_buttonStatus[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
 
+					editStatus = GUI_SWITCH_STATE_OFF;
+
 				}
 				else if(fileListTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_ON)
 				{
@@ -637,6 +648,9 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SAVE] = 1;
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_DELETE] = 1;
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 1;
+
+					
+					editStatus = GUI_SWITCH_STATE_ON;
 				}
 				
 				break;

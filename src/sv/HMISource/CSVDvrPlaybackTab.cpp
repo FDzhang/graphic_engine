@@ -1,7 +1,22 @@
 #include "CSVDvrPlaybackTab.h"
+#include "DVR_GUI_OBJ.h"
 
+enum
+{
+	DVR_STATE_PLAY_NORMAL = 0,
+	DVR_STATE_PLAY_HIGHLIGHT,	
+	DVR_STATE_SUSPEND_NORMAL,
+	DVR_STATE_SUSPEND_HIGHLIGHT,
+	DVR_STATE_PLAYSPEED_X1_NORMAL = 0,
+	DVR_STATE_PLAYSPEED_X1_HIGHLIGHT,
+	DVR_STATE_PLAYSPEED_X1_5_NORMAL,
+	DVR_STATE_PLAYSPEED_X1_5_HIGHLIGHT,	
+	DVR_STATE_PLAYSPEED_X2_NORMAL,
+	DVR_STATE_PLAYSPEED_X2_HIGHLIGHT,
+	
+};
 
-CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
+CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	memset(m_trigger, NULL, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
@@ -321,7 +336,148 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 }
 int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 {
+	static int currentFileNum = 0;
+	int 	   fileNumCnt = 0;
+	
+	DVR_GRAPHIC_UIOBJ* playbackTabMsg = NULL;
+	GUI_OBJ_PLAY_FILENAME_INST* playbackFileName = NULL;
+
+
+/*DVR_GRAPHIC_UIOBJ pb_video_gui_table[] =
+{
+	{ GUI_OBJ_ID_MAIN_MENU_TAB, "main_menu", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_MAIN_MENU_TAB_THUMB },
+	{ GUI_OBJ_ID_PB_PLAY_STATE, "play_state", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_PLAY_STATE_INVALID },
+	{ GUI_OBJ_ID_PB_PLAY_TIMER, "play_timer", 1, 1, GUI_OBJ_STATUS_TYPE_ADDRESS, (unsigned int)&m_play_time },
+	{ GUI_OBJ_ID_PB_PLAY_SPEED, "play_speed", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_PLAY_SPEED_X1 },
+	{ GUI_OBJ_ID_PB_FILENAME, "play_file_name", 1, 1, GUI_OBJ_STATUS_TYPE_ADDRESS, (unsigned int)&m_play_filename },
+	{ GUI_OBJ_ID_PB_VIEW_INDEX, "play_view", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_VIEW_INDEX_FRONT },
+	{ GUI_OBJ_ID_PB_DC_SWITCH, "play_dc_switch", 1, 1, GUI_OBJ_STATUS_TYPE_VALUE, GUI_SWITCH_STATE_OFF },
+	{ GUI_OBJ_ID_DIALOG, "dialog", 1, 0, GUI_OBJ_STATUS_TYPE_ADDRESS, (unsigned int)&m_dialog }
+
+	
+};*/
+
+	if((DVR_GRAPHIC_UIOBJ*) hmiMsg.dvrTabMsg.tabMsgTable)
+	{
+		playbackTabMsg = (DVR_GRAPHIC_UIOBJ*) hmiMsg.dvrTabMsg.tabMsgTable;
+		
+		for(int i = 0; i < hmiMsg.dvrTabMsg.objNum; i++)
+		{			
+			switch(playbackTabMsg[i].Id)
+			{
+			case GUI_OBJ_ID_PB_PLAY_STATE:
+
+				if(GUI_OBJ_STATUS_TYPE_VALUE == playbackTabMsg[i].status_type)
+				{
+					
+					if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_RUNNING)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_PLAY] = DVR_STATE_SUSPEND_NORMAL;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_PAUSE)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_PLAY] = DVR_STATE_PLAY_NORMAL;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_FAST_FORWARD)
+					{
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_FAST_BACKWARD)
+					{
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_INVALID)
+					{
+					}
+				}
+				break;
+			case GUI_OBJ_ID_PB_PLAY_SPEED:
+				
+				if(GUI_OBJ_STATUS_TYPE_VALUE == playbackTabMsg[i].status_type)
+				{
+					
+					if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_SPEED_X1)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_SPEED] = DVR_STATE_PLAYSPEED_X1_NORMAL;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_SPEED_X2)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_SPEED] = DVR_STATE_PLAYSPEED_X1_5_NORMAL;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_SPEED_X4)
+					{					
+						m_buttonStatus[DVR_PLAYBACK_TAB_SPEED] = DVR_STATE_PLAYSPEED_X2_NORMAL;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_SPEED_X8)
+					{
+					}
+					
+				}
+				
+				break;
+			case GUI_OBJ_ID_PB_VIEW_INDEX:
+							
+				if(GUI_OBJ_STATUS_TYPE_VALUE == playbackTabMsg[i].status_type)
+				{
+					
+					if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_FRONT] = BUTTON_ON_IMAGE;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_REAR] = BUTTON_ON_IMAGE;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_LEFT] = BUTTON_ON_IMAGE;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_RIGHT] = BUTTON_ON_IMAGE;
+					}
+					
+				}
+				
+				break;
+
+			case GUI_OBJ_ID_PB_FILENAME:
+								
+				if(GUI_OBJ_STATUS_TYPE_ADDRESS == playbackTabMsg[i].status_type
+					&& playbackTabMsg[i].uStatus.ptr)
+				{
+					playbackFileName = (GUI_OBJ_PLAY_FILENAME_INST*)playbackTabMsg[i].uStatus.ptr;
+
+					
+				}
+				
+				break;
+			case  GUI_OBJ_ID_PB_DC_SWITCH:
+				if(GUI_OBJ_STATUS_TYPE_VALUE == playbackTabMsg[i].status_type)
+				{
+					
+					if(playbackTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_ON)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_DC_SWITCH] = BUTTON_ON_IMAGE;
+					}
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_OFF)
+					{
+						m_buttonStatus[DVR_PLAYBACK_TAB_DC_SWITCH] = BUTTON_OFF_IMAGE;
+					}
+					
+				}
+				
+				
+				break;
+
+				
+			default:
+				break;
+			}	
+		}
+
+	}
+	
 	RefreshHmi();
+	
 	return HMI_SUCCESS;
 }
 int CSVDvrPlaybackTab::RefreshHmi()
