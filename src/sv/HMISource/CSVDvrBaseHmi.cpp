@@ -76,6 +76,26 @@ public:
 
 };
 
+class CReturnDvrActionTrigger:public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CReturnDvrActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_QUIT;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CReturnDvrActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+
+};
 
 CSVDvrBaseHmi::CSVDvrBaseHmi()
 {
@@ -117,8 +137,11 @@ int CSVDvrBaseHmi::SetHmiParams()
 	m_baseButtonData[DVR_BASE_TITLE_ICON].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_BASE_TITLE_ICON].show_flag = 1;
 	m_baseButtonData[DVR_BASE_TITLE_ICON].show_icon_num = 0;
-	m_baseButtonData[DVR_BASE_TITLE_ICON].icon_file_name[0] = new char[50];
+	m_baseButtonData[DVR_BASE_TITLE_ICON].icon_file_name[0] = new char[50];	
+	m_baseButtonData[DVR_BASE_TITLE_ICON].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_BASE_TITLE_ICON].icon_file_name[0],"%sCar/DVR/dvr_title.dds",XR_RES); 
+	sprintf(m_baseButtonData[DVR_BASE_TITLE_ICON].icon_file_name[1],"%sCar/DVR/playback_return.dds",XR_RES); 
+	m_trigger[DVR_BASE_TITLE_ICON] = new CReturnDvrActionTrigger;
 
 	m_baseButtonData[DVR_BASE_LIVE_VIDEO_TAB].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_BASE_LIVE_VIDEO_TAB].show_flag = 1;
@@ -221,6 +244,9 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 	if(cnt_dvr_alive > 300)
 	{
 	static DVR_GUI_LAYOUT_INST dvrGuiLayout;
+	m_buttonVisibility[DVR_BASE_TAB_BKG] = 1;			
+	m_buttonStatus[DVR_BASE_TITLE_ICON] = 0;
+
 	if(0 == Dvr_App_Get_GuiLayOut(&dvrGuiLayout))
 	{
 		switch(dvrGuiLayout.curLayout)
@@ -270,6 +296,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 				m_dvrRecordTab->Update(m_hmiMsg);
 			}
 			
+			m_buttonVisibility[DVR_BASE_TAB_BKG] = 0;
 			m_dvrSettingTabVisibility = 0;
 			m_dvrRecordTabVisibility = 1;
 			m_dvrPlaybackTabVisibility = 0;
@@ -317,7 +344,8 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 				m_dvrPlaybackTab->Update(m_hmiMsg);
 			}
 
-						
+			m_buttonVisibility[DVR_BASE_TAB_BKG] = 0;	
+			m_buttonStatus[DVR_BASE_TITLE_ICON] = 1;
 			m_dvrSettingTabVisibility = 0;
 			m_dvrRecordTabVisibility = 0;
 			m_dvrPlaybackTabVisibility = 1;
@@ -356,7 +384,8 @@ int CSVDvrBaseHmi::SetDvrStatus(unsigned char pDvrStatus)
 
 int CSVDvrBaseHmi::RefreshHmi()
 {
-	for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
+	for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
+
 	{
 		m_baseButton[i]->SetShowIconNum(m_buttonStatus[i]);
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
