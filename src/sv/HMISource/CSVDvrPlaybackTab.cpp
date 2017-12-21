@@ -198,6 +198,65 @@ public:
 	}
 };
 
+class CPbEmergencySaveActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbEmergencySaveActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SAVE;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CPbEmergencySaveActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+};
+
+class CPbDeleteActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDeleteActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DELETE;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CPbDeleteActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+};
+
+class CPbDcSwitchActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDcSwitchActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DC_SWITCH;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CPbDcSwitchActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+};
 
 
 CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
@@ -314,6 +373,7 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	m_baseButtonData[DVR_PLAYBACK_TAB_EMERGENCY_ICON].icon_file_name[1] = new char[100];
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_EMERGENCY_ICON].icon_file_name[0],"%sCar/DVR/emergency_save_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_EMERGENCY_ICON].icon_file_name[1],"%sCar/DVR/emergency_save_press.dds",XR_RES); 
+	m_trigger[DVR_PLAYBACK_TAB_EMERGENCY_ICON] = new CPbEmergencySaveActionTrigger;
 
 	m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_TITLE].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_TITLE].show_flag = 1;
@@ -334,6 +394,8 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_ICON].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_ICON].icon_file_name[0],"%sCar/DVR/playback_delete_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_ICON].icon_file_name[1],"%sCar/DVR/playback_delete_press.dds",XR_RES); 
+	m_trigger[DVR_PLAYBACK_TAB_DELETE_ICON] = new CPbDeleteActionTrigger;
+	
 
 	m_baseButtonData[DVR_PLAYBACK_TAB_DC_TITLE].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_PLAYBACK_TAB_DC_TITLE].show_flag = 1;
@@ -348,6 +410,7 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	m_baseButtonData[DVR_PLAYBACK_TAB_DC_SWITCH].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_DC_SWITCH].icon_file_name[0],"%sCar/DVR/record_switch_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_DC_SWITCH].icon_file_name[1],"%sCar/DVR/record_switch_press.dds",XR_RES); 
+	m_trigger[DVR_PLAYBACK_TAB_DC_SWITCH] = new CPbDcSwitchActionTrigger;
 
 	m_baseButtonData[DVR_PLAYBACK_TAB_VIEW_TITLE].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_PLAYBACK_TAB_VIEW_TITLE].show_flag = 1;

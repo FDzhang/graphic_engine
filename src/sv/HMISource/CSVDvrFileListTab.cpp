@@ -417,6 +417,27 @@ int CSVDvrFileListTab::SetHmiParams()
 		m_baseButton[i]->SetVisibility(0);
 	}
 	
+	for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+	{
+		m_textEditData[i].pos[0] = m_imageGridListData.posX + (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing + 5.0;
+		m_textEditData[i].pos[1] = m_imageGridListData.posY + (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 5.0;
+		m_textEditData[i].width = 20;
+		m_textEditData[i].font_size = 4.0;
+		m_textEditData[i].line_num = 1;
+		m_textEditData[i].targetIndex = -1;
+		m_textEditData[i].insertFlag = InsertFlag_Default;
+		m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
+		m_textEditData[i].trigger = NULL;
+		m_textEditData[i].textColor[0] = 1.0;
+		m_textEditData[i].textColor[1] = 1.0;
+		m_textEditData[i].textColor[2] = 1.0;
+		m_textEditData[i].textContent[0] = new char[100];
+		char* ptext = "17:30-17:40 16/12/12";
+		sprintf(m_textEditData[i].textContent[0],"%s", ptext);
+		m_textEdit[i] = new HmiTextEdit(&m_textEditData[i], m_uiNode);
+		m_textEdit[i]->SetVisibility(1);
+		m_textEdit[i]->Update(ptext);
+	}
 
 	return HMI_SUCCESS;
 }

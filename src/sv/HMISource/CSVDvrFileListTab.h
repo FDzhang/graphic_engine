@@ -56,6 +56,9 @@ private:
 	HMIImageGridList* m_imageGridList;
 	ImageGridListItemT m_imageGridListItem[IMAGE_GRID_LIST_ITEM_NUM];
 
+	HmiTextEditDataT m_textEditData[IMAGE_GRID_LIST_ITEM_NUM];
+	HmiTextEdit*     m_textEdit[IMAGE_GRID_LIST_ITEM_NUM];
+
 	float m_buttonPos[DVR_FILELIST_TAB_ELEMEMT_NUM][BUTTON_POS];
 	float m_buttonSize[DVR_FILELIST_TAB_ELEMEMT_NUM][BUTTON_SIZE];
 

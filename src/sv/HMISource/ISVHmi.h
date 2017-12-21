@@ -14,6 +14,7 @@
 #include "../HMI/HMIBSDRadarIcon.h"
 #include "../HMI/HMIButton.h"
 #include "../HMI/HMIImageGridList.h"
+#include "../HMI/HMITextEdit.h"
 
 #include "../CGpuAvmEventDelegate.h"
 
