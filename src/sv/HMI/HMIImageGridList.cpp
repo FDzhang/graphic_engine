@@ -36,7 +36,7 @@ extern IDeviceManager* rm;
 
 static char CUSTOMOVL[]  = XR_RES"Car/guide_line_green.dds";
 
-HMIImageGridList::HMIImageGridList(HMIImageGridListDataT* pImageGridListData):m_objectCnt(0)
+HMIImageGridList::HMIImageGridList(HMIImageGridListDataT* pImageGridListData):m_objectCnt(0),m_currentImageFileNum(0)
 {
 	if(pImageGridListData == NULL
 		|| pImageGridListData->renderUiNode == NULL)
@@ -101,6 +101,15 @@ int HMIImageGridList::AddGridItem(ImageGridListItemT* pImageGridListItem)
 
 	m_rawDataImageIcon[m_objectCnt] = new HMIRawDataImageIcon(&m_rawDataImageIconData[m_objectCnt]);
 
+	if(m_imageGridListData->withTextFlag == 1)
+	{
+		memcpy(&m_textEditData[m_objectCnt], &pImageGridListItem->textInfo, sizeof(HmiTextEditDataT));
+		m_textEditData[m_objectCnt].textContent[0] = pImageGridListItem->textInfo.textContent[0];
+		m_textEditData[m_objectCnt].targetIndex = m_gridListSpiritId;
+		m_textEditData[m_objectCnt].insertFlag = InsertFlag_Child;
+		m_textEdit[m_objectCnt] = new HmiTextEdit(&m_textEditData[m_objectCnt], m_imageGridListData->renderUiNode);
+	}
+
 	m_objectCnt ++;
 
 	return IGL_NORMAL;
@@ -121,19 +130,28 @@ int HMIImageGridList::Update(unsigned char pRefreshFlag, unsigned char pRefreshV
 		imageGridLayer->SetEnable(1);
 		imageGridLayer->MasksToBound(TRUE);
 	}
-	
+	m_currentImageFileNum = m_objectCnt;
 	if(pRefreshVisibility)
 	{
 		pCurrentItemNum = m_objectCnt < pCurrentItemNum ? m_objectCnt : pCurrentItemNum;
+		m_currentImageFileNum = pCurrentItemNum;
 		for(int i = 0; i < m_objectCnt; i++)
 		{
 			if(i < pCurrentItemNum)
 			{
 				m_rawDataImageIcon[i]->SetVisibility(1);
+				if(m_imageGridListData->withTextFlag == 1)
+				{
+					m_textEdit[i]->SetVisibility(1);
+				}
 			}
 			else
 			{
 				m_rawDataImageIcon[i]->SetVisibility(0);
+				if(m_imageGridListData->withTextFlag == 1)
+				{
+					m_textEdit[i]->SetVisibility(0);
+				}
 			}
 		}
 	}
@@ -141,6 +159,10 @@ int HMIImageGridList::Update(unsigned char pRefreshFlag, unsigned char pRefreshV
 	for(int i = 0; i < m_objectCnt; i++)
 	{
 		m_rawDataImageIcon[i]->Update(m_rawDataImageIconData[i].imageData, pRefreshFlag);
+		if(m_imageGridListData->withTextFlag == 1)
+		{
+			m_textEdit[i]->Update(m_textEditData[i].textContent[0]);
+		}
 
 		//m_rawDataImageIcon[i]->ResetImageIconPos(m_rawDataImageIconData[i].iconPosX , m_rawDataImageIconData[i].iconPosY + 320.0, GRID_MOVING, m_imageGridListData->posY, m_imageGridListData->gridListHeight);
 	}
@@ -148,9 +170,23 @@ int HMIImageGridList::Update(unsigned char pRefreshFlag, unsigned char pRefreshV
 }
 int HMIImageGridList::SetVisibility(unsigned char flag)
 {
+	int textFlag = 0;
+
 	for(int i = 0; i < m_objectCnt; i++)
 	{
 		m_rawDataImageIcon[i]->SetVisibility(flag);
+		textFlag = flag;
+
+		if(flag > 0 
+			&& i >= m_currentImageFileNum)
+		{
+			m_rawDataImageIcon[i]->SetVisibility(0);
+			textFlag = 0;
+		}
+		if(m_imageGridListData->withTextFlag == 1)
+		{
+			m_textEdit[i]->SetVisibility(textFlag);
+		}				
 	}
 	
 	if(m_imageGridListData->gridListMode == GRIDLIST_BKG_MODE)

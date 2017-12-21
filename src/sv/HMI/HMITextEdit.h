@@ -51,7 +51,7 @@ typedef struct HmiTextEditDataTag
 	float width;
 	float font_size;
 	int line_num;
-	bool show_flag;
+	unsigned char visibilityStatus;
 	float textColor[3];
 	char *textContent[MAX_TEXT_LINE_NUM];
 	char* fontTypeMtlName;

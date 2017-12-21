@@ -33,6 +33,7 @@
 #include "../../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
 #include "../DataStruct.h"
 #include "HMIImageIcon.h"
+#include "HMITextEdit.h"
 
 typedef enum ImageGridListModeTag
 {
@@ -65,6 +66,8 @@ typedef struct ImageGridListItemTag
   int			imageWidth;
   int			imageHeight;
   IActionTrigger*	trigger;
+
+  HmiTextEditDataT textInfo;
 }
 ImageGridListItemT;
 
@@ -83,6 +86,7 @@ typedef struct HMIImageGridListDataTag
 	float      verticalSpacing;
 	float      horizontalSpacing;  
 	char	   gridListBkgImg;
+	unsigned char withTextFlag;
 	//char*     editModeSelectedTexture[50];
 	//char*     editModeNormalTexture[50];
 
@@ -111,6 +115,8 @@ private:
 	ImageGridListItemT    m_imageGridListItem[MAX_IMAGE_GRID_LIST_NUM];
 	HMIRawDataImageIconDataT  m_rawDataImageIconData[MAX_IMAGE_GRID_LIST_NUM];
 	HMIRawDataImageIcon*	m_rawDataImageIcon[MAX_IMAGE_GRID_LIST_NUM];	  
+	HmiTextEditDataT m_textEditData[MAX_IMAGE_GRID_LIST_NUM];
+	HmiTextEdit*     m_textEdit[MAX_IMAGE_GRID_LIST_NUM];
 
 	int m_objectCnt;
 	int m_gridListSpiritId;
@@ -121,6 +127,8 @@ private:
 
 	int m_imageWidth;
 	int m_imageHeight;
+
+	int m_currentImageFileNum;
 };
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)

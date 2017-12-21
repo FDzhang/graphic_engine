@@ -66,7 +66,10 @@ HmiTextEdit::HmiTextEdit(HmiTextEditDataT* pTextEditData,IUINode* uiNode):m_text
 	m_textEditData = new HmiTextEditDataT;
 	memcpy(m_textEditData, pTextEditData, sizeof(HmiTextEditDataT));
 	m_textMtlId = m_uiNode->CreateUIFontMaterial(m_textEditData->fontTypeMtlName, &m_textMtl);
-	m_textLayerId = m_uiNode->CreateTextLayer(-1, InsertFlag_Default, m_textMtlId, 1.0, m_textEditData->pos[0], m_textEditData->pos[1], &m_textLayer, m_textEditData->width,m_textEditData->font_size);
+	m_textLayerId = m_uiNode->CreateTextLayer(m_textEditData->targetIndex, m_textEditData->insertFlag, m_textMtlId, 1.0, m_textEditData->pos[0], m_textEditData->pos[1], &m_textLayer, m_textEditData->width,m_textEditData->font_size);
+
+	m_textVisibility = m_textEditData->visibilityStatus;
+
 }
 HmiTextEdit::~HmiTextEdit()
 {

@@ -225,7 +225,7 @@ public:
 
 class CFileScrollDownActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CFileScrollUpActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CFileScrollDownActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
@@ -417,7 +417,7 @@ int CSVDvrFileListTab::SetHmiParams()
 		m_baseButton[i]->SetVisibility(0);
 	}
 	
-	for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+	/*for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
 	{
 		m_textEditData[i].pos[0] = m_imageGridListData.posX + (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing + 5.0;
 		m_textEditData[i].pos[1] = m_imageGridListData.posY + (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 5.0;
@@ -435,9 +435,8 @@ int CSVDvrFileListTab::SetHmiParams()
 		char* ptext = "17:30-17:40 16/12/12";
 		sprintf(m_textEditData[i].textContent[0],"%s", ptext);
 		m_textEdit[i] = new HmiTextEdit(&m_textEditData[i], m_uiNode);
-		m_textEdit[i]->SetVisibility(1);
-		m_textEdit[i]->Update(ptext);
-	}
+		m_textEdit[i]->SetVisibility(0);
+	}*/
 
 	return HMI_SUCCESS;
 }
@@ -489,6 +488,7 @@ int CSVDvrFileListTab::Init(int window_width, int window_height)
 	m_imageGridListData.gridListHeight = 1000.0;
 	m_imageGridListData.itemWidth = 180.0;
 	m_imageGridListData.itemHeight = 100.0;
+	m_imageGridListData.withTextFlag = 1;
 
 	m_imageGridListData.gridListMode = GRIDLIST_NORMAL_MODE;
 
@@ -503,6 +503,27 @@ int CSVDvrFileListTab::Init(int window_width, int window_height)
 		m_imageGridListItem[i].imageData = new char[m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight * 3];
 		memset(m_imageGridListItem[i].imageData, 200, sizeof(char)*m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight*3);
 		m_imageGridListItem[i].trigger = new CEditSelActionTrigger;
+
+		m_textEditData[i].pos[0] = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing + 5.0;
+		m_textEditData[i].pos[1] = (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 5.0;
+		m_textEditData[i].width = 20;
+		m_textEditData[i].font_size = 4.0;
+		m_textEditData[i].line_num = 1;
+		m_textEditData[i].visibilityStatus = 1;
+		m_textEditData[i].targetIndex = -1;
+		m_textEditData[i].insertFlag = InsertFlag_Default;
+		m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
+		m_textEditData[i].trigger = NULL;
+		m_textEditData[i].textColor[0] = 1.0;
+		m_textEditData[i].textColor[1] = 1.0;
+		m_textEditData[i].textColor[2] = 1.0;
+		m_textEditData[i].textContent[0] = new char[100];
+		char* ptext = "17:30-17:40 16/12/12";
+		sprintf(m_textEditData[i].textContent[0],"%s", ptext);
+
+		//m_imageGridListItem[i].textInfo = m_textEditData[i];
+		memcpy(&m_imageGridListItem[i].textInfo, &m_textEditData[i], sizeof(HmiTextEditDataT));
+		m_imageGridListItem[i].textInfo.textContent[0] = m_textEditData[i].textContent[0];
 
 	}
 
@@ -629,6 +650,7 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 				if(fileListTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_OFF)
 				{
 					m_buttonStatus[DVR_FILELIST_TAB_EDIT_ICON] = BUTTON_OFF_IMAGE;
+					
 					for(int i = 0; i < NUM_THUMBNAIL_PER_PAGE; i++)
 					{							
 						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 0;												
@@ -715,9 +737,15 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 						if(frameInst->item[i].bValid)
 						{
 							currentFileNum ++;
-							m_imageGridListItem[i].imageData = frameInst->item[i].pPreviewBuf;					
+							m_imageGridListItem[i].imageData = frameInst->item[i].pPreviewBuf;	
+							//m_imageGridListItem[i].textInfo.textContent[0] = frameInst->item[i].filename;
+							
+							sprintf(m_imageGridListItem[i].textInfo.textContent[0],"%s", frameInst->item[i].filename);
 						}
+						
 					}
+										
+					Log_Error("currentFileNum: %d",currentFileNum);
 					m_imageGridList->Update(0,1,currentFileNum);
 					//m_imageGridList->Update();
 				}
