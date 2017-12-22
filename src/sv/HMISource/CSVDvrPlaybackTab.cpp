@@ -273,6 +273,12 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	m_baseButtonData[DVR_PLAYBACK_TAB_PLAYER_BKG].show_icon_num = 0;
 	m_baseButtonData[DVR_PLAYBACK_TAB_PLAYER_BKG].icon_file_name[0] = new char[50];
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_PLAYER_BKG].icon_file_name[0],"%sCar/DVR/player_bkg.dds",XR_RES); 
+
+	m_baseButtonData[DVR_PLAYBACK_TAB_FILE_TITLE_BKG].icon_type = STATIC_ICON;
+	m_baseButtonData[DVR_PLAYBACK_TAB_FILE_TITLE_BKG].show_flag = 1;
+	m_baseButtonData[DVR_PLAYBACK_TAB_FILE_TITLE_BKG].show_icon_num = 0;
+	m_baseButtonData[DVR_PLAYBACK_TAB_FILE_TITLE_BKG].icon_file_name[0] = new char[50];
+	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_FILE_TITLE_BKG].icon_file_name[0],"%sCar/DVR/time_title_bkg.dds",XR_RES); 
 	
 	m_baseButtonData[DVR_PLAYBACK_TAB_PLAY].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_PLAYBACK_TAB_PLAY].show_flag = 1;
@@ -483,6 +489,11 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 	m_buttonSize[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_SIZE_HEIGHT] = 81.0;
 	m_buttonPos[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_POS_X] = radio*window_width + ((1.0 - radio)*window_width - m_buttonSize[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_SIZE_WIDTH]) * 0.5;
 	m_buttonPos[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_POS_Y] = window_height - 80.0 - m_buttonSize[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_SIZE_HEIGHT];
+
+	m_buttonSize[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_SIZE_WIDTH] = 683.0;
+	m_buttonSize[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_SIZE_HEIGHT] = 80.0;
+	m_buttonPos[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_POS_X] = radio*window_width + ((1.0 - radio)*window_width - m_buttonSize[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_SIZE_WIDTH]) * 0.5;
+	m_buttonPos[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_POS_Y] = 80.0;
 	
 	m_buttonSize[DVR_PLAYBACK_TAB_PLAY][BUTTON_SIZE_WIDTH] = 56.0;
 	m_buttonSize[DVR_PLAYBACK_TAB_PLAY][BUTTON_SIZE_HEIGHT] = 65.0;
