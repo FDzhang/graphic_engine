@@ -38,6 +38,15 @@ typedef enum DvrPlaybackHmiElementTag
 }
 DvrPlaybackHmiElementT;
 
+typedef enum TextDisplayTag
+{
+	PB_FILENAME_TITLE,
+	PB_FILE_CURRENT_TIME,
+	PB_FILE_DURATION_TIME,
+	PB_TEXT_DISPLAY_NUM,
+}
+TextDisplayT;
+
 class CSVDvrPlaybackTab : public ISVHmi
 {
 public:
@@ -48,6 +57,8 @@ public:
 private:
 	int SetHmiParams();
 	int RefreshHmi();
+
+	int ToString(int pTime, char** pOutString);
 
 private:
 		
@@ -60,6 +71,16 @@ private:
 	unsigned char m_buttonVisibility[DVR_PLAYBACK_TAB_ELEMEMT_NUM];
 
 	IActionTrigger*	m_trigger[DVR_PLAYBACK_TAB_ELEMEMT_NUM];
+
+	HmiProcessBarDataT m_processBarData;
+	HmiProcessBar*     m_processBar;
+	unsigned char      m_processBarVisibility;
+	float			   m_processBarForwardScale;
+
+	HmiTextEditDataT m_textEditData[PB_TEXT_DISPLAY_NUM];
+	HmiTextEdit*     m_textEdit[PB_TEXT_DISPLAY_NUM];	
+	unsigned char    m_textEditVisibility[PB_TEXT_DISPLAY_NUM];
+	char*			 m_textEditContent[PB_TEXT_DISPLAY_NUM];
 };
 
 #endif //_CSV_DVR_PLAYBACK_TAB_H_

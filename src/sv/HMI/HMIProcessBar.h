@@ -52,6 +52,14 @@ typedef enum HmiProcessBarErrorCodeTag
 }
 HmiProcessBarErrorCodeTag;
 
+typedef enum HmiProcessBarMovingModeTag
+{
+	PROCESS_BAR_FORWARD = 0,
+	PROCESS_BAR_BACKWARD,
+	PROCESS_BAR_MOVING_MODE_NUM,
+}
+HmiProcessBarMovingModeT;
+
 typedef struct HmiProcessBarDataTag
 {
 	float pos[2];
@@ -74,7 +82,7 @@ public:
 	virtual  int Init();
 	virtual int Update();
 	int SetVisibility(unsigned char pFlag);
-	int SetTextColor(float pR, float pG, float pB);
+	int Move(float pScale, HmiProcessBarMovingModeT pMovingMode);
 private:
 	int CalProcessBarPos(int x, int y);
 private:
@@ -115,6 +123,10 @@ private:
 
 	 IActionTrigger*	m_trigger;
 	 String             m_name;
+
+	 unsigned char      m_adjustScaleSignal;
+	 float				m_rangeRightPos;
+	 
 };
 
 #endif // _HMI_PROCESSBAR_H_

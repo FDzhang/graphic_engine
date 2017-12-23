@@ -203,11 +203,27 @@ Boolean HMIButton::OnTouchEvent(
 	/* [in] */Int32 type)
 {
 	if (type == TouchEvent_Down) {
+		if(m_buttonSlot->buttonData->animationStyle == BUTTON_FLASH_HIGHLIGHT)
+		{
+			m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[BUTTON_ON_IMAGE]);
+		}
 		if (m_trigger) m_trigger->OnPress(layerId);
 	}
 	else if (type == TouchEvent_Up) {
+		if(m_buttonSlot->buttonData->animationStyle == BUTTON_FLASH_HIGHLIGHT)
+		{
+			m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[BUTTON_OFF_IMAGE]);		
+		}
 		if (m_trigger) m_trigger->OnRelease(layerId, true);
 	}
+	else if (type == TouchEvent_Move)
+	{
+		if(m_buttonSlot->buttonData->animationStyle == BUTTON_FLASH_HIGHLIGHT)
+		{
+			m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[BUTTON_ON_IMAGE]);		
+		}
+	}
+
 	return TRUE;
 }
 

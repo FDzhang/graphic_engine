@@ -64,6 +64,9 @@ HmiProcessBar::HmiProcessBar(HmiProcessBarDataT* pProcessBarData,IUINode* uiNode
 		return;
 	}
 
+	m_adjustScaleSignal = 0;
+	m_rangeRightPos = 0;
+
 	m_uiNode = uiNode;
 	m_processBarData = new HmiProcessBarDataT;
 	memcpy(m_processBarData, pProcessBarData, sizeof(HmiProcessBarDataT));
@@ -149,8 +152,42 @@ int HmiProcessBar::SetVisibility(unsigned char pFlag)
 	}
 	return HMI_PROCESSBAR_NORMAL;
 }
+
+int HmiProcessBar::Move(float pScale, HmiProcessBarMovingModeT pMovingMode)
+{
+	/*if(m_adjustScaleSignal == 1)
+	{
+		return HMI_PROCESSBAR_NORMAL;
+	}*/
+
+	Region procBarTextureReg;
+	float rangeLeftPos = 0.0;
+	//float rangeRightPos = 1.0;
+	float rangeTopPos = 0.0;
+	float rangeBottomPos = 1.0;
+	ISpirit *processBarLayer = m_uiNode->GetSpirit(m_processBarId);
+
+	if(pMovingMode == PROCESS_BAR_FORWARD)
+	{
+		if(pScale > 1.0)
+		{
+			pScale = 1.0;
+		}
+		procBarTextureReg.Set(rangeLeftPos, pScale, rangeTopPos, rangeBottomPos);
+
+		processBarLayer->SetMaterialROI(&procBarTextureReg);
+		processBarLayer->SetWidth(pScale * m_processBarData->width);
+
+	}
+
+	return HMI_PROCESSBAR_NORMAL;
+}
+
+
 int HmiProcessBar::CalProcessBarPos(int x, int y)
 {
+	m_adjustScaleSignal = 1;
+
 	Region procBarTextureReg;
 
 	float rangeLeftPos = 0.0;
@@ -158,10 +195,10 @@ int HmiProcessBar::CalProcessBarPos(int x, int y)
 	float rangeTopPos = 0.0;
 	float rangeBottomPos = 1.0;
 
-	rangeRightPos = (float)x / m_processBarData->width;
+	m_rangeRightPos = (float)x / m_processBarData->width;
 
-	procBarTextureReg.Set(rangeLeftPos, rangeRightPos, rangeTopPos, rangeBottomPos);
-
+	procBarTextureReg.Set(rangeLeftPos, m_rangeRightPos, rangeTopPos, rangeBottomPos);
+	
 	ISpirit *processBarLayer = m_uiNode->GetSpirit(m_processBarId);
 	processBarLayer->SetMaterialROI(&procBarTextureReg);
 	processBarLayer->SetWidth(x);
@@ -181,6 +218,7 @@ Boolean HmiProcessBar::OnTouchEvent(
 	}
 	else if (type == TouchEvent_Up) {
 		if (m_trigger) m_trigger->OnRelease(layerId, true);
+		m_adjustScaleSignal = 0;
 	}
 	else if(type == TouchEvent_Move)
 	{

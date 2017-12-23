@@ -36,6 +36,14 @@ enum
 	BUTTON_ON_IMAGE = 1,
 	BUTTON_FAILED_IMAGE = 2,
 };
+	
+typedef enum ButtonAnimationStyleTag
+{
+	BUTTON_NOMAL = 0,
+	BUTTON_POS_EDGE_SLIDE = 1,
+	BUTTON_FLASH_HIGHLIGHT,
+}
+ButtonAnimationStyleT;
 
 typedef enum SCREEN_TOUCH_INFO_TAG
 {
@@ -64,6 +72,7 @@ typedef struct Hmi_Button_Data_Tag
     char *icon_file_name[MAX_BUTTON_IMAGE_NUM];
 	
 	void (*delegate_func)();
+	ButtonAnimationStyleT animationStyle;
 	IActionTrigger*    trigger;
 }
 Hmi_Button_Data_T;

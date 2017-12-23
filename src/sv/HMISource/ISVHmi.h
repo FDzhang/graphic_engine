@@ -15,7 +15,7 @@
 #include "../HMI/HMIButton.h"
 #include "../HMI/HMIImageGridList.h"
 #include "../HMI/HMITextEdit.h"
-
+#include "../HMI/HMIProcessBar.h"
 #include "../CGpuAvmEventDelegate.h"
 
 enum

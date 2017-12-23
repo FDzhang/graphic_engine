@@ -28,15 +28,16 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
+
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PHOTO_SHUTTER;
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
+
 		Log_Message("-----------CCaptureActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
 
 	}
 };
@@ -197,6 +198,7 @@ int CSVDvrRecordTab::SetHmiParams()
 	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].icon_file_name[0],"%sCar/DVR/capture_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].icon_file_name[1],"%sCar/DVR/capture_hightlight.dds",XR_RES); 
+	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_RECORD_TAB_CAPTURE_ICON] = new CCaptureActionTrigger;
 
 	m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_TITLE].icon_type = STATIC_ICON;
@@ -419,18 +421,26 @@ int CSVDvrRecordTab::Update(Hmi_Message_T& hmiMsg)
 				
 				if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
 				{
+					AVMData::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
+					
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_FRONT] = BUTTON_ON_IMAGE;
 				}
-				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_REAR)
 				{
+				
+					AVMData::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_REAR] = BUTTON_ON_IMAGE;
 				}
-				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_LEFT)
 				{
+				
+					AVMData::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_LEFT] = BUTTON_ON_IMAGE;
 				}
-				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_RIGHT)
 				{
+				
+					AVMData::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_RIGHT] = BUTTON_ON_IMAGE;
 				}
 				break;

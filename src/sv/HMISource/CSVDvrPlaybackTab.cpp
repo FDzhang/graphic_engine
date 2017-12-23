@@ -258,12 +258,38 @@ public:
 	}
 };
 
+class CPbSetPosActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbSetPosActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		//m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DC_SWITCH;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CPbSetPosActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+
+	}
+};
+
+
 
 CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	memset(m_trigger, NULL, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 1, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
+	memset(m_textEditVisibility, 1, PB_TEXT_DISPLAY_NUM * sizeof(unsigned char));
+	
+	m_processBarVisibility = 1;
+	m_processBarForwardScale = 0;
+	
 }
 	
 int CSVDvrPlaybackTab::SetHmiParams()
@@ -466,8 +492,49 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_VIEW_RIGHT].icon_file_name[1],"%sCar/DVR/record_view_right_highlight.dds",XR_RES); 
 	m_trigger[DVR_PLAYBACK_TAB_VIEW_RIGHT] = new CPbRightViewActionTrigger;
 
+	m_processBarData.iconFileName[PROCESS_BAR] = new char[100];
+	sprintf(m_processBarData.iconFileName[PROCESS_BAR],"%sCar/DVR/pb_processbar.dds",XR_RES); 
+	m_processBarData.iconFileName[PROCESS_BAR_BACKGROUND] = new char[100];
+	sprintf(m_processBarData.iconFileName[PROCESS_BAR_BACKGROUND],"%sCar/DVR/pb_processbar_bkg.dds",XR_RES); 
+	m_processBarData.trigger = new CPbSetPosActionTrigger;
+
+	m_textEditData[PB_FILENAME_TITLE].fontTypeMtlName = XR_RES"text_box.ttf";
+	m_textEditData[PB_FILENAME_TITLE].textContent[0] = new char[100];
+	m_textEditContent[PB_FILENAME_TITLE] = "17:30-17:40 16/12/12";
+	sprintf(m_textEditData[PB_FILENAME_TITLE].textContent[0],"%s", m_textEditContent[PB_FILENAME_TITLE]);
+
+	m_textEditData[PB_FILE_CURRENT_TIME].fontTypeMtlName = XR_RES"text_box.ttf";	
+	m_textEditData[PB_FILE_CURRENT_TIME].textContent[0] = new char[100];
+	m_textEditContent[PB_FILE_CURRENT_TIME] = "17 : 59";
+	sprintf(m_textEditData[PB_FILE_CURRENT_TIME].textContent[0],"%s", m_textEditContent[PB_FILE_CURRENT_TIME]);
+	
+	m_textEditData[PB_FILE_DURATION_TIME].fontTypeMtlName = XR_RES"text_box.ttf";
+	m_textEditData[PB_FILE_DURATION_TIME].textContent[0] = new char[100];
+	m_textEditContent[PB_FILE_DURATION_TIME] = "99 : 59";
+	sprintf(m_textEditData[PB_FILE_DURATION_TIME].textContent[0],"%s", m_textEditContent[PB_FILE_DURATION_TIME]);
+
+
 	for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
 	{
+		if(i == DVR_PLAYBACK_TAB_SPEED)
+		{
+			m_processBar = new HmiProcessBar(&m_processBarData, m_uiNode);
+			//m_processBar->SetVisibility(1);
+			//m_processBar->Update();
+
+			m_textEdit[PB_FILENAME_TITLE] = new HmiTextEdit(&m_textEditData[PB_FILENAME_TITLE], m_uiNode);
+			//m_textEdit[PB_FILENAME_TITLE]->SetVisibility(1);
+			//m_textEdit[PB_FILENAME_TITLE]->Update(ptext);
+
+			m_textEdit[PB_FILE_CURRENT_TIME] = new HmiTextEdit(&m_textEditData[PB_FILE_CURRENT_TIME], m_uiNode);
+			//m_textEdit[PB_FILE_CURRENT_TIME]->SetVisibility(1);
+			//m_textEdit[PB_FILE_CURRENT_TIME]->Update(ptext);
+
+			m_textEdit[PB_FILE_DURATION_TIME] = new HmiTextEdit(&m_textEditData[PB_FILE_DURATION_TIME], m_uiNode);
+			//m_textEdit[PB_FILE_DURATION_TIME]->SetVisibility(1);
+			//m_textEdit[PB_FILE_DURATION_TIME]->Update(ptext);
+		}
+			
 		m_baseButtonData[i].pos[0] = m_buttonPos[i][BUTTON_POS_X];
 		m_baseButtonData[i].pos[1] = m_buttonPos[i][BUTTON_POS_Y];
 		m_baseButtonData[i].width = m_buttonSize[i][BUTTON_SIZE_WIDTH];
@@ -600,6 +667,49 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 	m_buttonPos[DVR_PLAYBACK_TAB_VIEW_RIGHT][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_TAB_VIEW_LEFT][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_TAB_VIEW_LEFT][BUTTON_SIZE_WIDTH];
 	m_buttonPos[DVR_PLAYBACK_TAB_VIEW_RIGHT][BUTTON_POS_Y] = m_buttonPos[DVR_PLAYBACK_TAB_VIEW_LEFT][BUTTON_POS_Y];
 
+	m_processBarData.width = 833.0;
+	m_processBarData.height = 6.0;
+	m_processBarData.pos[0] = m_buttonPos[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_POS_X];
+	m_processBarData.pos[1] = m_buttonPos[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_POS_Y] - m_processBarData.height - 5.0;
+	m_processBarData.withBkgFlag = 1;
+	m_processBarData.withBarIconFlag = 0;
+
+	m_textEditData[PB_FILENAME_TITLE].width = 30;
+	m_textEditData[PB_FILENAME_TITLE].pos[0] = m_buttonPos[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_POS_X] + (m_buttonPos[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_POS_X] - m_textEditData[0].width) * 0.5;
+	m_textEditData[PB_FILENAME_TITLE].pos[1] = m_buttonPos[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_POS_Y] + 20.0;
+	m_textEditData[PB_FILENAME_TITLE].font_size = 4.0;
+	m_textEditData[PB_FILENAME_TITLE].line_num = 1;
+	m_textEditData[PB_FILENAME_TITLE].targetIndex = -1;
+	m_textEditData[PB_FILENAME_TITLE].insertFlag = InsertFlag_Default;
+	m_textEditData[PB_FILENAME_TITLE].trigger = NULL;
+	m_textEditData[PB_FILENAME_TITLE].textColor[0] = 1.0;
+	m_textEditData[PB_FILENAME_TITLE].textColor[1] = 1.0;
+	m_textEditData[PB_FILENAME_TITLE].textColor[2] = 1.0;
+
+	m_textEditData[PB_FILE_CURRENT_TIME].width = 20;
+	m_textEditData[PB_FILE_CURRENT_TIME].pos[0] = m_processBarData.pos[0];
+	m_textEditData[PB_FILE_CURRENT_TIME].pos[1] = m_processBarData.pos[1] + 15.0;
+	m_textEditData[PB_FILE_CURRENT_TIME].font_size = 4.0;
+	m_textEditData[PB_FILE_CURRENT_TIME].line_num = 1;
+	m_textEditData[PB_FILE_CURRENT_TIME].targetIndex = -1;
+	m_textEditData[PB_FILE_CURRENT_TIME].insertFlag = InsertFlag_Default;
+	m_textEditData[PB_FILE_CURRENT_TIME].trigger = NULL;
+	m_textEditData[PB_FILE_CURRENT_TIME].textColor[0] = 1.0;
+	m_textEditData[PB_FILE_CURRENT_TIME].textColor[1] = 1.0;
+	m_textEditData[PB_FILE_CURRENT_TIME].textColor[2] = 1.0;
+
+	m_textEditData[PB_FILE_DURATION_TIME].width = 20;
+	m_textEditData[PB_FILE_DURATION_TIME].pos[0] = m_processBarData.pos[0] + m_processBarData.width - m_textEditData[PB_FILE_DURATION_TIME].width;
+	m_textEditData[PB_FILE_DURATION_TIME].pos[1] = m_textEditData[PB_FILE_CURRENT_TIME].pos[1];
+	m_textEditData[PB_FILE_DURATION_TIME].font_size = 4.0;
+	m_textEditData[PB_FILE_DURATION_TIME].line_num = 1;
+	m_textEditData[PB_FILE_DURATION_TIME].targetIndex = -1;
+	m_textEditData[PB_FILE_DURATION_TIME].insertFlag = InsertFlag_Default;
+	m_textEditData[PB_FILE_DURATION_TIME].trigger = NULL;
+	m_textEditData[PB_FILE_DURATION_TIME].textColor[0] = 1.0;
+	m_textEditData[PB_FILE_DURATION_TIME].textColor[1] = 1.0;
+	m_textEditData[PB_FILE_DURATION_TIME].textColor[2] = 1.0;
+
 	SetHmiParams();
 	
 	return HMI_SUCCESS;
@@ -611,6 +721,7 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 	
 	DVR_GRAPHIC_UIOBJ* playbackTabMsg = NULL;
 	GUI_OBJ_PLAY_FILENAME_INST* playbackFileName = NULL;
+	GUI_OBJ_PLAY_TIME_INST*     playbackTimeInfo = NULL;
 
 
 /*DVR_GRAPHIC_UIOBJ pb_video_gui_table[] =
@@ -687,21 +798,29 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 							
 				if(GUI_OBJ_STATUS_TYPE_VALUE == playbackTabMsg[i].status_type)
 				{
-					
+					m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_FRONT] = BUTTON_OFF_IMAGE;
+					m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_REAR] = BUTTON_OFF_IMAGE;
+					m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_LEFT] = BUTTON_OFF_IMAGE;
+					m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_RIGHT] = BUTTON_OFF_IMAGE;
+
 					if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
 					{
+						AVMData::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_FRONT] = BUTTON_ON_IMAGE;
 					}
-					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_REAR)
 					{
+						AVMData::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_REAR] = BUTTON_ON_IMAGE;
 					}
-					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_LEFT)
 					{
+						AVMData::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_LEFT] = BUTTON_ON_IMAGE;
 					}
-					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
+					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_RIGHT)
 					{
+						AVMData::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_RIGHT] = BUTTON_ON_IMAGE;
 					}
 					
@@ -716,7 +835,7 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 				{
 					playbackFileName = (GUI_OBJ_PLAY_FILENAME_INST*)playbackTabMsg[i].uStatus.ptr;
 
-					
+					sprintf(m_textEditContent[PB_FILENAME_TITLE],"%s",playbackFileName->filename);
 				}
 				
 				break;
@@ -738,6 +857,22 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 				
 				break;
 
+			case GUI_OBJ_ID_PB_PLAY_TIMER:
+				
+				if(GUI_OBJ_STATUS_TYPE_ADDRESS == playbackTabMsg[i].status_type
+					&& playbackTabMsg[i].uStatus.ptr)
+				{
+					playbackTimeInfo = (GUI_OBJ_PLAY_TIME_INST*)playbackTabMsg[i].uStatus.ptr;
+					Log_Error("------PB_PLAY_TIMER: %d, pos: %d", playbackTimeInfo->duration, playbackTimeInfo->position);
+
+					ToString(playbackTimeInfo->duration, &m_textEditContent[PB_FILE_DURATION_TIME]);
+					ToString(playbackTimeInfo->position, &m_textEditContent[PB_FILE_CURRENT_TIME]);
+
+					m_processBarForwardScale = ((float)playbackTimeInfo->position / (float)playbackTimeInfo->duration);
+
+				}
+
+				break;
 				
 			default:
 				break;
@@ -758,6 +893,16 @@ int CSVDvrPlaybackTab::RefreshHmi()
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 		m_baseButton[i]->Update();
 	}
+	for(int i = PB_FILENAME_TITLE; i < PB_TEXT_DISPLAY_NUM; i++)
+	{
+		m_textEdit[i]->SetVisibility(m_textEditVisibility[i]);
+		m_textEdit[i]->Update(m_textEditContent[i]);
+	}
+
+	m_processBar->Move(m_processBarForwardScale, PROCESS_BAR_FORWARD);
+	m_processBar->SetVisibility(m_processBarVisibility);
+	m_processBar->Update();
+	
 	return HMI_SUCCESS;
 }
 int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
@@ -767,6 +912,12 @@ int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
 	{
 		m_baseButton[i]->SetVisibility(pFlag);
 	}
+	for(int i = PB_FILENAME_TITLE; i < PB_TEXT_DISPLAY_NUM; i++)
+	{
+		m_textEdit[i]->SetVisibility(pFlag);
+	}
+	m_processBar->SetVisibility(pFlag);
+	
 
 	return HMI_SUCCESS;
 }
@@ -778,4 +929,41 @@ int CSVDvrPlaybackTab::DestroyHmiElems()
 {
 	return HMI_SUCCESS;
 }
+
+int CSVDvrPlaybackTab::ToString(int pTime, char** pOutString)
+{
+	int time_sec = pTime % 60;
+	int time_min = pTime / 60;
+
+	if((*pOutString) == NULL)
+	{
+		(*pOutString) = new char[100];
+	}
+
+	if(time_min < 10)
+	{
+		if(time_sec < 10)
+		{
+			sprintf((*pOutString), "0%d : 0%d", time_min, time_sec);
+		}
+		else
+		{			
+			sprintf((*pOutString), "0%d : %d", time_min, time_sec);
+		}
+	}
+	else
+	{
+		if(time_sec < 10)
+		{
+			sprintf((*pOutString), "%d : 0%d", time_min, time_sec);
+		}
+		else
+		{			
+			sprintf((*pOutString), "%d : %d", time_min, time_sec);
+		}
+	}
+	
+	return HMI_SUCCESS;
+}
+
 
