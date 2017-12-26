@@ -27,7 +27,7 @@ INCLUDE_DIRECTORIES(${J6_ROOTFS}/usr/include ${J6_ROOTFS}/usr/include/freetype2
 LINK_DIRECTORIES(${J6_ROOTFS}/lib ${J6_ROOTFS}/usr/lib)
 
 execute_process(COMMAND "${CMAKE_LINKER}" "-m${OUTPUT_LINK_MODE}" "-verbose" 
-                    COMMAND "${CMAKE_SOURCE_DIR}/ldsfilter.sh" "GpuLogctrl" #OUTPUT_VARIABLE TT
+                    COMMAND "${CMAKE_SOURCE_DIR}/ldsfilter.sh" "Gpu" #OUTPUT_VARIABLE TT
                      OUTPUT_FILE ${CMAKE_BINARY_DIR}/graphic_engine.lds
                     )
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -T ${CMAKE_BINARY_DIR}/graphic_engine.lds")
