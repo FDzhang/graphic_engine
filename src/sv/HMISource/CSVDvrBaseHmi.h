@@ -11,6 +11,7 @@ typedef enum DvrBaseHmiElementTag
 	DVR_BASE_LIVE_VIDEO_TAB,
 	DVR_BASE_FILE_TAB,
 	DVR_BASE_SETTING_TAB,
+	DVR_BASE_RETURN_MAIN_HMI,
 	DVR_BASE_ELEMEMT_NUM,
 }
 DvrBaseHmiElementT;
@@ -20,6 +21,7 @@ class CSVDvrBaseHmi : public ISVHmi
 public:
 
 	CSVDvrBaseHmi();
+	~CSVDvrBaseHmi();
 	HMI_BASE_INHERITANCE_FUNC()
 
 private:

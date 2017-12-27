@@ -94,15 +94,15 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_CANCEL;
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
+		
 		Log_Message("-----------CEditCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
 
 	}
 };
@@ -114,16 +114,15 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_SAVE;
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
+		
 		Log_Message("-----------CEditSaveActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
-
 	}
 };
 
@@ -134,16 +133,15 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_DELETE;
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
+		
 		Log_Message("-----------CEditDeleteActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
-
 	}
 };
 
@@ -154,15 +152,15 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_SELECT_ALL;
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
+		
 		Log_Message("-----------CEditSelAllActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
 
 	}
 };
@@ -202,6 +200,47 @@ public:
 
 	}
 };
+	
+class CEditDialogDelConfirmActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd->parameter[1] = DIALOG_SEL_YES;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CEditDialogDelConfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+};
+
+class CEditDialogDelCancelActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd->parameter[1] = DIALOG_SEL_NO;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CEditDialogDelCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+};
+
 
 class CFileScrollUpActionTrigger : public IActionTrigger
 {
@@ -210,16 +249,15 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_PREV_PAGE;
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
+		
 		Log_Message("-----------CFileScrollUpActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
-
 	}
 };
 
@@ -230,16 +268,15 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_NEXT_PAGE;
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
+		
 		Log_Message("-----------CFileScrollDownActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
-
 	}
 };
 
@@ -248,11 +285,16 @@ CSVDvrFileListTab::CSVDvrFileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1
 {
 	memset(m_trigger, NULL, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(unsigned char));
-	memset(m_buttonVisibility, 1, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(unsigned char));
+	memset(m_buttonVisibility, 0, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	m_imageGridVisibility = 0;
+	memset(m_dialogVisibility, 0, DVR_FILELIST_DIALOG_NUM * sizeof(unsigned char));
 	memset(m_gridListTrigger, NULL, IMAGE_GRID_LIST_ITEM_NUM * sizeof(IActionTrigger*));
 }
-	
+CSVDvrFileListTab::~CSVDvrFileListTab()
+{
+	Log_Error("----------Release ~CSVDvrFileListTab!");
+
+}
 int CSVDvrFileListTab::SetHmiParams()
 {
 
@@ -334,6 +376,7 @@ int CSVDvrFileListTab::SetHmiParams()
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].icon_file_name[0],"%sCar/DVR/edit_cancel_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].icon_file_name[1],"%sCar/DVR/edit_cancel_press.dds",XR_RES); 
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_FILELIST_TAB_EDIT_CANCEL] = new CEditCancelActionTrigger;
 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_type = STATIC_ICON;
@@ -343,6 +386,7 @@ int CSVDvrFileListTab::SetHmiParams()
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[0],"%sCar/DVR/edit_save_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[1],"%sCar/DVR/edit_save_press.dds",XR_RES); 
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_FILELIST_TAB_EDIT_SAVE] = new CEditSaveActionTrigger;
 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_type = STATIC_ICON;
@@ -352,6 +396,7 @@ int CSVDvrFileListTab::SetHmiParams()
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_file_name[0],"%sCar/DVR/edit_delete_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_file_name[1],"%sCar/DVR/edit_delete_press.dds",XR_RES); 
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_FILELIST_TAB_EDIT_DELETE] = new CEditDeleteActionTrigger;
 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_type = STATIC_ICON;
@@ -361,6 +406,7 @@ int CSVDvrFileListTab::SetHmiParams()
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_file_name[0],"%sCar/DVR/edit_sel_all_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_file_name[1],"%sCar/DVR/edit_sel_all_press.dds",XR_RES); 
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = new CEditSelAllActionTrigger;
 
 
@@ -393,6 +439,7 @@ int CSVDvrFileListTab::SetHmiParams()
 	m_baseButtonData[DVR_FILELIST_TAB_SCROLL_UP].icon_file_name[1] = new char[100];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_SCROLL_UP].icon_file_name[0],"%sCar/DVR/edit_scroll_up_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_SCROLL_UP].icon_file_name[1],"%sCar/DVR/edit_scroll_up_press.dds",XR_RES); 
+	m_baseButtonData[DVR_FILELIST_TAB_SCROLL_UP].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_FILELIST_TAB_SCROLL_UP] = new CFileScrollUpActionTrigger;
 
 	m_baseButtonData[DVR_FILELIST_TAB_SCROLL_DOWN].icon_type = STATIC_ICON;
@@ -402,6 +449,7 @@ int CSVDvrFileListTab::SetHmiParams()
 	m_baseButtonData[DVR_FILELIST_TAB_SCROLL_DOWN].icon_file_name[1] = new char[100];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_SCROLL_DOWN].icon_file_name[0],"%sCar/DVR/edit_scroll_down_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_SCROLL_DOWN].icon_file_name[1],"%sCar/DVR/edit_scroll_down_press.dds",XR_RES); 
+	m_baseButtonData[DVR_FILELIST_TAB_SCROLL_DOWN].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_FILELIST_TAB_SCROLL_DOWN] = new CFileScrollDownActionTrigger;
 
 	for(int i = DVR_FILELIST_TAB_LOOP_REC_TITLE; i < DVR_FILELIST_TAB_ELEMEMT_NUM; i++)
@@ -416,27 +464,27 @@ int CSVDvrFileListTab::SetHmiParams()
 		m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
 		m_baseButton[i]->SetVisibility(0);
 	}
-	
-	/*for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
-	{
-		m_textEditData[i].pos[0] = m_imageGridListData.posX + (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing + 5.0;
-		m_textEditData[i].pos[1] = m_imageGridListData.posY + (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 5.0;
-		m_textEditData[i].width = 20;
-		m_textEditData[i].font_size = 4.0;
-		m_textEditData[i].line_num = 1;
-		m_textEditData[i].targetIndex = -1;
-		m_textEditData[i].insertFlag = InsertFlag_Default;
-		m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
-		m_textEditData[i].trigger = NULL;
-		m_textEditData[i].textColor[0] = 1.0;
-		m_textEditData[i].textColor[1] = 1.0;
-		m_textEditData[i].textColor[2] = 1.0;
-		m_textEditData[i].textContent[0] = new char[100];
-		char* ptext = "17:30-17:40 16/12/12";
-		sprintf(m_textEditData[i].textContent[0],"%s", ptext);
-		m_textEdit[i] = new HmiTextEdit(&m_textEditData[i], m_uiNode);
-		m_textEdit[i]->SetVisibility(0);
-	}*/
+
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].dialogType = DIALOG_CONFIRM_CANCEL;
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].showFlag = 0;
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_BACKGROUND_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_BACKGROUND_IMG],"%sCar/DVR/record_view_bkg.dds",XR_RES); 
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG],"%sCar/DVR/record_view_left_normal.dds",XR_RES); 
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG],"%sCar/DVR/record_view_left_highlight.dds",XR_RES); 
+
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CANCEL_NORMAL_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CANCEL_NORMAL_IMG],"%sCar/DVR/record_view_right_normal.dds",XR_RES); 
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CANCEL_HIGHLIGHT_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_FILELIST_DIALOG_DEL].iconFileName[DIALOG_CANCEL_HIGHLIGHT_IMG],"%sCar/DVR/record_view_right_highlight.dds",XR_RES); 
+
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].trigger[DIALOG_CONFIRM_CANCEL_BACKGROUND] = NULL;//new CSelectorFirstActionTrigger;
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].trigger[DIALOG_CONFIRM] = new CEditDialogDelConfirmActionTrigger;
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].trigger[DIALOG_CANCEL] = new CEditDialogDelCancelActionTrigger;
+
+	m_dialog[DVR_FILELIST_DIALOG_DEL] = new HMIDialog(&m_dialogData[DVR_FILELIST_DIALOG_DEL], m_uiNode);
+	m_dialog[DVR_FILELIST_DIALOG_DEL]->SetVisibility(0);
 
 	return HMI_SUCCESS;
 }
@@ -486,8 +534,8 @@ int CSVDvrFileListTab::Init(int window_width, int window_height)
 	m_imageGridListData.posY = m_buttonPos[DVR_FILELIST_TAB_LOOP_REC_TITLE][BUTTON_POS_Y] + m_buttonSize[DVR_FILELIST_TAB_LOOP_REC_TITLE][BUTTON_SIZE_HEIGHT] - m_imageGridListData.verticalSpacing + 60.0;
 	m_imageGridListData.gridListWidth = 1000.0;
 	m_imageGridListData.gridListHeight = 1000.0;
-	m_imageGridListData.itemWidth = 180.0;
-	m_imageGridListData.itemHeight = 100.0;
+	m_imageGridListData.itemWidth = 192.0;
+	m_imageGridListData.itemHeight = 112.0;
 	m_imageGridListData.withTextFlag = 1;
 
 	m_imageGridListData.gridListMode = GRIDLIST_NORMAL_MODE;
@@ -498,7 +546,7 @@ int CSVDvrFileListTab::Init(int window_width, int window_height)
 		m_imageGridListItem[i].selectedStatus = 0;
 		m_imageGridListItem[i].imageWidth = m_imageGridListData.itemWidth;
 		m_imageGridListItem[i].imageHeight = m_imageGridListData.itemHeight;
-		m_imageGridListItem[i].visibilityStatus = 1;
+		m_imageGridListItem[i].visibilityStatus = 0;
 		m_imageGridListItem[i].refreshStatus = 0;
 		m_imageGridListItem[i].imageData = new char[m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight * 3];
 		memset(m_imageGridListItem[i].imageData, 200, sizeof(char)*m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight*3);
@@ -586,6 +634,14 @@ int CSVDvrFileListTab::Init(int window_width, int window_height)
 	m_buttonPos[DVR_FILELIST_TAB_SCROLL_DOWN][BUTTON_POS_X] = m_buttonPos[DVR_FILELIST_TAB_SCROLL_BKG][BUTTON_POS_X];
 	m_buttonPos[DVR_FILELIST_TAB_SCROLL_DOWN][BUTTON_POS_Y] = m_buttonPos[DVR_FILELIST_TAB_SCROLL_BKG][BUTTON_POS_Y] + m_buttonSize[DVR_FILELIST_TAB_SCROLL_BKG][BUTTON_SIZE_HEIGHT] -  m_buttonSize[DVR_FILELIST_TAB_SCROLL_DOWN][BUTTON_SIZE_HEIGHT];
 
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].width = 300.0;
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].height = 200.0;
+
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].pos[0] = m_buttonPos[DVR_FILELIST_TAB_EMERGENCY_SAVE_TITLE][BUTTON_POS_X];
+	m_dialogData[DVR_FILELIST_DIALOG_DEL].pos[1] = 80.0 + 0.5 * (window_height - 160.0 - m_dialogData[DVR_FILELIST_DIALOG_DEL].height);
+
+
+
 	SetHmiParams();
 	
 	return HMI_SUCCESS;
@@ -601,6 +657,8 @@ int CSVDvrFileListTab::Update(Hmi_Message_T & hmiMsg)
 	GUI_OBJ_THUMB_EDIT_INST* editInst = NULL;
 	
 	GUI_OBJ_THUMB_FRAME_INST* frameInst = NULL;
+
+	GUI_OBJ_DIALOG_INST*	  dialogInst = NULL;
 /*
 DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 {
@@ -665,6 +723,7 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					m_buttonStatus[DVR_FILELIST_TAB_EDIT_DELETE] = 0;
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
 					m_buttonStatus[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
+					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_BKG] = 0;
 
 					editStatus = GUI_SWITCH_STATE_OFF;
 
@@ -691,6 +750,7 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SAVE] = 1;
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_DELETE] = 1;
 					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 1;
+					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_BKG] = 1;
 
 					
 					editStatus = GUI_SWITCH_STATE_ON;
@@ -710,7 +770,8 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					}
 					for(int i = 0; i < currentFileNum; i++)
 					{	
-						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_FLAG_1 + 2 * i] = editInst->check_box[i];
+						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_FLAG_1 + 2 * i] = editInst->check_box[i] & fileListTabMsg[i].bShow;
+						Log_Error("---------editInst->check_box[%d] = %d, show: %d", i, editInst->check_box[i], fileListTabMsg[i].bShow);
 					}
 				}
 				
@@ -755,7 +816,24 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 				
 				
 				break;
-				
+			case GUI_OBJ_ID_DIALOG:
+				if(GUI_OBJ_STATUS_TYPE_ADDRESS == fileListTabMsg[i].status_type
+					&& fileListTabMsg[i].uStatus.ptr)
+				{
+					dialogInst = (GUI_OBJ_DIALOG_INST*)fileListTabMsg[i].uStatus.ptr;
+					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, fileListTabMsg[i].bShow);
+					m_dialogVisibility[dialogInst->subjectId] = fileListTabMsg[i].bShow;
+
+				}
+
+				break;
+
+			case GUI_OBJ_ID_WARNING:
+				if(GUI_OBJ_STATUS_TYPE_VALUE == fileListTabMsg[i].status_type)
+				{
+					Log_Error("warning : %d", fileListTabMsg[i].status_type);
+				}
+				break;
 			default:
 				break;
 			}	
@@ -774,6 +852,12 @@ int CSVDvrFileListTab::RefreshHmi()
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 		m_baseButton[i]->Update();
 	}
+
+	for(int i = DVR_FILELIST_DIALOG_DEL; i < DVR_FILELIST_DIALOG_NUM; i++)
+	{
+		m_dialog[i]->SetVisibility(m_dialogVisibility[i]);
+	}
+	
 	return HMI_SUCCESS;
 }
 int CSVDvrFileListTab::SetElementsVisibility(unsigned char pFlag)
@@ -805,6 +889,11 @@ int CSVDvrFileListTab::SetElementsVisibility(unsigned char pFlag)
 		{		
 			m_buttonVisibility[i] = pFlag;
 			m_baseButton[i]->SetVisibility(pFlag);
+		}
+		for(int i = DVR_FILELIST_DIALOG_DEL; i < DVR_FILELIST_DIALOG_NUM; i++)
+		{
+			m_dialogVisibility[i] = pFlag;
+			m_dialog[i]->SetVisibility(m_dialogVisibility[i]);
 		}
 	}
 

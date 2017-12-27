@@ -3,9 +3,12 @@
 #include "CSVDvrRecordTab.h"
 #include "CSVDvrPlaybackTab.h"
 #include "CSVDvrFileListTab.h"
+#include "CSVHmiIntent.h"
 
 #include "DVR_GUI_OBJ.h"
 #include "gpu_log.h"
+
+REGISTER_HMI_CLASS(CSVDvrBaseHmi)
 
 	
 class CLiveVideoTabActionTrigger : public IActionTrigger
@@ -97,6 +100,30 @@ public:
 
 };
 
+class CBackMainHmiActionTrigger:public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CBackMainHmiActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		char* hmiName = "CSVChangAnMainHmi";
+		CSVHmiIntent::GetInstance()->Intent(hmiName);
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		//m_dvrCmd->parameter[0] = DVR_SHUTDOWN;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CBackMainHmiActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+
+};
+
+
 CSVDvrBaseHmi::CSVDvrBaseHmi()
 {
 	memset(m_trigger, NULL, DVR_BASE_ELEMEMT_NUM * sizeof(IActionTrigger*));
@@ -119,6 +146,13 @@ CSVDvrBaseHmi::CSVDvrBaseHmi()
 	m_dvrFileListVisibility = 0;
 	
 }
+
+CSVDvrBaseHmi::~CSVDvrBaseHmi()
+{
+	delete m_dvrFileListTab;
+	Log_Error("----------Release CSVDvrBaseHmi!");
+}
+
 	
 int CSVDvrBaseHmi::SetHmiParams()
 {
@@ -171,6 +205,16 @@ int CSVDvrBaseHmi::SetHmiParams()
 	sprintf(m_baseButtonData[DVR_BASE_SETTING_TAB].icon_file_name[0],"%sCar/DVR/setting_tab_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_BASE_SETTING_TAB].icon_file_name[1],"%sCar/DVR/setting_tab_press.dds",XR_RES); 
 	m_trigger[DVR_BASE_SETTING_TAB] = new CSettingTabActionTrigger;
+
+	m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].icon_type = STATIC_ICON;
+	m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].show_flag = 1;
+	m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].show_icon_num = 0;
+	m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].animationStyle = BUTTON_FLASH_HIGHLIGHT;
+	m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].icon_file_name[0] = new char[100];
+	m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].icon_file_name[1] = new char[100];
+	sprintf(m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].icon_file_name[0],"%sCar/DVR/return_main_hmi_normal.dds",XR_RES); 
+	sprintf(m_baseButtonData[DVR_BASE_RETURN_MAIN_HMI].icon_file_name[1],"%sCar/DVR/return_main_hmi_press.dds",XR_RES); 
+	m_trigger[DVR_BASE_RETURN_MAIN_HMI] = new CBackMainHmiActionTrigger;
 
 
 	for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
@@ -231,6 +275,11 @@ int CSVDvrBaseHmi::Init(int window_width, int window_height)
 	m_buttonSize[DVR_BASE_SETTING_TAB][BUTTON_SIZE_HEIGHT] = 105.0;
 	m_buttonPos[DVR_BASE_SETTING_TAB][BUTTON_POS_X] = (m_buttonSize[DVR_BASE_TITLE_BKG][BUTTON_SIZE_WIDTH] - m_buttonSize[DVR_BASE_SETTING_TAB][BUTTON_SIZE_WIDTH]) * 0.5;
 	m_buttonPos[DVR_BASE_SETTING_TAB][BUTTON_POS_Y] = m_buttonPos[DVR_BASE_FILE_TAB][BUTTON_POS_Y] + m_buttonSize[DVR_BASE_FILE_TAB][BUTTON_SIZE_HEIGHT] - 30.0;
+
+	m_buttonSize[DVR_BASE_RETURN_MAIN_HMI][BUTTON_SIZE_WIDTH] = 43.0;
+	m_buttonSize[DVR_BASE_RETURN_MAIN_HMI][BUTTON_SIZE_HEIGHT] = 35.0;
+	m_buttonPos[DVR_BASE_RETURN_MAIN_HMI][BUTTON_POS_X] = m_buttonPos[DVR_BASE_TITLE_BKG][BUTTON_POS_X] + 130.0;
+	m_buttonPos[DVR_BASE_RETURN_MAIN_HMI][BUTTON_POS_Y] = window_height - 80.0 - m_buttonSize[DVR_BASE_RETURN_MAIN_HMI][BUTTON_SIZE_HEIGHT] - 20.0;
 
 	SetHmiParams();
 	

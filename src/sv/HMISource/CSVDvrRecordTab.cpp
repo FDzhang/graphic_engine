@@ -1,6 +1,7 @@
 #include "CSVDvrRecordTab.h"
 #include "DVR_GUI_OBJ.h"
 
+
 class CRecordSwitchActionTrigger : public IActionTrigger
 {
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordSwitchActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
@@ -151,7 +152,7 @@ CSVDvrRecordTab::CSVDvrRecordTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): I
 {
 	memset(m_trigger, NULL, DVR_RECORD_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_RECORD_TAB_ELEMEMT_NUM * sizeof(unsigned char));
-	memset(m_buttonVisibility, 1, DVR_RECORD_TAB_ELEMEMT_NUM * sizeof(unsigned char));
+	memset(m_buttonVisibility, 0, DVR_RECORD_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	
 }
 	
@@ -220,6 +221,7 @@ int CSVDvrRecordTab::SetHmiParams()
 	m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].icon_file_name[0],"%sCar/DVR/emergency_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].icon_file_name[1],"%sCar/DVR/emergency_highlight.dds",XR_RES); 
+	m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_RECORD_TAB_EMERGENCY_ICON] = new CEventRecordActionTrigger;
 
 	m_baseButtonData[DVR_RECORD_TAB_VIEW_TITLE].icon_type = STATIC_ICON;
@@ -282,6 +284,8 @@ int CSVDvrRecordTab::SetHmiParams()
 		m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
 		m_baseButton[i]->SetVisibility(0);
 	}
+
+	
 	return HMI_SUCCESS;
 }
 int CSVDvrRecordTab::Init(int window_width, int window_height)

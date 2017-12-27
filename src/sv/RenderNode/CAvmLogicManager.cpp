@@ -30,9 +30,10 @@
 #include "../HMISource/ISVHmi.h"
 #include "../HMISource/CSVChangAnHmi.h"
 #include "../HMISource/CSVDvrBaseHmi.h"
+#include "../HMISource/CSVChangAnMainHmi.h"
 #include "gpu_log.h"
 
-CAvmLogicManager::CAvmLogicManager():m_dvrBaseHmi(0)
+CAvmLogicManager::CAvmLogicManager():m_dvrBaseHmi(0),m_mainHmi(0)
 {
 	m_adasHmi = new SVNodeAdasHMI;
 }
@@ -103,11 +104,23 @@ int CAvmLogicManager::InitHmi()
 
 	//m_cameraHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
 
+	/*if(m_mainHmi == NULL)
+	{	
+		m_mainHmi = new CSVChangAnMainHmi();
+		AddHmi(m_mainHmi, &m_avmHmi);
+	}
+
 	if(m_dvrBaseHmi == NULL)
 	{
 		m_dvrBaseHmi = new CSVDvrBaseHmi();	
-		AddHmi(m_dvrBaseHmi, &m_avmHmi);
-	}
+		//AddHmi(m_dvrBaseHmi, &m_avmHmi);
+	}*/
+	
+	char* hmiName = "CSVChangAnMainHmi";
+	CSVHmiIntent::GetInstance()->Intent(hmiName);
+	//char* hmiName = "CSVDvrBaseHmi";
+	//CSVHmiIntent::GetInstance()->Intent(hmiName);	
+
 	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
@@ -125,10 +138,13 @@ int CAvmLogicManager::UpdateHmi()
 {
 	Hmi_Message_T hmiMsg;
 
-	for(vector<ISVHmi*>::iterator hmiObj = m_avmHmi.begin(); hmiObj != m_avmHmi.end(); hmiObj++)
+	CSVHmiIntent::GetInstance()->StartHmi(&hmiMsg);
+
+
+	/*for(vector<ISVHmi*>::iterator hmiObj = m_avmHmi.begin(); hmiObj != m_avmHmi.end(); hmiObj++)
 	{
 		(*hmiObj)->Update(hmiMsg);
-	}
+	}*/
 	//RemoveHmi(&m_avmHmi, m_dvrBaseHmi);
 
 	return AVM_LOGIC_CONTROL_NORMAL;

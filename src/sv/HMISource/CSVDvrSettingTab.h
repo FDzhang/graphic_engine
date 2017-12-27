@@ -16,6 +16,16 @@ typedef enum DvrSettingTabHmiElementTag
 }
 DvrSettingTabHmiElementT;
 
+typedef enum DvrSettingDialogTag
+{
+	DVR_SETTING_DIALOG_FORMATCARD = 1,
+	//DVR_SETTING_DIALOG_FORMATCARD_CAUTION,
+	//DVR_SETTING_DIALOG_FORMATCARD_OK,
+	//DVR_SETTING_DIALOG_FORMATCARD_FAILED,
+	DVR_SETTING_DIALOG_DIALOG_NUM,	
+}
+DvrSettingDialogT;
+
 class CSVDvrSettingTab : public ISVHmi
 {
 public:
@@ -35,6 +45,11 @@ private:
 	float m_buttonSize[DVR_SETTING_TAB_ELEMEMT_NUM][BUTTON_SIZE];
 
 	IActionTrigger*	m_trigger[DVR_SETTING_TAB_ELEMEMT_NUM];
+
+	HmiDialogDataT   m_dialogData[DVR_SETTING_DIALOG_DIALOG_NUM];
+	HMIDialog*		 m_dialog[DVR_SETTING_DIALOG_DIALOG_NUM];
+	unsigned char 	 m_dialogVisibility[DVR_SETTING_DIALOG_DIALOG_NUM];
+
 
 	unsigned char m_buttonStatus[DVR_SETTING_TAB_ELEMEMT_NUM];
 	unsigned char m_buttonVisibility[DVR_SETTING_TAB_ELEMEMT_NUM];

@@ -38,6 +38,13 @@ typedef enum DvrPlaybackHmiElementTag
 }
 DvrPlaybackHmiElementT;
 
+typedef enum DvrPlaybackDialogTag
+{
+	DVR_PLAYBACK_DIALOG_DEL = 0,
+	DVR_PLAYBACK_DIALOG_NUM,	
+}
+DvrPlaybackDialogT;
+
 typedef enum TextDisplayTag
 {
 	PB_FILENAME_TITLE,
@@ -69,6 +76,11 @@ private:
 	float m_buttonSize[DVR_PLAYBACK_TAB_ELEMEMT_NUM][BUTTON_SIZE];
 	unsigned char m_buttonStatus[DVR_PLAYBACK_TAB_ELEMEMT_NUM];
 	unsigned char m_buttonVisibility[DVR_PLAYBACK_TAB_ELEMEMT_NUM];
+
+	HmiDialogDataT   m_dialogData[DVR_PLAYBACK_DIALOG_NUM];
+	HMIDialog*		 m_dialog[DVR_PLAYBACK_DIALOG_NUM];
+	unsigned char 	 m_dialogVisibility[DVR_PLAYBACK_DIALOG_NUM];
+
 
 	IActionTrigger*	m_trigger[DVR_PLAYBACK_TAB_ELEMEMT_NUM];
 

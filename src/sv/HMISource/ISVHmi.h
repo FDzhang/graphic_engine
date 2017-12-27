@@ -16,7 +16,12 @@
 #include "../HMI/HMIImageGridList.h"
 #include "../HMI/HMITextEdit.h"
 #include "../HMI/HMIProcessBar.h"
+#include "../HMI/HMIDialog.h"
 #include "../CGpuAvmEventDelegate.h"
+
+#include "CSVHmiFactory.h"
+#include "CSVHmiIntent.h"
+
 
 enum
 {

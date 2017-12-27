@@ -16,6 +16,9 @@ enum
 	
 };
 
+static int pressCnt = 0;
+
+
 class CPbPlayActionTrigger : public IActionTrigger
 {
 
@@ -31,6 +34,62 @@ public:
 	
 		Log_Message("-----------CPbPlayActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 		
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+
+};
+class CPbFastForwardActionTrigger : public IActionTrigger
+{
+
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbFastForwardActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SPEED;		
+		m_dvrCmd->parameter[1] = pressCnt % GUI_PLAY_SPEED_X8;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CPbFastForwardActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+
+		pressCnt++;
+		if(pressCnt > 1000)
+		{
+			pressCnt = 1;
+		}
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+
+};
+class CPbFastBackwardActionTrigger : public IActionTrigger
+{
+
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbFastBackwardActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SPEED;
+		m_dvrCmd->parameter[1] = pressCnt % GUI_PLAY_SPEED_X8;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		Log_Message("-----------CPbFastBackwardActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+
+		pressCnt++;
+		if(pressCnt > 1000)
+		{
+			pressCnt = 1;
+		}
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
@@ -91,7 +150,6 @@ public:
 
 	virtual Void OnPress(Int32 id)
 	{
-		static int pressCnt = 0;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SPEED;
@@ -278,6 +336,45 @@ public:
 	}
 };
 
+class CPbDialogDelConfirmActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd->parameter[1] = DIALOG_SEL_YES;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CPbDialogDelConfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+};
+
+class CPbDialogDelCancelActionTrigger : public IActionTrigger
+{
+	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd->parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd->parameter[1] = DIALOG_SEL_NO;
+		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CPbDialogDelCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+};
 
 
 CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
@@ -285,9 +382,11 @@ CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::I
 	memset(m_trigger, NULL, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 1, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
-	memset(m_textEditVisibility, 1, PB_TEXT_DISPLAY_NUM * sizeof(unsigned char));
+	memset(m_textEditVisibility, 0, PB_TEXT_DISPLAY_NUM * sizeof(unsigned char));
 	
-	m_processBarVisibility = 1;
+	memset(m_dialogVisibility, 0, DVR_PLAYBACK_DIALOG_NUM * sizeof(unsigned char));
+	
+	m_processBarVisibility = 0;
 	m_processBarForwardScale = 0;
 	
 }
@@ -328,6 +427,8 @@ int CSVDvrPlaybackTab::SetHmiParams()
 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_FF].icon_file_name[0],"%sCar/DVR/player_ff_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_FF].icon_file_name[1],"%sCar/DVR/player_ff_press.dds",XR_RES); 
+	m_baseButtonData[DVR_PLAYBACK_TAB_FF].animationStyle = BUTTON_FLASH_HIGHLIGHT;
+	m_trigger[DVR_PLAYBACK_TAB_FF] = new CPbFastForwardActionTrigger;
 	
 
 	m_baseButtonData[DVR_PLAYBACK_TAB_FB].icon_type = STATIC_ICON;
@@ -338,6 +439,8 @@ int CSVDvrPlaybackTab::SetHmiParams()
 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_FB].icon_file_name[0],"%sCar/DVR/player_fb_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_FB].icon_file_name[1],"%sCar/DVR/player_fb_press.dds",XR_RES); 
+	m_baseButtonData[DVR_PLAYBACK_TAB_FB].animationStyle = BUTTON_FLASH_HIGHLIGHT;
+	m_trigger[DVR_PLAYBACK_TAB_FB] = new CPbFastForwardActionTrigger;
 
 	m_baseButtonData[DVR_PLAYBACK_TAB_NEXT_PAGE].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_PLAYBACK_TAB_NEXT_PAGE].show_flag = 1;
@@ -347,6 +450,7 @@ int CSVDvrPlaybackTab::SetHmiParams()
 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_NEXT_PAGE].icon_file_name[0],"%sCar/DVR/player_np_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_NEXT_PAGE].icon_file_name[1],"%sCar/DVR/player_np_press.dds",XR_RES); 
+	m_baseButtonData[DVR_PLAYBACK_TAB_NEXT_PAGE].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	
 	m_trigger[DVR_PLAYBACK_TAB_NEXT_PAGE] = new CPbNextFileActionTrigger;
 
@@ -358,6 +462,7 @@ int CSVDvrPlaybackTab::SetHmiParams()
 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_PRE_PAGE].icon_file_name[0],"%sCar/DVR/player_pp_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_PRE_PAGE].icon_file_name[1],"%sCar/DVR/player_pp_press.dds",XR_RES); 
+	m_baseButtonData[DVR_PLAYBACK_TAB_PRE_PAGE].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_PLAYBACK_TAB_PRE_PAGE] = new CPbPreFileActionTrigger;
 	
 
@@ -405,6 +510,7 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	m_baseButtonData[DVR_PLAYBACK_TAB_EMERGENCY_ICON].icon_file_name[1] = new char[100];
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_EMERGENCY_ICON].icon_file_name[0],"%sCar/DVR/emergency_save_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_EMERGENCY_ICON].icon_file_name[1],"%sCar/DVR/emergency_save_press.dds",XR_RES); 
+	m_baseButtonData[DVR_PLAYBACK_TAB_EMERGENCY_ICON].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_PLAYBACK_TAB_EMERGENCY_ICON] = new CPbEmergencySaveActionTrigger;
 
 	m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_TITLE].icon_type = STATIC_ICON;
@@ -426,6 +532,7 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_ICON].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_ICON].icon_file_name[0],"%sCar/DVR/playback_delete_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_ICON].icon_file_name[1],"%sCar/DVR/playback_delete_press.dds",XR_RES); 
+	m_baseButtonData[DVR_PLAYBACK_TAB_DELETE_ICON].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_PLAYBACK_TAB_DELETE_ICON] = new CPbDeleteActionTrigger;
 	
 
@@ -519,19 +626,19 @@ int CSVDvrPlaybackTab::SetHmiParams()
 		if(i == DVR_PLAYBACK_TAB_SPEED)
 		{
 			m_processBar = new HmiProcessBar(&m_processBarData, m_uiNode);
-			//m_processBar->SetVisibility(1);
+			m_processBar->SetVisibility(0);
 			//m_processBar->Update();
 
 			m_textEdit[PB_FILENAME_TITLE] = new HmiTextEdit(&m_textEditData[PB_FILENAME_TITLE], m_uiNode);
-			//m_textEdit[PB_FILENAME_TITLE]->SetVisibility(1);
+			m_textEdit[PB_FILENAME_TITLE]->SetVisibility(0);
 			//m_textEdit[PB_FILENAME_TITLE]->Update(ptext);
 
 			m_textEdit[PB_FILE_CURRENT_TIME] = new HmiTextEdit(&m_textEditData[PB_FILE_CURRENT_TIME], m_uiNode);
-			//m_textEdit[PB_FILE_CURRENT_TIME]->SetVisibility(1);
+			m_textEdit[PB_FILE_CURRENT_TIME]->SetVisibility(0);
 			//m_textEdit[PB_FILE_CURRENT_TIME]->Update(ptext);
 
 			m_textEdit[PB_FILE_DURATION_TIME] = new HmiTextEdit(&m_textEditData[PB_FILE_DURATION_TIME], m_uiNode);
-			//m_textEdit[PB_FILE_DURATION_TIME]->SetVisibility(1);
+			m_textEdit[PB_FILE_DURATION_TIME]->SetVisibility(0);
 			//m_textEdit[PB_FILE_DURATION_TIME]->Update(ptext);
 		}
 			
@@ -545,6 +652,28 @@ int CSVDvrPlaybackTab::SetHmiParams()
 		m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
 		m_baseButton[i]->SetVisibility(0);
 	}
+
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].dialogType = DIALOG_CONFIRM_CANCEL;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].showFlag = 0;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_BACKGROUND_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_BACKGROUND_IMG],"%sCar/DVR/record_view_bkg.dds",XR_RES); 
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG],"%sCar/DVR/record_view_left_normal.dds",XR_RES); 
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG],"%sCar/DVR/record_view_left_highlight.dds",XR_RES); 
+
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_NORMAL_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_NORMAL_IMG],"%sCar/DVR/record_view_right_normal.dds",XR_RES); 
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_HIGHLIGHT_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_HIGHLIGHT_IMG],"%sCar/DVR/record_view_right_highlight.dds",XR_RES); 
+	
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].trigger[DIALOG_CONFIRM_CANCEL_BACKGROUND] = NULL;//new CSelectorFirstActionTrigger;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].trigger[DIALOG_CONFIRM] = new CPbDialogDelConfirmActionTrigger;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].trigger[DIALOG_CANCEL] = new CPbDialogDelCancelActionTrigger;
+
+	m_dialog[DVR_PLAYBACK_DIALOG_DEL] = new HMIDialog(&m_dialogData[DVR_PLAYBACK_DIALOG_DEL], m_uiNode);
+	m_dialog[DVR_PLAYBACK_DIALOG_DEL]->SetVisibility(0);
+	
 	return HMI_SUCCESS;
 }
 int CSVDvrPlaybackTab::Init(int window_width, int window_height)
@@ -604,7 +733,7 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 
 	m_buttonSize[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_SIZE_WIDTH] = 122.0;
 	m_buttonSize[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_SIZE_HEIGHT] = 58.0;
-	m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_TITLE][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_TAB_EMERGENCY_TITLE][BUTTON_SIZE_WIDTH] + 100.0;
+	m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_TITLE][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_TAB_EMERGENCY_TITLE][BUTTON_SIZE_WIDTH] + 60.0;
 	m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_POS_Y] = m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_TITLE][BUTTON_POS_Y];
 
 	m_buttonSize[DVR_PLAYBACK_TAB_EMERGENCY_ICON][BUTTON_SIZE_WIDTH] = m_buttonSize[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_SIZE_WIDTH];
@@ -619,7 +748,7 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 
 	m_buttonSize[DVR_PLAYBACK_TAB_DELETE_BKG][BUTTON_SIZE_WIDTH] = 122.0;
 	m_buttonSize[DVR_PLAYBACK_TAB_DELETE_BKG][BUTTON_SIZE_HEIGHT] = 58.0;
-	m_buttonPos[DVR_PLAYBACK_TAB_DELETE_BKG][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_TAB_DELETE_TITLE][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_TAB_DELETE_TITLE][BUTTON_SIZE_WIDTH] + 100.0;
+	m_buttonPos[DVR_PLAYBACK_TAB_DELETE_BKG][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_POS_X];
 	m_buttonPos[DVR_PLAYBACK_TAB_DELETE_BKG][BUTTON_POS_Y] = m_buttonPos[DVR_PLAYBACK_TAB_DELETE_TITLE][BUTTON_POS_Y];
 
 	m_buttonSize[DVR_PLAYBACK_TAB_DELETE_ICON][BUTTON_SIZE_WIDTH] = 122.0;
@@ -634,7 +763,7 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 
 	m_buttonSize[DVR_PLAYBACK_TAB_DC_SWITCH][BUTTON_SIZE_WIDTH] = 114.0;
 	m_buttonSize[DVR_PLAYBACK_TAB_DC_SWITCH][BUTTON_SIZE_HEIGHT] = 47.0;
-	m_buttonPos[DVR_PLAYBACK_TAB_DC_SWITCH][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_TAB_DC_TITLE][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_TAB_DC_TITLE][BUTTON_SIZE_WIDTH] + 35.0;
+	m_buttonPos[DVR_PLAYBACK_TAB_DC_SWITCH][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_TAB_EMERGENCY_BKG][BUTTON_POS_X];
 	m_buttonPos[DVR_PLAYBACK_TAB_DC_SWITCH][BUTTON_POS_Y] = m_buttonPos[DVR_PLAYBACK_TAB_DC_TITLE][BUTTON_POS_Y];
 
 	m_buttonSize[DVR_PLAYBACK_TAB_VIEW_TITLE][BUTTON_SIZE_WIDTH] = 58.0;
@@ -710,6 +839,13 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 	m_textEditData[PB_FILE_DURATION_TIME].textColor[1] = 1.0;
 	m_textEditData[PB_FILE_DURATION_TIME].textColor[2] = 1.0;
 
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].width = 300.0;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].height = 200.0;
+
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].pos[0] = window_width * 0.5;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].pos[1] = 80.0 + 0.5 * (window_height - 160.0 - m_dialogData[DVR_PLAYBACK_DIALOG_DEL].height);
+
+
 	SetHmiParams();
 	
 	return HMI_SUCCESS;
@@ -722,6 +858,7 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 	DVR_GRAPHIC_UIOBJ* playbackTabMsg = NULL;
 	GUI_OBJ_PLAY_FILENAME_INST* playbackFileName = NULL;
 	GUI_OBJ_PLAY_TIME_INST*     playbackTimeInfo = NULL;
+	GUI_OBJ_DIALOG_INST*	    dialogInst = NULL;
 
 
 /*DVR_GRAPHIC_UIOBJ pb_video_gui_table[] =
@@ -873,7 +1010,23 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 				}
 
 				break;
-				
+			case GUI_OBJ_ID_DIALOG:
+				if(GUI_OBJ_STATUS_TYPE_ADDRESS == playbackTabMsg[i].status_type
+					&& playbackTabMsg[i].uStatus.ptr)
+				{
+					dialogInst = (GUI_OBJ_DIALOG_INST*)playbackTabMsg[i].uStatus.ptr;
+					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, playbackTabMsg[i].bShow);
+					m_dialogVisibility[dialogInst->subjectId] = playbackTabMsg[i].bShow;
+				}
+
+				break;
+
+			case GUI_OBJ_ID_WARNING:
+				if(GUI_OBJ_STATUS_TYPE_VALUE == playbackTabMsg[i].status_type)
+				{
+					Log_Error("warning : %d", playbackTabMsg[i].status_type);
+				}
+				break;				
 			default:
 				break;
 			}	
@@ -898,6 +1051,10 @@ int CSVDvrPlaybackTab::RefreshHmi()
 		m_textEdit[i]->SetVisibility(m_textEditVisibility[i]);
 		m_textEdit[i]->Update(m_textEditContent[i]);
 	}
+	for(int i = DVR_PLAYBACK_DIALOG_DEL; i < DVR_PLAYBACK_DIALOG_NUM; i++)
+	{
+		m_dialog[i]->SetVisibility(m_dialogVisibility[i]);
+	}
 
 	m_processBar->Move(m_processBarForwardScale, PROCESS_BAR_FORWARD);
 	m_processBar->SetVisibility(m_processBarVisibility);
@@ -915,10 +1072,20 @@ int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
 	for(int i = PB_FILENAME_TITLE; i < PB_TEXT_DISPLAY_NUM; i++)
 	{
 		m_textEdit[i]->SetVisibility(pFlag);
+		m_textEditVisibility[i] = pFlag;
 	}
 	m_processBar->SetVisibility(pFlag);
+	m_processBarVisibility = pFlag;
 	
-
+	if(pFlag == 0)
+	{		
+		for(int i = DVR_PLAYBACK_DIALOG_DEL; i < DVR_PLAYBACK_DIALOG_NUM; i++)
+		{
+			m_dialogVisibility[i] = pFlag;
+		
+			m_dialog[i]->SetVisibility(m_dialogVisibility[i]);
+		}
+	}
 	return HMI_SUCCESS;
 }
 int CSVDvrPlaybackTab::ReturnHmiMsg(Hmi_Message_T* hmi_msg)

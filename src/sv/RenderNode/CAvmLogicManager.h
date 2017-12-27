@@ -73,6 +73,7 @@ private:
 	int m_hmiNums;
 
 	ISVHmi* m_cameraHmi;
+	ISVHmi* m_mainHmi;
 	ISVHmi* m_dvrBaseHmi;
 	ISVHmi* m_dvrSettingTab;
 	
