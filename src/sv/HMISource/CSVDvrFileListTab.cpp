@@ -311,7 +311,7 @@ int CSVDvrFileListTab::SetHmiParams()
 	//m_imageGridList->Update();
 	//m_imageGridList->SetVisibility(1);
 
-	//memset(m_imageGridListItem[2].imageData, 0, sizeof(char)*m_imageGridListItem[2].imageWidth * m_imageGridListItem[2].imageHeight*3);
+	//memset(m_imageGridListItem[0].imageData, 0, sizeof(char)*m_imageGridListItem[2].imageWidth * m_imageGridListItem[2].imageHeight*3);
 
 	//m_imageGridList->Update(1,1,1);
 
@@ -682,7 +682,6 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 			switch(fileListTabMsg[i].Id)
 			{
 			case GUI_OBJ_ID_THUMB_TAB:
-				Log_Error("------GUI_OBJ_ID_THUMB_TAB:%d", fileListTabMsg[i].uStatus.ObjVal);
 				if(GUI_OBJ_STATUS_TYPE_VALUE == fileListTabMsg[i].status_type)
 				{
 					m_buttonVisibility[DVR_FILELIST_TAB_LR_TITLE_SELECTED] = 0;
@@ -733,7 +732,6 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					m_buttonStatus[DVR_FILELIST_TAB_EDIT_ICON] = BUTTON_ON_IMAGE;
 					for(int i = 0; i < NUM_THUMBNAIL_PER_PAGE; i++)
 					{	
-						Log_Error("-----------currentFileNum: %d", currentFileNum);
 						if(i < currentFileNum)
 						{
 							m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 1;
@@ -771,7 +769,6 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					for(int i = 0; i < currentFileNum; i++)
 					{	
 						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_FLAG_1 + 2 * i] = editInst->check_box[i] & fileListTabMsg[i].bShow;
-						Log_Error("---------editInst->check_box[%d] = %d, show: %d", i, editInst->check_box[i], fileListTabMsg[i].bShow);
 					}
 				}
 				
@@ -794,20 +791,19 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					currentFileNum = 0;
 					for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
 					{
-						Log_Error("frameInst->item[%d].bValid:%d", i, frameInst->item[i].bValid);
 						if(frameInst->item[i].bValid)
 						{
 							currentFileNum ++;
-							m_imageGridListItem[i].imageData = frameInst->item[i].pPreviewBuf;	
-							//m_imageGridListItem[i].textInfo.textContent[0] = frameInst->item[i].filename;
 							
+							memcpy(m_imageGridListItem[i].imageData, frameInst->item[i].pPreviewBuf, sizeof(unsigned char)*m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight*3);
+							 
+							//m_imageGridListItem[i].textInfo.textContent[0] = frameInst->item[i].filename;
 							sprintf(m_imageGridListItem[i].textInfo.textContent[0],"%s", frameInst->item[i].filename);
 						}
 						
 					}
 										
-					Log_Error("currentFileNum: %d",currentFileNum);
-					m_imageGridList->Update(0,1,currentFileNum);
+					m_imageGridList->Update(1,1,currentFileNum);
 					//m_imageGridList->Update();
 				}
 				break;
@@ -821,7 +817,6 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 					&& fileListTabMsg[i].uStatus.ptr)
 				{
 					dialogInst = (GUI_OBJ_DIALOG_INST*)fileListTabMsg[i].uStatus.ptr;
-					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, fileListTabMsg[i].bShow);
 					m_dialogVisibility[dialogInst->subjectId] = fileListTabMsg[i].bShow;
 
 				}
@@ -831,7 +826,6 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 			case GUI_OBJ_ID_WARNING:
 				if(GUI_OBJ_STATUS_TYPE_VALUE == fileListTabMsg[i].status_type)
 				{
-					Log_Error("warning : %d", fileListTabMsg[i].status_type);
 				}
 				break;
 			default:

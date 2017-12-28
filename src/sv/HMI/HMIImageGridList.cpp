@@ -30,6 +30,7 @@
 \*===========================================================================*/
 #include "HMIImageGridList.h"
 #include "../AVMData.h"
+#include "gpu_log.h"
 
 extern IXrCore* g_pIXrCore;
 extern IDeviceManager* rm;
@@ -158,6 +159,7 @@ int HMIImageGridList::Update(unsigned char pRefreshFlag, unsigned char pRefreshV
 
 	for(int i = 0; i < m_objectCnt; i++)
 	{
+		unsigned char* tmp = (unsigned char*) m_rawDataImageIconData[i].imageData;
 		m_rawDataImageIcon[i]->Update(m_rawDataImageIconData[i].imageData, pRefreshFlag);
 		if(m_imageGridListData->withTextFlag == 1)
 		{

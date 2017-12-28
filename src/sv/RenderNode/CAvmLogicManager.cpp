@@ -46,7 +46,7 @@ int CAvmLogicManager::Init()
 	InitViewModel();
 	InitOverlayModel();
 	InitAlgoHmiModel();
-	//InitHmi();
+	InitHmi();
 	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
@@ -55,7 +55,7 @@ int CAvmLogicManager::Update()
 	UpdateViewModel();
 	UpdateOverlayModel();
 	UpdateAlgoHmiModel();
-	//UpdateHmi();
+	UpdateHmi();
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }

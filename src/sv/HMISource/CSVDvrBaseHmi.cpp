@@ -307,14 +307,6 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
 			if(dvrGuiLayout.pTable)
 			{
-			
-				Log_Error("-------------GUI_LAYOUT_SETUP------------");
-				for(int i = 0; i < dvrGuiLayout.ObjNum; i++)
-				{
-					Log_Error("dvrGuiLayout[%d].Id: %d", i, dvrGuiLayout.pTable[i].Id);
-					Log_Error("dvrGuiLayout.pTable[%d].ObjVal: %d", i, dvrGuiLayout.pTable[i].uStatus.ObjVal);
-					
-				}
 				
 				m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
 				m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
@@ -332,13 +324,6 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
 			if(dvrGuiLayout.pTable)
 			{
-				Log_Error("-------------GUI_LAYOUT_RECORD------------");
-			
-				for(int i = 0; i < dvrGuiLayout.ObjNum; i++)
-				{
-					Log_Error("dvrGuiLayout[%d].Id: %d", i, dvrGuiLayout.pTable[i].Id);
-					Log_Error("dvrGuiLayout.pTable[%d].ObjVal: %d", i, dvrGuiLayout.pTable[i].uStatus.ObjVal);
-				}
 				
 				m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
 				m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
@@ -358,13 +343,6 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 			m_buttonStatus[DVR_BASE_LIVE_VIDEO_TAB] = BUTTON_OFF_IMAGE;
 			if(dvrGuiLayout.pTable)
 			{
-				Log_Error("-------------GUI_LAYOUT_THUMB------------");
-			
-				for(int i = 0; i < dvrGuiLayout.ObjNum; i++)
-				{
-					Log_Error("dvrGuiLayout[%d].Id: %d", i, dvrGuiLayout.pTable[i].Id);
-					Log_Error("dvrGuiLayout.pTable[%d].ObjVal: %d", i, dvrGuiLayout.pTable[i].uStatus.ObjVal);
-				}
 				
 				m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
 				m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
@@ -380,13 +358,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
 			if(dvrGuiLayout.pTable)
 			{
-				Log_Error("-------------GUI_LAYOUT_PLAYBACK_VIDEO------------");
-			
-				for(int i = 0; i < dvrGuiLayout.ObjNum; i++)
-				{
-					Log_Error("dvrGuiLayout[%d].Id: %d", i, dvrGuiLayout.pTable[i].Id);
-					Log_Error("dvrGuiLayout.pTable[%d].ObjVal: %d", i, dvrGuiLayout.pTable[i].uStatus.ObjVal);
-				}
+
 				
 				m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
 				m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
