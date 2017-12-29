@@ -7,8 +7,6 @@ SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-Bsymbolic")
 
 file(GLOB_RECURSE gpu_c_src "*.c")
 file(GLOB_RECURSE gpu_cpp_src "*.c??")
-file(GLOB_RECURSE free_type_c_src "freetype/*.c")
-list(REMOVE_ITEM gpu_c_src ${free_type_c_src})
 list(APPEND gpu_c_src "${CMAKE_CURRENT_BINARY_DIR}/version.c")
 
 execute_process(COMMAND "./version.sh"  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/version.c")

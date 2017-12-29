@@ -33,10 +33,6 @@ extern "C" {
  * Standard Header Files
  *------------------------------------------------------------------------------------------*/
 #include <stdint.h>
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
 /*------------------------------------------------------------------------------------------
  * Other Header Files
  *------------------------------------------------------------------------------------------*/
@@ -58,7 +54,10 @@ extern "C" {
 
 //重定义, 省去包含egl等头文件
 typedef unsigned int GLuint;
-
+typedef void* EGLSurface;
+typedef void* EGLContext;
+typedef void* EGLDisplay;
+    
 #include "luminb_result.h"
 /*------------------------------------------------------------------------------------------
  * Exported Object Declarations
