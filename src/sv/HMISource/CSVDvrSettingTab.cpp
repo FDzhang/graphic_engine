@@ -5,16 +5,20 @@
 
 class CTimeFirstSelectorActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeFirstSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeFirstSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
 	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
-		m_dvrCmd->parameter[1] = GUI_SETUP_SPLIT_TIME_1MIN;
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
+		m_dvrCmd.parameter[1] = GUI_SETUP_SPLIT_TIME_1MIN;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
 	
 		Log_Message("-----------CTimeSelectorFirstActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
@@ -22,20 +26,25 @@ public:
 	{
 
 	}
+
 };
 
 class CTimeSecondSelectorActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeSecondSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeSecondSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
 	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
-		m_dvrCmd->parameter[1] = GUI_SETUP_SPLIT_TIME_3MIN;
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
+		m_dvrCmd.parameter[1] = GUI_SETUP_SPLIT_TIME_3MIN;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
 	
 		Log_Message("-----------CTimeSecondSelectorActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
@@ -43,20 +52,25 @@ public:
 	{
 
 	}
+
 };
 
 class CTimeThirdSelectorActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeThirdSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeThirdSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
 	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
-		m_dvrCmd->parameter[1] = GUI_SETUP_SPLIT_TIME_5MIN;
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_SETUP_LOOPENC_SPLIT_TIME;
+		m_dvrCmd.parameter[1] = GUI_SETUP_SPLIT_TIME_5MIN;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
 	
 		Log_Message("-----------CTimeThirdSelectorActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
@@ -64,19 +78,24 @@ public:
 	{
 
 	}
+
 };
 
 class CSdFormatActionTrigger  : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CSdFormatActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CSdFormatActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
 	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		m_dvrCmd->parameter[0] = DVR_USER_CLICK_SETUP_FORMAT_CARD;
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_SETUP_FORMAT_CARD;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
 	
 		Log_Message("-----------CSdFormatActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
@@ -84,11 +103,12 @@ public:
 	{
 
 	}
+
 };
 
 class CSettingDialogFormatConfirmActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
@@ -96,19 +116,24 @@ public:
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		m_dvrCmd->parameter[0] = DVR_USER_CLICK_DIALOG;
-		m_dvrCmd->parameter[1] = DIALOG_SEL_YES;
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd.parameter[1] = DIALOG_SEL_YES;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
 		
 		Log_Message("-----------CPbDialogDelConfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+
 };
 
 class CSettingDialogFormatCancelActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
@@ -116,14 +141,19 @@ public:
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		m_dvrCmd->parameter[0] = DVR_USER_CLICK_DIALOG;
-		m_dvrCmd->parameter[1] = DIALOG_SEL_NO;
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd.parameter[1] = DIALOG_SEL_NO;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
 		
 		Log_Message("-----------CPbDialogDelCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+
 };
 
 	
@@ -135,10 +165,41 @@ CSVDvrSettingTab::CSVDvrSettingTab(IUINode* pUiNode = NULL, int pUiNodeId = -1):
 	
 	memset(m_dialogVisibility, 0, DVR_SETTING_DIALOG_DIALOG_NUM * sizeof(unsigned char));
 }
-	
+
+CSVDvrSettingTab::~CSVDvrSettingTab()
+{
+    for(int i=0;i<DVR_SETTING_TAB_ELEMEMT_NUM;i++)
+    {
+		SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
+
+		if(i == DVR_SETTING_TAB_TIME_SETTING_FIRST
+			|| i == DVR_SETTING_TAB_TIME_SETTING_SECOND
+			|| i == DVR_SETTING_TAB_TIME_SETTING_THIRD
+			|| i == DVR_SETTING_TAB_SD_FORMAT_NORMAL)
+		{
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
+		}
+
+		//SAFE_DELETE(m_baseButton[i]);
+		SAFE_DELETE(m_trigger[i]);
+    }
+	for(int i = 1; i < DVR_SETTING_DIALOG_DIALOG_NUM; i++)
+	{
+	    for(int j = 0; j < DIALOG_CONFIRM_CANCEL_ELEMENT_NUM; j++)
+	    {
+            SAFE_DELETE(m_dialogData[i].trigger[j]);
+	    }
+		for(int j = 0; j < DIALOG_IMAGE_NUM; j++)
+		{
+		    SAFE_DELETE(m_dialogData[i].iconFileName[j]);
+		}
+		//SAFE_DELETE(m_dialog[i]);
+	}
+	Log_Error("----------Release ~CSVDvrSettingTab!");
+}
+
 int CSVDvrSettingTab::SetHmiParams()
 {
-
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING].show_flag = 1;
 	m_baseButtonData[DVR_SETTING_TAB_TIME_SETTING].show_icon_num = 0;

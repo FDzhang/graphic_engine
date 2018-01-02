@@ -11,6 +11,7 @@ CGpuAvmEventDelegate::CGpuAvmEventDelegate(const char* className):m_className(cl
         Log_Error("AvmEvent register failed");
 		Log_Error("m_className: %s", m_className);
     }
+	m_registType = 0;
 }
 CGpuAvmEventDelegate::CGpuAvmEventDelegate(AvmEventType eventType)
 {
@@ -21,12 +22,16 @@ CGpuAvmEventDelegate::CGpuAvmEventDelegate(AvmEventType eventType)
 		Log_Error("Request %d cmd event error!", __func__, eventType);
 		m_eventType = AvmEvent::Invalid_Event_Type;
 	}
+	m_registType = 1;
 
 }
 
 CGpuAvmEventDelegate::~CGpuAvmEventDelegate()
 {
-    delete m_className;
+	if(m_registType == 0)
+    {
+    	delete m_className;
+	}
 }
 
 bool CGpuAvmEventDelegate::RegisterAvmEvent(const char* eventName)

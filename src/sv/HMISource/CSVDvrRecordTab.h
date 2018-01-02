@@ -29,7 +29,7 @@ class CSVDvrRecordTab : public ISVHmi
 public:
 
 	CSVDvrRecordTab(IUINode* pUiNode = NULL, int pUiNodeId = -1);
-
+	~CSVDvrRecordTab();
 	HMI_BASE_INHERITANCE_FUNC()
 
 	virtual int SetElementsVisibility(unsigned char pFlag);

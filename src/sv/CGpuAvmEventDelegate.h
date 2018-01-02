@@ -52,6 +52,7 @@ private:
 private:
     AvmEventType m_eventType; //AvmEvent事件类型id
     const char* m_className;  //Layout className
+    unsigned char m_registType;
 };
 
 

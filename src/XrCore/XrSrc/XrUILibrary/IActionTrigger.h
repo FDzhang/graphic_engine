@@ -6,6 +6,7 @@
 class IActionTrigger
 { 
 public:
+
 	virtual Void OnPress(Int32 id)=0;
 	virtual Void OnRelease(Int32 id, Boolean isIn)=0;
 };

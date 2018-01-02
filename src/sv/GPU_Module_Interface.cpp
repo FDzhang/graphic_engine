@@ -62,209 +62,7 @@ void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum)
 }
 //void GpuLogctrl_End(void){return};
 
-void TestCustomHMI(void)
-{
-	//test_hmi = new SVNodeTestHMI;
-	//test_hmi.InitHMI(1920, 1080);
-	//test_hmi.SetHMIParams();
-	//pTestHMI[0] = test_hmi.GetHMI();
-	//InitADASMdlHMI(pTestHMI,1);
-}
-  
-void TestAdasHMI(void)
-{
-    int nodeId,temp;
-
-	char test1[100]="HAHASUCCEED!";
-
-	char test2[100]="Again SUCCEED!";
-
-	//char test3[100]="Again SUCCEED!";
-	//char test4[100]="Again SUCCEED!";
-
-	tempText[0].pos[0]=440;
-	tempText[0].pos[1]=360;
-	tempText[0].width = 200;
-	tempText[0].font_size = 20;
-	tempText[0].line_num=2;
-
-	tempText[0].text_color[0]=1.0;
-	tempText[0].text_color[1]=1.0;
-	tempText[0].text_color[2]=0.0;
-
-	tempText[0].show_flag = 1;
-	tempText[0].text_content[0]=new char [50];
-
-	tempText[0].text_content[1]=new char [50];
-	sprintf(tempText[0].text_content[0],"%s",test1);
-	sprintf(tempText[0].text_content[1],"%s",test2);
-
-
-
-
-
-	tempText[1].pos[0]=940;
-	tempText[1].pos[1]=560;
-	tempText[1].width = 100;
-	tempText[1].font_size = 30;
-	tempText[1].line_num=4;
-
-	tempText[1].show_flag = 1;
-	tempText[1].text_color[0]=1.0;
-	tempText[1].text_color[1]=0.0;
-	tempText[1].text_color[2]=0.2;
-
-	tempText[1].text_content[0]=new char [50];
-	tempText[1].text_content[1]=new char [50];
-	tempText[1].text_content[2]=new char [50];
-	tempText[1].text_content[3]=new char [50];
-
-	sprintf(tempText[1].text_content[0],"test2 start");
-	sprintf(tempText[1].text_content[1],"test date 0914");
-	sprintf(tempText[1].text_content[2],"test result pass");
-	sprintf(tempText[1].text_content[3],"mid autumn");
-
-
-
-	 tempIcon[0].pos[0] = 120;
-	 tempIcon[0].pos[1] = 400;
-	 tempIcon[0].width = 60;
-	 tempIcon[0].height =80;
-	 tempIcon[0].show_flag = 1;
-	 tempIcon[0].show_icon_num = 1;
-
-	tempIcon[0].icon_file_name[0]=new char [50];
-	tempIcon[0].icon_file_name[1]=new char [50];
-	tempIcon[0].icon_file_name[2]=new char [50];
-	sprintf(tempIcon[0].icon_file_name[0],"%sgreen.dds",XR_RES);
-	sprintf(tempIcon[0].icon_file_name[1],"%sred.dds",XR_RES);
-	sprintf(tempIcon[0].icon_file_name[2],"%sgreen.dds",XR_RES);
-	  tempIcon[1].pos[0] =420;
-	  tempIcon[1].pos[1] = 400;
-	  tempIcon[1].width = 80;
-	  tempIcon[1].height =80;
-	  tempIcon[1].show_flag = 1;
-	  tempIcon[1].show_icon_num = 1;
-
-	 tempIcon[1].icon_file_name[0]=new char[50];
-	 tempIcon[1].icon_file_name[1]=new char[50];
-	 tempIcon[1].icon_file_name[2]=new char[50];
-	 sprintf(tempIcon[1].icon_file_name[0],"%sgreen.dds",XR_RES);
-	 sprintf(tempIcon[1].icon_file_name[1],"%sred.dds",XR_RES);
-	 sprintf(tempIcon[1].icon_file_name[2],"%sgreen.dds",XR_RES);
-
-
-	 tempScroll[0].pos[0] = 600;
-	 tempScroll[0].pos[1] = 400;
-	 tempScroll[0].width = 128;
-	 tempScroll[0].height = 100;
-	 tempScroll[0].horizon = 0;
-	 tempScroll[0].show_flag = 1;
-	 tempScroll[0].icon_file_name[0]=new char [50];
-	 tempScroll[0].icon_file_name[1]=new char [50];
-	 sprintf(tempScroll[0].icon_file_name[0],"%sscroll_bk.dds",XR_RES);
-	 sprintf(tempScroll[0].icon_file_name[1],"%sscroll_adas.dds",XR_RES);
-
-
-	 tempLDWData[0].curv = 0.00001457;
-	 tempLDWData[0].slope = 0.000684619823;
-
-	 tempLDWData[0].L_offset=  -1.52134848;
-	 tempLDWData[0].R_offset=  -1.40134848;
-	 tempLDWData[0].alarm_state = 0;
-	 tempLDWData[0].show_flag = 1;
-
-    tempLDWData[0].icon_file_name[0]=tempScroll[0].icon_file_name[0];
-	tempLDWData[0].icon_file_name[1]=tempScroll[0].icon_file_name[1];
-	 tempLDWData[1].curv = 0.00001457;
-	 tempLDWData[1].slope = 0.000684619823;
-
-	 tempLDWData[1].L_offset=  1.62134848;
-	 tempLDWData[1].R_offset=  1.74134848;
-
-	 tempLDWData[1].alarm_state = 1;
-	 tempLDWData[1].show_flag = 1;
-
-	 tempLDWData[1].icon_file_name[0]=new char [50];
-	 tempLDWData[1].icon_file_name[1]=new char [50];
-	 sprintf(tempLDWData[1].icon_file_name[0],"%sscroll_bk.dds",XR_RES);
-	 sprintf(tempLDWData[1].icon_file_name[1],"%sldw_line.dds",XR_RES);
-
-	 tempBSDRectData[0].point[0] = 50;
-	 tempBSDRectData[0].point[1] = 100;
-	 tempBSDRectData[0].point[2] = 350;
-	 tempBSDRectData[0].point[3] = 120;
-	 tempBSDRectData[0].point[4] = 320;
-	 tempBSDRectData[0].point[5] = 100;
-	 tempBSDRectData[0].point[6] = 50;
-	 tempBSDRectData[0].point[7] = 90;
-	 tempBSDRectData[0].icon_file_name[0] = tempIcon[0].icon_file_name[0];
-	 tempBSDRectData[0].icon_file_name[1] = tempIcon[0].icon_file_name[1];
-
-	 tempBSDRectData[0].alarm_state = 1;
-	 tempBSDRectData[0].show_flag = 1;
-	 tempBSDRectData[0].rear_single_view_flag = 1;
-
-	 tempBSDRectData[1].point[0] = 250;
-	 tempBSDRectData[1].point[1] = 200;
-	 tempBSDRectData[1].point[2] = 300;
-	 tempBSDRectData[1].point[3] = 200;
-	 tempBSDRectData[1].point[4] = 300;
-	 tempBSDRectData[1].point[5] = 150;
-	 tempBSDRectData[1].point[6] = 250;
-	 tempBSDRectData[1].point[7] = 150;
-	 tempBSDRectData[1].icon_file_name[0] = tempIcon[0].icon_file_name[0];
-	 tempBSDRectData[1].icon_file_name[1] = tempIcon[0].icon_file_name[1];
-
-	 tempBSDRectData[1].alarm_state = 1;
-	 tempBSDRectData[1].show_flag = 1;
-	 tempBSDRectData[1].rear_single_view_flag = 1;
-
-	 tempBSDRectData[2].point[0] = 300;
-	 tempBSDRectData[2].point[1] = 200;
-	 tempBSDRectData[2].point[2] = 400;
-	 tempBSDRectData[2].point[3] = 180;
-	 tempBSDRectData[2].point[4] = 400;
-	 tempBSDRectData[2].point[5] = 130;
-	 tempBSDRectData[2].point[6] = 300;
-	 tempBSDRectData[2].point[7] = 150;
-	 tempBSDRectData[2].icon_file_name[0] = tempIcon[0].icon_file_name[0];
-	 tempBSDRectData[2].icon_file_name[1] = tempIcon[0].icon_file_name[1];
-
-	 tempBSDRectData[2].alarm_state = 1;
-	 tempBSDRectData[2].show_flag = 1;
-	 tempBSDRectData[2].rear_single_view_flag = 1;
-
-	 BSD_Mdel_HMI.icon_num=0;
-	 BSD_Mdel_HMI.ldw_line_num=0;
-	 BSD_Mdel_HMI.scroll_rect_num=1;
-	 BSD_Mdel_HMI.pScrollRect = tempScroll;
-	 BSD_Mdel_HMI.single_view_rect_num=3;
-
-	 BSD_Mdel_HMI.pSingleviewRect = tempBSDRectData;
-	 BSD_Mdel_HMI.text_box_num=1;
-	 BSD_Mdel_HMI.pTextBox = &tempText[1];
-
-	 pHMIArray[0] = &BSD_Mdel_HMI;
-	 pHMIArray[1] = &LDW_MDEL_HMI;
-
-#if 1
-	 LDW_MDEL_HMI.icon_num=2;
-	 LDW_MDEL_HMI.pStaticIcon=tempIcon;
-	 LDW_MDEL_HMI.ldw_line_num=2;
-	 LDW_MDEL_HMI.pLDWLine=tempLDWData;
-	 LDW_MDEL_HMI.scroll_rect_num=0;
-	 LDW_MDEL_HMI.pScrollRect = tempScroll;
-	 LDW_MDEL_HMI.single_view_rect_num=0;
-	 LDW_MDEL_HMI.text_box_num=1;
-	 LDW_MDEL_HMI.pTextBox = &tempText[0];
-#endif
-	 InitADASMdlHMI(pHMIArray,2);
-
-
-
-}
- 
+   
 void UpdateCustomHMIData()
 {
 	float steer_angle;
@@ -307,129 +105,6 @@ void SetCustomeHMIChainStatus(int pchain_status)
 void SetCustomeHMINextChainStatus(int pchain_status)
 {
 	next_chains_status = pchain_status;
-
-}
-
-void TestAdasHMIUpdate(void)
-{
-
-float steer_angle;
-float vehicle_speed;
-
-AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);
-AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&vehicle_speed);
-sprintf(tempText[0].text_content[0],"Steering wheel angle: %f",steer_angle);
-
-sprintf(tempText[0].text_content[1],"vehicle speed: %f",vehicle_speed);
-if(vehicle_speed >50)
-{
-	tempText[1].text_color[0]=1.0;
-	tempText[1].text_color[1]=1.0;
-	tempText[1].text_color[2]=0.2;
-
-	tempIcon[0].show_flag = 0;
-	tempIcon[1].show_flag = 0;
-	 tempBSDRectData[0].point[0] = 50;
- tempBSDRectData[0].point[1] = 100;
- tempBSDRectData[0].point[2] = 350;
- tempBSDRectData[0].point[3] = 120;
- tempBSDRectData[0].point[4] = 320;
- tempBSDRectData[0].point[5] = 100;
- tempBSDRectData[0].point[6] = 50;
- tempBSDRectData[0].point[7] = 90;
-}
-else if(vehicle_speed<20)
-{
-	tempText[1].text_color[0]=1.0;
-	tempText[1].text_color[1]=0.0;
-	tempText[1].text_color[2]=0.2;
-	tempIcon[0].show_flag = 1;
-
-	tempIcon[1].show_flag = 0;
-
- tempBSDRectData[0].point[0] = 50;
- tempBSDRectData[0].point[1] = 300;
- tempBSDRectData[0].point[2] = 350;
- tempBSDRectData[0].point[3] = 320;
- tempBSDRectData[0].point[4] = 320;
- tempBSDRectData[0].point[5] = 200;
- tempBSDRectData[0].point[6] = 50;
- tempBSDRectData[0].point[7] = 20;
-
-}
-else
-{
-
-	tempText[1].text_color[0]=1.0;
-	tempText[1].text_color[1]=0.0;
-	tempText[1].text_color[2]=0.2;
-	tempIcon[0].show_flag = 1;
-
-	tempIcon[1].show_flag = 1;
-
-	tempBSDRectData[0].point[0] = 250;
-tempBSDRectData[0].point[1] = 100;
-tempBSDRectData[0].point[2] = 550;
-tempBSDRectData[0].point[3] = 120;
-tempBSDRectData[0].point[4] = 520;
-tempBSDRectData[0].point[5] = 100;
-tempBSDRectData[0].point[6] = 250;
-tempBSDRectData[0].point[7] = 90;
-
-
-}
-
-if(steer_angle >200)
-{
-
-	tempText[1].show_flag = 0;
-
-	tempIcon[0].show_icon_num = 0;
-
-	tempIcon[1].show_icon_num = 2;
-			tempLDWData[0].show_flag = 1;
-	tempLDWData[0].alarm_state=1;
-	tempBSDRectData[0].rear_single_view_flag =0;
-	tempBSDRectData[0].show_flag = 1;
-}
-else if(steer_angle>100)
-{
-	tempText[1].show_flag = 1;
-	tempIcon[0].show_icon_num = 1;
-	tempIcon[1].show_icon_num = 1;
-	tempLDWData[0].show_flag = 0;
-	tempLDWData[0].alarm_state=1;
-
-	tempBSDRectData[0].rear_single_view_flag =1;
-	tempBSDRectData[0].show_flag = 1;
-
-}
-else
-{
-	tempText[1].show_flag = 1;
-	tempIcon[0].show_icon_num = 1;
-	tempIcon[1].show_icon_num = 0;
-			tempLDWData[0].show_flag = 1;
-	tempLDWData[0].alarm_state=0;
-
-	tempBSDRectData[0].rear_single_view_flag =0;
-	tempBSDRectData[0].show_flag = 0;
-
-}
-tempScroll[0].scroll_rate = vehicle_speed/100.0;
-static float LDW_test= 0;
-if(LDW_test>0.2)
-{
-	LDW_test = -1.0;
-}
-else
-{
-	//LDW_test+=0.001;
-}
-tempLDWData[1].L_offset+=LDW_test;
-tempLDWData[1].R_offset+=LDW_test;
-tempLDWData[0].L_offset+=LDW_test;
-tempLDWData[0].R_offset+=LDW_test;
 
 }
 
@@ -664,6 +339,22 @@ void UpdateTexture()
 {
 
 }
+
+int SetRenderData(RenderDataT* pRenderData)
+{
+	switch(pRenderData->dataHeader.dataTypeId)
+	{
+		case RENDER_DATA_VIEW_CMD:
+
+			AVMData::GetInstance()->SetDisplayViewCmd(*((unsigned char*) pRenderData->data));
+
+		break;
+		default:
+		break;
+	}
+	return RENDER_INTERFACE_NO_ERROR;
+}
+
 
 void MockTouchEvent(unsigned char key_value, unsigned char key_mode)
 {

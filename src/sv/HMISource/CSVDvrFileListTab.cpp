@@ -290,8 +290,50 @@ CSVDvrFileListTab::CSVDvrFileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1
 	memset(m_dialogVisibility, 0, DVR_FILELIST_DIALOG_NUM * sizeof(unsigned char));
 	memset(m_gridListTrigger, NULL, IMAGE_GRID_LIST_ITEM_NUM * sizeof(IActionTrigger*));
 }
+
 CSVDvrFileListTab::~CSVDvrFileListTab()
 {
+    for(int i = 0; i < DVR_FILELIST_TAB_ELEMEMT_NUM; i++)
+	{	
+		//SAFE_DELETE(m_baseButton[i]);
+		SAFE_DELETE(m_trigger[i]);	
+		for(int j = 0; j < DVR_FILELIST_TAB_ELEMEMT_NUM; j++)
+		{
+		    SAFE_DELETE(m_baseButtonData[j].icon_file_name[0]);
+
+			if(j == DVR_FILELIST_TAB_EDIT_ICON
+				|| j == DVR_FILELIST_TAB_EDIT_CANCEL
+				|| j == DVR_FILELIST_TAB_EDIT_SAVE
+				|| j == DVR_FILELIST_TAB_EDIT_DELETE
+				|| j == DVR_FILELIST_TAB_EDIT_SELECTED_ALL
+				|| j == DVR_FILELIST_TAB_SCROLL_UP
+				|| j == DVR_FILELIST_TAB_SCROLL_DOWN)
+			{
+				SAFE_DELETE(m_baseButtonData[j].icon_file_name[1]);
+			}
+		}
+	}
+	for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+	{
+		SAFE_DELETE(m_imageGridListItem[i].imageData);
+		SAFE_DELETE(m_textEditData[i].textContent[0]);
+		//SAFE_DELETE(m_textEdit[i]);
+	}
+	for(int i = 0; i < DVR_FILELIST_DIALOG_NUM; i++)
+	{
+		for(int j = 0; j < DIALOG_IMAGE_NUM; j++)
+		{
+		    SAFE_DELETE(m_dialogData[i].iconFileName[j]);
+	    }
+		//SAFE_DELETE(m_dialog[i]);
+	}	
+
+	for(int i = 0; i < DIALOG_CONFIRM_CANCEL_ELEMENT_NUM; i++)
+	{
+		SAFE_DELETE(m_dialogData[DVR_FILELIST_DIALOG_DEL].trigger[i]);
+	}
+	//SAFE_DELETE(m_imageGridList);		
+	
 	Log_Error("----------Release ~CSVDvrFileListTab!");
 
 }

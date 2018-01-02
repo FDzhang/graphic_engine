@@ -376,6 +376,77 @@ public:
 	}
 };
 
+CSVDvrPlaybackTab::~CSVDvrPlaybackTab()
+{
+    for(int i = 0; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+    {
+		SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
+
+		if(i == DVR_PLAYBACK_TAB_PLAY)
+		{
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[2]);
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[3]);
+		}
+
+		if(i == DVR_PLAYBACK_TAB_FF
+			|| i == DVR_PLAYBACK_TAB_FB
+			|| i == DVR_PLAYBACK_TAB_NEXT_PAGE
+			|| i == DVR_PLAYBACK_TAB_PRE_PAGE
+			|| i == DVR_PLAYBACK_TAB_EMERGENCY_ICON
+			|| i == DVR_PLAYBACK_TAB_DELETE_ICON
+			|| i == DVR_PLAYBACK_TAB_DC_SWITCH
+			|| i == DVR_PLAYBACK_TAB_VIEW_FRONT
+			|| i == DVR_PLAYBACK_TAB_VIEW_REAR
+			|| i == DVR_PLAYBACK_TAB_VIEW_LEFT
+			|| i == DVR_PLAYBACK_TAB_VIEW_RIGHT)
+		{
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);		
+		}
+
+		if(i == DVR_PLAYBACK_TAB_SPEED)
+		{
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[2]);
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[3]);		
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[4]);
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[5]);			
+		}
+
+			
+		//SAFE_DELETE(m_baseButton[i]);
+		SAFE_DELETE(m_trigger[i]);
+		
+    }
+	for(int i = 0; i < DVR_PLAYBACK_DIALOG_NUM; i++)
+    {
+        for(int j = 0; j < DIALOG_CONFIRM_CANCEL_ELEMENT_NUM; j++)
+        {
+    	    SAFE_DELETE(m_dialogData[i].trigger[j]);
+		}
+		for(int j = 0; j < DIALOG_IMAGE_NUM; j++)
+		{
+			SAFE_DELETE(m_dialogData[i].iconFileName[j]);
+		}		
+		//SAFE_DELETE(m_dialog[i]);
+    }
+	
+    for(int i = 0; i < PB_TEXT_DISPLAY_NUM; i++)
+    {
+    	SAFE_DELETE(m_textEditData[i].trigger);
+		SAFE_DELETE(m_textEditData[i].textContent[0]);		
+		//SAFE_DELETE(m_textEdit[i]);
+    }
+
+
+	 SAFE_DELETE(m_processBarData.iconFileName[PROCESS_BAR]);	
+	 SAFE_DELETE(m_processBarData.iconFileName[PROCESS_BAR_BACKGROUND]);
+	//SAFE_DELETE(m_processBar);
+	Log_Error("----------Release ~CSVDvrPlaybackTab!");
+}
+
+
+
 
 CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {

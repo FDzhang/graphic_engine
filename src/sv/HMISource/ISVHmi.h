@@ -93,6 +93,19 @@ Hmi_Message_T;
 	{ \
 		eventDelegateName = new CGpuAvmEventDelegate(eventType); \
 		payloadName = new palyloadStruct; \
+	} \
+	void Release()\
+	{ \
+		if(eventDelegateName) \
+		{\
+			delete eventDelegateName;\
+			eventDelegateName = NULL;\
+		}\
+		if(payloadName) \
+		{\
+			delete payloadName; \
+			payloadName = NULL; \
+		} \
 	} 
 
 
@@ -130,6 +143,7 @@ public:
 protected:
     IUINode* m_uiNode;	
     int      m_uiNodeId;
+	InsertFlag   m_uiNodeInsertFlag;
     unsigned int m_visibilityStatus;
 
 private:

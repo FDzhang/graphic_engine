@@ -58,6 +58,7 @@ class CSVDvrPlaybackTab : public ISVHmi
 {
 public:
 	CSVDvrPlaybackTab(IUINode* pUiNode = NULL, int pUiNodeId = -1);
+	~CSVDvrPlaybackTab();
 	HMI_BASE_INHERITANCE_FUNC()
 	virtual int SetElementsVisibility(unsigned char pFlag);
 	

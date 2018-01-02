@@ -55,6 +55,8 @@ public:
 		hmiElementVisibility[CHANGAN_MAIN_MENU_ENTER_ICON] = 0;
 	}
 
+	
+
 private:
 };
 
@@ -86,7 +88,7 @@ private:
 
 class CStartDvrActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CStartDvrActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CStartDvrActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
 	virtual Void OnPress(Int32 id)
@@ -96,20 +98,27 @@ public:
 
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
 	
-		Log_Message("-----------CStartDvrActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
+	
 		char* hmiName = "CSVDvrBaseHmi";
 		CSVHmiIntent::GetInstance()->Intent(hmiName);
 
+		Log_Message("-----------CStartDvrActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+
+		//Release();
 		
 		dvrStatus = 1;
 
 	}
+
+	
 
 private:
 
@@ -131,7 +140,19 @@ CSVChangAnMainHmi::CSVChangAnMainHmi()
 
 CSVChangAnMainHmi::~CSVChangAnMainHmi()
 {
+	for(int i = 0; i < CHANGAN_MAIN_ELEMENT_NUM; i++)
+	{
+        SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
 
+		if(i > CHANGAN_MAIN_MENU_BKG)
+		{
+	        SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);		
+		}
+	    
+		SAFE_DELETE(m_baseButton[i]);
+		SAFE_DELETE(m_trigger[i]);
+	}
+	Log_Error("----------Release ~CSVChangAnMainHmi!");
 }
 	
 int CSVChangAnMainHmi::SetHmiParams()

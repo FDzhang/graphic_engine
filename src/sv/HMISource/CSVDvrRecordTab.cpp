@@ -155,7 +155,30 @@ CSVDvrRecordTab::CSVDvrRecordTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): I
 	memset(m_buttonVisibility, 0, DVR_RECORD_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	
 }
-	
+
+CSVDvrRecordTab::~CSVDvrRecordTab()
+{
+    for(int i=0;i<DVR_RECORD_TAB_ELEMEMT_NUM;i++)
+    {
+        //SAFE_DELETE(m_baseButton[i]);
+		SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
+
+		if(i == DVR_RECORD_TAB_RECORD_SWITCH
+			|| i == DVR_RECORD_TAB_CAPTURE_ICON
+			|| i == DVR_RECORD_TAB_EMERGENCY_ICON
+			|| i == DVR_RECORD_TAB_VIEW_FRONT
+			|| i == DVR_RECORD_TAB_VIEW_REAR
+			|| i == DVR_RECORD_TAB_VIEW_LEFT
+			|| i == DVR_RECORD_TAB_VIEW_RIGHT)
+		{		
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
+		}
+		
+		SAFE_DELETE(m_trigger[i]);
+    }
+	Log_Error("----------Release ~CSVDvrRecordTab!");
+}
+
 int CSVDvrRecordTab::SetHmiParams()
 {
 

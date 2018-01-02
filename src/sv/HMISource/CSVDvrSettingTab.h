@@ -31,6 +31,7 @@ class CSVDvrSettingTab : public ISVHmi
 public:
 
 	CSVDvrSettingTab(IUINode* pUiNode = NULL, int pUiNodeId = -1);
+	~CSVDvrSettingTab();
 	HMI_BASE_INHERITANCE_FUNC()
 
 	virtual int SetElementsVisibility(unsigned char pFlag);

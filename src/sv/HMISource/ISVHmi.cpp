@@ -8,11 +8,13 @@ ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0)
 	if(pUiNode == NULL)
     {
     	m_uiNodeId = g_pIXrCore->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_uiNode);
+		m_uiNodeInsertFlag = InsertFlag_Default;
 	}
 	else
 	{
 		m_uiNode = pUiNode;
 		m_uiNodeId = pUiNodeId;
+		m_uiNodeInsertFlag = InsertFlag_Child;
 	}
 }
 
@@ -27,7 +29,11 @@ IUINode* ISVHmi::GetSvHmiNode(int& pUiNodeId)
 ISVHmi::~ISVHmi()
 {
 	//Log_Message("--------delete ISVHmi!!!");
-    g_pIXrCore->ReleaseRenderNode(m_uiNodeId);
+	if(m_uiNodeInsertFlag == InsertFlag_Default)
+    {
+    	Log_Message("--------delete ISVHmi!!!");
+    	g_pIXrCore->ReleaseRenderNode(m_uiNodeId);
+	}
 }
 
 int ISVHmi::Init(int window_width, int window_height)

@@ -68,6 +68,16 @@ typedef unsigned int GLuint;
  * Exported Function Prototypes
  *------------------------------------------------------------------------------------------*/
 
+typedef enum RenderInterfaceErrorCodeTag
+{
+	RENDER_INTERFACE_NO_ERROR = 0,
+	RENDER_INTERFACE_INPUT_DATA_NULL,
+	RENDER_INTERFACE_RET_NULL,
+	RENDER_INTERFACE_ERROR_NUM,
+}
+RenderInterfaceErrorCodeT;
+
+
 typedef enum Changan_Track_Cam_Region_Index_Tag
 {
     CCAG_TRACK_CAMERA_REGION_FRONT = 0,
@@ -90,6 +100,32 @@ typedef enum Changan_Track_Cam_Region_Index_Tag
     CCAG_CAMERA_REGION_RIGHT
  
  } Changan_Cam_Region_Index_T;
+	
+
+typedef enum RenderDataTypeTag
+{
+	RENDER_DATA_CAN = 1,
+	RENDER_DATA_VIEW_CMD,
+	RENDER_DATA_TYPE_NUM,
+}
+RenderDataTypeT;
+
+typedef struct RenderDataHeaderTag
+{
+	unsigned short dataTypeId;
+	unsigned int   dataLength;
+}
+RenderDataHeaderT;
+
+typedef struct RenderDataTag
+{
+	RenderDataHeaderT dataHeader;
+	void*             data;
+}
+RenderDataT;
+
+
+DLL_PUBLIC int SetRenderData(RenderDataT* pRenderData);	
 
 DLL_PUBLIC void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 DLL_PUBLIC void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf);

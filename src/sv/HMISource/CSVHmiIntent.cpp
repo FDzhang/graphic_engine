@@ -81,7 +81,7 @@ int CSVHmiIntent::Intent(char* pToHmi)
 	}
 
 	m_fromHmi = GetCurrentHmi();
-
+	
 	m_toHmi = static_cast<ISVHmi*>(CSVHmiFactory::CreateHmi(&pToHmi));
 	m_toHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
 

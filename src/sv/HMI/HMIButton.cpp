@@ -39,13 +39,13 @@ HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode)
 
 HMIButton::~HMIButton()
 {
+
     ISpirit* ButtonLayer = m_uiNode->GetSpirit(m_buttonId);
 	if(ButtonLayer && m_buttonSlot->iconMtl)
 	{
     	ButtonLayer->Release();
-    	m_buttonSlot->iconMtl->Release();
+    	//m_buttonSlot->iconMtl->Release();
 	}
-
     delete m_buttonSlot;
 }
 
