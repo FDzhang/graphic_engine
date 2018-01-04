@@ -118,10 +118,10 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_objViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_objViewNode);
 
 	m_objViewNode->SetClear(FALSE, TRUE);
-	AVMData::GetInstance()->SetObjectViewNode(m_objViewNode);
+	CAvmRenderDataBase::GetInstance()->SetObjectViewNode(m_objViewNode);
 
     Region* objViewNodeAera;
-    AVMData::GetInstance()->GetObjectViewRegion(&objViewNodeAera);
+    CAvmRenderDataBase::GetInstance()->GetObjectViewRegion(&objViewNodeAera);
     m_objViewNode->SetRenderROI(objViewNodeAera);
 
 	IMaterial* carmtl;
@@ -155,7 +155,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	Calc3DGroundPos(pos,&ground_width,&ground_height);
 
     unsigned char isCarTransparentMode = 0;
-    AVMData::GetInstance()->GetCarTransparentStatus(isCarTransparentMode);
+    CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&isCarTransparentMode);
 
 	if(isCarTransparentMode)
 	{
@@ -315,7 +315,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 		20.0,	0.15,	-0.1,
 		24.0,	0.0,	0.0};
 	
-	AVMData::GetInstance()->GetAnimationManager(&m_am);
+	CAvmRenderDataBase::GetInstance()->GetAnimationManager(&m_am);
 	m_am->CreateKeyAnimation(key, sizeof(key)/12,2, &m_wheelRot);
 		
 	IAProperty* val=0;
@@ -333,7 +333,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	}
 	m_wheelRot->SetDeltaUpdate(0);
 
-	AVMData::GetInstance()->GetObjectViewCameraParams(&m_objViewCameraParams);
+	CAvmRenderDataBase::GetInstance()->GetObjectViewCameraParams(&m_objViewCameraParams);
 
 	m_objViewCameraId = m_objViewNode->CreateCamera(m_objViewCameraParams->fovx, m_objViewCameraParams->aspect, 
 													m_objViewCameraParams->znear, m_objViewCameraParams->zfar, &m_objViewCamera);
@@ -366,13 +366,13 @@ int CAvmObjectViewNode::UpdateNode()
 	ProcessWheelRoll();
 
 	unsigned char carTransparentStatus = 0;
-	AVMData::GetInstance()->GetCarTransparentStatus(carTransparentStatus);
+	CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&carTransparentStatus);
 	if(carTransparentStatus)
 	{
 		static SVNode2DStich* timeStitchNode =  NULL;
 		if(timeStitchNode == NULL)
 		{
-			AVMData::GetInstance()->GetTimeStitcherNode(&timeStitchNode);
+			CAvmRenderDataBase::GetInstance()->GetTimeStitcherNode(&timeStitchNode);
 		}
 		m_3dGroundMtl->SetDiffuseMap(timeStitchNode->GetGroundTextureId());
 	}
@@ -460,7 +460,7 @@ int CAvmObjectViewNode::Calc3DGroundTexture()
 	}
 
 	SVNode2DStich* stitchNode;
-	AVMData::GetInstance()->GetTimeStitcherNode(&stitchNode);
+	CAvmRenderDataBase::GetInstance()->GetTimeStitcherNode(&stitchNode);
 	if(stitchNode)
     {
 		stitchNode->CalcShadowTextureCoord(car_rect_image,car_rect_adjust,texture);

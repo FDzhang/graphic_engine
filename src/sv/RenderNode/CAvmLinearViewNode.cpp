@@ -150,7 +150,7 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 	
 	//m_viewNode->SetClear(FALSE, TRUE);
 	Region* linearViewRegion;
-	AVMData::GetInstance()->GetLinearViewRegion(&linearViewRegion);
+	CAvmRenderDataBase::GetInstance()->GetLinearViewRegion(&linearViewRegion);
 	m_180DegreeViewNode->SetRenderROI(linearViewRegion);
 
 	m_180DegreeViewNode->SetClearColor(1.0,0.0,0.0,1.0);
@@ -208,7 +208,7 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 //#endif
 
 	/////////////////////////////cameraObject//////////////////
-	AVMData::GetInstance()->GetLinearViewCameraParams(&m_180DegreerViewCameraParams);
+	CAvmRenderDataBase::GetInstance()->GetLinearViewCameraParams(&m_180DegreerViewCameraParams);
 	m_180DegreeViewCameraId = m_180DegreeViewNode->CreateCamera(m_180DegreerViewCameraParams->fovx, m_180DegreerViewCameraParams->aspect, m_180DegreerViewCameraParams->znear, m_180DegreerViewCameraParams->zfar, &m_180DegreeViewCamera);
 	m_180DegreeViewNode->SetCamera(m_180DegreeViewCameraId);
 
@@ -227,7 +227,7 @@ int CAvmLinearViewNode::UpdateNode()
 {
 
 	unsigned char linear180DegreeViewCmd = 0;
-	AVMData::GetInstance()->GetDisplayViewCmd(linear180DegreeViewCmd);
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(linear180DegreeViewCmd);
 
 	if(linear180DegreeViewCmd == LINEAR_FRONT_180_DEGREE_VIEW)
 	{

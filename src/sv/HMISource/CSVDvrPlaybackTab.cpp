@@ -396,7 +396,8 @@ CSVDvrPlaybackTab::~CSVDvrPlaybackTab()
 			|| i == DVR_PLAYBACK_TAB_EMERGENCY_ICON
 			|| i == DVR_PLAYBACK_TAB_DELETE_ICON
 			|| i == DVR_PLAYBACK_TAB_DC_SWITCH
-			|| i == DVR_PLAYBACK_TAB_VIEW_FRONT
+			|| i == DVR_PLAYBACK_TAB_VIEW_FRONT
+
 			|| i == DVR_PLAYBACK_TAB_VIEW_REAR
 			|| i == DVR_PLAYBACK_TAB_VIEW_LEFT
 			|| i == DVR_PLAYBACK_TAB_VIEW_RIGHT)
@@ -1013,22 +1014,22 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 
 					if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
 					{
-						AVMData::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
+						CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_FRONT] = BUTTON_ON_IMAGE;
 					}
 					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_REAR)
 					{
-						AVMData::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
+						CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_REAR] = BUTTON_ON_IMAGE;
 					}
 					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_LEFT)
 					{
-						AVMData::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
+						CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_LEFT] = BUTTON_ON_IMAGE;
 					}
 					else if(playbackTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_RIGHT)
 					{
-						AVMData::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
+						CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
 						m_buttonStatus[DVR_PLAYBACK_TAB_VIEW_RIGHT] = BUTTON_ON_IMAGE;
 					}
 					
@@ -1111,7 +1112,8 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 }
 int CSVDvrPlaybackTab::RefreshHmi()
 {
-	for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+	for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+
 	{
 		m_baseButton[i]->SetShowIconNum(m_buttonStatus[i]);
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
@@ -1136,7 +1138,8 @@ int CSVDvrPlaybackTab::RefreshHmi()
 int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
 {
 	memset(m_buttonVisibility, pFlag, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
-	for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+	for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+
 	{
 		m_baseButton[i]->SetVisibility(pFlag);
 	}
@@ -1169,7 +1172,8 @@ int CSVDvrPlaybackTab::DestroyHmiElems()
 }
 
 int CSVDvrPlaybackTab::ToString(int pTime, char** pOutString)
-{
+{
+
 	int time_sec = pTime % 60;
 	int time_min = pTime / 60;
 

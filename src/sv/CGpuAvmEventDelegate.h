@@ -10,6 +10,7 @@
 #include "utils/utils.h"
 #include "global/config.h"
 #include "GpuAvmEvent.h"
+#include "IF_Algo.h"
 
 //前置申明
 class AvmEvent;

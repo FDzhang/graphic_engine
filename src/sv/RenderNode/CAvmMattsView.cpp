@@ -69,15 +69,15 @@ CAvmMattsView::~CAvmMattsView()
 int CAvmMattsView::Init()
 {
 	unsigned char singleViewNodeStatus = 0;
-	AVMData::GetInstance()->GetSingleViewNodeStatus(singleViewNodeStatus);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewNodeStatus(&singleViewNodeStatus);
 	if(singleViewNodeStatus == 0)
 	{
 		return MATTS_VIEW_INIT_FAILED;
 	}
-	AVMData::GetInstance()->GetSingleViewNode(&m_singleViewNode);
-	AVMData::GetInstance()->GetSingleViewPlaneNode(m_singleViewPlaneNode);
-	AVMData::GetInstance()->GetSingleViewVertex(m_singleViewVertex);
-	AVMData::GetInstance()->GetSingleViewMesh(m_singleViewMesh);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&m_singleViewNode);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewPlaneNode(m_singleViewPlaneNode);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewVertex(m_singleViewVertex);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewMesh(m_singleViewMesh);
 
 	m_mattsViewRegion.Set(0.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
 
@@ -87,7 +87,7 @@ int CAvmMattsView::Update()
 {	
 	unsigned char mattsViewCmd = 0;
 
-	AVMData::GetInstance()->GetDisplayViewCmd(mattsViewCmd);
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(mattsViewCmd);
 
 	static unsigned char lastMattsViewCmd = 255;
 
@@ -113,11 +113,11 @@ int CAvmMattsView::Update()
 			float* vertexData;
 			for(int i =eFrontSingle;i <= eRightSingle;i++)
 			{
-				AVMData::GetInstance()->GetSingleViewRoi(&vertexData, i - eFrontSingle);
+				CAvmRenderDataBase::GetInstance()->GetSingleViewRoi(&vertexData, i - eFrontSingle);
 				SetVertextValue(vertexData, i - eFrontSingle);
 			}
 			Region* singleViewRegion;
-			AVMData::GetInstance()->GetSingleViewRegion(&singleViewRegion);
+			CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 			m_singleViewNode->SetRenderROI(singleViewRegion);
 
 			lastMattsViewCmd = mattsViewCmd;

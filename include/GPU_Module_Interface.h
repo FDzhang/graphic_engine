@@ -77,7 +77,7 @@ typedef enum RenderInterfaceErrorCodeTag
 }
 RenderInterfaceErrorCodeT;
 
-
+/*
 typedef enum Changan_Track_Cam_Region_Index_Tag
 {
     CCAG_TRACK_CAMERA_REGION_FRONT = 0,
@@ -100,12 +100,130 @@ typedef enum Changan_Track_Cam_Region_Index_Tag
     CCAG_CAMERA_REGION_RIGHT
  
  } Changan_Cam_Region_Index_T;
+ */
+typedef struct GpuCalibResultTag
+{
+	unsigned int** outConfigStore;
+	float*		   dataBuffer;
+	unsigned short* guiIndexBuffer;
+	GPU_MDL_POSE	pose;
+}
+GpuCalibResultT;
+
+typedef struct StitchResultTag
+{
+	unsigned char* seamChangeFlag;
+	StitcherResult* sticherResult;
+
+}
+StitchResultT;
+
+typedef enum LkaLcFuncModeTag
+{
+	LDW_MODE = 0,
+	LKA_MODE,
+	LC_MODE,
+	LKA_LC_MODE_NUM,
+}
+LkaLcFuncModeT;
+
+typedef enum LkaControlStatusTag
+{
+	LKA_CTRL_UNRELIABLE = 0,
+	LKA_CTRL_WARNING,
+	LKA_CTRL_CONTROL,
+	LKA_CTRL_STATUS_NUM,
+}
+LkaControlStatusT;
+
+typedef enum LkaAlgoControlModeTag
+{
+	LKA_ALGO_CTRL_FAIL = 0,
+	LKA_ALGO_CTRL_OFF,
+	LKA_ALGO_CTRL_STANDBY,
+	LKA_ALGO_CTRL_LKA_STAGE1_LEFT,
+	LKA_ALGO_CTRL_LKA_STAGE1_RIGHT,
+	LKA_ALGO_CTRL_LKA_STAGE2_LEFT,
+	LKA_ALGO_CTRL_LKA_STAGE2_RIGHT,
+	LKA_ALGO_CTRL_TRANSITION,
+	LKA_ALGO_CTRL_TURN_SIGNAL,
+	LKA_ALGO_CTRL_LC_LEFT_LANE_CHANGE,
+	LKA_ALGO_CTRL_LC_RIGHT_LANE_CHANGE,
+	LKA_ALGO_CTRL_MODE_NUM,
+}
+LkaAlgoControlModeT;
+
+
+typedef struct LkaLcResultTag
+{
+	unsigned char funcMode;
+	unsigned char funcStatus;
+	unsigned char workStatus;
+	unsigned char leftControlStatus;
+	unsigned char rightControlStatus;
+	unsigned char algoControlMode;
+	unsigned char chimeFlag;
+	unsigned char errorFlag;
 	
+}
+LkaLcResultT;
+
+
+typedef enum MainMenuElementIdTag
+{
+	MAIN_MENU_SETTING = 0,
+	MAIN_MENU_LDW,
+	MAIN_MENU_LKA,
+	MAIN_MENU_LC,
+	MAIN_MENU_BSD,
+	MAIN_MENU_PARKING_IN,
+	MAIN_MENU_PARKING_OUT,
+	MAIN_MENU_TRAINED_PARKING,
+	MAIN_MENU_CTA,
+	MAIN_MENU_PD,
+	MAIN_MENU_DVR,
+	MAIN_MENU_ELEM_NUM,
+}
+MainMenuElementIdT;
+
+typedef enum IconStatusTag
+{
+	ICON_NORMAL = 0,
+	ICON_HIGHLIGHT,
+	ICON_FAILED,
+	ICON_STATUS_NUM,
+}
+IconStatusT;
+
+typedef struct MainMenuDataTag
+{
+	unsigned char iconStatus[MAIN_MENU_ELEM_NUM];
+	unsigned char menuVisibility;
+}
+MainMenuDataT;
+
+
+typedef struct CtaResultTag
+{
+	unsigned char ctaStatus;
+	void* ctaResult;
+}
+CtaResultT;	
 
 typedef enum RenderDataTypeTag
 {
 	RENDER_DATA_CAN = 1,
+	RENDER_DATA_MAIN_MENU,
 	RENDER_DATA_VIEW_CMD,
+	RENDER_DATA_CALIB_RESULT,
+	RENDER_DATA_LUMB_RESULT,
+	RENDER_DATA_STITCH_ANGLE,
+	RENDER_DATA_APA_RESULT,
+	RENDER_DATA_CTA_RESULT,
+	RENDER_DATA_LKA_LC_RESULT,
+	RENDER_DATA_ALGO_STATUS,
+	RENDER_DATA_SONAR_PLD_RESULT,
+	RENDER_DATA_SHUT_DOWN_DISPLAY,
 	RENDER_DATA_TYPE_NUM,
 }
 RenderDataTypeT;

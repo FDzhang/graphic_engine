@@ -63,12 +63,12 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 	m_leftRightViewNodeId[0] = m_xrCore->CreateRenderNodeScene(0, &m_leftRightViewNode[0]);
  
  	Region* viewRegion;
-	AVMData::GetInstance()->GetLeftRightViewRegion(&viewRegion, left_camera_index);
+	CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegion, left_camera_index);
 	m_leftRightViewNode[0]->SetRenderROI(viewRegion);
 
 	m_leftRightViewNodeId[1] = m_xrCore->CreateRenderNodeScene(0, &m_leftRightViewNode[1]);
 
-	AVMData::GetInstance()->GetLeftRightViewRegion(&viewRegion, right_camera_index);
+	CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegion, right_camera_index);
 	m_leftRightViewNode[1]->SetRenderROI(viewRegion);
 
 	m_SV2DData = new GlSV2D;
@@ -126,7 +126,7 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 		m_leftRightViewPlane[i - eLeftSingle]->SetEnable(0);
 		
 		/////////////////////////////cameraObject//////////////////
-		AVMData::GetInstance()->GetSingleViewCameraParams(&m_leftRightViewCameraParams);
+		CAvmRenderDataBase::GetInstance()->GetSingleViewCameraParams(&m_leftRightViewCameraParams);
 		m_leftRightViewCameraId[i - eLeftSingle] =  m_leftRightViewNode[i - eLeftSingle]->CreateCamera(m_leftRightViewCameraParams->fovx, m_leftRightViewCameraParams->aspect, m_leftRightViewCameraParams->znear, m_leftRightViewCameraParams->zfar, &m_leftRightViewCamera[i - eLeftSingle]);
 		m_leftRightViewNode[i - eLeftSingle]->SetCamera(m_leftRightViewCameraId[i - eLeftSingle]);
 		m_leftRightViewCamera[i - eLeftSingle]->Set2DCamera(1);

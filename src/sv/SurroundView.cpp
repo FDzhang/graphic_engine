@@ -244,7 +244,7 @@ int XRSV::UpdateHmiData()
 	static unsigned char lastViewIndex = currentViewIndex;
 	if(lastViewIndex != currentViewIndex)
 	{
-		AVMData::GetInstance()->SetDisplayViewCmd(currentViewIndex);
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(currentViewIndex);
 		lastViewIndex = currentViewIndex;
 	}
 	
@@ -414,20 +414,19 @@ bool XRSV::update(unsigned int view_control_flag)
 */
 		unsigned char displayCmd = DatabaseGetAvmViewType();
 		static unsigned char lastDisplayCmd = 255;
-
 		if(lastDisplayCmd != displayCmd)
 		{
-			AVMData::GetInstance()->SetDisplayViewCmd(displayCmd);
+			CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(displayCmd);
 			lastDisplayCmd = displayCmd;
 		}
 
-    	UpdateHmiData();
+    	//UpdateHmiData();
 
         //svscn->Update(view_control_flag,0);
 
 		if(m_avmLogicManager)
 		{
-			AVMData::GetInstance()->SetApaOverlayResult(g_APA_Result);
+			CAvmRenderDataBase::GetInstance()->SetApaOverlayResult(&g_APA_Result);
 			m_avmLogicManager->Update();
 
 		}
@@ -522,6 +521,14 @@ void XRSV::MockTouchEvent(unsigned char key_mode, unsigned char key_value)
 void XRSV::SingleTouchDown(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Down);
+
+	TouchDataT touchData;
+	touchData.x = x;
+	touchData.y = y;
+	touchData.touchAction = TouchEvent_Down;
+	CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
+
+	
 	//svscn->OnMouseDown(x,y);
 	if(m_customHmi != NULL)
 	{
@@ -548,12 +555,26 @@ void XRSV::SingleTouchDown(int x, int y)
 void XRSV::SingleTouchMove(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Move);
+	
+	TouchDataT touchData;
+	touchData.x = x;
+	touchData.y = y;
+	touchData.touchAction = TouchEvent_Move;
+	CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
+	
 	//svscn->OnMouseMove(x,y);
 }
 
 void XRSV::SingleTouchUp(int x, int y)
 {
 	if (g_pIXrCore) g_pIXrCore->OnTouchEvent(x, y, TouchEvent_Up);
+
+	TouchDataT touchData;
+	touchData.x = x;
+	touchData.y = y;
+	touchData.touchAction = TouchEvent_Up;
+	CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
+	
 	//svscn->OnMouseUp(x,y);
 }
 

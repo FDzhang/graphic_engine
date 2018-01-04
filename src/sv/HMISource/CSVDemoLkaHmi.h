@@ -1,5 +1,5 @@
 /*===========================================================================*\
- * FILE: CSVChangAnMainHmi.h
+ * FILE: CSVDemoLkaHmi.h
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -29,63 +29,65 @@
 \*===========================================================================*/
 
 
-#ifndef _CSV_CHANGAN_MAIN_HMI_H_
-#define _CSV_CHANGAN_MAIN_HMI_H_
+#ifndef _CSV_DEMO_LKA_HMI_H_
+#define _CSV_DEMO_LKA_HMI_H_
 
-#include <iostream>
-#include <memory>
 #include "ISVHmi.h"
 
 
-typedef enum ChangAnMainHmiElementTag
+typedef enum DemoLkaHmiElementTag
 {
-	CHANGAN_MAIN_MENU_BKG = 0,
-	CHANGAN_MAIN_MENU_ENTER_ICON = 1,
-	CHANGAN_MAIN_MENU_EXIT_ICON,
-	CHANGAN_MAIN_DVR_START_ICON,
-
-	CHANGAN_MAIN_ELEMENT_NUM,
+	DEMO_LKA_STATUS_BAR_BKG = 1,
+	DEMO_LKA_SPEED_PROMPT,
+	DEMO_LKA_DIRECTION_PROMPT,
+	DEMO_LKA_STEERING_PROMPT,
+	DEMO_LKA_WARNING,
+	DEMO_LKA_LANE_BKG,
+	DEMO_LKA_LEFT_SIDE_LANE,
+	DEMO_LKA_RIGHT_SIDE_LANE,
+	DEMO_LKA_CAR,
+    DEMO_LKA_ICON_NUMS,
 }
-ChangAnMainHmiElementT;
+DemoLkaHmiElementT;
 
 
-class CSVChangAnMainHmi : public ISVHmi
+class CSVDemoLkaHmi : public ISVHmi
 {
 public:
-
-	CSVChangAnMainHmi();
-	~CSVChangAnMainHmi();
+	CSVDemoLkaHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
+	~CSVDemoLkaHmi();
+	virtual int SetElementsVisibility(unsigned char pFlag);
 	HMI_BASE_INHERITANCE_FUNC()
-
-
-
+	
 private:
 	int SetHmiParams();
 	int RefreshHmi();
-
+	void SetHmiElementProperty(unsigned char pIconIndex, float pIconPosX, float pIconPosY, float pIconWidth, float pIconHeight);
+	
 private:
-	Hmi_Button_Data_T m_baseButtonData[CHANGAN_MAIN_ELEMENT_NUM];
-    HMIButton* m_baseButton[CHANGAN_MAIN_ELEMENT_NUM];
+	Hmi_Button_Data_T m_baseButtonData[DEMO_LKA_ICON_NUMS];
+    HMIButton* m_baseButton[DEMO_LKA_ICON_NUMS];
+
+	float m_buttonPos[DEMO_LKA_ICON_NUMS][BUTTON_POS];
+	float m_buttonSize[DEMO_LKA_ICON_NUMS][BUTTON_SIZE];
+
+	unsigned char m_buttonVisibility[DEMO_LKA_ICON_NUMS];
+	unsigned char m_buttonImage[DEMO_LKA_ICON_NUMS];
 	
-	float m_buttonPos[CHANGAN_MAIN_ELEMENT_NUM][BUTTON_POS];
-	float m_buttonSize[CHANGAN_MAIN_ELEMENT_NUM][BUTTON_SIZE];
+	IActionTrigger*	m_trigger[DEMO_LKA_ICON_NUMS];
 
-	unsigned char m_buttonVisibility[CHANGAN_MAIN_ELEMENT_NUM];
 
-	IActionTrigger*	m_trigger[CHANGAN_MAIN_ELEMENT_NUM];
-
-	ISVHmi* m_cameraHmi;
-
-	unsigned char m_cameraHmiVisibility;
-	
 	int m_screenWidth;
 	int m_screenHeight;
+
+
 public:	
 
 };
 
 
-#endif //_CSV_CHANGAN_MAIN_HMI_H_
+#endif //_CSV_DEMO_LKA_HMI_H_
+
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
@@ -93,5 +95,5 @@ public:
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  12/16/17   Jensen Wang   Create the CSVChangAnMainHmi class.
+ *  1/4/18   Jensen Wang   Create the CSVDemoLkaHmi class.
 \*===========================================================================*/

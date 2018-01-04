@@ -74,7 +74,7 @@ int CAvmApaBevOverlay::Init(ISceneNode* pRootNode)
 
 int CAvmApaBevOverlay::Update()
 {
-	AVMData::GetInstance()->GetApaOverlayResult(&m_APA_result);
+	CAvmRenderDataBase::GetInstance()->GetApaOverlayResult(&m_APA_result);
 	UpdateApaOverlay(m_APA_result);
 
 	return AVM_OVERLAY_NORMAL;

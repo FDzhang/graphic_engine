@@ -63,9 +63,9 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 
 	m_3dViewNode->SetClearColor(0.0,0.0,0.0,1.0);
 	m_3dViewNode->SetClear(TRUE, TRUE);
-	AVMData::GetInstance()->Set3dViewNode(m_3dViewNode);
+	CAvmRenderDataBase::GetInstance()->Set3dViewNode(m_3dViewNode);
     
-	AVMData::GetInstance()->Get3dViewRegion(&avm3dViewAera);
+	CAvmRenderDataBase::GetInstance()->Get3dViewRegion(&avm3dViewAera);
     m_3dViewNode->SetRenderROI(avm3dViewAera);	
 
 	m_renderDelegate = new RenderDelegateSV();
@@ -134,7 +134,7 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 
 	/////////////////////////////cameraScene//////////////////
 
-	AVMData::GetInstance()->Get3dViewCameraParams(&m_3dViewCameraParams);
+	CAvmRenderDataBase::GetInstance()->Get3dViewCameraParams(&m_3dViewCameraParams);
 	m_3dViewCameraId = m_3dViewNode->CreateCamera(m_3dViewCameraParams->fovx, m_3dViewCameraParams->aspect, 
 												m_3dViewCameraParams->znear, m_3dViewCameraParams->zfar, &m_3dViewCamera);
 	//m_freeModeFOV = m_3dViewCameraParams->fovx; //------wjx---------

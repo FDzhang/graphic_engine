@@ -39,7 +39,7 @@
 #include "DataSource/AVM2DLUT.h"
 #include "DataSource/AVMCANData.h"
 #include "DataSource/AVMUSCData.h"
-
+#include "DataSource/CAvmRenderDataBase.h"
 #include "ICameraSourceRender.h"
 
 #include "bev_config.h"
@@ -104,7 +104,7 @@ public:
 private:
 	ProcessInfoData m_Processing_Data;
 };
-
+ 
 class AVMData
 {
 public:
@@ -122,98 +122,7 @@ public:
 	
 	void GetBevConfig(BEV_CONFIG_T* pConfig);
 	void SetBevConfig(BEV_CONFIG_T pConfig);
-	void GetCarTransparentStatus(unsigned char& pCarTranspStatus);
-	void SetCarTransparentStatus(unsigned char pCarTranspStatus);
 
-
-	void Get3dViewRegion(Region** pRegion);
-	void GetStitchViewRegion(Region** pRegion);
-	void GetSingleViewRegion(Region** pRegion);
-	void GetObjectViewRegion(Region** pRegion);	
-	void GetLinearViewRegion(Region** pRegion);
-	void GetObjectViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-	void GetStitchViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-	void GetSingleViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-	void Get3dViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-	void GetLinearViewCameraParams(SurroundViewCameraParamsT** pCameraParams);
-
-	void Set3dViewRegion(Region* pRegion);
-	void SetStitchViewRegion(Region* pRegion);
-	void SetSingleViewRegion(Region* pRegion);
-	void SetObjectViewRegion(Region* pRegion);	
-	void SetLinearViewRegion(Region* pRegion);
-	void GetLeftRightViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex);
-	void SetLeftRightViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex);
-
-	void SetObjectViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
-	void SetStitchViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
-	void SetSingleViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
-	void Set3dViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
-	void SetLinearViewCameraParams(SurroundViewCameraParamsT* pCameraParams);
-
-	void SetAnimationManager(class IAnimationManager* pAm);
-	void GetAnimationManager(class IAnimationManager** pAm);
-	void GetSv2dData(class GlSV2D** pGlSv2d);
-	void SetSv2dData(class GlSV2D* pGlSv2d);
-	void SetStitchViewNodeStatus(unsigned char pStatus);
-	void GetStitchViewNodeStatus(unsigned char& pStatus);
-	void Set3dViewNodeStatus(unsigned char pStatus);
-	void Get3dViewNodeStatus(unsigned char& pStatus);
-	void SetSingleViewNodeStatus(unsigned char pStatus);
-	void GetSingleViewNodeStatus(unsigned char& pStatus);
-	void SetObjectViewNodeStatus(unsigned char pStatus);
-	void GetObjectViewNodeStatus(unsigned char& pStatus);
-
-	void Set3dViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
-	void Get3dViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
-	void SetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
-	void GetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
-	void SetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
-	void GetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
-	void SetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
-	void GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
-	void Set180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
-	void Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
-	void SetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
-	void GetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
-
-
-	void SetDisplayViewCmd(unsigned char pCmd);
-	void GetDisplayViewCmd(unsigned char& pCmd);
-
-	void SetSingleViewChannel(unsigned char pChannelId);
-	void GetSingleViewChannel(unsigned char& pChannelId);
-
-	void Set3dViewIndex(unsigned char pIndex);
-	void Get3dViewIndex(unsigned char& pIndex);
-	void SetSingleViewNode(class ISceneNode* pSingleViewNode);
-	void GetSingleViewNode(class ISceneNode** pSingleViewNode);
-	void SetStitchViewNode(class ISceneNode* pStitchViewNode);
-	void GetStitchViewNode(class ISceneNode** pStitchViewNode);
-	void Set3dViewNode(class ISceneNode* p3dViewNode);
-	void Get3dViewNode(class ISceneNode** p3dViewNode);
-	void SetObjectViewNode(class ISceneNode* pObjViewNode);
-	void GetObjectViewNode(class ISceneNode** pObjViewNode);
-
-	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
-	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);
-
-	void SetSingleViewVertex(float* pSingleViewVertex[]);
-	void GetSingleViewVertex(float* pSingleViewVertex[]);
-
-	void SetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[]);
-	void GetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[]);
-
-	void SetSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
-	void GetSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
-	void SetLargeSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
-	void GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
-
-	void GetTimeStitcherNode(class SVNode2DStich**	pTimeStitchNode);
-	void SetTimeStitcherNode(class SVNode2DStich*	pTimeStitchNode);
-	
-	void GetApaOverlayResult(APAOverlayStruct* pAPAReslt);
-	void SetApaOverlayResult(APAOverlayStruct pAPAReslt);
 
 	
 	void SetStitchAngle(unsigned char pSeamChangedFlag, unsigned char* pSeamChangeFlag,GLfloat* pVertex);
@@ -251,53 +160,6 @@ private:
 	float m_rear_single_view_rect[4];
 	Calib_3D_Para m_calib_3d;
     
-	Region m_singleViewRegion;
-	Region m_3dViewRegion;
-	Region m_stitchViewRegion;
-	Region m_objectViewRegion;
-	Region m_fadeRegion;
-	Region m_linearViewRegion;
-	Region m_leftViewRegion;
-	Region m_rightViewRegion;
-
-	SurroundViewCameraParamsT m_stitchViewCameraParams;
-	SurroundViewCameraParamsT m_objectViewCameraParams;
-	SurroundViewCameraParamsT m_3dViewCameraParams;
-	SurroundViewCameraParamsT m_singleViewCameraParams;	
-	SurroundViewCameraParamsT m_linearViewCameraParams;
-
-	class GlSV2D* m_sv2dData;
-	class IAnimationManager* m_am;
-	class ISceneNode* m_singleViewNode;
-	class ISceneNode* m_3dViewNode;
-	class ISceneNode* m_objectViewNode;
-	class IMesh*	  m_singleViewMesh[4];
-	class INode*	  m_singleViewPlaneNode[4];
-	float*			  m_singleViewVertex[4];
-	float*			  m_singleViewRoi[4];
-	float*			  m_largeSingleViewRoi[4];
-
-	APAOverlayStruct       m_apaReslt;
-
-	unsigned char m_avm3dVisibility[PROCESS_FUNC_NUMS];
-	unsigned char m_avmSingleViewVisibility[PROCESS_FUNC_NUMS];
-	unsigned char m_avmStitchViewVisibility[PROCESS_FUNC_NUMS];
-	unsigned char m_avmObjViewVisibility[PROCESS_FUNC_NUMS];
-	unsigned char m_avm180DegreeViewVisibility[PROCESS_FUNC_NUMS];
-	unsigned char m_avmLeftRightViewVisibility[PROCESS_FUNC_NUMS];
-	
-	unsigned char m_stitchViewNodeStatus;
-	unsigned char m_singleViewNodeStatus;
-	unsigned char m_avm3dViewNodeStatus;
-	unsigned char m_objViewNodeStatus;
-
-	unsigned char m_displayViewCmd;
-	unsigned char m_singleViewChannel;
-	unsigned char m_avm3dViewIndex;
-
-	unsigned char m_carTranspStatus;
-	class ISceneNode* m_stitchViewNode;
-
 	BEV_CONFIG_T		   m_bevConfig;
 
 	class SVNode2DStich*	m_timeStitchNode;

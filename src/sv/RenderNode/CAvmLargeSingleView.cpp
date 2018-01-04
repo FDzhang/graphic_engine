@@ -36,15 +36,15 @@ CAvmLargeSingleView::~CAvmLargeSingleView()
 int CAvmLargeSingleView::Init()
 {
 	unsigned char singleViewNodeStatus = 0;
-	AVMData::GetInstance()->GetSingleViewNodeStatus(singleViewNodeStatus);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewNodeStatus(&singleViewNodeStatus);
 	if(singleViewNodeStatus == 0)
 	{
 		return LARGE_SINGLE_VIEW_INIT_FAILED;
 	}
-	AVMData::GetInstance()->GetSingleViewNode(&m_singleViewNode);
-	AVMData::GetInstance()->GetSingleViewPlaneNode(m_singleViewPlaneNode);
-	AVMData::GetInstance()->GetSingleViewVertex(m_singleViewVertex);
-	AVMData::GetInstance()->GetSingleViewMesh(m_singleViewMesh);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&m_singleViewNode);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewPlaneNode(m_singleViewPlaneNode);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewVertex(m_singleViewVertex);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewMesh(m_singleViewMesh);
 	//AVMData::GetInstance()->GetLargeSingleViewRoi(m_singleViewRoi);
 
     float stich_region_width = 0.35 *  XrGetScreenWidth();
@@ -59,14 +59,14 @@ int CAvmLargeSingleView::Update()
 {
 	unsigned char largeViewCmd = 0;
 
-	AVMData::GetInstance()->GetDisplayViewCmd(largeViewCmd);
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(largeViewCmd);
 	
 	if(largeViewCmd >= FRONT_LARGE_SINGLE_VIEW
 		&& largeViewCmd <= RIGHT_LARGE_SINGLE_VIEW)
 	{
 		if(m_lastLargeViewCmd != largeViewCmd)
 		{
-			AVMData::GetInstance()->GetLargeSingleViewRoi(&m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
+			CAvmRenderDataBase::GetInstance()->GetLargeSingleViewRoi(&m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			SetLargeViewVertextValue(m_singleViewRoi[largeViewCmd - FRONT_LARGE_SINGLE_VIEW], largeViewCmd - FRONT_LARGE_SINGLE_VIEW);
 			m_singleViewNode->SetRenderROI(&m_largeViewRegion);
 			m_singleViewNode->SetClear(TRUE,TRUE);
@@ -80,11 +80,11 @@ int CAvmLargeSingleView::Update()
 		{
 			float* vertexData;
 			
-			AVMData::GetInstance()->GetSingleViewRoi(&vertexData, largeViewCmd - FRONT_SINGLE_VIEW);
+			CAvmRenderDataBase::GetInstance()->GetSingleViewRoi(&vertexData, largeViewCmd - FRONT_SINGLE_VIEW);
 			SetVertextValue(vertexData, largeViewCmd - FRONT_SINGLE_VIEW);
 			
 			Region* singleViewRegion;
-			AVMData::GetInstance()->GetSingleViewRegion(&singleViewRegion);
+			CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 			m_singleViewNode->SetRenderROI(singleViewRegion);
 			m_singleViewNode->SetClear(FALSE,FALSE);
 			m_lastLargeViewCmd = largeViewCmd;

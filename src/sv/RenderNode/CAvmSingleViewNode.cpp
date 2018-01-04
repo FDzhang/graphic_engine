@@ -64,10 +64,10 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	m_singleViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_singleViewNode);
  
  	Region* singleViewRegion;
-	AVMData::GetInstance()->GetSingleViewRegion(&singleViewRegion);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 	m_singleViewNode->SetRenderROI(singleViewRegion);
 			
-	AVMData::GetInstance()->GetSv2dData(&m_SV2DData);
+	CAvmRenderDataBase::GetInstance()->GetSv2dData(&m_SV2DData);
 
 	m_renderDelegate = new RenderDelegateSV2D();
 	m_renderDelegate->Init();
@@ -90,7 +90,7 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 
 		m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
 
-		AVMData::GetInstance()->SetSingleViewRoi(pData, i - eFrontSingle);
+		CAvmRenderDataBase::GetInstance()->SetSingleViewRoi(pData, i - eFrontSingle);
 
 		meshid = m_singleViewNode->CreateMesh(ModelType_Null, 1,0,0,MeshName[i-eFrontSingle], &(m_singleViewMesh[i - eFrontSingle]));
 		m_singleViewMesh[i - eFrontSingle]->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
@@ -124,7 +124,7 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	m_SV2Dplane[eFrontSingle]->SetEnable(0);
 	
 	/////////////////////////////cameraObject//////////////////
-	AVMData::GetInstance()->GetSingleViewCameraParams(&m_singleViewCameraParams);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewCameraParams(&m_singleViewCameraParams);
 	m_singleViewCameraId = m_singleViewNode->CreateCamera(m_singleViewCameraParams->fovx, m_singleViewCameraParams->aspect, m_singleViewCameraParams->znear, m_singleViewCameraParams->zfar, &m_singleViewCamera);
 	m_singleViewNode->SetCamera(m_singleViewCameraId);
 		//m_singleViewNode->SetEnable(1);
@@ -134,17 +134,17 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	m_singleViewCamera->LookAt(0.0,0.0,-0.0);
 	m_singleViewCamera->RotateAround(0,45);
 
-	AVMData::GetInstance()->SetSingleViewNode(m_singleViewNode);
-	AVMData::GetInstance()->SetSingleViewPlaneNode(m_SV2Dplane);
-	AVMData::GetInstance()->SetSingleViewVertex(m_singleviewVertex);
-	AVMData::GetInstance()->SetSingleViewMesh(m_singleViewMesh);
+	CAvmRenderDataBase::GetInstance()->SetSingleViewNode(m_singleViewNode);
+	CAvmRenderDataBase::GetInstance()->SetSingleViewPlaneNode(m_SV2Dplane);
+	CAvmRenderDataBase::GetInstance()->SetSingleViewVertex(m_singleviewVertex);
+	CAvmRenderDataBase::GetInstance()->SetSingleViewMesh(m_singleViewMesh);
 
 	return AVM_SINGLEVIEW_NORMAL;
 }
 int CAvmSingleViewNode::UpdateNode()
 {
 	unsigned char singleViewCmd = 0;
-	AVMData::GetInstance()->GetSingleViewChannel(singleViewCmd);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewChannel(&singleViewCmd);
 		
     for(int i = eFrontSingle;i<=eRightSingle;i++)
     {

@@ -66,11 +66,11 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 	m_stitchViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_stitchViewNode);
 
 	Region* stitchViewRegion;
-	AVMData::GetInstance()->GetStitchViewRegion(&stitchViewRegion);
+	CAvmRenderDataBase::GetInstance()->GetStitchViewRegion(&stitchViewRegion);
 
 	m_stitchViewNode->SetRenderROI(stitchViewRegion);
 
-	AVMData::GetInstance()->GetSv2dData(&m_SV2DData);
+	CAvmRenderDataBase::GetInstance()->GetSv2dData(&m_SV2DData);
 	int displayChannel = 2;
 
 	m_renderDelegate = new RenderDelegateSV2D();
@@ -181,7 +181,7 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 	m_SV2Dplane[i]->SetName(Model[i]);		
 	m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
 	
-	AVMData::GetInstance()->GetStitchViewCameraParams(&m_stitchViewCameraParams);
+	CAvmRenderDataBase::GetInstance()->GetStitchViewCameraParams(&m_stitchViewCameraParams);
 	
 	int m_stitchViewCameraId = m_stitchViewNode->CreateCamera(m_stitchViewCameraParams->fovx, m_stitchViewCameraParams->aspect, m_stitchViewCameraParams->znear, m_stitchViewCameraParams->zfar, &m_stitchViewCamera);
 	

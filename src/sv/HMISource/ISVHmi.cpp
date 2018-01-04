@@ -1,9 +1,10 @@
 #include "ISVHmi.h"
+#include "../AVMData.h"
 //#include "gpu_log.h"
 
 extern IXrCore* g_pIXrCore;
 
-ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0)
+ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0),m_touchEventFlag(0)
 {
 	if(pUiNode == NULL)
     {
@@ -16,6 +17,12 @@ ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0)
 		m_uiNodeId = pUiNodeId;
 		m_uiNodeInsertFlag = InsertFlag_Child;
 	}
+
+	TouchDataT touchData;
+	touchData.x = 0;
+	touchData.y = 0;
+	touchData.touchAction = 0;
+	CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
 }
 
 IUINode* ISVHmi::GetSvHmiNode(int& pUiNodeId)
@@ -72,6 +79,8 @@ bool ISVHmi::SetSingleTouchDownEvent(int x, int y)
 }
 bool ISVHmi::GetTouchEventInfo(int &x, int &y, int &type)
 {
+	TouchDataT touchData;
+
 	switch(m_touchEventFlag)
 	{
 	case TouchEvent_Down:
@@ -82,10 +91,24 @@ bool ISVHmi::GetTouchEventInfo(int &x, int &y, int &type)
 		return true;
 		break;
 	default:
+		CAvmRenderDataBase::GetInstance()->GetTouchData(&touchData);
+		if(touchData.touchAction == TouchEvent_Down)
+		{
+			type = TouchEvent_Down;
+			x = touchData.x;
+			y = touchData.y;
+			return true;
+		}
+		else
+		{
+			type = 0;
+			x = 0;
+			y = 0;	
+		}
 		
 		break;
 	}
-	
+
 	return false;
 }
 bool ISVHmi::SetCurrentView(unsigned char viewIndex)

@@ -31,6 +31,7 @@
 #include "../HMISource/CSVChangAnHmi.h"
 #include "../HMISource/CSVDvrBaseHmi.h"
 #include "../HMISource/CSVChangAnMainHmi.h"
+#include "../HMISource/CSVDemoMainHmi.h"
 #include "gpu_log.h"
 
 CAvmLogicManager::CAvmLogicManager():m_dvrBaseHmi(0),m_mainHmi(0)
@@ -92,8 +93,8 @@ int CAvmLogicManager::InitAlgoHmiModel()
 
 	ISceneNode* singleViewNode;
 	ISceneNode* stitchViewNode;
-	AVMData::GetInstance()->GetSingleViewNode(&singleViewNode);
-	AVMData::GetInstance()->GetStitchViewNode(&stitchViewNode);
+	CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&singleViewNode);
+	CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&stitchViewNode);
 	m_adasHmi->Init(bevConfig,singleViewNode,stitchViewNode,m_adasMdl,m_hmiNums);
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
@@ -116,7 +117,8 @@ int CAvmLogicManager::InitHmi()
 		//AddHmi(m_dvrBaseHmi, &m_avmHmi);
 	}*/
 	
-	char* hmiName = "CSVChangAnMainHmi";
+	//char* hmiName = "CSVChangAnMainHmi";
+	char* hmiName = "CSVDemoMainHmi";
 	CSVHmiIntent::GetInstance()->Intent(hmiName);
 	//char* hmiName = "CSVDvrBaseHmi";
 	//CSVHmiIntent::GetInstance()->Intent(hmiName);	
@@ -184,7 +186,30 @@ int CAvmLogicManager::UpdateViewModel()
 	    cnt++;
 	}
 */
-	AVMData::GetInstance()->GetDisplayViewCmd(direction);
+
+//used for debuging
+#if 1
+    static int cnt = 0;
+    if(cnt == 800)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
+    }
+	if(cnt == 2000)
+	{
+	    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_VIEW);
+	}
+	if(cnt == 3400)
+	{
+	    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_FRONT_VIEW);
+	}
+
+    if(cnt == 8000)
+    {
+        cnt = 0; 
+    }
+	cnt++;
+#endif
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(direction);
 	//Log_Error("----------direction: %d", direction);
 	m_avmViewControlModel->SetCurrentView();
 	if(direction >= FRONT_LARGE_SINGLE_VIEW
@@ -199,7 +224,7 @@ int CAvmLogicManager::UpdateViewModel()
 	}
 	else if(direction >= TOTAL_VIEW_NUM)
 	{
-		AVMData::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
 		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_VIEW_DISPLAY_FUNC);
 	}
 	else if(direction == TOUR_LARGE_3D_VIEW)

@@ -448,26 +448,26 @@ int CSVDvrRecordTab::Update(Hmi_Message_T& hmiMsg)
 				
 				if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_FRONT)
 				{
-					AVMData::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
+					CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
 					
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_FRONT] = BUTTON_ON_IMAGE;
 				}
 				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_REAR)
 				{
 				
-					AVMData::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
+					CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_REAR] = BUTTON_ON_IMAGE;
 				}
 				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_LEFT)
 				{
 				
-					AVMData::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
+					CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_LEFT] = BUTTON_ON_IMAGE;
 				}
 				else if(recordTabMsg[i].uStatus.ObjVal == GUI_VIEW_INDEX_RIGHT)
 				{
 				
-					AVMData::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
+					CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
 					m_buttonStatus[DVR_RECORD_TAB_VIEW_RIGHT] = BUTTON_ON_IMAGE;
 				}
 				break;
@@ -483,7 +483,8 @@ int CSVDvrRecordTab::Update(Hmi_Message_T& hmiMsg)
 }
 int CSVDvrRecordTab::RefreshHmi()
 {
-	for(int i = DVR_RECORD_TAB_RECORD_BKG; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
+	for(int i = DVR_RECORD_TAB_RECORD_BKG; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
+
 	{
 		m_baseButton[i]->SetShowIconNum(m_buttonStatus[i]);
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
@@ -494,7 +495,8 @@ int CSVDvrRecordTab::RefreshHmi()
 int CSVDvrRecordTab::SetElementsVisibility(unsigned char pFlag)
 {
 	memset(m_buttonVisibility, pFlag, DVR_RECORD_TAB_ELEMEMT_NUM * sizeof(unsigned char));
-	for(int i = DVR_RECORD_TAB_RECORD_BKG; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
+	for(int i = DVR_RECORD_TAB_RECORD_BKG; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
+
 	{
 		m_baseButton[i]->SetVisibility(pFlag);
 	}

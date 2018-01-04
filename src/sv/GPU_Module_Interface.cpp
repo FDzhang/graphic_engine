@@ -301,6 +301,9 @@ void UpdateGpuMdlCalibRslt(unsigned int ** out_config_store, float* data_buffer,
 }
 void UpdateAPAResult(APAOverlayStruct *pAPAReslt)
 {
+	if(pAPAReslt == NULL)
+		return;
+	
     g_APA_Result.drive_dirction_indicat = pAPAReslt->drive_dirction_indicat;
 	g_APA_Result.end_parking_sign_flag = pAPAReslt->end_parking_sign_flag;
 	g_APA_Result.online_detect_flag = pAPAReslt->online_detect_flag;
@@ -340,20 +343,202 @@ void UpdateTexture()
 
 }
 
+void ProcApa(APAOverlayStruct *pApaResult)
+{
+	if(pApaResult == NULL) return;
+	
+    g_APA_Result.drive_dirction_indicat = pApaResult->drive_dirction_indicat;
+	g_APA_Result.end_parking_sign_flag = pApaResult->end_parking_sign_flag;
+	g_APA_Result.online_detect_flag = pApaResult->online_detect_flag;
+	g_APA_Result.parking_lot_detect_flag = pApaResult->parking_lot_detect_flag;
+	g_APA_Result.park_lot_flag = pApaResult->park_lot_flag;
+	for(int i = 0;i<8;i++)
+	{
+	    g_APA_Result.pParkLotPos[i] = pApaResult->pParkLotPos[i];
+	}
+	g_APA_Result.parking_lot_type = pApaResult->parking_lot_type;
+	g_APA_Result.scroll_rate = pApaResult->scroll_rate;
+	g_APA_Result.stop_sign_flag = pApaResult->stop_sign_flag;
+	g_APA_Result.vP_GearR_Text = pApaResult->vP_GearR_Text;
+	// udpate Gear_R indicate text when vertical parking first turn
+	g_GearRText.show_flag = pApaResult->vP_GearR_Text;
+	g_GearRText.height = 155;
+	g_GearRText.width = 636;
+	g_GearRText.show_icon_num = 0;
+	g_GearRText.icon_file_name[0] = Indicatefile;
+	g_GearRText.pos[0]= 20;
+	g_GearRText.pos[1] = 150;
+}
+
+void ProcCta(CtaResultT* pCtaResult)
+{
+	if(pCtaResult == NULL) return;
+
+	app.UpdateCtaResult(pCtaResult->ctaStatus, pCtaResult->ctaResult);
+}
+
+void ProcStitch(StitchResultT* pStitchResult)
+{
+	if(pStitchResult == NULL) return;
+
+    float *pData;
+	int   unstitch_point_num = pStitchResult->sticherResult->gpu_2dlut_param->gpu_lut_config[1]
+	  + pStitchResult->sticherResult->gpu_2dlut_param->gpu_lut_config[3]
+	  + pStitchResult->sticherResult->gpu_2dlut_param->gpu_lut_config[5]
+	  + pStitchResult->sticherResult->gpu_2dlut_param->gpu_lut_config[7];
+
+	pData = pStitchResult->sticherResult->gpu_2dlut_param->gpu_lut_data + unstitch_point_num * 7;
+
+    app.UpdateStichAngle(pStitchResult->seamChangeFlag,pData);
+}
+
+void ProcAlgoStatus(unsigned char* pAlgoStatus)
+{
+	if(pAlgoStatus == NULL) return;
+
+	app.SetCurrentAlgoStatus(*pAlgoStatus);
+}
+
+void ProcSonarPld(Radar_PLD_Result* pReslt)
+{
+	pReslt->iParkLotBitFlag = g_radar_pld_reslt.iParkLotBitFlag;
+	pReslt->iParkLotNum = g_radar_pld_reslt.iParkLotNum;
+	for(int i = 0; i < 4; i++)
+	{
+		pReslt->sFrontMarginGround_Points[i] = g_radar_pld_reslt.sFrontMarginGround_Points[i];
+		pReslt->sGround_Points[i].x = g_radar_pld_reslt.sGround_Points[i].x/1000.0;
+
+		pReslt->sGround_Points[i].y = g_radar_pld_reslt.sGround_Points[i].y/1000.0;
+		pReslt->sTruePLD_Points[i] = g_radar_pld_reslt.sTruePLD_Points[i];
+		pReslt->sRearMarginGround_Points[i] = g_radar_pld_reslt.sRearMarginGround_Points[i];
+
+	}
+	pReslt->sGround_Points[0].x = g_radar_pld_reslt.sGround_Points[2].x/1000.0;
+
+	pReslt->sGround_Points[0].y = g_radar_pld_reslt.sGround_Points[2].y/1000.0;
+
+	pReslt->sGround_Points[1].x = g_radar_pld_reslt.sGround_Points[0].x/1000.0;
+
+	pReslt->sGround_Points[1].y = g_radar_pld_reslt.sGround_Points[0].y/1000.0;
+	pReslt->sGround_Points[2].x = g_radar_pld_reslt.sGround_Points[1].x/1000.0;
+
+	pReslt->sGround_Points[2].y = g_radar_pld_reslt.sGround_Points[1].y/1000.0;
+
+		 
+}
+
+void ProcShutdownDisplay()
+{
+    app.MockTouchEvent(1,0);
+    app.DisableCar();
+}
+
+void ProcLuminanceBalance(CoefYUV *lb_result)
+{
+    AVMData::GetInstance()->m_lumin_para->SetLuminanceCofYUVReslt(lb_result);
+}
+
+void ProcCalibRslt(GpuCalibResultT* pCalibResult)
+{
+	float gpu_format_pose[24];
+
+	//  log_message("LUT changed, GPU will update its internal data...");
+	for(int i =0;i<6;i++)
+	{
+		gpu_format_pose[i] = pCalibResult->pose.front_pose[i];
+	}
+	for(int i =0;i<6;i++)
+	{
+		gpu_format_pose[6*1+i] = pCalibResult->pose.right_pose[i];
+	}
+	for(int i =0;i<6;i++)
+	{
+		gpu_format_pose[6*2+i] = pCalibResult->pose.rear_pose[i];
+	}
+	for(int i =0;i<6;i++)
+	{
+		gpu_format_pose[6*3+i] = pCalibResult->pose.left_pose[i];
+	}
+
+	app.Update3DParam(gpu_format_pose);
+	app.Update2DParam((void *)(pCalibResult->dataBuffer),(void *)(pCalibResult->guiIndexBuffer));
+
+}
+
+void ProcCanData(CAN_DATA* pCanData)
+{
+    pCanData->radar_alarm[0]=0;
+	pCanData->radar_alarm[3]=0;
+	pCanData->radar_alarm[5]=0;
+	pCanData->radar_alarm[6]=0;
+    AVMData::GetInstance()->m_p_can_data->UpdateCANData(*pCanData);
+}
+
+
 int SetRenderData(RenderDataT* pRenderData)
 {
 	switch(pRenderData->dataHeader.dataTypeId)
 	{
 		case RENDER_DATA_VIEW_CMD:
 
-			AVMData::GetInstance()->SetDisplayViewCmd(*((unsigned char*) pRenderData->data));
+			CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(*((unsigned char*) pRenderData->data));
 
 		break;
+		case RENDER_DATA_MAIN_MENU:
+			CAvmRenderDataBase::GetInstance()->SetMainMenuStatus((MainMenuDataT*)pRenderData->data);
+		break;
+		case RENDER_DATA_CAN:
+			ProcCanData((CAN_DATA*)pRenderData->data);
+
+		break;
+		case RENDER_DATA_CALIB_RESULT:
+
+			ProcCalibRslt((GpuCalibResultT*)pRenderData->data);
+
+		break;
+		case RENDER_DATA_LUMB_RESULT:
+
+			ProcLuminanceBalance((CoefYUV*)pRenderData->data);
+
+		break;
+		case RENDER_DATA_STITCH_ANGLE:
+			
+			ProcStitch((StitchResultT*)pRenderData->data);
+
+		break;
+		case RENDER_DATA_APA_RESULT:
+			
+			ProcApa((APAOverlayStruct*) pRenderData->data);
+
+		break;
+		case RENDER_DATA_CTA_RESULT:
+			
+			ProcCta((CtaResultT *) pRenderData->data);
+
+		break;
+		case RENDER_DATA_ALGO_STATUS:
+
+			ProcAlgoStatus((unsigned char*) pRenderData->data);
+			
+		break;		
+		case RENDER_DATA_SONAR_PLD_RESULT:
+
+			ProcSonarPld((Radar_PLD_Result*) pRenderData->data);
+
+		break;	
+		case RENDER_DATA_SHUT_DOWN_DISPLAY:
+			
+			ProcShutdownDisplay();
+
+		break;
+		case RENDER_DATA_LKA_LC_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetLkaLcResult((LkaLcResultT*) pRenderData->data);
 		default:
 		break;
 	}
 	return RENDER_INTERFACE_NO_ERROR;
 }
+
 
 
 void MockTouchEvent(unsigned char key_value, unsigned char key_mode)

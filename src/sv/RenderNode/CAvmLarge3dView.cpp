@@ -36,17 +36,17 @@ CAvmLarge3dView::~CAvmLarge3dView()
 int CAvmLarge3dView::Init()
 {
 	unsigned char avm3dViewNodeStatus = 0;
-	AVMData::GetInstance()->Get3dViewNodeStatus(avm3dViewNodeStatus);
+	CAvmRenderDataBase::GetInstance()->Get3dViewNodeStatus(&avm3dViewNodeStatus);
 	unsigned char avmObjViewNodeStatus = 0;
-	AVMData::GetInstance()->GetObjectViewNodeStatus(avmObjViewNodeStatus);
+	CAvmRenderDataBase::GetInstance()->GetObjectViewNodeStatus(&avmObjViewNodeStatus);
 
 	if(avm3dViewNodeStatus == 0
 		|| avmObjViewNodeStatus == 0)
 	{
 		return LARGE_3D_VIEW_NODE_INIT_FAILED;
 	}
-	AVMData::GetInstance()->Get3dViewNode(&m_3dViewNode);
-	AVMData::GetInstance()->GetObjectViewNode(&m_objViewNode);
+	CAvmRenderDataBase::GetInstance()->Get3dViewNode(&m_3dViewNode);
+	CAvmRenderDataBase::GetInstance()->GetObjectViewNode(&m_objViewNode);
 
     float stich_region_width = 0.35 *  XrGetScreenWidth();
 
@@ -64,7 +64,7 @@ int CAvmLarge3dView::Update()
 	}
 	unsigned char largeViewCmd = 0;
 
-	AVMData::GetInstance()->GetDisplayViewCmd(largeViewCmd);
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(largeViewCmd);
 	
 	if(largeViewCmd == TOUR_LARGE_3D_VIEW)
 	{
@@ -82,10 +82,10 @@ int CAvmLarge3dView::Update()
 		{
 			Region* avm3dViewRegion;
 			Region* avmObjViewRegion;
-			AVMData::GetInstance()->Get3dViewRegion(&avm3dViewRegion);
+			CAvmRenderDataBase::GetInstance()->Get3dViewRegion(&avm3dViewRegion);
 			m_3dViewNode->SetRenderROI(avm3dViewRegion);
 
-			AVMData::GetInstance()->GetObjectViewRegion(&avmObjViewRegion);
+			CAvmRenderDataBase::GetInstance()->GetObjectViewRegion(&avmObjViewRegion);
 			m_objViewNode->SetRenderROI(avmObjViewRegion);
 			m_objViewNode->SetClear(FALSE, TRUE);
 			

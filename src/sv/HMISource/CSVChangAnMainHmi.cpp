@@ -28,6 +28,7 @@
  * Standard Header Files
 \*===========================================================================*/
 #include "CSVChangAnMainHmi.h"
+#include "CSVChangAnSwitchViewHmi.h"
 #include "CSVHmiIntent.h"
 
 static unsigned char hmiElementVisibility[CHANGAN_MAIN_ELEMENT_NUM];
@@ -129,12 +130,16 @@ CSVChangAnMainHmi::CSVChangAnMainHmi()
 {
 	memset(m_trigger, NULL, CHANGAN_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonVisibility, 1, CHANGAN_MAIN_ELEMENT_NUM * sizeof(unsigned char));
+
+	m_cameraHmiVisibility = 1;
 	
 	for(int i = CHANGAN_MAIN_MENU_BKG; i < CHANGAN_MAIN_ELEMENT_NUM; i ++)
 	{
 		hmiElementVisibility[i] = 0;
 	}
 	hmiElementVisibility[CHANGAN_MAIN_MENU_ENTER_ICON] = 1;
+
+	m_cameraHmi = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
 
 }
 
@@ -152,6 +157,9 @@ CSVChangAnMainHmi::~CSVChangAnMainHmi()
 		SAFE_DELETE(m_baseButton[i]);
 		SAFE_DELETE(m_trigger[i]);
 	}
+
+	SAFE_DELETE(m_cameraHmi);
+	
 	Log_Error("----------Release ~CSVChangAnMainHmi!");
 }
 	
@@ -208,6 +216,11 @@ int CSVChangAnMainHmi::SetHmiParams()
 		m_baseButton[i]->SetVisibility(0);
 	}
 
+	if(m_cameraHmi)
+	{
+		m_cameraHmi->Init(m_screenWidth, m_screenHeight);
+	}
+
 	return CHANGAN_MAIN_HMI_NORMAL;
 }
 int CSVChangAnMainHmi::Init(int window_width, int window_height)
@@ -235,7 +248,6 @@ int CSVChangAnMainHmi::Init(int window_width, int window_height)
 	m_buttonPos[CHANGAN_MAIN_DVR_START_ICON][BUTTON_POS_X] = m_buttonPos[CHANGAN_MAIN_MENU_BKG][BUTTON_POS_X];
 	m_buttonPos[CHANGAN_MAIN_DVR_START_ICON][BUTTON_POS_Y] = m_buttonPos[CHANGAN_MAIN_MENU_BKG][BUTTON_POS_Y];
 
-
 	SetHmiParams();
 	
 	return CHANGAN_MAIN_HMI_NORMAL;
@@ -246,7 +258,14 @@ int CSVChangAnMainHmi::Update(Hmi_Message_T& hmiMsg)
 	{
 		m_buttonVisibility[i] = hmiElementVisibility[i];	
 	}
+
+	m_cameraHmiVisibility = 1;
 	
+	if(m_cameraHmi)
+	{
+		m_cameraHmi->Update(hmiMsg);
+	}
+
 	RefreshHmi();
 
 	return CHANGAN_MAIN_HMI_NORMAL;
@@ -260,6 +279,8 @@ int CSVChangAnMainHmi::RefreshHmi()
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 		m_baseButton[i]->Update();
 	}
+
+	m_cameraHmi->SetElementsVisibility(m_cameraHmiVisibility);
 
 	return CHANGAN_MAIN_HMI_NORMAL;
 }

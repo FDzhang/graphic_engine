@@ -77,13 +77,13 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 
 	m_timeStitchNode->Init();
 
-	AVMData::GetInstance()->SetTimeStitcherNode(m_timeStitchNode);
+	CAvmRenderDataBase::GetInstance()->SetTimeStitcherNode(m_timeStitchNode);
 
 	m_renderDelegate = new RenderDelegateSV2D;
 
 	// Interleaved vertex data
-	Region* stitchViewRegion;
-	AVMData::GetInstance()->GetStitchViewRegion(&stitchViewRegion);
+	Region* stitchViewRegion = NULL;
+	CAvmRenderDataBase::GetInstance()->GetStitchViewRegion(&stitchViewRegion);
 	// Interleaved vertex data
 	m_stitchViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_stitchViewNode);
 	m_stitchViewNode->SetRenderROI(stitchViewRegion);
@@ -127,7 +127,7 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	
 	 //render car image
 	//step 2 prepare mesh for 2D stiching
-	AVMData::GetInstance()->GetSv2dData(&m_SV2DData);
+	CAvmRenderDataBase::GetInstance()->GetSv2dData(&m_SV2DData);
 
 	int i = eCarImageMesh;
  	m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
@@ -150,7 +150,7 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	pCarImageNode->SetEnable(1);
 
 	/////////////////////////////cameraObject//////////////////
-	AVMData::GetInstance()->GetStitchViewCameraParams(&m_stitchViewCameraParams);
+	CAvmRenderDataBase::GetInstance()->GetStitchViewCameraParams(&m_stitchViewCameraParams);
 	
 	m_stitchViewCameraId = m_stitchViewNode->CreateCamera(m_stitchViewCameraParams->fovx, m_stitchViewCameraParams->aspect, m_stitchViewCameraParams->znear, m_stitchViewCameraParams->zfar, &m_stitchViewCamera);
 	
@@ -161,7 +161,7 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	m_stitchViewCamera->RotateAround(0,45);
 	m_stitchViewNode->SetCamera(m_stitchViewCameraId);
 
-	AVMData::GetInstance()->SetStitchViewNode(m_stitchViewNode);
+	CAvmRenderDataBase::GetInstance()->SetStitchViewNode(m_stitchViewNode);
 
 	m_overlay = new CAvmApaBevOverlay;
 
@@ -178,7 +178,8 @@ int CAvmTimeStitcherNode::UpdateNode()
 	unsigned char gear_state;
 	float speed;
 	float left_wheel_speed=0,right_wheel_speed=0;
-	float rear_left_wheel_speed=0,rear_right_wheel_speed=0;
+	float rear_left_wheel_speed=0,rear_right_wheel_speed=0;
+
 	float yawRate = 0.0;
 
 	static unsigned char timeInitFlag = 0;
