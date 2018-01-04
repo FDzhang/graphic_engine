@@ -48,8 +48,8 @@ namespace GUI
         void OnEventLdw(IGUIElement*);
         void InitAlgoBsd(IGUIElement* , const GUI_HANDLE_T);
         void OnEventBsd(IGUIElement* );
-        void InitAlgoOnline(IGUIElement* , const GUI_HANDLE_T);
-        void OnEventOnline(IGUIElement*);
+        void InitAlgoOC(IGUIElement* , const GUI_HANDLE_T);
+        void OnEventOC(IGUIElement*);
         void InitAlgoApa(IGUIElement* , const GUI_HANDLE_T);
         void OnEventApa(IGUIElement*);
 
@@ -69,7 +69,7 @@ namespace GUI
         void OnEventApaOut(IGUIElement*);
     private:
         CGPUButton *m_record_button, *m_playback_button,
-            *m_ldw_button, *m_bsd_button, *m_online_button, *m_apa_button, *m_media_button, *m_fcw_button, *m_apaIn_button, *m_apaOut_button;
+            *m_ldw_button, *m_bsd_button, *m_oc_button, *m_apa_button, *m_media_button, *m_fcw_button, *m_apaIn_button, *m_apaOut_button;
         CGPUPanel *m_media_panel;
     private:
         uint32_t m_element_size;
