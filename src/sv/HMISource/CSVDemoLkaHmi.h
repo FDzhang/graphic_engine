@@ -64,6 +64,9 @@ private:
 	int RefreshHmi();
 	void SetHmiElementProperty(unsigned char pIconIndex, float pIconPosX, float pIconPosY, float pIconWidth, float pIconHeight);
 	
+	int ProcessLka(LkaLcResultT pLkaLcResult);
+	int ProcessLc(LkaLcResultT pLkaLcResult);
+
 private:
 	Hmi_Button_Data_T m_baseButtonData[DEMO_LKA_ICON_NUMS];
     HMIButton* m_baseButton[DEMO_LKA_ICON_NUMS];

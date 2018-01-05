@@ -166,6 +166,7 @@ typedef enum LkaLcFuncModeTag
 	LDW_MODE = 0,
 	LKA_MODE,
 	LC_MODE,
+	LKA_LC_MODE,
 	LKA_LC_MODE_NUM,
 }
 LkaLcFuncModeT;

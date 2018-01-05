@@ -205,6 +205,7 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
 	MainMenuDataT mainMenuData;
 	memset(&mainMenuData, 0, sizeof(MainMenuDataT));
 	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
+
 	if(mainMenuData.iconStatus[MAIN_MENU_LKA] == 1)
 	{
 		lkaLcResult.funcMode = LKA_MODE;
@@ -213,7 +214,13 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
 	{
 		lkaLcResult.funcMode = LC_MODE;
 	}
-	else
+	if(mainMenuData.iconStatus[MAIN_MENU_LC] == 1
+		&& mainMenuData.iconStatus[MAIN_MENU_LKA] == 1)
+	{
+		lkaLcResult.funcMode = LKA_LC_MODE;
+	}
+	if(mainMenuData.iconStatus[MAIN_MENU_LC] != 1
+		&& mainMenuData.iconStatus[MAIN_MENU_LKA] != 1)
 	{
 		lkaLcResult.funcMode = LDW_MODE;
 	}
@@ -224,65 +231,20 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
 
 	if(lkaLcResult.funcMode == LKA_MODE)
 	{
-		if(lkaLcResult.ltConfi != LKA_CTRL_UNRELIABLE)
-		{
-			m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = lkaLcResult.ltConfi - 1;
-		}
-		if(lkaLcResult.rtConfi != LKA_CTRL_UNRELIABLE)
-		{
-			m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = lkaLcResult.rtConfi - 1;
-		}
-		if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_LEFT)
-		{
-			m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = 2;
-		}
-		if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_RIGHT)
-		{
-			m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = 2;
-		}
-		if(lkaLcResult.workFlag == 0)
-		{
-			m_buttonVisibility[DEMO_LKA_LEFT_SIDE_LANE] = 0;
-			m_buttonVisibility[DEMO_LKA_RIGHT_SIDE_LANE] = 0;
-		}
-		if(lkaLcResult.chimeFlag == 1)
-		{
-			m_buttonVisibility[DEMO_LKA_WARNING] = 1;
-		}
-		else
-		{
-			m_buttonVisibility[DEMO_LKA_WARNING] = 0;
-		}
+		ProcessLka(lkaLcResult);
 	}
 	else if(lkaLcResult.funcMode == LC_MODE)
 	{
-		if(lkaLcResult.workFlag == 1)
-		{
-			m_buttonVisibility[DEMO_LKA_STEERING_PROMPT] = 1;
-			m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 0;
-		}
-		else
-		{
-			m_buttonVisibility[DEMO_LKA_STEERING_PROMPT] = 0;
-			m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 1;
-		}
-
-		if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LC_LEFT_LANE_CHANGE)
-		{
-			m_buttonImage[DEMO_LKA_DIRECTION_PROMPT] = 0;
-			m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 1;
-		}
-		else if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LC_RIGHT_LANE_CHANGE)
-		{
-			m_buttonImage[DEMO_LKA_DIRECTION_PROMPT] = 1;
-			m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 1;
-		}
-		else
-		{
-			m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 1;	
-		}
+		ProcessLc(lkaLcResult);
 	}
-		
+	else if(lkaLcResult.funcMode == LKA_LC_MODE)
+	{
+		ProcessLka(lkaLcResult);
+		ProcessLc(lkaLcResult);
+	}
+	
+	RefreshHmi();
+
 	return DEMO_LKA_HMI_NORMAL;
 }
 int CSVDemoLkaHmi::RefreshHmi()
@@ -337,6 +299,69 @@ void CSVDemoLkaHmi::SetHmiElementProperty(unsigned char pIconIndex, float pIconP
 	m_buttonSize[pIconIndex][BUTTON_SIZE_HEIGHT] = pIconHeight;
 	m_buttonPos[pIconIndex][BUTTON_POS_X] = pIconPosX;
 	m_buttonPos[pIconIndex][BUTTON_POS_Y] = pIconPosY;
+}
+
+int CSVDemoLkaHmi::ProcessLka(LkaLcResultT pLkaLcResult)
+{		
+	if(pLkaLcResult.ltConfi != LKA_CTRL_UNRELIABLE)
+	{
+		m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = pLkaLcResult.ltConfi - 1;
+	}
+	if(pLkaLcResult.rtConfi != LKA_CTRL_UNRELIABLE)
+	{
+		m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = pLkaLcResult.rtConfi - 1;
+	}
+	if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE2_LEFT)
+	{
+		m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = 2;
+	}
+	if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE2_RIGHT)
+	{
+		m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = 2;
+	}
+	if(pLkaLcResult.workFlag == 1)
+	{
+		m_buttonVisibility[DEMO_LKA_LEFT_SIDE_LANE] = 1;
+		m_buttonVisibility[DEMO_LKA_RIGHT_SIDE_LANE] = 1;
+	}
+	if(pLkaLcResult.chimeFlag == 1)
+	{
+		m_buttonVisibility[DEMO_LKA_WARNING] = 1;
+	}
+	else
+	{
+		m_buttonVisibility[DEMO_LKA_WARNING] = 0;
+	}
+	return DEMO_LKA_HMI_NORMAL;
+}
+int CSVDemoLkaHmi::ProcessLc(LkaLcResultT pLkaLcResult)
+{
+	if(pLkaLcResult.workFlag == 1)
+	{
+		m_buttonVisibility[DEMO_LKA_STEERING_PROMPT] = 1;
+		m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 0;
+	}
+	else
+	{
+		m_buttonVisibility[DEMO_LKA_STEERING_PROMPT] = 0;
+		m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 1;
+	}
+
+	if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LC_LEFT_LANE_CHANGE)
+	{
+		m_buttonImage[DEMO_LKA_DIRECTION_PROMPT] = 0;
+		m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 1;
+	}
+	else if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LC_RIGHT_LANE_CHANGE)
+	{
+		m_buttonImage[DEMO_LKA_DIRECTION_PROMPT] = 1;
+		m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 1;
+	}
+	else
+	{
+		m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 0;	
+	}
+	return DEMO_LKA_HMI_NORMAL;
 }
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
