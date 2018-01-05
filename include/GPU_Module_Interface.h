@@ -200,10 +200,10 @@ typedef struct LkaLcResultTag
 {
 	unsigned char funcMode;
 	unsigned char funcStatus;
+	unsigned char lkaFlag;
 	unsigned char workFlag;
 	unsigned char ltConfi;
 	unsigned char rtConfi;
-	unsigned char lcConfi;
 	unsigned char lkaAlgoMode;
 	unsigned char chimeFlag;
 	unsigned char errorFlag;
