@@ -39,6 +39,10 @@
 #define SONAR_INDEX_FRONT_ANTI_CLOCKWISE  1
 #define SONAR_INDEX_REAR_CLOCKWISE        2
 #define SONAR_INDEX_REAR_ANTI_CLOCKWISE   3
+
+#define PARKING_LOT_ON_THE_LEFT     0
+#define PARKING_LOT_ON_THE_RIGHT    1
+
 typedef struct Sonar_Pos_T
 {
     float pos[3];
@@ -135,6 +139,7 @@ typedef struct st_sonar_parking_lot_Tag
 	float lot_width;
 	float lot_length;
 	float lot_point[8];
+	float space_distance;
 	bool show_flag;
 }sonar_parking_lot_t;
 #if 0
@@ -273,6 +278,7 @@ public:
 	int GetPreviousVehicleState(COMMON_VEHICLE_DATA_SIMPLE *vehicle_state,int previous_index);
 	void DelayPointProcess(int delay_frame,float *pos);
 	void ProcessParkLotSearchLogic(void);
+	float  CaculateSpace(int left_right_flag,float pos_x_farthest);
 
 private:
 

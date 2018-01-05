@@ -44,7 +44,8 @@ namespace GUI
         {"CGPUButton" , "bsd" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoBsd) , (PFOnEvent)(&AlgoLayout::OnEventBsd), NULL},
         {"CGPUButton" , "APA_IN" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApaIn) , (PFOnEvent)(&AlgoLayout::OnEventApaIn), NULL},
         {"CGPUButton" , "APA_OUT" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoApaOut) , (PFOnEvent)(&AlgoLayout::OnEventApaOut), NULL},
-        {"CGPUButton" , "fcw" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoFCW) , (PFOnEvent)(&AlgoLayout::OnEventFCW), NULL},
+        //{"CGPUButton" , "fcw" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoFCW) , (PFOnEvent)(&AlgoLayout::OnEventFCW), NULL},
+        {"CGPUButton" , "oc" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoOC) , (PFOnEvent)(&AlgoLayout::OnEventOC), NULL},
         {"CGPUButton" , "行车记录仪" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoMedia) , (PFOnEvent)(&AlgoLayout::OnEventMedia), NULL},
         {"CGPUPanel" , "algo_media_panel" , 1, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoMediaPanel) , NULL, NULL},
         {"CGPUButton" , "playback" , 2, 0, NULL, (PFCreateElement)(&AlgoLayout::InitAlgoMediaPlayback) , (PFOnEvent)(&AlgoLayout::OnEventMediaPlayback), NULL},
@@ -61,7 +62,7 @@ namespace GUI
         ,IAlgoLayout()
         ,m_record_button(NULL), m_playback_button(NULL)
         ,m_ldw_button(NULL), m_bsd_button(NULL)
-        ,m_online_button(NULL), m_apa_button(NULL), m_media_panel(NULL)
+        ,m_oc_button(NULL), m_apa_button(NULL), m_media_panel(NULL)
         ,m_element_size(sizeof(m_element_info) / sizeof( struct ElementFuntionTable))
     {
         InitElementTable(m_element_info, m_element_size);
@@ -82,6 +83,11 @@ namespace GUI
     {
         {XR_RES_ALGO"algo_bsd.dds", 0, 210, 100, 70},
         {XR_RES_ALGO"algo_bsd_clicked.dds", 0, 210, 100, 70},
+    };
+    static IGUITexture oc_array_texture[] =
+    {
+        {XR_RES_ALGO"algo_fcw.dds", 0, 420, 100, 70},
+        {XR_RES_ALGO"algo_fcw_clicked.dds", 0, 420, 100, 70},
     };
     static IGUITexture fcw_array_texture[] =
     {
@@ -176,6 +182,28 @@ namespace GUI
         AvmEvent* event = RequestEvent(&payload);
         //填充有效数据
         payload->header.msg_id = ALGO_BSD_BUTTON;
+        payload->body.onlyNotify = true;
+        PostEvent(event);
+    }
+    
+    void AlgoLayout::InitAlgoOC(IGUIElement* oc_button, const GUI_HANDLE_T parentId)
+    {        
+        oc_button->Attach(m_node, parentId);
+        oc_button->SetTexture(oc_array_texture, GUI_BUTTON_EFFECT_LOCK);
+        oc_button->Create(oc_array_texture[0].pos_x,
+                           oc_array_texture[0].pos_y,
+                           oc_array_texture[0].element_width,
+                           oc_array_texture[0].element_height
+            );
+        m_oc_button = dynamic_cast<CGPUButton*>(oc_button);
+    }
+    
+    void AlgoLayout::OnEventOC(IGUIElement* oc_button)
+    {
+        Layout_Event_Payload_T* payload = NULL;
+        AvmEvent* event = RequestEvent(&payload);
+        //填充有效数据
+        payload->header.msg_id = ALGO_OC_BUTTON;
         payload->body.onlyNotify = true;
         PostEvent(event);
     }

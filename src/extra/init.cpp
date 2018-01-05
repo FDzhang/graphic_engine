@@ -33,23 +33,23 @@ void InitStaticLogctrls()
     //获得全局日志级别做为默认日志级别
     uint32_t global_debug_level = GetCurrentGlobalDebugLevel();
 
-    libconfig::Config& config = GetGlobalConfig();
-    //初始化全局
-    UpdateNamedLogctrlFromConfig(&Gpu_Global_Logctrl_cfg, config, global_debug_level);
+    ConfigDocument& config = GetGlobalConfig();
 
-    //注册全局
+    //初始化全局,如果gpu代码的主级别没配置就使用全局
+    UpdateNamedLogctrlFromConfig(&Gpu_Global_Logctrl_cfg, config, global_debug_level);
     RegisterLogctrlConfig(&Gpu_Global_Logctrl_cfg);
 
+    //对gpu内部来说，内部定义的所有日志块均遵从gpu的全局日志级别
     LogCtrlConfig* cfg = GpuLogctrl_Start;
     while(cfg < GpuLogctrl_End)
     {
-        UpdateNamedLogctrlFromConfig(cfg, config, global_debug_level);
+        UpdateNamedLogctrlFromConfig(cfg, config, Gpu_Global_Logctrl_cfg.debug_level);
         RegisterLogctrlConfig(cfg);
         cfg++;
     }
 }
 
-void __attribute__((constructor)) setup(void)
+static void __attribute__((constructor)) setup(void)
 {
     InitStaticLogctrls();
 }
