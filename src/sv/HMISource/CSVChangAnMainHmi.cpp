@@ -99,7 +99,7 @@ public:
 
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
-	
+	/*
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
 		
@@ -116,7 +116,7 @@ public:
 		//Release();
 		
 		dvrStatus = 1;
-
+*/
 	}
 
 	
