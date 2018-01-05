@@ -29,7 +29,6 @@
 #include "../SVNodeAdasHmi.h"
 #include "../HMISource/ISVHmi.h"
 #include "../HMISource/CSVChangAnHmi.h"
-#include "../HMISource/CSVDvrBaseHmi.h"
 #include "../HMISource/CSVChangAnMainHmi.h"
 #include "../HMISource/CSVDemoMainHmi.h"
 #include "gpu_log.h"
@@ -188,7 +187,7 @@ int CAvmLogicManager::UpdateViewModel()
 */
 
 //used for debuging
-#if 1
+#if 0
     static int cnt = 0;
     if(cnt == 800)
     {
