@@ -195,16 +195,16 @@ typedef enum LkaAlgoControlModeTag
 	LKA_ALGO_CTRL_MODE_NUM,
 }
 LkaAlgoControlModeT;
-
-
+ 
 typedef struct LkaLcResultTag
 {
 	unsigned char funcMode;
 	unsigned char funcStatus;
-	unsigned char workStatus;
-	unsigned char leftControlStatus;
-	unsigned char rightControlStatus;
-	unsigned char algoControlMode;
+	unsigned char workFlag;
+	unsigned char ltConfi;
+	unsigned char rtConfi;
+	unsigned char lcConfi;
+	unsigned char lkaAlgoMode;
 	unsigned char chimeFlag;
 	unsigned char errorFlag;
 	
@@ -225,6 +225,7 @@ typedef enum MainMenuElementIdTag
 	MAIN_MENU_CTA,
 	MAIN_MENU_PD,
 	MAIN_MENU_DVR,
+	MAIN_MENU_ONLINE,
 	MAIN_MENU_ELEM_NUM,
 }
 MainMenuElementIdT;
@@ -244,7 +245,6 @@ typedef struct MainMenuDataTag
 	unsigned char menuVisibility;
 }
 MainMenuDataT;
-
 
 typedef struct CtaResultTag
 {

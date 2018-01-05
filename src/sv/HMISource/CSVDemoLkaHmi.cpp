@@ -202,29 +202,45 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
 	memset(&lkaLcResult, 0, sizeof(LkaLcResultT));
 	CAvmRenderDataBase::GetInstance()->GetLkaLcResult(&lkaLcResult);
 
+	MainMenuDataT mainMenuData;
+	memset(&mainMenuData, 0, sizeof(MainMenuDataT));
+	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
+	if(mainMenuData.iconStatus[MAIN_MENU_LKA] == 1)
+	{
+		lkaLcResult.funcMode = LKA_MODE;
+	}
+	else if(mainMenuData.iconStatus[MAIN_MENU_LC] == 1)
+	{
+		lkaLcResult.funcMode = LC_MODE;
+	}
+	else
+	{
+		lkaLcResult.funcMode = LDW_MODE;
+	}
+
 	memset(m_buttonVisibility, 0, DEMO_LKA_ICON_NUMS * sizeof(unsigned char));
 	m_buttonVisibility[DEMO_LKA_CAR] = 1;
 	m_buttonVisibility[DEMO_LKA_LANE_BKG] = 1;
 
 	if(lkaLcResult.funcMode == LKA_MODE)
 	{
-		if(lkaLcResult.leftControlStatus != LKA_CTRL_UNRELIABLE)
+		if(lkaLcResult.ltConfi != LKA_CTRL_UNRELIABLE)
 		{
-			m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = lkaLcResult.leftControlStatus - 1;
+			m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = lkaLcResult.ltConfi - 1;
 		}
-		if(lkaLcResult.rightControlStatus != LKA_CTRL_UNRELIABLE)
+		if(lkaLcResult.rtConfi != LKA_CTRL_UNRELIABLE)
 		{
-			m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = lkaLcResult.rightControlStatus - 1;
+			m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = lkaLcResult.rtConfi - 1;
 		}
-		if(lkaLcResult.algoControlMode == LKA_ALGO_CTRL_LKA_STAGE1_LEFT)
+		if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_LEFT)
 		{
 			m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = 2;
 		}
-		if(lkaLcResult.algoControlMode == LKA_ALGO_CTRL_LKA_STAGE1_RIGHT)
+		if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_RIGHT)
 		{
 			m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = 2;
 		}
-		if(lkaLcResult.workStatus == 0)
+		if(lkaLcResult.workFlag == 0)
 		{
 			m_buttonVisibility[DEMO_LKA_LEFT_SIDE_LANE] = 0;
 			m_buttonVisibility[DEMO_LKA_RIGHT_SIDE_LANE] = 0;
@@ -240,7 +256,7 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
 	}
 	else if(lkaLcResult.funcMode == LC_MODE)
 	{
-		if(lkaLcResult.workStatus == 1)
+		if(lkaLcResult.workFlag == 1)
 		{
 			m_buttonVisibility[DEMO_LKA_STEERING_PROMPT] = 1;
 			m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 0;
@@ -251,12 +267,12 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
 			m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 1;
 		}
 
-		if(lkaLcResult.algoControlMode == LKA_ALGO_CTRL_LC_LEFT_LANE_CHANGE)
+		if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LC_LEFT_LANE_CHANGE)
 		{
 			m_buttonImage[DEMO_LKA_DIRECTION_PROMPT] = 0;
 			m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 1;
 		}
-		else if(lkaLcResult.algoControlMode == LKA_ALGO_CTRL_LC_RIGHT_LANE_CHANGE)
+		else if(lkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LC_RIGHT_LANE_CHANGE)
 		{
 			m_buttonImage[DEMO_LKA_DIRECTION_PROMPT] = 1;
 			m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 1;
