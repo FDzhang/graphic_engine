@@ -33,6 +33,8 @@
 
 REGISTER_HMI_CLASS(CSVDemoMainHmi)
 
+static CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+
 class CMainSettingActionTrigger : public IActionTrigger
 {
 public:
@@ -57,7 +59,6 @@ class CMainLdwActionTrigger : public IActionTrigger
 public:
 	virtual Void OnPress(Int32 id)
 	{
-		CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -130,7 +131,7 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -161,7 +162,7 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -190,7 +191,7 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -239,7 +240,7 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -288,7 +289,7 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -330,8 +331,6 @@ CSVDemoMainHmi::~CSVDemoMainHmi()
 		SAFE_DELETE(m_trigger[i]);
 	}
 
-	
-	Log_Error("----------Release ~CSVDemoMainHmi!");
 }
 	
 int CSVDemoMainHmi::SetHmiParams()
@@ -455,6 +454,19 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	m_buttonImage[DEMO_MAIN_MENU_DVR] = mainMenuData.iconStatus[MAIN_MENU_DVR];
 
 	//m_buttonImage[DEMO_MAIN_MENU_LKA] = 1;
+	/*static int cnt = 0;
+
+	if(cnt > 100 && cnt <= 200)
+	{
+		m_buttonImage[DEMO_MAIN_MENU_LKA] = 0;
+		m_buttonImage[DEMO_MAIN_MENU_LC] = 0;
+		cnt ++;
+	}
+
+	if(cnt > 400)
+	{
+		cnt = 101;
+	}*/
 
 	if(m_buttonImage[DEMO_MAIN_MENU_LKA] == BUTTON_ON_IMAGE
 		|| m_buttonImage[DEMO_MAIN_MENU_LC] == BUTTON_ON_IMAGE)
@@ -470,11 +482,14 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 		if(m_lkaLcHmi)
 		{
 			m_lkaLcHmi->Update(hmiMsg);
+			//cnt++;
 		}
 	}
 	else
-	{
+	{	
 		m_lkaLcHmiVisibility = 0;
+		SAFE_DELETE(m_lkaLcHmi);
+		m_lkaLcInitFlag = 0;
 	}
 	
 	RefreshHmi();

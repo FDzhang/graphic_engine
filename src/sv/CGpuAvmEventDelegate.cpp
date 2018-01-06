@@ -5,6 +5,7 @@
 
 CGpuAvmEventDelegate::CGpuAvmEventDelegate(const char* className):m_className(className)
 {
+	Log_Error("-----------CGpuAvmEventDelegate::CGpuAvmEventDelegate");
     //初始化注册AvmEvent
     if(!RegisterAvmEvent(m_className))
     {

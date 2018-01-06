@@ -61,10 +61,21 @@ CSVDemoLkaHmi::CSVDemoLkaHmi(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pU
 
 CSVDemoLkaHmi::~CSVDemoLkaHmi()
 {
-	for(int i = 0; i < DEMO_LKA_ICON_NUMS; i++)
+	for(int i = DEMO_LKA_STATUS_BAR_BKG; i < DEMO_LKA_ICON_NUMS; i++)
 	{
         SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);		
-	    //SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);		
+	    if(i == DEMO_LKA_DIRECTION_PROMPT
+			|| i == DEMO_LKA_STEERING_PROMPT)
+    	{
+    		SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);	
+		}
+		if(i == DEMO_LKA_LEFT_SIDE_LANE
+			|| i == DEMO_LKA_RIGHT_SIDE_LANE)
+    	{
+    		SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);	
+			SAFE_DELETE(m_baseButtonData[i].icon_file_name[2]);	
+		}
+			
 		SAFE_DELETE(m_trigger[i]);
 	    
 		SAFE_DELETE(m_baseButton[i]);

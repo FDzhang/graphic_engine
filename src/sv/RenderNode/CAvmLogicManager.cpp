@@ -115,7 +115,15 @@ int CAvmLogicManager::InitHmi()
 		m_dvrBaseHmi = new CSVDvrBaseHmi();	
 		//AddHmi(m_dvrBaseHmi, &m_avmHmi);
 	}*/
-	
+
+    //注册事件
+    AvmEventType eventType =  AvmRegisterEvent(ALGOHMI_EVENT_NAME, sizeof(Layout_Event_Payload_T));
+    if(eventType == AvmEvent::Invalid_Event_Type)
+    {
+        Log_Error("%s:Attention: Invalid Event type, please check the exist", __func__);
+        return false;
+    }
+
 	//char* hmiName = "CSVChangAnMainHmi";
 	char* hmiName = "CSVDemoMainHmi";
 	CSVHmiIntent::GetInstance()->Intent(hmiName);
