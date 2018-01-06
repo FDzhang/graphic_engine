@@ -31,6 +31,8 @@
 #define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
 
 #define SURROUND_VIEW_EVENT_NAME "surround_view_event"
+#define TPHMI_EVENT_NAME "tp_hmi"
+
 /*********************************************************************************
  * \brief Gpu event payload data结构体
  *　　　  msg header使用的是Tcp传输控制头，目的在提供手机通过SystemManager透传的可能性
@@ -69,6 +71,14 @@ typedef struct
         //struct //! 算法layout的AvmEvent消息
         //{
         //}algo_body;
+		struct
+		{
+			uint8_t tp_status;
+			uint8_t capture_image_status;
+			uint8_t navigating_status;
+			uint8_t control_status;
+			uint8_t parking_status;
+		}tp_body;
 
         //! DVR Layout Event 消息
         union
@@ -161,6 +171,16 @@ typedef enum
 	SURROUND_VIEW_3D_FULL_SCREEN= 0x40,
 }
 SURROUND_VIEW_EVENT_ELEMENT_ID_T;
+
+typedef enum
+{
+	ALGO_TP_CAPTURE_IMAGE_ICON = 0x30,
+	ALGO_TP_NAVIGATING_ICON,
+	ALGO_TP_CONTROL_ICON,
+	ALGO_TP_PARKING_ICON,
+}
+ALGO_TP_EVENT_ELEMENT_ID_T;
+
 
 /*------------------------------------------------------------------------------------------
  * File Revision History (top to bottom: first revision to last revision)
