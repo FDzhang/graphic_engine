@@ -148,7 +148,7 @@ namespace GUI
     void AlgoLayout::OnEventLdw(IGUIElement* ldw_button)
     {
         //处理按钮逻辑
-        m_fcw_button->Reset();
+        m_oc_button->Reset();
         m_apaIn_button->Reset();
         m_apaOut_button->Reset();
         
@@ -174,7 +174,7 @@ namespace GUI
     void AlgoLayout::OnEventBsd(IGUIElement* bsd_button)
     {
         //处理按钮逻辑关系
-        m_fcw_button->Reset();
+        m_oc_button->Reset();
         m_apaIn_button->Reset();
         m_apaOut_button->Reset();
         
@@ -281,7 +281,7 @@ namespace GUI
         m_media_button->Reset();
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        m_fcw_button->Reset();
+        m_oc_button->Reset();
         OnEventMedia(m_media_panel);
         m_apaIn_button->Reset();
         m_apaOut_button->Reset();
@@ -311,12 +311,12 @@ namespace GUI
         //处理按钮逻辑
         m_ldw_button->Enable(is_record);
         m_bsd_button->Enable(is_record);
-        m_fcw_button->Enable(is_record);
+        m_oc_button->Enable(is_record);
         m_apaIn_button->Enable(is_record);
         m_apaOut_button->Enable(is_record);
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        m_fcw_button->Reset();
+        m_oc_button->Reset();
         m_playback_button->Reset();
         m_apaIn_button->Reset();
         m_apaOut_button->Reset();
@@ -349,7 +349,7 @@ namespace GUI
         m_media_button->Reset();
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        m_fcw_button->Reset();
+        m_oc_button->Reset();
         m_apaOut_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
@@ -379,7 +379,7 @@ namespace GUI
         m_media_button->Reset();
         m_ldw_button->Reset();
         m_bsd_button->Reset();
-        m_fcw_button->Reset();
+        m_oc_button->Reset();
         m_apaIn_button->Reset();
         
         Layout_Event_Payload_T* payload = NULL;
