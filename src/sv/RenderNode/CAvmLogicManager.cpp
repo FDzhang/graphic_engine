@@ -123,6 +123,12 @@ int CAvmLogicManager::InitHmi()
         Log_Error("%s:Attention: Invalid Event type, please check the exist", __func__);
         return false;
     }
+	eventType =  AvmRegisterEvent(TPHMI_EVENT_NAME, sizeof(Layout_Event_Payload_T));
+    if(eventType == AvmEvent::Invalid_Event_Type)
+    {
+        Log_Error("%s:Attention: Invalid Event type, please check the exist", __func__);
+        return false;
+    }
 
 	//char* hmiName = "CSVChangAnMainHmi";
 	char* hmiName = "CSVDemoMainHmi";

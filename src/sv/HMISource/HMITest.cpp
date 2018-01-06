@@ -5,7 +5,7 @@ static int SVNodeTestHMI::demo_status = 0;
 
 enum Function_Mode_Tag
 {
-	LDW_MODE,
+	TEST_LDW_MODE,
 	BSD_MODE,
 	ONLINE_CALIBRATION,
 	APA_MODE,

@@ -220,8 +220,15 @@ public:
 	{ 
 	}
 	virtual Void OnPress(Int32 id)
-	{
-		int i = 0;
+	{		
+		Layout_Event_Payload_T* tmp_payload = NULL;
+		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+		memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+		tmp_payload->header.msg_id = ALGO_TP_BUTTON;
+		tmp_payload->body.onlyNotify = true;
+		m_eventDel.PostEventPayload(tmp_payload);
+	
+		SAFE_FREE(tmp_payload);
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
@@ -457,13 +464,13 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	m_buttonImage[DEMO_MAIN_MENU_PD] = mainMenuData.iconStatus[MAIN_MENU_PD];
 	m_buttonImage[DEMO_MAIN_MENU_DVR] = mainMenuData.iconStatus[MAIN_MENU_DVR];
 
-	//m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 1;
-	/*static int cnt = 0;
+	/*m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 1;
+	static int cnt = 0;
 
 	if(cnt > 100 && cnt <= 200)
 	{
-		m_buttonImage[DEMO_MAIN_MENU_LKA] = 0;
-		m_buttonImage[DEMO_MAIN_MENU_LC] = 0;
+		m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 0;
+		m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 0;
 		cnt ++;
 	}
 

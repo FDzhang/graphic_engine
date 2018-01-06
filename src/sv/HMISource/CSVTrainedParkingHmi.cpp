@@ -426,40 +426,39 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 	Tp_Result tpReslt;
 	CAvmRenderDataBase::GetInstance()->GetTpResult(&tpReslt);
 	
-    if(hmiMsg->algoResult.tpStatus == 1
-		&& hmiMsg->algoResult.tpResult != NULL
+    if(tpReslt.tp_status == 1
 	  )
 	{		
 		m_tpCaptureImageProcessBarVisibility = 0;
 
 		if(m_tpCaptureImageIconShowNum == 1)
 	    {
-		    if(hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag == TRAINED_PARKING_NOMAL)
+		    if(tpReslt.tp_button.tp_buttonA_flag == TRAINED_PARKING_NOMAL)
 		    {
 		        m_tpCaptureImagePromptBoxVisibility = 0;
 		    }
-			else if(hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag == TRAINED_PARKING_CAPTURE_IMG)
+			else if(tpReslt.tp_button.tp_buttonA_flag == TRAINED_PARKING_CAPTURE_IMG)
 			{
 				m_tpCaptureImagePromptBoxVisibility = 1;
 				m_tpCaptureImagePromptBoxShowNum= PROMPT_BOX_CAPTURE_IMAGE;
 			}
-			else if(hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag >= TRAINED_PARKING_ENTER_RESTRUCTION 
-				&& hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag < TRAINED_PARKING_RESTRUCTION_PART4)
+			else if(tpReslt.tp_button.tp_buttonA_flag >= TRAINED_PARKING_ENTER_RESTRUCTION 
+				&& tpReslt.tp_button.tp_buttonA_flag < TRAINED_PARKING_RESTRUCTION_PART4)
 		    {
 				m_tpCaptureImagePromptBoxVisibility = 1;
 				m_tpCaptureImagePromptBoxShowNum= PROMPT_BOX_RESTRUCTION;
 				m_tpCaptureImageProcessBarVisibility = 1;
 				
-				m_tpCaptureImageProcessBarRate = ((float)(hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag - TRAINED_PARKING_ENTER_RESTRUCTION))/4.0;
+				m_tpCaptureImageProcessBarRate = ((float)(tpReslt.tp_button.tp_buttonA_flag - TRAINED_PARKING_ENTER_RESTRUCTION))/4.0;
 		    }
-			else if(hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag == TRAINED_PARKING_RESTRUCTION_PART4)
+			else if(tpReslt.tp_button.tp_buttonA_flag == TRAINED_PARKING_RESTRUCTION_PART4)
 			{
 				m_tpCaptureImagePromptBoxVisibility = 1;
 				m_tpCaptureImageProcessBarVisibility = 1;
 				m_tpCaptureImagePromptBoxShowNum= PROMPT_BOX_SUCCESS;
-				m_tpCaptureImageProcessBarRate = ((float)(hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag - TRAINED_PARKING_ENTER_RESTRUCTION))/4.0;
+				m_tpCaptureImageProcessBarRate = ((float)(tpReslt.tp_button.tp_buttonA_flag - TRAINED_PARKING_ENTER_RESTRUCTION))/4.0;
 			}
-			else if(hmiMsg->algoResult.tpResult->tp_button.tp_buttonA_flag == -1)
+			else if(tpReslt.tp_button.tp_buttonA_flag == -1)
 		    {
 				m_tpCaptureImagePromptBoxVisibility = 1;
 				m_tpCaptureImagePromptBoxShowNum= PROMPT_BOX_FAILED;
@@ -474,7 +473,7 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 		if(m_tpNavigatingIconShowNum == 1)
 		{
 			m_tpCaptureImagePromptBoxVisibility = 1;
-			if(hmiMsg->algoResult.tpResult->tp_button.tp_buttonD_flag == TRAINED_PARKING_FINISH_SEARCHING_PATH)
+			if(tpReslt.tp_button.tp_buttonD_flag == TRAINED_PARKING_FINISH_SEARCHING_PATH)
 			{				
 				m_tpCaptureImagePromptBoxShowNum = PROMPT_BOX_ASKING_CLICK;				
 			}
@@ -489,17 +488,17 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 		if(m_tpControlIconShowNum == 1)
 		{
 			m_tpCaptureImagePromptBoxVisibility = 0;
-			hmiMsg->algoResult.tpResult->tp_button.tp_buttonD_flag = TRAINED_PARKING_FINISH_SEARCHING_PATH;
-			if(hmiMsg->algoResult.tpResult->tp_button.tp_buttonD_flag == TRAINED_PARKING_FINISH_SEARCHING_PATH)
+			tpReslt.tp_button.tp_buttonD_flag = TRAINED_PARKING_FINISH_SEARCHING_PATH;
+			if(tpReslt.tp_button.tp_buttonD_flag == TRAINED_PARKING_FINISH_SEARCHING_PATH)
 			{
 				m_tpMapImageVisibility = 1;
 
-				float loc_x = hmiMsg->algoResult.tpResult->slam_x;
-				float loc_y = hmiMsg->algoResult.tpResult->slam_y;
+				float loc_x = tpReslt.slam_x;
+				float loc_y = tpReslt.slam_y;
 				
 				sprintf(m_text[0].text_content[0]," %0.2f, %0.2f",loc_x, loc_y);
 				
-				m_rotateAlpha = hmiMsg->algoResult.tpResult->slam_heading;
+				m_rotateAlpha = tpReslt.slam_heading;
 				m_rotateShowFlag = 1;
 				AdapteTpPointCoord(loc_x, loc_y); 
 				
@@ -517,8 +516,8 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 
 				for(int i = 0; i < REF_POINTS; i++)
 				{
-					loc_x = hmiMsg->algoResult.tpResult->tp_ref_points[i].x;
-					loc_y = hmiMsg->algoResult.tpResult->tp_ref_points[i].y;
+					loc_x = tpReslt.tp_ref_points[i].x;
+					loc_y = tpReslt.tp_ref_points[i].y;
 					AdapteTpPointCoord(loc_x, loc_y); 
 					tpPathPoint[2*i] = m_carIconPos[0] + 0.5 * tpIconWidth[TP_DRIVING_CAR] + loc_x;
 					tpPathPoint[2*i + 1] = m_carIconPos[1] + 42.0  + loc_y;
@@ -538,7 +537,7 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 
 		m_tpParkingInPromptBoxVisibility = 1;
 		static int m_tpParkingInPromptBoxVisibilityCnt = 0;
-		switch(hmiMsg->algoResult.tpResult->tp_button.tp_buttonR_flag)
+		switch(tpReslt.tp_button.tp_buttonR_flag)
 		{
 		case TP_BUTTONRFLAG_ERROR:
 			m_tpParkingInPromptBoxVisibility = 0;
@@ -569,12 +568,12 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 				m_tpParkingInPromptBoxVisibility = 0;
 				m_tpMapImageVisibility = 1;
 
-				float loc_x = hmiMsg->algoResult.tpResult->slam_x;
-				float loc_y = hmiMsg->algoResult.tpResult->slam_y;
+				float loc_x = tpReslt.slam_x;
+				float loc_y = tpReslt.slam_y;
 				
 				sprintf(m_text[0].text_content[0]," %0.2f, %0.2f",loc_x, loc_y);
 				
-				m_rotateAlpha = hmiMsg->algoResult.tpResult->slam_heading;
+				m_rotateAlpha = tpReslt.slam_heading;
 				m_rotateShowFlag = 1;
 				AdapteTpPointCoord(loc_x, loc_y); 
 				
@@ -591,8 +590,8 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 				}
 				for(int i = 0; i < REF_POINTS; i++)
 				{
-					loc_x = hmiMsg->algoResult.tpResult->tp_ref_points[i].x;
-					loc_y = hmiMsg->algoResult.tpResult->tp_ref_points[i].y;
+					loc_x = tpReslt.tp_ref_points[i].x;
+					loc_y = tpReslt.tp_ref_points[i].y;
 					AdapteTpPointCoord(loc_x, loc_y); 
 					tpPathPoint[2*i] = m_carIconPos[0] + 0.5 * tpIconWidth[TP_DRIVING_CAR] + loc_x;
 					tpPathPoint[2*i + 1] = m_carIconPos[1] + 42.0  + loc_y;
