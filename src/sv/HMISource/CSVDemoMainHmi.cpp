@@ -331,7 +331,7 @@ CSVDemoMainHmi::~CSVDemoMainHmi()
 	}
 
 	
-	Log_Error("----------Release ~CSVChangAnMainHmi!");
+	Log_Error("----------Release ~CSVDemoMainHmi!");
 }
 	
 int CSVDemoMainHmi::SetHmiParams()

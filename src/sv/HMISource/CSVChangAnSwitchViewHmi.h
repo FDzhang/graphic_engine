@@ -67,6 +67,7 @@ private:
 	int SetHmiParams();
 	int RefreshHmi();
     int ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action);
+	int ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action);
 	
 private:
 	Hmi_Button_Data_T m_baseButtonData[CHANGAN_ICON_NUMS];
@@ -74,6 +75,8 @@ private:
 
 	float m_buttonPos[CHANGAN_ICON_NUMS][BUTTON_POS];
 	float m_buttonSize[CHANGAN_ICON_NUMS][BUTTON_SIZE];
+	float m_carRectPos[BUTTON_POS];
+	float m_carRectSize[BUTTON_SIZE];
 
 	unsigned char m_buttonVisibility[CHANGAN_ICON_NUMS];
 	unsigned char m_buttonImage[CHANGAN_ICON_NUMS];

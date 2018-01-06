@@ -17,6 +17,9 @@
 #include "../HMI/HMITextEdit.h"
 #include "../HMI/HMIProcessBar.h"
 #include "../HMI/HMIDialog.h"
+#include "../HMI/HMIScroll.h"
+#include "../HMI/HMIPolygonBox.h"
+
 #include "../CGpuAvmEventDelegate.h"
 
 #include "CSVHmiFactory.h"
@@ -56,6 +59,9 @@ typedef struct HmiAlgoResultTag
 {
 	Cta_Result_T* ctaResult;
 	unsigned char ctaStatus;
+
+	Tp_Result_T*  tpResult;
+	unsigned char tpStatus;
 }
 HmiAlgoResultT;
 

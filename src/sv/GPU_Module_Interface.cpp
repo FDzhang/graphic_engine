@@ -474,6 +474,74 @@ void ProcCanData(CAN_DATA* pCanData)
     AVMData::GetInstance()->m_p_can_data->UpdateCANData(*pCanData);
 }
 
+int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int dataLength)
+{
+	switch(dataTypeId)
+	{
+		case RENDER_DATA_VIEW_CMD:
+
+			CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(*((unsigned char*)renderData));
+
+		break;
+		case RENDER_DATA_MAIN_MENU:
+			CAvmRenderDataBase::GetInstance()->SetMainMenuStatus((MainMenuDataT*)renderData);
+		break;
+		case RENDER_DATA_CAN:
+			ProcCanData((CAN_DATA*)renderData);
+
+		break;
+		case RENDER_DATA_CALIB_RESULT:
+
+			ProcCalibRslt((GpuCalibResultT*)renderData);
+
+		break;
+		case RENDER_DATA_LUMB_RESULT:
+
+			ProcLuminanceBalance((CoefYUV*)renderData);
+
+		break;
+		case RENDER_DATA_STITCH_ANGLE:
+			
+			ProcStitch((StitchResultT*)renderData);
+
+		break;
+		case RENDER_DATA_APA_RESULT:
+			
+			ProcApa((APAOverlayStruct*)renderData);
+
+		break;
+		case RENDER_DATA_CTA_RESULT:
+			
+			ProcCta((CtaResultT *)renderData);
+
+		break;
+		case RENDER_DATA_ALGO_STATUS:
+
+			ProcAlgoStatus((unsigned char*)renderData);
+			
+		break;		
+		case RENDER_DATA_SONAR_PLD_RESULT:
+
+			ProcSonarPld((Radar_PLD_Result*)renderData);
+
+		break;	
+		case RENDER_DATA_SHUT_DOWN_DISPLAY:
+			
+			ProcShutdownDisplay();
+
+		break;
+		case RENDER_DATA_LKA_LC_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetLkaLcResult((LkaLcResultT*)renderData);
+		break;
+		case RENDER_DATA_TP_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetTpResult((Tp_Result*)renderData);
+		break;
+		default:
+		break;
+	}
+	return RENDER_INTERFACE_NO_ERROR;
+
+}
 
 int SetRenderData(RenderDataT* pRenderData)
 {

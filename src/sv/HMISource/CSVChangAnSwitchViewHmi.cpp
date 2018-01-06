@@ -370,75 +370,83 @@ int CSVChangAnSwitchViewHmi::SetHmiParams()
 	m_trigger[CHANGAN_CAMERA_REAR] = new CRearCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].icon_file_name[0],"%sCar/front_white_camera.dds",XR_RES);  //white_track
     sprintf(m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].icon_file_name[1],"%sCar/front_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_FRONT_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_FRONT_CAMERA] = new CTrackFrontCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].icon_file_name[0],"%sCar/rear_white_camera.dds",XR_RES);  //white_track
     sprintf(m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].icon_file_name[1],"%sCar/rear_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_REAR_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_REAR_CAMERA] = new CTrackRearCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].icon_file_name[0],"%sCar/left_white_camera.dds",XR_RES);
     sprintf(m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].icon_file_name[1],"%sCar/left_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_LEFT_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_LEFT_CAMERA] = new CTrackLeftCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].icon_file_name[0],"%sCar/right_white_camera.dds",XR_RES);  
     sprintf(m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].icon_file_name[1],"%sCar/right_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_RIGHT_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_RIGHT_CAMERA] = new CTrackRightCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].icon_file_name[0],"%sCar/front_left_white_camera.dds",XR_RES);  
     sprintf(m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].icon_file_name[1],"%sCar/front_left_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_FRONT_LEFT_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_FRONT_LEFT_CAMERA] = new CTrackFrontLeftCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].icon_file_name[0],"%sCar/front_right_white_camera.dds",XR_RES);  
     sprintf(m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].icon_file_name[1],"%sCar/front_right_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_FRONT_RIGHT_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_FRONT_RIGHT_CAMERA] = new CTrackFrontRightCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].icon_file_name[0],"%sCar/rear_left_white_camera.dds",XR_RES);  
     sprintf(m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].icon_file_name[1],"%sCar/rear_left_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_REAR_LEFT_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_REAR_LEFT_CAMERA] = new CTrackRearLeftCamActionTrigger;
 
 	m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].icon_type = STATIC_ICON;
-	m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].show_flag = 1;
-	m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].show_icon_num = 0;
+	m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].show_flag = 0;
+	m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].show_icon_num = 1;
     m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].icon_file_name[0] = new char [50];
 	m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].icon_file_name[1] = new char [50];
 	sprintf(m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].icon_file_name[0],"%sCar/rear_right_white_camera.dds",XR_RES);  
     sprintf(m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].icon_file_name[1],"%sCar/rear_right_yellow_camera.dds",XR_RES);
+	m_buttonImage[CHANGAN_TRACK_REAR_RIGHT_CAMERA] = 1;
 	m_trigger[CHANGAN_TRACK_REAR_RIGHT_CAMERA] = new CTrackRearRightCamActionTrigger;
 
 	for(int i = CHANGAN_RED_TRACK; i < CHANGAN_ICON_NUMS; i++)
@@ -462,7 +470,7 @@ int CSVChangAnSwitchViewHmi::Init(int window_width, int window_height)
 {
 	m_screenWidth = window_width;
 	m_screenHeight = window_height;
-	float leftPanelWidth = 100.0;
+	float leftPanelWidth = 0.0;//100.0;
 	float heightInterval = 80.0;
 	float stitchRegionWidth = window_width * 0.35;
 	float stitchRegionHeight = window_height - 2.0 * heightInterval;
@@ -470,68 +478,74 @@ int CSVChangAnSwitchViewHmi::Init(int window_width, int window_height)
 	m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_WIDTH] = 378.0;
 	m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_HEIGHT] = 487.0;
 	m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] = (stitchRegionWidth - m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_WIDTH])/2.0 + leftPanelWidth;
-	m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] = (m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_HEIGHT] - m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_HEIGHT])/2.0 + 0.0;
+	m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] = (window_height - m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_HEIGHT])/2.0 + 0.0;
 
 	m_buttonSize[CHANGAN_TRACK_FRONT_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_FRONT_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
 	m_buttonPos[CHANGAN_TRACK_FRONT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + (378.0 - 64.0)/2;
-	m_buttonPos[CHANGAN_TRACK_FRONT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y];
+	m_buttonPos[CHANGAN_TRACK_FRONT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] - 8;
 
 	m_buttonSize[CHANGAN_TRACK_REAR_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_REAR_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
 	m_buttonPos[CHANGAN_TRACK_REAR_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + (378.0 - 64.0)/2;
-	m_buttonPos[CHANGAN_TRACK_REAR_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 487.0 - 64.0;
+	m_buttonPos[CHANGAN_TRACK_REAR_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 487.0 - 64.0 + 8;
 
 	m_buttonSize[CHANGAN_TRACK_LEFT_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_LEFT_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_TRACK_LEFT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X];
-	m_buttonPos[CHANGAN_TRACK_LEFT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + (487.0 - 64.0)/2;
+	m_buttonPos[CHANGAN_TRACK_LEFT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] - 10;
+	m_buttonPos[CHANGAN_TRACK_LEFT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + (487.0 - 64.0)/2 + 4;
 
 	m_buttonSize[CHANGAN_TRACK_RIGHT_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_RIGHT_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_TRACK_RIGHT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + (378.0 - 64.0);
-	m_buttonPos[CHANGAN_TRACK_RIGHT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + (487.0 - 64.0)/2;
+	m_buttonPos[CHANGAN_TRACK_RIGHT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + (378.0 - 64.0) + 10;
+	m_buttonPos[CHANGAN_TRACK_RIGHT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + (487.0 - 64.0)/2 + 3;
 
 	m_buttonSize[CHANGAN_TRACK_FRONT_LEFT_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_FRONT_LEFT_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_TRACK_FRONT_LEFT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 49.0;
-	m_buttonPos[CHANGAN_TRACK_FRONT_LEFT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 64.0;
+	m_buttonPos[CHANGAN_TRACK_FRONT_LEFT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 20.0;
+	m_buttonPos[CHANGAN_TRACK_FRONT_LEFT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 76.0;
 
 	m_buttonSize[CHANGAN_TRACK_FRONT_RIGHT_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_FRONT_RIGHT_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_TRACK_FRONT_RIGHT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 265.0;
-	m_buttonPos[CHANGAN_TRACK_FRONT_RIGHT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 64.0;
+	m_buttonPos[CHANGAN_TRACK_FRONT_RIGHT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 298.0;
+	m_buttonPos[CHANGAN_TRACK_FRONT_RIGHT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 76.0;
 
 	m_buttonSize[CHANGAN_TRACK_REAR_LEFT_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_REAR_LEFT_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_TRACK_REAR_LEFT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 49.0;
-	m_buttonPos[CHANGAN_TRACK_REAR_LEFT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 359.0;
+	m_buttonPos[CHANGAN_TRACK_REAR_LEFT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 21.0;
+	m_buttonPos[CHANGAN_TRACK_REAR_LEFT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 353.0;
 
 	m_buttonSize[CHANGAN_TRACK_REAR_RIGHT_CAMERA][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_TRACK_REAR_RIGHT_CAMERA][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_TRACK_REAR_RIGHT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 265.0;
-	m_buttonPos[CHANGAN_TRACK_REAR_RIGHT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 359.0;
+	m_buttonPos[CHANGAN_TRACK_REAR_RIGHT_CAMERA][BUTTON_POS_X] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] + 292.0;
+	m_buttonPos[CHANGAN_TRACK_REAR_RIGHT_CAMERA][BUTTON_POS_Y] = m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_Y] + 350.0;
 
 	m_buttonSize[CHANGAN_CAMERA_FRONT][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_CAMERA_FRONT][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_CAMERA_FRONT][BUTTON_POS_X] = stitchRegionWidth + leftPanelWidth - m_buttonSize[CHANGAN_CAMERA_FRONT][BUTTON_SIZE_WIDTH] * 0.5;
-	m_buttonPos[CHANGAN_CAMERA_FRONT][BUTTON_POS_Y] = (1.0 - car_rect[1]) * stitchRegionHeight/2.0;
+	m_buttonPos[CHANGAN_CAMERA_FRONT][BUTTON_POS_X] = (stitchRegionWidth - m_buttonSize[CHANGAN_CAMERA_FRONT][BUTTON_SIZE_WIDTH]) * 0.5 + leftPanelWidth;
+	m_buttonPos[CHANGAN_CAMERA_FRONT][BUTTON_POS_Y] = (1.0 - car_rect[1]) * stitchRegionHeight/2.0 + heightInterval;
 
 	m_buttonSize[CHANGAN_CAMERA_LEFT][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_CAMERA_LEFT][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_CAMERA_LEFT][BUTTON_POS_X] = (1.0 + car_rect[0]) * (stitchRegionWidth)/2.0 + leftPanelWidth - m_buttonSize[CHANGAN_CAMERA_LEFT][BUTTON_SIZE_WIDTH];
-	m_buttonPos[CHANGAN_CAMERA_LEFT][BUTTON_POS_Y] = (1.0 - car_rect[3]) * (stitchRegionHeight)/2.0 - 2.0 * m_buttonSize[CHANGAN_CAMERA_LEFT][BUTTON_SIZE_HEIGHT];
+	m_buttonPos[CHANGAN_CAMERA_LEFT][BUTTON_POS_X] = (1.0 + car_rect[0]) * (stitchRegionWidth)/2.0 + leftPanelWidth - m_buttonSize[CHANGAN_CAMERA_LEFT][BUTTON_SIZE_WIDTH] + 18;
+	m_buttonPos[CHANGAN_CAMERA_LEFT][BUTTON_POS_Y] = (1.0 - car_rect[3]) * (stitchRegionHeight)/2.0 + heightInterval - 2.0 * m_buttonSize[CHANGAN_CAMERA_LEFT][BUTTON_SIZE_HEIGHT];
 
 	m_buttonSize[CHANGAN_CAMERA_RIGHT][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_CAMERA_RIGHT][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_CAMERA_RIGHT][BUTTON_POS_X] = (1.0 + car_rect[2]) * (stitchRegionWidth)/2.0 + leftPanelWidth + m_buttonSize[CHANGAN_CAMERA_RIGHT][BUTTON_SIZE_WIDTH];
-	m_buttonPos[CHANGAN_CAMERA_RIGHT][BUTTON_POS_Y] = (1.0 - car_rect[3]) * (stitchRegionHeight)/2.0 - 2.0 * m_buttonSize[CHANGAN_CAMERA_RIGHT][BUTTON_SIZE_HEIGHT];
+	m_buttonPos[CHANGAN_CAMERA_RIGHT][BUTTON_POS_X] = (1.0 + car_rect[2]) * (stitchRegionWidth)/2.0 + leftPanelWidth - 18;
+	m_buttonPos[CHANGAN_CAMERA_RIGHT][BUTTON_POS_Y] = (1.0 - car_rect[3]) * (stitchRegionHeight)/2.0 + heightInterval - 2.0 * m_buttonSize[CHANGAN_CAMERA_RIGHT][BUTTON_SIZE_HEIGHT];
 	
 	m_buttonSize[CHANGAN_CAMERA_REAR][BUTTON_SIZE_WIDTH] = 64.0;
 	m_buttonSize[CHANGAN_CAMERA_REAR][BUTTON_SIZE_HEIGHT] = 64.0;
-	m_buttonPos[CHANGAN_CAMERA_REAR][BUTTON_POS_X] = stitchRegionWidth + leftPanelWidth - m_buttonSize[CHANGAN_CAMERA_REAR][BUTTON_SIZE_WIDTH] * 0.5;
-	m_buttonPos[CHANGAN_CAMERA_REAR][BUTTON_POS_Y] = (1.0 - car_rect[3]) * stitchRegionHeight/2.0 - m_buttonSize[CHANGAN_CAMERA_REAR][BUTTON_SIZE_HEIGHT];
+	m_buttonPos[CHANGAN_CAMERA_REAR][BUTTON_POS_X] = (stitchRegionWidth - m_buttonSize[CHANGAN_CAMERA_REAR][BUTTON_SIZE_WIDTH]) * 0.5 + leftPanelWidth;
+	m_buttonPos[CHANGAN_CAMERA_REAR][BUTTON_POS_Y] = (1.0 - car_rect[3]) * stitchRegionHeight/2.0 + heightInterval- m_buttonSize[CHANGAN_CAMERA_REAR][BUTTON_SIZE_HEIGHT];
 
+    float carRectWidth = stitchRegionWidth*(car_rect[2]-car_rect[0])*0.8;
+	float carRectHeight = stitchRegionWidth*(car_rect[1]-car_rect[3])*0.5;
+	m_carRectSize[BUTTON_SIZE_WIDTH] = carRectWidth;
+	m_carRectSize[BUTTON_SIZE_HEIGHT] = carRectHeight;
+	m_carRectPos[BUTTON_POS_X] = (stitchRegionWidth - carRectWidth) * 0.5 + leftPanelWidth;
+	m_carRectPos[BUTTON_POS_Y] = (1.0 - car_rect[1]) * stitchRegionHeight/2.0 + heightInterval + stitchRegionWidth*(car_rect[1]-car_rect[3])*0.35;
 
 	SetHmiParams();
 	
@@ -559,14 +573,22 @@ int CSVChangAnSwitchViewHmi::Update(Hmi_Message_T& hmiMsg)
 	m_buttonImage[CHANGAN_CAMERA_REAR] = 0;
 	m_buttonImage[CHANGAN_CAMERA_LEFT] = 0;
 	m_buttonImage[CHANGAN_CAMERA_RIGHT] = 0;
-	m_buttonImage[CHANGAN_TRACK_FRONT_CAMERA] = 0;
+	/*m_buttonImage[CHANGAN_TRACK_FRONT_CAMERA] = 0;
 	m_buttonImage[CHANGAN_TRACK_REAR_CAMERA] = 0;
 	m_buttonImage[CHANGAN_TRACK_LEFT_CAMERA] = 0;
 	m_buttonImage[CHANGAN_TRACK_RIGHT_CAMERA] = 0;
 	m_buttonImage[CHANGAN_TRACK_FRONT_LEFT_CAMERA] = 0;
 	m_buttonImage[CHANGAN_TRACK_FRONT_RIGHT_CAMERA] = 0;
 	m_buttonImage[CHANGAN_TRACK_REAR_LEFT_CAMERA] = 0;
-	m_buttonImage[CHANGAN_TRACK_REAR_RIGHT_CAMERA] = 0;
+	m_buttonImage[CHANGAN_TRACK_REAR_RIGHT_CAMERA] = 0;*/
+	m_buttonVisibility[CHANGAN_TRACK_FRONT_CAMERA] = 0;
+	m_buttonVisibility[CHANGAN_TRACK_REAR_CAMERA] = 0;
+	m_buttonVisibility[CHANGAN_TRACK_LEFT_CAMERA] = 0;
+	m_buttonVisibility[CHANGAN_TRACK_RIGHT_CAMERA] = 0;
+	m_buttonVisibility[CHANGAN_TRACK_FRONT_LEFT_CAMERA] = 0;
+	m_buttonVisibility[CHANGAN_TRACK_FRONT_RIGHT_CAMERA] = 0;
+	m_buttonVisibility[CHANGAN_TRACK_REAR_LEFT_CAMERA] = 0;
+	m_buttonVisibility[CHANGAN_TRACK_REAR_RIGHT_CAMERA] = 0;
 
 	if(viewCmd == FRONT_SINGLE_VIEW)
 	{
@@ -586,35 +608,35 @@ int CSVChangAnSwitchViewHmi::Update(Hmi_Message_T& hmiMsg)
 	}
 	else if(viewCmd == BMW_REAR_3D_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_FRONT_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_FRONT_CAMERA] = 1;
 	}
 	else if(viewCmd == FRONT_3D_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_REAR_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_REAR_CAMERA] = 1;
 	}
 	else if(viewCmd == BMW_LEFT_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_LEFT_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_LEFT_CAMERA] = 1;
 	}
 	else if(viewCmd == BMW_RIGHT_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_RIGHT_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_RIGHT_CAMERA] = 1;
 	}
 	else if(viewCmd == BMW_LEFT_FRONT_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_FRONT_LEFT_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_FRONT_LEFT_CAMERA] = 1;
 	}
 	else if(viewCmd == BMW_RIGHT_FRONT_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_FRONT_RIGHT_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_FRONT_RIGHT_CAMERA] = 1;
 	}
 	else if(viewCmd == BMW_LEFT_REAR_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_REAR_LEFT_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_REAR_LEFT_CAMERA] = 1;
 	}
 	else if(viewCmd == BMW_RIGHT_REAR_VIEW)
 	{
-	    m_buttonImage[CHANGAN_TRACK_REAR_RIGHT_CAMERA] = 1;
+	    m_buttonVisibility[CHANGAN_TRACK_REAR_RIGHT_CAMERA] = 1;
 	}
 
 	int x = 0;
@@ -622,11 +644,12 @@ int CSVChangAnSwitchViewHmi::Update(Hmi_Message_T& hmiMsg)
 	int touchType = 0;
 	if(GetTouchEventInfo(x,y,touchType))
 	{
-        Log_Error("------touch x,y,touchType = %d, %d, %d------",x,y,touchType);
 		ProcessCarRegionTouchEvent(x,y,touchType);
+		if(m_camera_icons_visibility == 1)
+		{
+		    ProcessTrackCamRegionTouchEvent(x,y,touchType);
+		}
 	}
-
-    //Log_Error("------m_hasBeenTouched=%d-----",m_hasBeenTouched);
 
     m_current_time = XrGetTime();
     if(m_hasBeenTouched == 1)
@@ -690,23 +713,131 @@ int CSVChangAnSwitchViewHmi::ProcessCarRegionTouchEvent(unsigned int pos_x, unsi
 	}
 	else
 	{
-		return BUTTON_NORMAL; 
+		return CHANGAN_SWITCH_VIEW_HMI_NORMAL; 
 	}
 
 
-    if(touch_pos_x > 0 
-            && touch_pos_x < 1280
-            && touch_pos_y > 0 
-            && touch_pos_y < 720 )
+    if(touch_pos_x > m_carRectPos[BUTTON_POS_X]
+        && touch_pos_x < m_carRectPos[BUTTON_POS_X] + m_carRectSize[BUTTON_SIZE_WIDTH]
+        && touch_pos_y > m_carRectPos[BUTTON_POS_Y]
+        && touch_pos_y < m_carRectPos[BUTTON_POS_Y] + m_carRectSize[BUTTON_SIZE_HEIGHT])
     {
 		m_camera_icons_visibility = 1;
 		m_start_count_time = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
-	return BUTTON_NORMAL;
+	return CHANGAN_SWITCH_VIEW_HMI_NORMAL;
 }
 
+int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action)
+{
+    static int  touch_action = action;
+	static int  touch_pos_x = 0;
+	static int  touch_pos_y = 0;
+	
+
+	if(SCREEN_TOUCHED == touch_action)
+	{
+		touch_pos_x = pos_x;
+		touch_pos_y = pos_y;
+	}
+	else
+	{
+		return CHANGAN_SWITCH_VIEW_HMI_NORMAL; 
+	}
+
+
+    if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_REAR_3D_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_3D_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_FRONT_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_FRONT_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_REAR_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	if(touch_pos_x > m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].pos[0]
+        && touch_pos_x < m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].pos[0] + m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].width
+        && touch_pos_y > m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].pos[1]
+        && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].height)
+    {
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_REAR_VIEW);
+		m_camera_icons_visibility = 1;
+		m_start_count_time = XrGetTime();
+        m_hasBeenTouched = 1;
+    }
+
+	return CHANGAN_SWITCH_VIEW_HMI_NORMAL;
+}
 
 int CSVChangAnSwitchViewHmi::SetElementsVisibility(unsigned char pFlag)
 {

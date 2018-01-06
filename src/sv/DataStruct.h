@@ -39,6 +39,8 @@
 #include "commondef.h"
 #include "Database.h"
 #include "cta_embed_interface.h"
+#include "tp_embed_interface.h"
+
 
 /*===========================================================================*\
  * Other Header Files
@@ -68,6 +70,8 @@ typedef enum GpuErrorCodeTag
 	CHANGAN_SWITCH_VIEW_HMI_NORMAL,
 	DEMO_HMI_NORMAL,
 	DEMO_LKA_HMI_NORMAL,
+	TRAINED_PARKING_HMI_NORMAL,
+	HMI_ELEMENT_NULL,
 	GPU_ERROR_CODE_NUMS,
 }
 GpuErrorCodeT;

@@ -1,5 +1,3 @@
-
-
 #include "HMIButton.h"
 #include "gpu_log.h"
 extern IXrCore* g_pIXrCore;
@@ -29,6 +27,7 @@ static IActionTrigger* trigger = NULL;
 HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode)
 {
     //m_uiNodeId = g_pIXrCore->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_uiNode);
+    m_rotateFlag = 0;
     m_uiNode = uiNode;
     m_buttonSlot = new Hmi_Button_Slot_T();
     if(pButtonData != NULL)
@@ -89,8 +88,15 @@ int HMIButton::Update()
         m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num]);
         if(m_buttonSlot->buttonData->icon_type == DYNAMIC_ICON)
         {
-            buttonLayer->SetX(m_buttonSlot->buttonData->pos[0]);
-            buttonLayer->SetY(m_buttonSlot->buttonData->pos[1]);
+            if(m_rotateFlag == 1)
+			{
+              buttonLayer->SetAnchorPoint(m_anchorPointX, m_anchorPointY);
+              buttonLayer->RotateZ(m_rotateZ);
+
+            }
+		
+            buttonLayer->SetX(m_buttonSlot->buttonData->pos[0] + m_rotateFlag * m_anchorPointX * m_buttonSlot->buttonData->width);
+            buttonLayer->SetY(m_buttonSlot->buttonData->pos[1] + m_rotateFlag * m_anchorPointY * m_buttonSlot->buttonData->height);
                 
 		    buttonLayer->SetWidth(m_buttonSlot->buttonData->width);
             buttonLayer->SetHeight(m_buttonSlot->buttonData->height);            
@@ -153,6 +159,21 @@ int HMIButton::SetY(float pos)
     m_buttonSlot->buttonData->pos[1] = pos;
     return BUTTON_NORMAL; 
 }
+int HMIButton::SetRotateZ(float rZ, float anchorPointX, float anchorPointY, int flag)
+{
+	m_rotateFlag = flag;
+
+	if(flag == 0)
+	{
+		return BUTTON_NORMAL;
+	}
+	m_rotateZ = rZ;
+	m_anchorPointX = anchorPointX;
+	m_anchorPointY = anchorPointY;
+	
+	return BUTTON_NORMAL; 
+}
+
 int HMIButton::SetWidth(float width)
 {
     m_buttonSlot->buttonData->width = width;

@@ -1,5 +1,7 @@
+#ifndef _HMI_SCROLL_H_ /* { */
+#define _HMI_SCROLL_H_
 /*===========================================================================*\
- * FILE: CSVDemoLkaHmi.h
+ * FILE: HMIScroll.h
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -27,70 +29,80 @@
 /*===========================================================================*\
  * Standard Header Files
 \*===========================================================================*/
+#include "../../XrCore/XrSrc/External/XrHeaders.h"
+#include "../../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
+#include "../DataStruct.h"
 
-
-#ifndef _CSV_DEMO_LKA_HMI_H_
-#define _CSV_DEMO_LKA_HMI_H_
-
-#include "ISVHmi.h"
-
-
-typedef enum DemoLkaHmiElementTag
+enum
 {
-	DEMO_LKA_STATUS_BAR_BKG = 1,
-	DEMO_LKA_SPEED_PROMPT,
-	DEMO_LKA_DIRECTION_PROMPT,
-	DEMO_LKA_STEERING_PROMPT,
-	DEMO_LKA_WARNING,
-	DEMO_LKA_LANE_BKG,
-	DEMO_LKA_LEFT_SIDE_LANE,
-	DEMO_LKA_RIGHT_SIDE_LANE,
-	DEMO_LKA_CAR,
-    DEMO_LKA_ICON_NUMS,
+    MAX_SCROLL_IMAGE_NUM = 10,
+};
+enum
+{
+	SCROLL_HORIZONTAL = 0,
+	SCROLL_VERTICAL = 1,
+};
+enum
+{
+	SCROLL_NORMAL = 0,
+};//button error code
+
+typedef struct HmiScrollDataTag
+{
+	float pos[2];
+    float width;
+    float height;
+	unsigned char showFlag;
+	unsigned char scrollType;
+	int   scrollImageNum;
+	char* scrollImageName[MAX_SCROLL_IMAGE_NUM];
 }
-DemoLkaHmiElementT;
+HmiScrollDataT;
 
-
-class CSVDemoLkaHmi : public ISVHmi
+class HMIScroll
 {
 public:
-	CSVDemoLkaHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
-	virtual ~CSVDemoLkaHmi();
-	virtual int SetElementsVisibility(unsigned char pFlag);
-	HMI_BASE_INHERITANCE_FUNC()
-	
-private:
-	int SetHmiParams();
-	int RefreshHmi();
-	void SetHmiElementProperty(unsigned char pIconIndex, float pIconPosX, float pIconPosY, float pIconWidth, float pIconHeight);
-	
-	int ProcessLka(LkaLcResultT pLkaLcResult);
-	int ProcessLc(LkaLcResultT pLkaLcResult);
+	HMIScroll(HmiScrollDataT* pHmiScrollData);
+	~HMIScroll();
+
+	int Update(float pRate);
+	int SetVisibility(unsigned char flag);
+
+	virtual int CalcScrollActiveArea(float pRate);
 
 private:
-	Hmi_Button_Data_T m_baseButtonData[DEMO_LKA_ICON_NUMS];
-    HMIButton* m_baseButton[DEMO_LKA_ICON_NUMS];
-
-	float m_buttonPos[DEMO_LKA_ICON_NUMS][BUTTON_POS];
-	float m_buttonSize[DEMO_LKA_ICON_NUMS][BUTTON_SIZE];
-
-	unsigned char m_buttonVisibility[DEMO_LKA_ICON_NUMS];
-	unsigned char m_buttonImage[DEMO_LKA_ICON_NUMS];
+	int Init();
 	
-	IActionTrigger*	m_trigger[DEMO_LKA_ICON_NUMS];
+private:
+	int m_renderNodeId;
+	class ISceneNode* m_renderNode;
+	class ICamera*    m_renderCamera;
+	
+	HmiScrollDataT*   m_hmiScrollData;
 
+	int m_materialId;
+	IMaterial*  m_mtl;
 
-	int m_screenWidth;
-	int m_screenHeight;
+	int m_meshId;
+	IMesh*      m_mesh;
 
+	int m_nodeId;
+	INode*		m_node;
 
-public:	
+	float m_scrollPos[8];
+	float m_texturePos[8];
+
+	float* m_vertex;
+
+	float m_regionTopLeft_x;
+	float m_regiontopLeft_y;
+	float m_regionBottomRight_x;
+	float m_regionBottomRight_y;
+
+	unsigned char m_scrollVisibility;
+
 
 };
-
-
-#endif //_CSV_DEMO_LKA_HMI_H_
-
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
@@ -98,5 +110,9 @@ public:
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  1/4/18   Jensen Wang   Create the CSVDemoLkaHmi class.
+ *  10/11/17   Jensen Wang   Create the HMIScroll class.
 \*===========================================================================*/
+#endif /* } _HMI_SCROLL_H_ */
+
+
+

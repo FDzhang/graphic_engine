@@ -118,6 +118,7 @@ public:
 
 	virtual int SetX(float pos);
 	virtual int SetY(float pos);
+	virtual int SetRotateZ(float rZ, float anchorPointX, float anchorPointY, int flag = 0);
 	virtual int SetWidth(float width);
 	virtual int SetHeight(float height);
 
@@ -155,7 +156,10 @@ private:
 	int                m_uiNodeId;
 	int                m_buttonId;
 	int                m_buttonVisibleStatus;
-
+	float			   m_rotateZ;
+	float			   m_anchorPointX;
+	float			   m_anchorPointY;
+	int				   m_rotateFlag;
 	IActionTrigger*    m_trigger;
 	String			   m_name;
 
