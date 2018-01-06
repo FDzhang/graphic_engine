@@ -113,4 +113,5 @@ public:
  * ----------- ----------    -----------
  *  12/16/17   Jensen Wang   Create the CSVDemoMainHmi class.
  *  01/04/18   Jensen Wang   Add new menu.
+ *  01/05/18   Jensen Wang   Modify algo hmi.
 \*===========================================================================*/

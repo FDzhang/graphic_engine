@@ -29,6 +29,7 @@
 \*===========================================================================*/
 #include "CSVDemoMainHmi.h"
 #include "CSVDemoLkaHmi.h"
+#include "CSVTrainedParkingHmi.h"
 #include "CSVHmiIntent.h"
 
 REGISTER_HMI_CLASS(CSVDemoMainHmi)
@@ -456,7 +457,7 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	m_buttonImage[DEMO_MAIN_MENU_PD] = mainMenuData.iconStatus[MAIN_MENU_PD];
 	m_buttonImage[DEMO_MAIN_MENU_DVR] = mainMenuData.iconStatus[MAIN_MENU_DVR];
 
-	//m_buttonImage[DEMO_MAIN_MENU_LKA] = 1;
+	//m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 1;
 	/*static int cnt = 0;
 
 	if(cnt > 100 && cnt <= 200)
@@ -550,7 +551,17 @@ void CSVDemoMainHmi::InitSubHmi(unsigned char pHmiIndex)
 {
 	if(m_algoHmiInitFlag[pHmiIndex] == 0)
 	{
-		m_algoHmi[pHmiIndex] = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
+		switch(pHmiIndex)
+		{
+			case DEMO_LKA_LC_HMI:				
+				m_algoHmi[pHmiIndex] = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
+			break;
+			case DEMO_TP_HMI:				
+				m_algoHmi[pHmiIndex] = new CSVTrainedParkingHmi(m_uiNode, m_uiNodeId);
+			break;
+			default:
+			break;
+		}
 		m_algoHmi[pHmiIndex]->Init(m_screenWidth, m_screenHeight);
 		m_algoHmiVisibility[pHmiIndex] = 1;
 		m_algoHmiInitFlag[pHmiIndex] = 1;
@@ -571,4 +582,5 @@ void CSVDemoMainHmi::FreeSubHmi(unsigned char pHmiIndex)
  * ----------- ----------    -----------
  *  12/16/17   Jensen Wang   Create the CSVDemoMainHmi class.
  *  01/04/18   Jensen Wang   Add new menu.
+ *  01/05/18   Jensen Wang   Modify algo hmi.
 \*===========================================================================*/
