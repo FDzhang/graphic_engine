@@ -423,6 +423,9 @@ int CSVTrainedParkingHmi::Update(Hmi_Message_T& hmiMsg)
 
 int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 {
+	Tp_Result tpReslt;
+	CAvmRenderDataBase::GetInstance()->GetTpResult(&tpReslt);
+	
     if(hmiMsg->algoResult.tpStatus == 1
 		&& hmiMsg->algoResult.tpResult != NULL
 	  )
