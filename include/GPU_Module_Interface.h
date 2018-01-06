@@ -313,6 +313,7 @@ DLL_PUBLIC void UpdateStichAngle(unsigned char seam_change_flag[],StitcherResult
 DLL_PUBLIC void UpdateAPAResult(APAOverlayStruct *pAPAReslt);
 
 DLL_PUBLIC void UpdateCtaResult(unsigned char pCtaStatus, void* pCtaResult);
+DLL_PUBLIC void UpdateTpResult(unsigned char pTpStatus, void* pTpResult);
 
 DLL_PUBLIC void setHMIAlgStatus(int alg_status_value);
 DLL_PUBLIC void setHMIChainsStatus(int demo_status_value);

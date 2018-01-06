@@ -332,6 +332,9 @@ void UpdateCtaResult(unsigned char pCtaStatus, void* pCtaResult)
 	app.UpdateCtaResult(pCtaStatus, pCtaResult);
 }
 
+void UpdateTpResult(unsigned char pTpStatus, void* pTpResult)
+{
+}
 
 void UpdateGpuLuminanceBalanceCof(CoefYUV *lb_result)
 {
