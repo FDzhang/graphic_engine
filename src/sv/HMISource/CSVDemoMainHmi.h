@@ -56,6 +56,14 @@ typedef enum DemoHmiElementTag
 DemoMainHmiElementT;
 
 
+typedef enum DemoMenuAlgoHmiTag
+{
+	DEMO_LKA_LC_HMI = 0,
+	DEMO_TP_HMI,
+	DEMO_MENU_ALGO_HMI_NUM,	
+}
+DemoMenuAlgoHmiT;
+
 class CSVDemoMainHmi : public ISVHmi
 {
 public:
@@ -70,7 +78,8 @@ private:
 	int SetHmiParams();
 	int RefreshHmi();
 	void SetHmiElementProperty(unsigned char pIconIndex, float pIconPosX, float pIconPosY, float pIconWidth, float pIconHeight);
-
+	void InitSubHmi(unsigned char pHmiIndex);
+	void FreeSubHmi(unsigned char pHmiIndex);
 private:
 	Hmi_Button_Data_T m_baseButtonData[DEMO_MAIN_ELEMENT_NUM];
     HMIButton* m_baseButton[DEMO_MAIN_ELEMENT_NUM];
@@ -83,9 +92,9 @@ private:
 
 	IActionTrigger*	m_trigger[DEMO_MAIN_ELEMENT_NUM];
 
-	unsigned char m_lkaLcInitFlag;
-	unsigned char m_lkaLcHmiVisibility;
-	ISVHmi*       m_lkaLcHmi;
+	unsigned char m_algoHmiInitFlag[DEMO_MENU_ALGO_HMI_NUM];
+	unsigned char m_algoHmiVisibility[DEMO_MENU_ALGO_HMI_NUM];
+	ISVHmi*		  m_algoHmi[DEMO_MENU_ALGO_HMI_NUM];
 	
 	int m_screenWidth;
 	int m_screenHeight;

@@ -310,8 +310,11 @@ public:
 private:
 };
 
-CSVDemoMainHmi::CSVDemoMainHmi():m_lkaLcInitFlag(0),m_lkaLcHmi(0)
+CSVDemoMainHmi::CSVDemoMainHmi()
 {
+	memset(m_algoHmiInitFlag, 0, DEMO_MENU_ALGO_HMI_NUM * sizeof(unsigned char));	
+	memset(m_algoHmiVisibility, 0, DEMO_MENU_ALGO_HMI_NUM * sizeof(unsigned char));
+	memset(m_algoHmi, NULL, DEMO_MENU_ALGO_HMI_NUM * sizeof(ISVHmi*));
 	memset(m_trigger, NULL, DEMO_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonVisibility, 1, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));	
 	memset(m_buttonImage, 0, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));
@@ -471,25 +474,31 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	if(m_buttonImage[DEMO_MAIN_MENU_LKA] == BUTTON_ON_IMAGE
 		|| m_buttonImage[DEMO_MAIN_MENU_LC] == BUTTON_ON_IMAGE)
 	{
-		if(m_lkaLcInitFlag == 0)
+		
+		InitSubHmi(DEMO_LKA_LC_HMI);
+		if(m_algoHmi[DEMO_LKA_LC_HMI])
 		{
-			m_lkaLcHmi = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
-			m_lkaLcHmi->Init(m_screenWidth, m_screenHeight);
-			m_lkaLcHmiVisibility = 1;
-			m_lkaLcInitFlag = 1;
-		}
-
-		if(m_lkaLcHmi)
-		{
-			m_lkaLcHmi->Update(hmiMsg);
+			m_algoHmi[DEMO_LKA_LC_HMI]->Update(hmiMsg);
 			//cnt++;
 		}
 	}
 	else
 	{	
-		m_lkaLcHmiVisibility = 0;
-		SAFE_DELETE(m_lkaLcHmi);
-		m_lkaLcInitFlag = 0;
+		FreeSubHmi(DEMO_LKA_LC_HMI);
+	}
+
+	if(m_buttonImage[DEMO_MAIN_MENU_PARKING_T] == BUTTON_ON_IMAGE)
+	{
+		InitSubHmi(DEMO_TP_HMI);
+		if(m_algoHmi[DEMO_TP_HMI])
+		{
+			m_algoHmi[DEMO_TP_HMI]->Update(hmiMsg);
+			//cnt++;
+		}
+	}
+	else
+	{
+		FreeSubHmi(DEMO_TP_HMI);
 	}
 	
 	RefreshHmi();
@@ -506,9 +515,14 @@ int CSVDemoMainHmi::RefreshHmi()
 		m_baseButton[i]->Update();
 	}
 
-	if(m_lkaLcHmi)
+	if(m_algoHmi[DEMO_LKA_LC_HMI])
 	{
-		m_lkaLcHmi->SetElementsVisibility(m_lkaLcHmiVisibility);
+		m_algoHmi[DEMO_LKA_LC_HMI]->SetElementsVisibility(m_algoHmiVisibility[DEMO_LKA_LC_HMI]);
+	}
+
+	if(m_algoHmi[DEMO_TP_HMI])
+	{
+		m_algoHmi[DEMO_TP_HMI]->SetElementsVisibility(m_algoHmiVisibility[DEMO_TP_HMI]);
 	}
 
 	return DEMO_HMI_NORMAL;
@@ -530,6 +544,24 @@ void CSVDemoMainHmi::SetHmiElementProperty(unsigned char pIconIndex, float pIcon
 	m_buttonSize[pIconIndex][BUTTON_SIZE_HEIGHT] = pIconHeight;
 	m_buttonPos[pIconIndex][BUTTON_POS_X] = pIconPosX;
 	m_buttonPos[pIconIndex][BUTTON_POS_Y] = pIconPosY;
+}
+
+void CSVDemoMainHmi::InitSubHmi(unsigned char pHmiIndex)
+{
+	if(m_algoHmiInitFlag[pHmiIndex] == 0)
+	{
+		m_algoHmi[pHmiIndex] = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
+		m_algoHmi[pHmiIndex]->Init(m_screenWidth, m_screenHeight);
+		m_algoHmiVisibility[pHmiIndex] = 1;
+		m_algoHmiInitFlag[pHmiIndex] = 1;
+	}
+
+}
+void CSVDemoMainHmi::FreeSubHmi(unsigned char pHmiIndex)
+{
+	m_algoHmiVisibility[pHmiIndex] = 0;
+	SAFE_DELETE(m_algoHmi[pHmiIndex]);
+	m_algoHmiInitFlag[pHmiIndex] = 0;
 }
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
