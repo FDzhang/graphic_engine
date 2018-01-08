@@ -100,12 +100,12 @@ typedef enum Changan_Track_Cam_Region_Index_Tag
  
  } Changan_Cam_Region_Index_T;
  */
-/*typedef enum AvmViewType 
+typedef enum AvmViewTypeTag
 {
-    FRONT_SINGLE_VIEW = 0x00000000,
-    REAR_SINGLE_VIEW,
-    LEFT_SINGLE_VIEW,
-    RIGHT_SINGLE_VIEW,
+    FRONT_SINGLE_VIEW = 0x00000000, // chang an 前单
+    REAR_SINGLE_VIEW,// chang an 后单
+    LEFT_SINGLE_VIEW,// chang an 左单
+    RIGHT_SINGLE_VIEW,// chang an 右单
     FRONT_3D_VIEW,
     REAR_3D_VIEW,
     LEFT_FRONT_3D_VIEW,
@@ -125,13 +125,13 @@ typedef enum Changan_Track_Cam_Region_Index_Tag
     LEFT_MIRROR_VIEW,
     RIGHT_MIRROR_VIEW,
     BMW_REAR_VIEW,
-    BMW_LEFT_VIEW,
-    BMW_RIGHT_VIEW,
-    BMW_LEFT_FRONT_VIEW,
-    BMW_RIGHT_FRONT_VIEW,
-    BMW_LEFT_REAR_VIEW,
-    BMW_RIGHT_REAR_VIEW,
-    BMW_REAR_3D_VIEW,
+    BMW_LEFT_VIEW,// chang an 左3D
+    BMW_RIGHT_VIEW,// chang an 右3D
+    BMW_LEFT_FRONT_VIEW,// chang an 左前3D
+    BMW_RIGHT_FRONT_VIEW,// chang an 右前3D
+    BMW_LEFT_REAR_VIEW,// chang an 左后3D
+    BMW_RIGHT_REAR_VIEW,// chang an 右后3D
+    BMW_REAR_3D_VIEW,// chang an 前3D
     FRONT_LARGE_SINGLE_VIEW,
     REAR_LARGE_SINGLE_VIEW,
     LEFT_LARGE_SINGLE_VIEW,
@@ -143,7 +143,9 @@ typedef enum Changan_Track_Cam_Region_Index_Tag
     LEFT_RIGHT_LINEAR_VIEW,
     TOUR_LARGE_3D_VIEW,
     TOTAL_VIEW_NUM,
-};*/
+}
+AvmViewTypeT;
+
 typedef struct GpuCalibResultTag
 {
 	unsigned int** outConfigStore;

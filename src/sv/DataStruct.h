@@ -126,13 +126,13 @@ typedef enum CameraPosition {
         CameraPosition_BMW_3D_Rear = 0x0000018,
 };
 
-enum
+/*enum
 {
 LINEAR_FRONT_180_DEGREE_VIEW = 36,
     LINEAR_REAR_180_DEGREE_VIEW,
     LEFT_RIGHT_LINEAR_VIEW,
     TOUR_LARGE_3D_VIEW,
-};
+};*/
 	/*
 typedef enum RightViewType {
 	FRONT_SINGLE_VIEW			= 0x00000000,
