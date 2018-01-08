@@ -843,7 +843,7 @@ int CSVChangAnSwitchViewHmi::SetElementsVisibility(unsigned char pFlag)
 {
 	for(int i = CHANGAN_RED_TRACK; i < CHANGAN_ICON_NUMS; i++)
 	{
-        if(m_camera_icons_visibility == 0)
+        if(m_camera_icons_visibility == 0 || pFlag == 0)
 		{
 		    m_baseButton[i]->SetVisibility(0);
 		}
