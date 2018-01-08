@@ -87,11 +87,11 @@ private:
 	int m_screenWidth;
 	int m_screenHeight;
 
-	unsigned char m_camera_icons_visibility;
-	unsigned int m_current_time;
+	unsigned char m_cameraIconsVisibility;
+	unsigned int m_currentTime;
 	
 public:	
-	static unsigned int m_start_count_time;
+	static unsigned int m_startCountTime;
 	static unsigned char m_hasBeenTouched;
 
 };

@@ -31,7 +31,7 @@
 #include "gpu_log.h"
 
 extern float car_rect[4];
-unsigned int CSVChangAnSwitchViewHmi::m_start_count_time = 0;
+unsigned int CSVChangAnSwitchViewHmi::m_startCountTime = 0;
 unsigned char CSVChangAnSwitchViewHmi::m_hasBeenTouched = 0;
 
 class CFrontCamActionTrigger : public IActionTrigger
@@ -48,7 +48,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -70,7 +70,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -92,7 +92,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -114,7 +114,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -136,7 +136,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_REAR_3D_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -158,7 +158,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_3D_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -180,7 +180,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -202,7 +202,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -224,7 +224,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_FRONT_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -246,7 +246,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_FRONT_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -268,7 +268,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_REAR_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -290,7 +290,7 @@ public:
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_REAR_VIEW);
-		CSVChangAnSwitchViewHmi::m_start_count_time = XrGetTime();
+		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
@@ -307,7 +307,7 @@ CSVChangAnSwitchViewHmi::CSVChangAnSwitchViewHmi(IUINode* pUiNode, int pUiNodeId
 
 	memset(m_buttonImage, 0, CHANGAN_ICON_NUMS * sizeof(unsigned char));
 
-	m_camera_icons_visibility = 1;
+	m_cameraIconsVisibility = 1;
 
 }
 
@@ -556,7 +556,7 @@ int CSVChangAnSwitchViewHmi::Update(Hmi_Message_T& hmiMsg)
     static unsigned int initStartCountTime = 0;
 	if(initStartCountTime == 0)
 	{
-	    m_start_count_time = XrGetTime();
+	    m_startCountTime = XrGetTime();
 		initStartCountTime = 1;
 	}
 
@@ -566,7 +566,7 @@ int CSVChangAnSwitchViewHmi::Update(Hmi_Message_T& hmiMsg)
 
     if(m_hasBeenTouched == 0 && viewCmd != lastViewCmd)
 	{
-	    m_start_count_time = XrGetTime();
+	    m_startCountTime = XrGetTime();
 	}
 
 	m_buttonImage[CHANGAN_CAMERA_FRONT] = 0;
@@ -645,34 +645,34 @@ int CSVChangAnSwitchViewHmi::Update(Hmi_Message_T& hmiMsg)
 	if(GetTouchEventInfo(x,y,touchType))
 	{
 		ProcessCarRegionTouchEvent(x,y,touchType);
-		if(m_camera_icons_visibility == 1)
+		if(m_cameraIconsVisibility == 1)
 		{
 		    ProcessTrackCamRegionTouchEvent(x,y,touchType);
 		}
 	}
 
-    m_current_time = XrGetTime();
+    m_currentTime = XrGetTime();
     if(m_hasBeenTouched == 1)
     {
-		if(m_current_time - m_start_count_time > 10000)
+		if(m_currentTime - m_startCountTime > 10000)
 	    {
-	        m_camera_icons_visibility = 0;
+	        m_cameraIconsVisibility = 0;
 			m_hasBeenTouched = 0;
 	    }
 		else
 		{
-		    m_camera_icons_visibility = 1;
+		    m_cameraIconsVisibility = 1;
 		}
     }
 	else if(m_hasBeenTouched == 0)
 	{
-		if(m_current_time - m_start_count_time > 2000)
+		if(m_currentTime - m_startCountTime > 2000)
 		{
-		    m_camera_icons_visibility = 0;
+		    m_cameraIconsVisibility = 0;
 		}
 		else
 		{
-		    m_camera_icons_visibility = 1;
+		    m_cameraIconsVisibility = 1;
 		}
 	}
 	RefreshHmi();
@@ -686,11 +686,11 @@ int CSVChangAnSwitchViewHmi::RefreshHmi()
 	for(int i = CHANGAN_RED_TRACK; i < CHANGAN_ICON_NUMS; i++)
 	{
 	    m_baseButton[i]->SetShowIconNum(m_buttonImage[i]);
-		if(m_camera_icons_visibility == 0)
+		if(m_cameraIconsVisibility == 0)
 		{
 		    m_baseButton[i]->SetVisibility(0);
 		}
-		else if(m_camera_icons_visibility == 1)
+		else if(m_cameraIconsVisibility == 1)
 		{
 		    m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 		}
@@ -722,8 +722,8 @@ int CSVChangAnSwitchViewHmi::ProcessCarRegionTouchEvent(unsigned int pos_x, unsi
         && touch_pos_y > m_carRectPos[BUTTON_POS_Y]
         && touch_pos_y < m_carRectPos[BUTTON_POS_Y] + m_carRectSize[BUTTON_SIZE_HEIGHT])
     {
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -754,8 +754,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_FRONT_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_REAR_3D_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -765,8 +765,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_REAR_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_3D_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -776,8 +776,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_LEFT_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -787,8 +787,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_RIGHT_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -798,8 +798,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_FRONT_LEFT_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_FRONT_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -809,8 +809,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_FRONT_RIGHT_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_FRONT_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -820,8 +820,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_REAR_LEFT_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_REAR_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -831,8 +831,8 @@ int CSVChangAnSwitchViewHmi::ProcessTrackCamRegionTouchEvent(unsigned int pos_x,
         && touch_pos_y < m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].pos[1] + m_baseButtonData[CHANGAN_TRACK_REAR_RIGHT_CAMERA].height)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_REAR_VIEW);
-		m_camera_icons_visibility = 1;
-		m_start_count_time = XrGetTime();
+		m_cameraIconsVisibility = 1;
+		m_startCountTime = XrGetTime();
         m_hasBeenTouched = 1;
     }
 
@@ -843,11 +843,11 @@ int CSVChangAnSwitchViewHmi::SetElementsVisibility(unsigned char pFlag)
 {
 	for(int i = CHANGAN_RED_TRACK; i < CHANGAN_ICON_NUMS; i++)
 	{
-        if(m_camera_icons_visibility == 0 || pFlag == 0)
+        if(m_cameraIconsVisibility == 0 || pFlag == 0)
 		{
 		    m_baseButton[i]->SetVisibility(0);
 		}
-		else if(m_camera_icons_visibility == 1)
+		else if(m_cameraIconsVisibility == 1)
 		{
 		    m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 		}
