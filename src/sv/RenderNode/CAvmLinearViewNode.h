@@ -66,6 +66,9 @@ private:
 	SurroundViewCameraParamsT*   m_180DegreerViewCameraParams;
 
 	unsigned char m_visibilityFlag;
+
+	unsigned char m_depthClearFlag;
+	unsigned char m_colorClearFlag;
 };
 
 #endif // _CAVM_LINEARVIEW_NODE_H_

@@ -26,7 +26,7 @@
 #include "CAvmLinearViewNode.h"
 #include "../AVMData.h"
 
-CAvmLinearViewNode::CAvmLinearViewNode()
+CAvmLinearViewNode::CAvmLinearViewNode():m_depthClearFlag(0),m_colorClearFlag(0)
 {
 
 }
@@ -44,7 +44,7 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 
 	m_xrCore = pXrcore;
 
-	#define PlaneScaleX 16000.0
+	#define PlaneScaleX 14000.0
 	#define PlaneScaleY 17000.0
     #define PlaneScaleY_NEG  -17000.0
 	
@@ -153,7 +153,7 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 	CAvmRenderDataBase::GetInstance()->GetLinearViewRegion(&linearViewRegion);
 	m_180DegreeViewNode->SetRenderROI(linearViewRegion);
 
-	m_180DegreeViewNode->SetClearColor(1.0,0.0,0.0,1.0);
+	m_180DegreeViewNode->SetClearColor(0.0,0.0,0.0,1.0);
 	int displayChannel = 0;
 
 	m_renderDelegate = new RenderDelegateCV();
@@ -232,12 +232,17 @@ int CAvmLinearViewNode::UpdateNode()
 	if(linear180DegreeViewCmd == LINEAR_FRONT_180_DEGREE_VIEW)
 	{
 		m_renderDelegate->SetChannel(FRONT_SINGLE_VIEW);
+		m_180DegreeViewNode->SetClear(TRUE, TRUE);
 	}
 	else if(linear180DegreeViewCmd == LINEAR_REAR_180_DEGREE_VIEW)
 	{
 		m_renderDelegate->SetChannel(REAR_SINGLE_VIEW);	
+		m_180DegreeViewNode->SetClear(TRUE, TRUE);
 	}
-	
+	else
+	{
+		m_180DegreeViewNode->SetClear(m_colorClearFlag, m_depthClearFlag);
+	}
 	return LINEAR_VIEW_NODE_NORMAL;
 }
 int CAvmLinearViewNode::SetVisibility(unsigned char pVisibilityFlag)
@@ -268,6 +273,8 @@ ICamera* CAvmLinearViewNode::GetAvmLinearViewCamera()
 }
 int CAvmLinearViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
 {
+	m_depthClearFlag = pDepthFlag;
+	m_colorClearFlag = pColorFlag;
 	m_180DegreeViewNode->SetClear(pColorFlag, pDepthFlag);
 	return LINEAR_VIEW_NODE_NORMAL;
 }
