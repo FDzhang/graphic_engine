@@ -490,7 +490,7 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 				CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(currentViewStatus);
 				lastViewStatus = currentViewStatus;
 			}
-			Log_Error("-----------current view: %d", currentViewStatus);
+			//Log_Error("-----------current view: %d", currentViewStatus);
 		break;
 		case RENDER_DATA_MAIN_MENU:
 			CAvmRenderDataBase::GetInstance()->SetMainMenuStatus((MainMenuDataT*)renderData);
