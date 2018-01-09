@@ -60,7 +60,8 @@ typedef enum DemoMenuAlgoHmiTag
 {
 	DEMO_LKA_LC_HMI = 0,
 	DEMO_TP_HMI,
-	DEMO_MENU_ALGO_HMI_NUM,	
+	DEMO_SWITCH_VIEW_HMI,
+	DEMO_MENU_SUB_HMI_NUM,	
 }
 DemoMenuAlgoHmiT;
 
@@ -92,9 +93,9 @@ private:
 
 	IActionTrigger*	m_trigger[DEMO_MAIN_ELEMENT_NUM];
 
-	unsigned char m_algoHmiInitFlag[DEMO_MENU_ALGO_HMI_NUM];
-	unsigned char m_algoHmiVisibility[DEMO_MENU_ALGO_HMI_NUM];
-	ISVHmi*		  m_algoHmi[DEMO_MENU_ALGO_HMI_NUM];
+	unsigned char m_subHmiInitFlag[DEMO_MENU_SUB_HMI_NUM];
+	unsigned char m_subHmiVisibility[DEMO_MENU_SUB_HMI_NUM];
+	ISVHmi*		  m_subHmi[DEMO_MENU_SUB_HMI_NUM];
 	
 	int m_screenWidth;
 	int m_screenHeight;

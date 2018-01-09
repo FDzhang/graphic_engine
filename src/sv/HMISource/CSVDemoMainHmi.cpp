@@ -30,6 +30,7 @@
 #include "CSVDemoMainHmi.h"
 #include "CSVDemoLkaHmi.h"
 #include "CSVTrainedParkingHmi.h"
+#include "CSVChangAnSwitchViewHmi.h"
 #include "CSVHmiIntent.h"
 
 REGISTER_HMI_CLASS(CSVDemoMainHmi)
@@ -92,7 +93,16 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		int i = 0;
+		Layout_Event_Payload_T* tmp_payload = NULL;
+		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+		memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+		tmp_payload->header.msg_id = ALGO_LKA_BUTTON;
+		tmp_payload->body.onlyNotify = true;
+		m_eventDel.PostEventPayload(tmp_payload);
+	
+		SAFE_FREE(tmp_payload);
+
+		Log_Message("-----------CMainLKAActionTrigger");
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
@@ -112,7 +122,16 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		int i = 0;
+		Layout_Event_Payload_T* tmp_payload = NULL;
+		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+		memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+		tmp_payload->header.msg_id = ALGO_LC_BUTTON;
+		tmp_payload->body.onlyNotify = true;
+		m_eventDel.PostEventPayload(tmp_payload);
+	
+		SAFE_FREE(tmp_payload);
+
+		Log_Message("-----------CMainLCActionTrigger");
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
@@ -277,7 +296,16 @@ public:
 	}
 	virtual Void OnPress(Int32 id)
 	{
-		int i = 0;
+		Layout_Event_Payload_T* tmp_payload = NULL;
+		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+		memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+		tmp_payload->header.msg_id = ALGO_PD_BUTTON;
+		tmp_payload->body.onlyNotify = true;
+		m_eventDel.PostEventPayload(tmp_payload);
+	
+		SAFE_FREE(tmp_payload);
+
+		Log_Message("-----------CMainPDActionTrigger");
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
@@ -288,6 +316,35 @@ public:
 
 private:
 };
+
+class CMainOcActionTrigger : public IActionTrigger
+{
+public:
+	CMainOcActionTrigger()
+	{ 
+	}
+	virtual Void OnPress(Int32 id)
+	{
+		Layout_Event_Payload_T* tmp_payload = NULL;
+		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+		memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+		tmp_payload->header.msg_id = ALGO_OC_BUTTON;
+		tmp_payload->body.onlyNotify = true;
+		m_eventDel.PostEventPayload(tmp_payload);
+	
+		SAFE_FREE(tmp_payload);
+
+		Log_Message("-----------CMainOcActionTrigger");
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{
+
+	}
+	
+
+private:
+};
+
 
 class CMainDvrActionTrigger : public IActionTrigger
 {
@@ -320,13 +377,15 @@ private:
 
 CSVDemoMainHmi::CSVDemoMainHmi()
 {
-	memset(m_algoHmiInitFlag, 0, DEMO_MENU_ALGO_HMI_NUM * sizeof(unsigned char));	
-	memset(m_algoHmiVisibility, 0, DEMO_MENU_ALGO_HMI_NUM * sizeof(unsigned char));
-	memset(m_algoHmi, NULL, DEMO_MENU_ALGO_HMI_NUM * sizeof(ISVHmi*));
+	memset(m_subHmiInitFlag, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(unsigned char));	
+	memset(m_subHmiVisibility, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(unsigned char));
+	memset(m_subHmi, NULL, DEMO_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
 	memset(m_trigger, NULL, DEMO_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonVisibility, 1, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));	
 	memset(m_buttonImage, 0, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));
 
+	InitSubHmi(DEMO_SWITCH_VIEW_HMI);
+	m_subHmiVisibility[DEMO_SWITCH_VIEW_HMI] = 0;
 }
 
 CSVDemoMainHmi::~CSVDemoMainHmi()
@@ -484,9 +543,9 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	{
 		
 		InitSubHmi(DEMO_LKA_LC_HMI);
-		if(m_algoHmi[DEMO_LKA_LC_HMI])
+		if(m_subHmi[DEMO_LKA_LC_HMI])
 		{
-			m_algoHmi[DEMO_LKA_LC_HMI]->Update(hmiMsg);
+			m_subHmi[DEMO_LKA_LC_HMI]->Update(hmiMsg);
 			//cnt++;
 		}
 	}
@@ -498,15 +557,20 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	if(m_buttonImage[DEMO_MAIN_MENU_PARKING_T] == BUTTON_ON_IMAGE)
 	{
 		InitSubHmi(DEMO_TP_HMI);
-		if(m_algoHmi[DEMO_TP_HMI])
+		if(m_subHmi[DEMO_TP_HMI])
 		{
-			m_algoHmi[DEMO_TP_HMI]->Update(hmiMsg);
+			m_subHmi[DEMO_TP_HMI]->Update(hmiMsg);
 			//cnt++;
 		}
 	}
 	else
 	{
 		FreeSubHmi(DEMO_TP_HMI);
+	}
+
+	if(m_subHmi[DEMO_SWITCH_VIEW_HMI])
+	{
+		m_subHmi[DEMO_SWITCH_VIEW_HMI]->Update(hmiMsg);
 	}
 	
 	RefreshHmi();
@@ -523,14 +587,19 @@ int CSVDemoMainHmi::RefreshHmi()
 		m_baseButton[i]->Update();
 	}
 
-	if(m_algoHmi[DEMO_LKA_LC_HMI])
+	if(m_subHmi[DEMO_LKA_LC_HMI])
 	{
-		m_algoHmi[DEMO_LKA_LC_HMI]->SetElementsVisibility(m_algoHmiVisibility[DEMO_LKA_LC_HMI]);
+		m_subHmi[DEMO_LKA_LC_HMI]->SetElementsVisibility(m_subHmiVisibility[DEMO_LKA_LC_HMI]);
 	}
 
-	if(m_algoHmi[DEMO_TP_HMI])
+	if(m_subHmi[DEMO_TP_HMI])
 	{
-		m_algoHmi[DEMO_TP_HMI]->SetElementsVisibility(m_algoHmiVisibility[DEMO_TP_HMI]);
+		m_subHmi[DEMO_TP_HMI]->SetElementsVisibility(m_subHmiVisibility[DEMO_TP_HMI]);
+	}
+	
+	if(m_subHmi[DEMO_SWITCH_VIEW_HMI])
+	{
+		m_subHmi[DEMO_SWITCH_VIEW_HMI]->SetElementsVisibility(m_subHmiVisibility[DEMO_SWITCH_VIEW_HMI]);
 	}
 
 	return DEMO_HMI_NORMAL;
@@ -556,30 +625,32 @@ void CSVDemoMainHmi::SetHmiElementProperty(unsigned char pIconIndex, float pIcon
 
 void CSVDemoMainHmi::InitSubHmi(unsigned char pHmiIndex)
 {
-	if(m_algoHmiInitFlag[pHmiIndex] == 0)
+	if(m_subHmiInitFlag[pHmiIndex] == 0)
 	{
 		switch(pHmiIndex)
 		{
 			case DEMO_LKA_LC_HMI:				
-				m_algoHmi[pHmiIndex] = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
+				m_subHmi[pHmiIndex] = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
 			break;
 			case DEMO_TP_HMI:				
-				m_algoHmi[pHmiIndex] = new CSVTrainedParkingHmi(m_uiNode, m_uiNodeId);
+				m_subHmi[pHmiIndex] = new CSVTrainedParkingHmi(m_uiNode, m_uiNodeId);
 			break;
+			case DEMO_SWITCH_VIEW_HMI:
+				m_subHmi[pHmiIndex] = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
 			default:
 			break;
 		}
-		m_algoHmi[pHmiIndex]->Init(m_screenWidth, m_screenHeight);
-		m_algoHmiVisibility[pHmiIndex] = 1;
-		m_algoHmiInitFlag[pHmiIndex] = 1;
+		m_subHmi[pHmiIndex]->Init(m_screenWidth, m_screenHeight);
+		m_subHmiVisibility[pHmiIndex] = 1;
+		m_subHmiInitFlag[pHmiIndex] = 1;
 	}
 
 }
 void CSVDemoMainHmi::FreeSubHmi(unsigned char pHmiIndex)
 {
-	m_algoHmiVisibility[pHmiIndex] = 0;
-	SAFE_DELETE(m_algoHmi[pHmiIndex]);
-	m_algoHmiInitFlag[pHmiIndex] = 0;
+	m_subHmiVisibility[pHmiIndex] = 0;
+	SAFE_DELETE(m_subHmi[pHmiIndex]);
+	m_subHmiInitFlag[pHmiIndex] = 0;
 }
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)

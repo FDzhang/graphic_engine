@@ -696,7 +696,6 @@ int CSVChangAnSwitchViewHmi::RefreshHmi()
 		}
 		m_baseButton[i]->Update();
 	}
-
 	return CHANGAN_SWITCH_VIEW_HMI_NORMAL;
 }
 int CSVChangAnSwitchViewHmi::ProcessCarRegionTouchEvent(unsigned int pos_x, unsigned int pos_y, unsigned char action)
