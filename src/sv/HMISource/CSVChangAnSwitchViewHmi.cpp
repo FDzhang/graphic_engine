@@ -470,7 +470,7 @@ int CSVChangAnSwitchViewHmi::Init(int window_width, int window_height)
 {
 	m_screenWidth = window_width;
 	m_screenHeight = window_height;
-	float leftPanelWidth = 0.0;//100.0;
+	float leftPanelWidth = 100.0;
 	float heightInterval = 80.0;
 	float stitchRegionWidth = window_width * 0.35;
 	float stitchRegionHeight = window_height - 2.0 * heightInterval;
@@ -545,7 +545,7 @@ int CSVChangAnSwitchViewHmi::Init(int window_width, int window_height)
 	m_carRectSize[BUTTON_SIZE_WIDTH] = carRectWidth;
 	m_carRectSize[BUTTON_SIZE_HEIGHT] = carRectHeight;
 	m_carRectPos[BUTTON_POS_X] = (stitchRegionWidth - carRectWidth) * 0.5 + leftPanelWidth;
-	m_carRectPos[BUTTON_POS_Y] = (1.0 - car_rect[1]) * stitchRegionHeight/2.0 + heightInterval + stitchRegionWidth*(car_rect[1]-car_rect[3])*0.35;
+	m_carRectPos[BUTTON_POS_Y] = (1.0 - car_rect[1]) * stitchRegionHeight/2.0 + heightInterval + stitchRegionHeight * 0.5 * (car_rect[1] - car_rect[3]) * 0.35;
 
 	SetHmiParams();
 	

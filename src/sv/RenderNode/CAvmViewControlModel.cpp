@@ -118,33 +118,34 @@ int CAvmViewControlModel::InitViewNode()
     float stich_region_width = 0.35 *  XrGetScreenWidth();
 
 	float black_width = 80.0;
+	float left_panel_width = 100.0;
 
-	stich2D_region[REGION_POS_LEFT] = 0.0;
-	stich2D_region[REGION_POS_RIGHT] = stich_region_width ;
+	stich2D_region[REGION_POS_LEFT] = 0.0 + left_panel_width;
+	stich2D_region[REGION_POS_RIGHT] = stich_region_width + left_panel_width;
 	stich2D_region[REGION_POS_TOP] = 0+black_width;
 	stich2D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	single2D_region[REGION_POS_LEFT] = stich_region_width;
+	single2D_region[REGION_POS_LEFT] = stich_region_width + left_panel_width;
 	single2D_region[REGION_POS_RIGHT] = XrGetScreenWidth();
 	single2D_region[REGION_POS_TOP] = 0+black_width;
 	single2D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	scene3D_region[REGION_POS_LEFT] = stich_region_width;
+	scene3D_region[REGION_POS_LEFT] = stich_region_width + left_panel_width;
 	scene3D_region[REGION_POS_RIGHT] = XrGetScreenWidth();
 	scene3D_region[REGION_POS_TOP] = 0+black_width;
 	scene3D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	linear180DegreeRegion[REGION_POS_LEFT] = stich_region_width;
+	linear180DegreeRegion[REGION_POS_LEFT] = left_panel_width;
 	linear180DegreeRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
 	linear180DegreeRegion[REGION_POS_TOP] = 0+black_width;
 	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	leftViewRegion[REGION_POS_LEFT] = stich_region_width;
-	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + (XrGetScreenWidth() - stich_region_width)/2;
+	leftViewRegion[REGION_POS_LEFT] = stich_region_width + left_panel_width;
+	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + left_panel_width + (XrGetScreenWidth() - stich_region_width)/2;
 	leftViewRegion[REGION_POS_TOP] = 0+black_width;
 	leftViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 		
-	rightViewRegion[REGION_POS_LEFT] = stich_region_width + (XrGetScreenWidth() - stich_region_width)/2;
+	rightViewRegion[REGION_POS_LEFT] = stich_region_width + (XrGetScreenWidth() - stich_region_width)/2 + left_panel_width ;
 	rightViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
 	rightViewRegion[REGION_POS_TOP] = 0+black_width;
 	rightViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;

@@ -383,9 +383,7 @@ CSVDemoMainHmi::CSVDemoMainHmi()
 	memset(m_trigger, NULL, DEMO_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonVisibility, 1, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));	
 	memset(m_buttonImage, 0, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));
-
-	InitSubHmi(DEMO_SWITCH_VIEW_HMI);
-	m_subHmiVisibility[DEMO_SWITCH_VIEW_HMI] = 0;
+	m_subHmiVisibility[DEMO_SWITCH_VIEW_HMI] = 1;
 }
 
 CSVDemoMainHmi::~CSVDemoMainHmi()
@@ -405,6 +403,8 @@ CSVDemoMainHmi::~CSVDemoMainHmi()
 	
 int CSVDemoMainHmi::SetHmiParams()
 {
+	InitSubHmi(DEMO_SWITCH_VIEW_HMI);
+
 	m_baseButtonData[DEMO_MAIN_MENU_BKG].icon_type = STATIC_ICON;
 	m_baseButtonData[DEMO_MAIN_MENU_BKG].show_flag = 1;
 	m_baseButtonData[DEMO_MAIN_MENU_BKG].show_icon_num = 0;

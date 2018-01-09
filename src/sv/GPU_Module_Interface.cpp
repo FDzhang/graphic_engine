@@ -479,12 +479,18 @@ void ProcCanData(CAN_DATA* pCanData)
 
 int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int dataLength)
 {
+	unsigned char currentViewStatus = 0;
 	switch(dataTypeId)
 	{
 		case RENDER_DATA_VIEW_CMD:
-
-			CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(*((unsigned char*)renderData));
-
+			static unsigned char lastViewStatus = 254;
+			currentViewStatus = *((unsigned char*)renderData);
+			if(currentViewStatus != lastViewStatus)
+			{
+				CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(currentViewStatus);
+				lastViewStatus = currentViewStatus;
+			}
+			Log_Error("-----------current view: %d", currentViewStatus);
 		break;
 		case RENDER_DATA_MAIN_MENU:
 			CAvmRenderDataBase::GetInstance()->SetMainMenuStatus((MainMenuDataT*)renderData);

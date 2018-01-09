@@ -416,7 +416,7 @@ bool XRSV::update(unsigned int view_control_flag)
 		static unsigned char lastDisplayCmd = 255;
 		if(lastDisplayCmd != displayCmd)
 		{
-			CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(displayCmd);
+			//CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(displayCmd);
 			lastDisplayCmd = displayCmd;
 		}
 
