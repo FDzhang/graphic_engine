@@ -714,14 +714,19 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 	unsigned char singleViewCmd = 0;
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(singleViewCmd);
 
-	if(singleViewCmd <= RIGHT_LARGE_SINGLE_VIEW
+	if((singleViewCmd <= RIGHT_LARGE_SINGLE_VIEW
 		&& singleViewCmd >= FRONT_LARGE_SINGLE_VIEW)
+		|| (singleViewCmd >= CAMERA_DEBUG_FRONT_SINGLE_VIEW
+		&& singleViewCmd <= CAMERA_DEBUG_REAR_SINGLE_VIEW))
 	{
 		switch(singleViewCmd)
 		{
-		case FRONT_LARGE_SINGLE_VIEW:
+		case FRONT_LARGE_SINGLE_VIEW:			
+		case CAMERA_DEBUG_FRONT_SINGLE_VIEW:
 			singleViewCmd = front_camera_index;
 			break;
+		
+		case CAMERA_DEBUG_REAR_SINGLE_VIEW:
 		case REAR_LARGE_SINGLE_VIEW:
 			singleViewCmd = rear_camera_index;
 			break;
@@ -731,6 +736,7 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 		case RIGHT_LARGE_SINGLE_VIEW:
 			singleViewCmd = right_camera_index;
 			break;
+
 		default:
 			break;
 		}

@@ -545,12 +545,14 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 		InitSubHmi(DEMO_LKA_LC_HMI);
 		if(m_subHmi[DEMO_LKA_LC_HMI])
 		{
+			m_subHmiVisibility[DEMO_LKA_LC_HMI] = 1;
 			m_subHmi[DEMO_LKA_LC_HMI]->Update(hmiMsg);
 			//cnt++;
 		}
 	}
 	else
-	{	
+	{			
+		m_subHmiVisibility[DEMO_LKA_LC_HMI] = 0;
 		FreeSubHmi(DEMO_LKA_LC_HMI);
 	}
 
@@ -558,19 +560,31 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	{
 		InitSubHmi(DEMO_TP_HMI);
 		if(m_subHmi[DEMO_TP_HMI])
-		{
+		{		
+			m_subHmiVisibility[DEMO_TP_HMI] = 1;
 			m_subHmi[DEMO_TP_HMI]->Update(hmiMsg);
 			//cnt++;
 		}
 	}
 	else
-	{
+	{	
 		FreeSubHmi(DEMO_TP_HMI);
 	}
 
 	if(m_subHmi[DEMO_SWITCH_VIEW_HMI])
 	{
+		m_subHmiVisibility[DEMO_SWITCH_VIEW_HMI] = 1;
 		m_subHmi[DEMO_SWITCH_VIEW_HMI]->Update(hmiMsg);
+	}
+
+	if(mainMenuData.menuVisibility == 0)
+	{
+		memset(m_subHmiVisibility, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(unsigned char));
+		memset(m_buttonVisibility, 0, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));	
+	}
+	else
+	{		
+		memset(m_buttonVisibility, 1, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));	
 	}
 	
 	RefreshHmi();

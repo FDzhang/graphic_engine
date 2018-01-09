@@ -58,6 +58,8 @@ private:
 	Region			  m_largeViewRegion;
 	float*			  m_singleViewRoi[4];
 
+	Region			  m_camDebugViewRegion;
+
 	unsigned char     m_lastLargeViewCmd;
 
 };
