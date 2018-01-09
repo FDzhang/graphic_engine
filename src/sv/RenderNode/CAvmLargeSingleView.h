@@ -60,6 +60,8 @@ private:
 
 	Region			  m_camDebugViewRegion;
 
+	Region			  m_dvrViewRegion;
+
 	unsigned char     m_lastLargeViewCmd;
 
 };

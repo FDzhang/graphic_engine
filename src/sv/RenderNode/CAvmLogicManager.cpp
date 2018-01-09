@@ -228,7 +228,9 @@ int CAvmLogicManager::UpdateViewModel()
 	if((direction >= FRONT_LARGE_SINGLE_VIEW
 		&& direction <= RIGHT_LARGE_SINGLE_VIEW)
 		|| (direction >= CAMERA_DEBUG_FRONT_SINGLE_VIEW
-		&& direction <= CAMERA_DEBUG_REAR_SINGLE_VIEW))
+		&& direction <= CAMERA_DEBUG_REAR_SINGLE_VIEW)
+		||(direction >= DVR_FRONT_SINGLE_VIEW
+		&& direction <= DVR_RIGHT_SINGLE_VIEW))
 	{
 		m_avmViewControlModel->SetViewNodeVisibility(PROCESS_LARGE_SINGLVIEW_FUNC);
 	}

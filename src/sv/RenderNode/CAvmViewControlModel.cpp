@@ -179,7 +179,7 @@ int CAvmViewControlModel::InitViewNode()
 	CAvmRenderDataBase::GetInstance()->SetStitchViewCameraParams(&m_stitchCameraParams);
 	CAvmRenderDataBase::GetInstance()->SetSingleViewCameraParams(&m_stitchCameraParams);
 	m_objectViewCameraParams.fovx = 35;//35;
-	m_objectViewCameraParams.aspect = 1.05;//1.28265302;
+	m_objectViewCameraParams.aspect = 1.23265302 ;//1.28265302;
 	m_objectViewCameraParams.znear = 4.0f;
 	m_objectViewCameraParams.zfar = 12000.0f;
 	CAvmRenderDataBase::GetInstance()->SetObjectViewCameraParams(&m_objectViewCameraParams);
@@ -717,23 +717,29 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 	if((singleViewCmd <= RIGHT_LARGE_SINGLE_VIEW
 		&& singleViewCmd >= FRONT_LARGE_SINGLE_VIEW)
 		|| (singleViewCmd >= CAMERA_DEBUG_FRONT_SINGLE_VIEW
-		&& singleViewCmd <= CAMERA_DEBUG_REAR_SINGLE_VIEW))
+		&& singleViewCmd <= CAMERA_DEBUG_REAR_SINGLE_VIEW)
+		|| (singleViewCmd >= DVR_FRONT_SINGLE_VIEW
+		&& singleViewCmd <= DVR_RIGHT_SINGLE_VIEW))
 	{
 		switch(singleViewCmd)
 		{
 		case FRONT_LARGE_SINGLE_VIEW:			
 		case CAMERA_DEBUG_FRONT_SINGLE_VIEW:
+		case DVR_FRONT_SINGLE_VIEW:
 			singleViewCmd = front_camera_index;
 			break;
 		
 		case CAMERA_DEBUG_REAR_SINGLE_VIEW:
 		case REAR_LARGE_SINGLE_VIEW:
+		case DVR_REAR_SINGLE_VIEW:
 			singleViewCmd = rear_camera_index;
 			break;
-		case LEFT_LARGE_SINGLE_VIEW:
+		case LEFT_LARGE_SINGLE_VIEW:		
+		case DVR_LEFT_SINGLE_VIEW:
 			singleViewCmd =  left_camera_index;
 			break;
-		case RIGHT_LARGE_SINGLE_VIEW:
+		case RIGHT_LARGE_SINGLE_VIEW:		
+		case DVR_RIGHT_SINGLE_VIEW:
 			singleViewCmd = right_camera_index;
 			break;
 

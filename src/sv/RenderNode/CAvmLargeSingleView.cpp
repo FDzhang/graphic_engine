@@ -53,6 +53,8 @@ int CAvmLargeSingleView::Init()
 	
 	m_largeViewRegion.Set(100.0, XrGetScreenWidth(), black_width, XrGetScreenHeight() - black_width);
 	m_camDebugViewRegion.Set(0.0, XrGetScreenWidth(), 0, XrGetScreenHeight());
+	float radio = 227.0/1280.0;
+	m_dvrViewRegion.Set(radio * XrGetScreenWidth(), XrGetScreenWidth(), black_width, XrGetScreenHeight() - black_width);
 
 	return LARGE_SINGLE_VIEW_NORMAL;
 }
@@ -103,7 +105,18 @@ int CAvmLargeSingleView::Update()
 			m_lastLargeViewCmd = largeViewCmd;
 		}
 	}
-
+	else if(largeViewCmd >= DVR_FRONT_SINGLE_VIEW
+		&& largeViewCmd <= DVR_RIGHT_SINGLE_VIEW)
+	{
+		if(m_lastLargeViewCmd != largeViewCmd)
+		{
+			CAvmRenderDataBase::GetInstance()->GetLargeSingleViewRoi(&m_singleViewRoi[largeViewCmd - DVR_FRONT_SINGLE_VIEW], largeViewCmd - DVR_FRONT_SINGLE_VIEW);
+			SetLargeViewVertextValue(m_singleViewRoi[largeViewCmd - DVR_FRONT_SINGLE_VIEW], largeViewCmd - DVR_FRONT_SINGLE_VIEW);
+			m_singleViewNode->SetRenderROI(&m_dvrViewRegion);
+			m_singleViewNode->SetClear(TRUE,TRUE);
+			m_lastLargeViewCmd = largeViewCmd;
+		}
+	}
 
 	return LARGE_SINGLE_VIEW_NORMAL;
 }
