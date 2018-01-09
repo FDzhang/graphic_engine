@@ -38,6 +38,7 @@
 #include "DataSource/AVMLuminanceData.h"
 #include "DataSource/AVM2DLUT.h"
 #include "DataSource/AVMCANData.h"
+#include "GPU_Module_Interface.h"
 #include "ICameraSourceRender.h"
 
 #include "bev_config.h"

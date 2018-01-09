@@ -108,6 +108,7 @@ typedef enum CameraPosition {
         CameraPosition_BMW_Right_Rear = 0x0000017,
         CameraPosition_BMW_3D_Rear = 0x0000018,
 };
+/*
 typedef enum RightViewType {
 	FRONT_SINGLE_VIEW			= 0x00000000,
 	REAR_SINGLE_VIEW			= 0x00000001,
@@ -142,7 +143,7 @@ typedef enum RightViewType {
     BMW_REAR_3D_VIEW,	
 	TOTAL_VIEW_NUM,
 };
-
+*/
 typedef enum DisplayModeTag
 {
 	FULL_SCREEN_3D = 35,
