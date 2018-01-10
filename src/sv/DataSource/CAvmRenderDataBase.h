@@ -33,7 +33,7 @@
 #include "../DataStruct.h"
 #include "../GlSV2D.h"
 #include "GPU_Module_Interface.h"
-
+#include "gpu_log.h"
 #define PropertyBuilderByName(type, name, access_permission) \
     access_permission:\
         type* m_##name;\
@@ -46,6 +46,10 @@
 				m_##name = new type;\
 				initFlag = 1;\				
 				m_##name##InitFlag = 1;\
+			}\
+			if(data == NULL)\
+			{\
+				return;\
 			}\
 			memcpy(m_##name, data, sizeof(type));\
         }\
@@ -99,7 +103,15 @@
 				initFlag = 1;\				
 				m_##name##InitFlag = 1;\
 			}\
+			if(data1 == NULL)\
+			{\
+				return;\
+			}\
 			memcpy(m_##name##Param1, data1, sizeof(type1));\
+			if(data2 == NULL)\
+			{\
+				return;\
+			}\
 			memcpy(m_##name##Param2, data2, sizeof(type2));\
         }\
         inline void Get##name(type1* data1, type2* data2){\
@@ -162,6 +174,7 @@ public:
 	PropertyBuilderByName(SurroundViewCameraParamsT, SingleViewCameraParams, private)
 	PropertyBuilderByName(SurroundViewCameraParamsT, 3dViewCameraParams, private)	
 	PropertyBuilderByName(SurroundViewCameraParamsT, LinearViewCameraParams, private)
+
 
 	PropertyBuilderByName(unsigned char, SingleViewChannel, private)	
 	PropertyBuilderExt3ByName(unsigned char, 3dViewIndex, private)

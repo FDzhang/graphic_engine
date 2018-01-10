@@ -44,12 +44,12 @@ public:
 	virtual int InitNode(class IXrCore* pXrcore);
 	virtual int UpdateNode();
 	virtual int SetVisibility(unsigned char pVisibilityFlag);
-	int UpdateStich2DReslt();
+	int UpdateStich2DReslt();	
+	int UpdateExternCalib2DReslt();
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 private:
 	int AddOverlay(class IAvmOverlay * pOverlay);
 	
-	int UpdateExternCalib2DReslt();
 private:
 	class IXrCore*       m_xrCore;
 	class ISceneNode*   m_stitchViewNode;

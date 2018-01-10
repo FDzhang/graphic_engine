@@ -888,6 +888,14 @@ int CAvmViewControlModel::UpdateStitchAngle()
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
 }
+int CAvmViewControlModel::UpdateExternCalib2DReslt()
+{
+	if(m_avmTimeStitcherNode)
+	{
+		m_avmTimeStitcherNode->UpdateExternCalib2DReslt();
+	}	
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

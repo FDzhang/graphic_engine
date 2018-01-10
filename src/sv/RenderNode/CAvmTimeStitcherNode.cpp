@@ -306,13 +306,13 @@ int CAvmTimeStitcherNode::UpdateExternCalib2DReslt()
     IMesh *pMeshTemp;
 
 	AVMData::GetInstance()->Get2DParam(updateFlag, &pData, &pIndex);
-	if(updateFlag == 1)
+	//if(updateFlag == 1)
 	{
 		AVMData::GetInstance()->m_2D_lut->UpdateLUT(pData,pIndex);
 
     	m_timeStitchNode->Update2DStichRslt();
 
-		AVMData::GetInstance()->Set2DParam(0, pData, pIndex);
+		//AVMData::GetInstance()->Set2DParam(0, pData, pIndex);
 	}
 	return TIME_STITCHER_NORMAL;
 }

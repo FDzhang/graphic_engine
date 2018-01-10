@@ -69,6 +69,7 @@ public:
 	virtual int SetViewNodeVisibility(VisibilityIndexT pFuncId);
 
 	int UpdateStitchAngle();
+	int UpdateExternCalib2DReslt();
 
 private:
 	virtual int ProcessSingleViewDisplay();
