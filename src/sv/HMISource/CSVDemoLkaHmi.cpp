@@ -180,8 +180,9 @@ int CSVDemoLkaHmi::Init(int window_width, int window_height)
 	float iconVInterval = 20.0;
 	float iconLaneWidth = 20.0;
 	float iconCarVInterval = 20.0;
+	float left_panel_width = 100.0;
 
-	SetHmiElementProperty(DEMO_LKA_STATUS_BAR_BKG, stitchRegionWidth, heightInterval, 832.0, 138.0);
+	SetHmiElementProperty(DEMO_LKA_STATUS_BAR_BKG, stitchRegionWidth + left_panel_width, heightInterval, window_width - stitchRegionWidth - left_panel_width, 138.0);
 	SetHmiElementProperty(DEMO_LKA_SPEED_PROMPT, m_buttonPos[DEMO_LKA_STATUS_BAR_BKG][BUTTON_POS_X] + iconHInterval, m_buttonPos[DEMO_LKA_STATUS_BAR_BKG][BUTTON_POS_Y] + iconHInterval, 29.0, 13.0);
 
 	m_buttonSize[DEMO_LKA_LANE_BKG][BUTTON_SIZE_HEIGHT] = 132.0;
