@@ -70,6 +70,7 @@ public:
 
 	int UpdateStitchAngle();
 	int UpdateExternCalib2DReslt();
+	int UpdateExternCalib3DReslt();
 
 private:
 	virtual int ProcessSingleViewDisplay();

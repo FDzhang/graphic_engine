@@ -197,7 +197,7 @@ int CAvm3dViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
 	m_3dViewNode->SetClear(pColorFlag, pDepthFlag);
 	return AVM_3DVIEW_NORMAL;
 }
-int CAvm3dViewNode::UpdateExternCalibReslt()
+int CAvm3dViewNode::UpdateExternCalib3DReslt()
 {
 	float *pos;
 
@@ -205,11 +205,11 @@ int CAvm3dViewNode::UpdateExternCalibReslt()
 
 	AVMData::GetInstance()->Get3DParam(updateFlag, &pos);
 
-	if(updateFlag)
+	//if(updateFlag)
 	{
 		m_renderDelegate->UpdateExParamCalibRslt(pos);
 		AVMData::GetInstance()->m_exParam->UpdateExParamCalibRslt(pos);
-		AVMData::GetInstance()->Set3DParam(0, pos);
+		//AVMData::GetInstance()->Set3DParam(0, pos);
 	}
 	return AVM_3DVIEW_NORMAL;
 }

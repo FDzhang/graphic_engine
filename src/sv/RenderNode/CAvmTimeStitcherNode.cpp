@@ -314,6 +314,7 @@ int CAvmTimeStitcherNode::UpdateExternCalib2DReslt()
 
 		//AVMData::GetInstance()->Set2DParam(0, pData, pIndex);
 	}
+	
 	return TIME_STITCHER_NORMAL;
 }
 /*===========================================================================*\

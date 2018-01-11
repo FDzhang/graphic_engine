@@ -271,6 +271,8 @@ int CAvmViewControlModel::InitViewNode()
 
 	InitDisplayEffect();
 
+	Log_Error("-------------Finish gpu view model!");
+
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
 int CAvmViewControlModel::InitDisplayEffect()
@@ -896,6 +898,16 @@ int CAvmViewControlModel::UpdateExternCalib2DReslt()
 	}	
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
+int CAvmViewControlModel::UpdateExternCalib3DReslt()
+{
+	if(m_avm3dViewNode)
+	{
+		m_avm3dViewNode->UpdateExternCalib3DReslt();
+	}	
+
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

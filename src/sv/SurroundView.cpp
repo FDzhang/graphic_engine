@@ -476,10 +476,7 @@ void XRSV::Update3DParam(float *pose)
 	{
 		unsigned char updateFlag = 1;
 		AVMData::GetInstance()->Set3DParam(updateFlag, pose);
-		if(m_avmLogicManager)
-		{
-			m_avmLogicManager->UpdateExternCalib2DReslt();
-		}
+
 	}
 	Log_Error("Update3DParam");
 }
@@ -498,8 +495,12 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 	{
 		unsigned char updateFlag = 1;
 		AVMData::GetInstance()->Set2DParam(updateFlag, (GLfloat*)pdata, (GLushort *)pIndex);
+		if(m_avmLogicManager)
+		{
+			m_avmLogicManager->UpdateExternCalib2DReslt();
+		}
 	}
-	Log_Error("Update3DParam");
+	Log_Error("Update2DParam");
 }
 
 void XRSV::UpdateCtaResult(unsigned char pCtaStatus, void* pCtaRst)
