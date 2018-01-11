@@ -476,6 +476,10 @@ void XRSV::Update3DParam(float *pose)
 	{
 		unsigned char updateFlag = 1;
 		AVMData::GetInstance()->Set3DParam(updateFlag, pose);
+		if(m_avmLogicManager)
+		{
+			m_avmLogicManager->UpdateExternCalib3DReslt();
+		}
 
 	}
 	Log_Error("Update3DParam");

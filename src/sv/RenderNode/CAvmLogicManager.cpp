@@ -75,6 +75,14 @@ int CAvmLogicManager::UpdateExternCalib2DReslt()
 	}
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
+int CAvmLogicManager::UpdateExternCalib3DReslt()
+{	
+	if(m_avmViewControlModel)
+	{
+		m_avmViewControlModel->UpdateExternCalib3DReslt();
+	}
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
 
 int CAvmLogicManager::SetAdasHmiParams(st_ADAS_Mdl_HMI_T** pAdasMdl, int hmiNums)
 {

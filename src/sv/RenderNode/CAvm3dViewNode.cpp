@@ -204,10 +204,10 @@ int CAvm3dViewNode::UpdateExternCalib3DReslt()
 	unsigned char updateFlag = 0;
 
 	AVMData::GetInstance()->Get3DParam(updateFlag, &pos);
-
 	//if(updateFlag)
 	{
 		m_renderDelegate->UpdateExParamCalibRslt(pos);
+		
 		AVMData::GetInstance()->m_exParam->UpdateExParamCalibRslt(pos);
 		//AVMData::GetInstance()->Set3DParam(0, pos);
 	}

@@ -52,6 +52,7 @@ public:
 
 	int UpdateStitchAngle();	
 	int UpdateExternCalib2DReslt();
+	int UpdateExternCalib3DReslt();
 	int SetAdasHmiParams(st_ADAS_Mdl_HMI_T** pAdasMdl, int hmiNums);
 
 private:
