@@ -46,7 +46,6 @@ public:
 	virtual Void OnPress(Int32 id)
 	{
 
-		int i = 0;
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
@@ -411,7 +410,7 @@ int CSVDemoMainHmi::SetHmiParams()
 	m_baseButtonData[DEMO_MAIN_MENU_BKG].icon_file_name[0] = new char[50];
 	sprintf(m_baseButtonData[DEMO_MAIN_MENU_BKG].icon_file_name[0],"%sCar/MAIN/demo_menu_bkg.dds",XR_RES);
 
-	for(int i = DEMO_MAIN_MENU_SETTING; i <= DEMO_MAIN_MENU_DVR; i++)
+	for(int i = DEMO_MAIN_MENU_OC; i <= DEMO_MAIN_MENU_DVR; i++)
 	{
 		m_baseButtonData[i].icon_type = STATIC_ICON;
 		m_baseButtonData[i].show_flag = 1;
@@ -420,9 +419,9 @@ int CSVDemoMainHmi::SetHmiParams()
 		m_baseButtonData[i].icon_file_name[1] = new char[50];	
 	}
 
-	sprintf(m_baseButtonData[DEMO_MAIN_MENU_SETTING].icon_file_name[0],"%sCar/MAIN/setting_normal.dds",XR_RES);
-	sprintf(m_baseButtonData[DEMO_MAIN_MENU_SETTING].icon_file_name[1],"%sCar/MAIN/setting_press.dds",XR_RES);
-	m_trigger[DEMO_MAIN_MENU_SETTING] = new CMainSettingActionTrigger;
+	sprintf(m_baseButtonData[DEMO_MAIN_MENU_OC].icon_file_name[0],"%sCar/MAIN/oc_normal.dds",XR_RES);
+	sprintf(m_baseButtonData[DEMO_MAIN_MENU_OC].icon_file_name[1],"%sCar/MAIN/oc_press.dds",XR_RES);
+	m_trigger[DEMO_MAIN_MENU_OC] = new CMainOcActionTrigger;
 
 	sprintf(m_baseButtonData[DEMO_MAIN_MENU_LDW].icon_file_name[0],"%sCar/MAIN/ldw_normal.dds",XR_RES);
 	sprintf(m_baseButtonData[DEMO_MAIN_MENU_LDW].icon_file_name[1],"%sCar/MAIN/ldw_press.dds",XR_RES);
@@ -488,8 +487,8 @@ int CSVDemoMainHmi::Init(int window_width, int window_height)
 	float menuIconInterval = 0.0;//(window_height - 160.0)/(DEMO_MAIN_MENU_DVR - DEMO_MAIN_MENU_SETTING + 1.0) - 20.0;
 
 	SetHmiElementProperty(DEMO_MAIN_MENU_BKG, 0.0, heightInterval - 10.0, 117.0, 586.0);
-	SetHmiElementProperty(DEMO_MAIN_MENU_SETTING,m_buttonPos[DEMO_MAIN_MENU_BKG][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_BKG][BUTTON_POS_Y] + 25.0, 116.0, 47.0);
-	SetHmiElementProperty(DEMO_MAIN_MENU_LDW, m_buttonPos[DEMO_MAIN_MENU_SETTING][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_SETTING][BUTTON_POS_Y] + m_buttonSize[DEMO_MAIN_MENU_SETTING][BUTTON_SIZE_HEIGHT] + menuIconInterval, 116.0, 47.0);
+	SetHmiElementProperty(DEMO_MAIN_MENU_OC,m_buttonPos[DEMO_MAIN_MENU_BKG][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_BKG][BUTTON_POS_Y] + 25.0, 116.0, 47.0);
+	SetHmiElementProperty(DEMO_MAIN_MENU_LDW, m_buttonPos[DEMO_MAIN_MENU_OC][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_OC][BUTTON_POS_Y] + m_buttonSize[DEMO_MAIN_MENU_OC][BUTTON_SIZE_HEIGHT] + menuIconInterval, 116.0, 47.0);
 	SetHmiElementProperty(DEMO_MAIN_MENU_LKA, m_buttonPos[DEMO_MAIN_MENU_LDW][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_LDW][BUTTON_POS_Y] + m_buttonSize[DEMO_MAIN_MENU_LDW][BUTTON_SIZE_HEIGHT] + menuIconInterval, 116.0, 47.0);
 	SetHmiElementProperty(DEMO_MAIN_MENU_LC, m_buttonPos[DEMO_MAIN_MENU_LKA][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_LKA][BUTTON_POS_Y] + m_buttonSize[DEMO_MAIN_MENU_LKA][BUTTON_SIZE_HEIGHT] + menuIconInterval, 116.0, 47.0);
 	SetHmiElementProperty(DEMO_MAIN_MENU_BSD, m_buttonPos[DEMO_MAIN_MENU_LC][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_LC][BUTTON_POS_Y] + m_buttonSize[DEMO_MAIN_MENU_LC][BUTTON_SIZE_HEIGHT] + menuIconInterval, 116.0, 47.0);
@@ -511,7 +510,7 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 
 	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
 
-	m_buttonImage[DEMO_MAIN_MENU_SETTING] = mainMenuData.iconStatus[MAIN_MENU_SETTING];
+	m_buttonImage[DEMO_MAIN_MENU_OC] = mainMenuData.iconStatus[MAIN_MENU_ONLINE];
 	m_buttonImage[DEMO_MAIN_MENU_LDW] = mainMenuData.iconStatus[MAIN_MENU_LDW];
 	m_buttonImage[DEMO_MAIN_MENU_LKA] = mainMenuData.iconStatus[MAIN_MENU_LKA];
 	m_buttonImage[DEMO_MAIN_MENU_LC] = mainMenuData.iconStatus[MAIN_MENU_LC];
@@ -675,4 +674,5 @@ void CSVDemoMainHmi::FreeSubHmi(unsigned char pHmiIndex)
  *  12/16/17   Jensen Wang   Create the CSVDemoMainHmi class.
  *  01/04/18   Jensen Wang   Add new menu.
  *  01/05/18   Jensen Wang   Modify algo hmi.
+ *  01/11/18   Jensen Wang   Modify setting button -> oc button.
 \*===========================================================================*/
