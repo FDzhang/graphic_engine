@@ -370,12 +370,12 @@ public:
         Log_Message("-----------CMainDvrActionTrigger");
 
  //       CSVHmiIntent::GetInstance->GetCurrentHmi();
-	    m_DvrBaseVisible = 1;
+//	    m_DvrBaseVisible = 1;
     }
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
-        char* hmiName = "CSVDvrBaseHmi";
-	    CSVHmiIntent::GetInstance()->Intent(hmiName);
+//        char* hmiName = "CSVDvrBaseHmi";
+//	    CSVHmiIntent::GetInstance()->Intent(hmiName);
 //        DeleteGeneralLayout(m_general_hmi);
 //        m_general_hmi = NewGeneralLayout();
 	}
@@ -533,10 +533,11 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	m_buttonImage[DEMO_MAIN_MENU_CTA] = mainMenuData.iconStatus[MAIN_MENU_CTA];
 	m_buttonImage[DEMO_MAIN_MENU_PD] = mainMenuData.iconStatus[MAIN_MENU_PD];
 	m_buttonImage[DEMO_MAIN_MENU_DVR] = mainMenuData.iconStatus[MAIN_MENU_DVR];
-    if(m_DvrBaseVisible == 1)
+/*    if(m_DvrBaseVisible == 1)
     {
         m_buttonImage[DEMO_MAIN_MENU_DVR] = BUTTON_ON_IMAGE;        
     }
+*/
 	/*m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 1;
 	static int cnt = 0;
 
@@ -554,8 +555,8 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 
     if(m_buttonImage[DEMO_MAIN_MENU_DVR] == BUTTON_ON_IMAGE)
     {
-//        char* hmiName = "CSVDvrBaseHmi";
-//	    CSVHmiIntent::GetInstance()->Intent(hmiName);
+        char* hmiName = "CSVDvrBaseHmi";
+	    CSVHmiIntent::GetInstance()->Intent(hmiName);
     }
     else
     {

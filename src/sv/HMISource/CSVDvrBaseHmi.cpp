@@ -8,7 +8,6 @@
 #include "DVR_GUI_OBJ.h"
 #include "gpu_log.h"
 
-static CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 
 REGISTER_HMI_CLASS(CSVDvrBaseHmi);
 
@@ -121,7 +120,7 @@ class CBackMainHmiActionTrigger:public IActionTrigger
 public:
 	virtual Void OnPress(Int32 id)
 	{
-        
+        CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);       
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
 		memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
@@ -143,8 +142,8 @@ public:
 		
 		Log_Message("-----------CBackMainHmiActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 */
-    	char* hmiName = "CSVDemoMainHmi";
-		CSVHmiIntent::GetInstance()->Intent(hmiName);    
+//   	char* hmiName = "CSVDemoMainHmi";
+//		CSVHmiIntent::GetInstance()->Intent(hmiName);    
 	}
 
 };
@@ -347,6 +346,20 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
 //    if(cnt_dvr_alive > 300)
 //    {
+
+    MainMenuDataT mainMenuData;
+	memset(&mainMenuData, 0, sizeof(MainMenuDataT));
+
+	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
+//    Log_Error("----------DVR OPEN:%d",mainMenuData.iconStatus[MAIN_MENU_DVR]);
+    if(mainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_OFF_IMAGE)
+    {
+        Log_Error("----------Create CSVDemoMainHmi");
+        char* hmiName = "CSVDemoMainHmi";
+        CSVHmiIntent::GetInstance()->Intent(hmiName);                   
+    }
+
+
     static DVR_GUI_LAYOUT_INST dvrGuiLayout;
 
     m_buttonVisibility[DVR_BASE_TAB_BKG] = 1;			

@@ -434,7 +434,8 @@ int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
 					&& settigTabMsg[i].uStatus.ptr)
 				{
 					dialogInst = (GUI_OBJ_DIALOG_INST*)settigTabMsg[i].uStatus.ptr;
-					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, settigTabMsg[i].bShow);
+//                    m_dialogVisibility[dialogInst->subjectId] = fileListTabMsg[i].bShow;
+//					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, settigTabMsg[i].bShow);
 				}
 
 				break;
@@ -442,7 +443,7 @@ int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
 			case GUI_OBJ_ID_WARNING:
 				if(GUI_OBJ_STATUS_TYPE_U32 == settigTabMsg[i].status_type)
 				{
-					Log_Error("warning : %d", settigTabMsg[i].status_type);
+//					Log_Error("warning : %d", settigTabMsg[i].status_type);
 				}
 				break;	
 			default:

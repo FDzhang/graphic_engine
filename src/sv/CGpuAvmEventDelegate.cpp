@@ -30,7 +30,7 @@ CGpuAvmEventDelegate::~CGpuAvmEventDelegate()
 {
 	if(m_registType == 0)
     {
-    	delete m_className;
+//    	delete m_className;
 	}
 }
 
