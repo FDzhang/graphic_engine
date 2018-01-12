@@ -149,7 +149,7 @@ public:
 };
 
 
-CSVDvrBaseHmi::CSVDvrBaseHmi()
+CSVDvrBaseHmi::CSVDvrBaseHmi():m_avmViewLastStatus(0)
 {
 	memset(m_trigger, NULL, DVR_BASE_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_BASE_ELEMEMT_NUM * sizeof(unsigned char));
@@ -337,29 +337,13 @@ int CSVDvrBaseHmi::Init(int window_width, int window_height)
 	m_buttonPos[DVR_BASE_RETURN_MAIN_HMI][BUTTON_POS_Y] = window_height - 80.0 - m_buttonSize[DVR_BASE_RETURN_MAIN_HMI][BUTTON_SIZE_HEIGHT] - 20.0;
 
 	SetHmiParams();
-	
+
+    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_avmViewLastStatus);	
+
 	return HMI_SUCCESS;
 }
 int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 {
-//	static int cnt_dvr_alive = 0;
-
-//    if(cnt_dvr_alive > 300)
-//    {
-
-    MainMenuDataT mainMenuData;
-	memset(&mainMenuData, 0, sizeof(MainMenuDataT));
-
-	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
-//    Log_Error("----------DVR OPEN:%d",mainMenuData.iconStatus[MAIN_MENU_DVR]);
-    if(mainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_OFF_IMAGE)
-    {
-        Log_Error("----------Create CSVDemoMainHmi");
-        char* hmiName = "CSVDemoMainHmi";
-        CSVHmiIntent::GetInstance()->Intent(hmiName);                   
-    }
-
-
     static DVR_GUI_LAYOUT_INST dvrGuiLayout;
 
     m_buttonVisibility[DVR_BASE_TAB_BKG] = 1;			
@@ -471,19 +455,19 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
             break;
         }
     }
-//   }
-	
     RefreshHmi();
-/*    if(cnt_dvr_alive > 300)
+    
+    MainMenuDataT mainMenuData;
+	memset(&mainMenuData, 0, sizeof(MainMenuDataT));
+
+	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
+
+    if(mainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_OFF_IMAGE)
     {
-        cnt_dvr_alive = 301;
+        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_avmViewLastStatus);
+        char* hmiName = "CSVDemoMainHmi";
+        CSVHmiIntent::GetInstance()->Intent(hmiName);                       
     }
-    else
-    {
-        //Log_Message("---------Wait Dvr Init!");
-    }
-    cnt_dvr_alive++;
-*/
 
     return HMI_SUCCESS;
 }

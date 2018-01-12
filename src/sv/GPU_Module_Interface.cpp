@@ -493,7 +493,9 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 			//Log_Error("-----------current view: %d", currentViewStatus);
 		break;
 		case RENDER_DATA_MAIN_MENU:
-			CAvmRenderDataBase::GetInstance()->SetMainMenuStatus((MainMenuDataT*)renderData);
+			
+            CAvmRenderDataBase::GetInstance()->SetMainMenuStatus((MainMenuDataT*)renderData);
+
 		break;
 		case RENDER_DATA_CAN:
 			ProcCanData((CAN_DATA*)renderData);

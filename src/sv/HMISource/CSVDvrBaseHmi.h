@@ -53,6 +53,8 @@ private:
 	unsigned char m_dvrPlaybackTabVisibility;
 	unsigned char m_dvrFileListVisibility;
 
+    unsigned char m_avmViewLastStatus;
+
 	int     m_windowHeight;
 	int     m_windowWidth;
 
