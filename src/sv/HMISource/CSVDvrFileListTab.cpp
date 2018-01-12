@@ -293,6 +293,7 @@ CSVDvrFileListTab::CSVDvrFileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1
 
 CSVDvrFileListTab::~CSVDvrFileListTab()
 {
+    Log_Error("----------Release ~CSVDvrFileListTab");
     for(int i = 0; i < DVR_FILELIST_TAB_ELEMEMT_NUM; i++)
 	{	
 		//SAFE_DELETE(m_baseButton[i]);

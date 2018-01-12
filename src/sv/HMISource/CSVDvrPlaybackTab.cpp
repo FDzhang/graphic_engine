@@ -808,16 +808,18 @@ int CSVDvrPlaybackTab::SetHmiParams()
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].dialogType = DIALOG_CONFIRM_CANCEL;
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].showFlag = 0;
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_BACKGROUND_IMG] = new char[100];
-	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_BACKGROUND_IMG],"%sCar/DVR/record_view_bkg.dds",XR_RES); 
-	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG] = new char[100];
-	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG],"%sCar/DVR/record_view_left_normal.dds",XR_RES); 
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_BACKGROUND_IMG],"%sCar/DVR/dlg_bkg.dds",XR_RES); 
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_TITLE_IMG] = new char[100];
+    sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_TITLE_IMG],"%sCar/DVR/dlg_title_del_file.dds",XR_RES);  
+    m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG] = new char[100];
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_NORMAL_IMG],"%sCar/DVR/dlg_icon_ok.dds",XR_RES); 
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG] = new char[100];
-	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG],"%sCar/DVR/record_view_left_highlight.dds",XR_RES); 
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG],"%sCar/DVR/dlg_icon_ok_highlight.dds",XR_RES); 
 
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_NORMAL_IMG] = new char[100];
-	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_NORMAL_IMG],"%sCar/DVR/record_view_right_normal.dds",XR_RES); 
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_NORMAL_IMG],"%sCar/DVR/dlg_icon_cancel.dds",XR_RES); 
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_HIGHLIGHT_IMG] = new char[100];
-	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_HIGHLIGHT_IMG],"%sCar/DVR/record_view_right_highlight.dds",XR_RES); 
+	sprintf(m_dialogData[DVR_PLAYBACK_DIALOG_DEL].iconFileName[DIALOG_CANCEL_HIGHLIGHT_IMG],"%sCar/DVR/dlg_icon_cancel_highlight.dds",XR_RES); 
 	
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].trigger[DIALOG_CONFIRM_CANCEL_BACKGROUND] = NULL;//new CSelectorFirstActionTrigger;
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].trigger[DIALOG_CONFIRM] = new CPbDialogDelConfirmActionTrigger;
@@ -1001,11 +1003,18 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 	m_textEditData[PB_FILE_DURATION_TIME].textColor[1] = 1.0;
 	m_textEditData[PB_FILE_DURATION_TIME].textColor[2] = 1.0;
 
-	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].width = 300.0;
+/*	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].width = 300.0;
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].height = 200.0;
 
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].pos[0] = window_width * 0.5;
 	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].pos[1] = 80.0 + 0.5 * (window_height - 160.0 - m_dialogData[DVR_PLAYBACK_DIALOG_DEL].height);
+*/
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].width = 348.0;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].height = 183.0;
+    m_dialogData[DVR_PLAYBACK_DIALOG_DEL].titleWidth = 224.0;
+    m_dialogData[DVR_PLAYBACK_DIALOG_DEL].titleHeight = 23.0;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].pos[0] = (1 + radio) * 0.5 * window_width - 0.5 * m_dialogData[DVR_PLAYBACK_DIALOG_DEL].width;
+	m_dialogData[DVR_PLAYBACK_DIALOG_DEL].pos[1] = 0.5 * (window_height - m_dialogData[DVR_PLAYBACK_DIALOG_DEL].height);
 
 
 	SetHmiParams();
