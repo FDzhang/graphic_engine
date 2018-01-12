@@ -80,8 +80,8 @@ int CAvmLarge3dView::Update()
 	{
 		if(m_lastLargeViewCmd != largeViewCmd)
 		{
-			Region* avm3dViewRegion;
-			Region* avmObjViewRegion;
+			Region* avm3dViewRegion = NULL;
+			Region* avmObjViewRegion = NULL;
 			CAvmRenderDataBase::GetInstance()->Get3dViewRegion(&avm3dViewRegion);
 			m_3dViewNode->SetRenderROI(avm3dViewRegion);
 

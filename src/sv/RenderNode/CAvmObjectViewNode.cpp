@@ -89,7 +89,7 @@ static char CARTEX[] = XR_RES"envision_white.tga";
 static char CARAMBIENTTEXTMASK[] = XR_RES"envision_mask.bmp";
 static char CARLIGHTON[]=XR_RES"envision_light_on.tga";
 static char CARTEXMASK[] = XR_RES"mask1.bmp";
-CAvmObjectViewNode::CAvmObjectViewNode()
+CAvmObjectViewNode::CAvmObjectViewNode():m_objViewCameraParams(0)
 {
 
 }
@@ -120,7 +120,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_objViewNode->SetClear(FALSE, TRUE);
 	CAvmRenderDataBase::GetInstance()->SetObjectViewNode(m_objViewNode);
 
-    Region* objViewNodeAera;
+    Region* objViewNodeAera = NULL;
     CAvmRenderDataBase::GetInstance()->GetObjectViewRegion(&objViewNodeAera);
     m_objViewNode->SetRenderROI(objViewNodeAera);
 

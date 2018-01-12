@@ -32,7 +32,7 @@ static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 
-CAvmStitchViewNode::CAvmStitchViewNode()
+CAvmStitchViewNode::CAvmStitchViewNode():m_stitchViewCameraParams(0)
 {
 
 }
@@ -65,7 +65,7 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 
 	m_stitchViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_stitchViewNode);
 
-	Region* stitchViewRegion;
+	Region* stitchViewRegion = NULL;
 	CAvmRenderDataBase::GetInstance()->GetStitchViewRegion(&stitchViewRegion);
 
 	m_stitchViewNode->SetRenderROI(stitchViewRegion);

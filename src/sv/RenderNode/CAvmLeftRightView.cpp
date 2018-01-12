@@ -29,7 +29,7 @@
 #include "../SVDelegate.h"
 #include "../GlSV2D.h"
 
-CAvmLeftRightView::CAvmLeftRightView()
+CAvmLeftRightView::CAvmLeftRightView():m_leftRightViewCameraParams(0)
 {
 
 }
@@ -62,7 +62,7 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 	// Interleaved vertex data
 	m_leftRightViewNodeId[0] = m_xrCore->CreateRenderNodeScene(0, &m_leftRightViewNode[0]);
  
- 	Region* viewRegion;
+ 	Region* viewRegion = NULL;
 	CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegion, left_camera_index);
 	m_leftRightViewNode[0]->SetRenderROI(viewRegion);
 

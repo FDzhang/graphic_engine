@@ -26,7 +26,7 @@
 #include "CAvmLinearViewNode.h"
 #include "../AVMData.h"
 
-CAvmLinearViewNode::CAvmLinearViewNode():m_depthClearFlag(0),m_colorClearFlag(0)
+CAvmLinearViewNode::CAvmLinearViewNode():m_depthClearFlag(0),m_colorClearFlag(0),m_180DegreerViewCameraParams(0)
 {
 
 }
@@ -149,7 +149,7 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 	m_180DegreeViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_180DegreeViewNode);
 	
 	//m_viewNode->SetClear(FALSE, TRUE);
-	Region* linearViewRegion;
+	Region* linearViewRegion = NULL;
 	CAvmRenderDataBase::GetInstance()->GetLinearViewRegion(&linearViewRegion);
 	m_180DegreeViewNode->SetRenderROI(linearViewRegion);
 

@@ -74,7 +74,6 @@ int CAvmViewControlModel::InitViewNode()
 	unsigned char initSingleViewNode = 0;
 	unsigned char initObjViewNode = 0;
 
-
 	unsigned char carTransparentStatus = 1;
 	CAvmRenderDataBase::GetInstance()->SetCarTransparentStatus(&carTransparentStatus);
 
@@ -194,6 +193,7 @@ int CAvmViewControlModel::InitViewNode()
 	m_180DegreeViewCameraParams.zfar = 16000.0f;
 	CAvmRenderDataBase::GetInstance()->SetLinearViewCameraParams(&m_180DegreeViewCameraParams);
 
+	
 
 	if(m_avmStitchViewNode)
 	{
@@ -211,6 +211,8 @@ int CAvmViewControlModel::InitViewNode()
 			initStitchViewNode = 1;
 		}
 	}
+	
+	
 
 	if(m_avmSingleViewNode->InitNode(m_xrCore) == AVM_SINGLEVIEW_NORMAL)
 	{
@@ -241,6 +243,7 @@ int CAvmViewControlModel::InitViewNode()
 	CAvmRenderDataBase::GetInstance()->Set3dViewNodeStatus(&init3dViewNode);
 	CAvmRenderDataBase::GetInstance()->SetObjectViewNodeStatus(&initObjViewNode);
 
+
 	float camera_zone[4];
     camera_zone[REGION_POS_LEFT] = 0.0;
     camera_zone[REGION_POS_TOP] = 0.0;
@@ -258,7 +261,6 @@ int CAvmViewControlModel::InitViewNode()
     camera_zone[REGION_POS_RIGHT] = 0.0;
     camera_zone[REGION_POS_BOTTOM] = 1.0; 
 	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, rear_camera_index);
-	
 
 	m_avmMattsView = new CAvmMattsView();
 	m_avmMattsView->Init();
@@ -270,8 +272,6 @@ int CAvmViewControlModel::InitViewNode()
 	m_avmLarge3dView->Init();
 
 	InitDisplayEffect();
-
-	Log_Error("-------------Finish gpu view model!");
 
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }

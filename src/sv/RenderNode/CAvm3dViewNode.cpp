@@ -38,7 +38,7 @@ static char skyBA[]	= XR_RES"skyfbaex.mqo";
 static char skyFC[]	= XR_RES"skyfbcylinder.mqo";
 static char skyBC[]	= XR_RES"skyfbcylinder.mqo";
 
-CAvm3dViewNode::CAvm3dViewNode()
+CAvm3dViewNode::CAvm3dViewNode():m_3dViewCameraParams(0)
 {
 
 }
@@ -57,7 +57,7 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 	m_xrCore = pXrcore;
 	//m_sceneMode = SceneMode_Free; //--wjx-------
 
-	Region* avm3dViewAera;
+	Region* avm3dViewAera = NULL;
 	float cameraAspect;
 	m_3dViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_3dViewNode);
 

@@ -31,7 +31,7 @@ static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 
-CAvmSingleViewNode::CAvmSingleViewNode()
+CAvmSingleViewNode::CAvmSingleViewNode():m_singleViewCameraParams(0)
 {
 }
 CAvmSingleViewNode::~CAvmSingleViewNode()
@@ -63,7 +63,7 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	// Interleaved vertex data
 	m_singleViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_singleViewNode);
  
- 	Region* singleViewRegion;
+ 	Region* singleViewRegion = NULL;
 	CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 	m_singleViewNode->SetRenderROI(singleViewRegion);
 			
@@ -74,6 +74,7 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	//step 1. prepare for Material ,different camera input image 
 	IRenderEffect* pIEffect;
 	int SV2DMTL;
+
 /*	SV2DMTL = m_singleViewNode->CreateMaterial(Material_Custom, &m_SVSingleMtl);
 	m_SVSingleMtl->CreateMaterialEffect(&pIEffect);
 	

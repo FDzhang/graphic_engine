@@ -37,7 +37,7 @@ static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.fr
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 static char c_SV2DFragCarImageShaderSrcFile[]   = XR_RES"OVFragShaderSV2DCar.frg";
 
-CAvmTimeStitcherNode::CAvmTimeStitcherNode()
+CAvmTimeStitcherNode::CAvmTimeStitcherNode():m_stitchViewCameraParams(0)
 {
 
 }

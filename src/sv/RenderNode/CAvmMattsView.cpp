@@ -116,7 +116,7 @@ int CAvmMattsView::Update()
 				CAvmRenderDataBase::GetInstance()->GetSingleViewRoi(&vertexData, i - eFrontSingle);
 				SetVertextValue(vertexData, i - eFrontSingle);
 			}
-			Region* singleViewRegion;
+			Region* singleViewRegion = NULL;
 			CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 			m_singleViewNode->SetRenderROI(singleViewRegion);
 
