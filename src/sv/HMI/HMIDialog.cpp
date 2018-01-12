@@ -69,8 +69,74 @@ HMIDialog::HMIDialog(HmiDialogDataT* pDialogData,IUINode* uiNode)
 
 	memcpy(m_dialogData, pDialogData, sizeof(HmiDialogDataT));
 
+    float dialogIconPos[2];
+    float dialogIconSize[2]; //0:width, 1:height
+    float iconInterval = 10.0;
 
-	if(m_dialogData->dialogType == DIALOG_CONFIRM_CANCEL)
+    if(m_dialogData->dialogType == DIALOG_NORMAL)
+    {
+        m_dialogMtlId = m_uiNode->CreateUIMaterial(Material_UI_Spirit, m_dialogData->iconFileName[DIALOG_CONFIRM_CANCEL_BACKGROUND],
+            0.0, &m_dialogMtl);
+
+        m_dialogId = m_uiNode->CreateSpirit(-1, InsertFlag_Default, m_dialogMtlId, 1.0, 
+            m_dialogData->pos[0], m_dialogData->pos[1], 0, m_dialogData->width, m_dialogData->height);
+        
+        m_dialogVisibility = m_dialogData->showFlag;
+        ISpirit *dialogLayer = m_uiNode->GetSpirit(m_dialogId);
+        dialogLayer->SetEnable(m_dialogVisibility);
+
+        
+    /*      dialogIconSize[0] = 1.0/5.0 * m_dialogData->width;
+        dialogIconSize[1] = 1.0/5.0 * m_dialogData->height;
+        dialogIconPos[0] = m_dialogData->pos[0] + m_dialogData->width * 0.5 - dialogIconSize[0] * 0.5;
+        dialogIconPos[1] = m_dialogData->pos[1] + m_dialogData->height - dialogIconSize[1] - 10.0;
+        iconInterval += dialogIconSize[0];
+    */
+
+        m_dialogTitleData.pos[0] = m_dialogData->pos[0] + 0.5 * (m_dialogData->width - m_dialogData->titleWidth);
+        m_dialogTitleData.pos[1] = m_dialogData->pos[1] + 0.5 * (2.0/3.0 * m_dialogData->height - m_dialogData->titleHeight);
+        m_dialogTitleData.width =  m_dialogData->titleWidth;
+        m_dialogTitleData.height =  m_dialogData->titleHeight;
+        m_dialogTitleData.show_icon_num = 0;
+        m_dialogTitleData.icon_type = STATIC_ICON;
+        m_dialogTitleData.show_flag = 1;
+        m_dialogTitleData.animationStyle = BUTTON_NOMAL;        
+        m_dialogTitleData.icon_file_name[0] = new char[100];
+        sprintf(m_dialogTitleData.icon_file_name[0],"%s",m_dialogData->iconFileName[DIALOG_TITLE_IMG]);
+
+        dialogIconSize[0] = 100.0/348 * m_dialogData->width;
+        dialogIconSize[1] = 38.0/183.0 * m_dialogData->height;
+        dialogIconPos[0] = m_dialogData->pos[0] + m_dialogData->width * 0.5 - dialogIconSize[0] * 0.5;
+        dialogIconPos[1] = m_dialogData->pos[1] + 2.0/3.0 * m_dialogData->height;
+
+        m_dialogButtonData[DIALOG_CONFIRM - 1].pos[0] = dialogIconPos[0];
+        m_dialogButtonData[DIALOG_CONFIRM - 1].pos[1] = dialogIconPos[1];
+        m_dialogButtonData[DIALOG_CONFIRM - 1].width = dialogIconSize[0];
+        m_dialogButtonData[DIALOG_CONFIRM - 1].height = dialogIconSize[1];
+        m_dialogButtonData[DIALOG_CONFIRM - 1].show_icon_num = 0;
+        m_dialogButtonData[DIALOG_CONFIRM - 1].icon_type = STATIC_ICON;
+        m_dialogButtonData[DIALOG_CONFIRM - 1].show_flag = 1;
+        m_dialogButtonData[DIALOG_CONFIRM - 1].animationStyle = BUTTON_FLASH_HIGHLIGHT;
+        m_dialogButtonData[DIALOG_CONFIRM - 1].icon_file_name[0] = new char[100];
+        sprintf(m_dialogButtonData[DIALOG_CONFIRM - 1].icon_file_name[0],"%s",m_dialogData->iconFileName[DIALOG_CONFIRM_NORMAL_IMG]);
+        m_dialogButtonData[DIALOG_CONFIRM - 1].icon_file_name[1] = new char[100];
+        sprintf(m_dialogButtonData[DIALOG_CONFIRM - 1].icon_file_name[1],"%s",m_dialogData->iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG]);
+
+        m_dialogVisibility = 1;
+
+        if(m_dialogData->trigger[DIALOG_CONFIRM])
+        {
+            m_dialogButtonData[DIALOG_CONFIRM - 1].trigger = m_dialogData->trigger[DIALOG_CONFIRM];
+        }
+
+        m_dialogTitle = new HMIButton(&m_dialogTitleData, m_uiNode);
+        m_dialogTitle->SetVisibility(m_dialogVisibility);
+        
+        m_dialogButton[DIALOG_CONFIRM - 1] = new HMIButton(&m_dialogButtonData[DIALOG_CONFIRM - 1], m_uiNode);
+        m_dialogButton[DIALOG_CONFIRM - 1]->SetVisibility(m_dialogVisibility);
+        
+    }
+	else if(m_dialogData->dialogType == DIALOG_CONFIRM_CANCEL)
 	{
 		m_dialogMtlId = m_uiNode->CreateUIMaterial(Material_UI_Spirit, m_dialogData->iconFileName[DIALOG_CONFIRM_CANCEL_BACKGROUND],
 			0.0, &m_dialogMtl);
@@ -81,15 +147,29 @@ HMIDialog::HMIDialog(HmiDialogDataT* pDialogData,IUINode* uiNode)
 		m_dialogVisibility = m_dialogData->showFlag;
 		ISpirit *dialogLayer = m_uiNode->GetSpirit(m_dialogId);
 		dialogLayer->SetEnable(m_dialogVisibility);
-
-		float dialogIconPos[2];
-		float dialogIconSize[2]; //0:width, 1:height
-		float iconInterval = 10.0;
 		
-		dialogIconSize[0] = 1.0/5.0 * m_dialogData->width;
+/*		dialogIconSize[0] = 1.0/5.0 * m_dialogData->width;
 		dialogIconSize[1] = 1.0/5.0 * m_dialogData->height;
 		dialogIconPos[0] = m_dialogData->pos[0] + m_dialogData->width * 0.5 - dialogIconSize[0] * 0.5;
 		dialogIconPos[1] = m_dialogData->pos[1] + m_dialogData->height - dialogIconSize[1] - 10.0;
+		iconInterval += dialogIconSize[0];
+*/
+
+        m_dialogTitleData.pos[0] = m_dialogData->pos[0] + 0.5 * (m_dialogData->width - m_dialogData->titleWidth);
+        m_dialogTitleData.pos[1] = m_dialogData->pos[1] + 0.5 * (2.0/3.0 * m_dialogData->height - m_dialogData->titleHeight);
+        m_dialogTitleData.width =  m_dialogData->titleWidth;
+        m_dialogTitleData.height =  m_dialogData->titleHeight;
+        m_dialogTitleData.show_icon_num = 0;
+        m_dialogTitleData.icon_type = STATIC_ICON;
+        m_dialogTitleData.show_flag = 1;
+        m_dialogTitleData.animationStyle = BUTTON_NOMAL;        
+		m_dialogTitleData.icon_file_name[0] = new char[100];
+		sprintf(m_dialogTitleData.icon_file_name[0],"%s",m_dialogData->iconFileName[DIALOG_TITLE_IMG]);
+
+        dialogIconSize[0] = 100.0/348 * m_dialogData->width;
+		dialogIconSize[1] = 38.0/183.0 * m_dialogData->height;
+		dialogIconPos[0] = m_dialogData->pos[0] + m_dialogData->width * 0.5 - dialogIconSize[0] - 24;
+		dialogIconPos[1] = m_dialogData->pos[1] + 2.0/3.0 * m_dialogData->height;
 		iconInterval += dialogIconSize[0];
 
 		m_dialogButtonData[DIALOG_CONFIRM - 1].pos[0] = dialogIconPos[0];
@@ -105,7 +185,7 @@ HMIDialog::HMIDialog(HmiDialogDataT* pDialogData,IUINode* uiNode)
 		m_dialogButtonData[DIALOG_CONFIRM - 1].icon_file_name[1] = new char[100];
 		sprintf(m_dialogButtonData[DIALOG_CONFIRM - 1].icon_file_name[1],"%s",m_dialogData->iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG]);
 
-		m_dialogButtonData[DIALOG_CANCEL - 1].pos[0] = dialogIconPos[0] + iconInterval;
+		m_dialogButtonData[DIALOG_CANCEL - 1].pos[0] = m_dialogData->pos[0] + m_dialogData->width * 0.5 + 24;
 		m_dialogButtonData[DIALOG_CANCEL - 1].pos[1] = dialogIconPos[1];
 		m_dialogButtonData[DIALOG_CANCEL - 1].width = dialogIconSize[0];
 		m_dialogButtonData[DIALOG_CANCEL - 1].height = dialogIconSize[1];
@@ -135,6 +215,9 @@ HMIDialog::HMIDialog(HmiDialogDataT* pDialogData,IUINode* uiNode)
 			SetOnClickDelegate(m_dialogData->trigger[DIALOG_CONFIRM_CANCEL_BACKGROUND]);
 		}
 
+        m_dialogTitle = new HMIButton(&m_dialogTitleData, m_uiNode);
+        m_dialogTitle->SetVisibility(m_dialogVisibility);
+        
 		m_dialogButton[DIALOG_CONFIRM - 1] = new HMIButton(&m_dialogButtonData[DIALOG_CONFIRM - 1], m_uiNode);
 		m_dialogButton[DIALOG_CONFIRM - 1]->SetVisibility(m_dialogVisibility);
 		m_dialogButton[DIALOG_CANCEL - 1] = new HMIButton(&m_dialogButtonData[DIALOG_CANCEL - 1], m_uiNode);
@@ -168,8 +251,14 @@ int HMIDialog::SetVisibility(unsigned char pFlag)
 
 	ISpirit *dialogLayer = m_uiNode->GetSpirit(m_dialogId);
 	dialogLayer->SetEnable(m_dialogVisibility);
-	
-	if(m_dialogData->dialogType == DIALOG_CONFIRM_CANCEL)
+
+    m_dialogTitle->SetVisibility(m_dialogVisibility);	
+
+    if(m_dialogData->dialogType == DIALOG_NORMAL)
+    {
+        m_dialogButton[DIALOG_CONFIRM - 1]->SetVisibility(m_dialogVisibility);
+    }
+	else if(m_dialogData->dialogType == DIALOG_CONFIRM_CANCEL)
 	{
 		m_dialogButton[DIALOG_CONFIRM - 1]->SetVisibility(m_dialogVisibility);
 		m_dialogButton[DIALOG_CANCEL - 1]->SetVisibility(m_dialogVisibility);

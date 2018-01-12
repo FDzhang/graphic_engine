@@ -53,6 +53,7 @@ HmiConfirmCancelDialogElementT;
 typedef enum HmiConfirmCancelDialogImageTag
 {
 	DIALOG_BACKGROUND_IMG = 0,
+    DIALOG_TITLE_IMG,
 	DIALOG_CONFIRM_NORMAL_IMG,
 	DIALOG_CONFIRM_HIGHLIGHT_IMG,
 	DIALOG_CANCEL_NORMAL_IMG,
@@ -80,6 +81,8 @@ typedef struct HmiDialogDataTag
     float pos[2];
     float width;
     float height;
+    float titleWidth;
+    float titleHeight;
 
 	HmiDialogTypeT dialogType; 
     bool showFlag;
@@ -127,6 +130,9 @@ private:
 	Hmi_Button_Data_T m_dialogButtonData[DIALOG_CONFIRM_CANCEL_ELEMENT_NUM - 1];
 	HMIButton* m_dialogButton[DIALOG_CONFIRM_CANCEL_ELEMENT_NUM - 1];
 
+    Hmi_Button_Data_T m_dialogTitleData;
+    HMIButton* m_dialogTitle;
+    
 	IUINode*			m_uiNode;
 
 	IActionTrigger*	m_trigger[DIALOG_CONFIRM_CANCEL_ELEMENT_NUM];

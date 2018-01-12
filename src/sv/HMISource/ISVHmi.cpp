@@ -136,7 +136,14 @@ int ISVHmi::SetElementsVisibility(unsigned char pFlag)
 {
 	return HMI_SUCCESS;
 }
-
+int ISVHmi::SetMenuVisibility(unsigned char menuFlag)
+{
+	return HMI_SUCCESS;
+}
+int ISVHmi::SetMenuHideCount(unsigned char visible)
+{
+	return HMI_SUCCESS;
+}
 int ISVHmi::MockTouchEvent(Hmi_Message_T& hmiMsg)
 {
 	return HMI_NO_MOCK_DATA;

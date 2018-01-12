@@ -32,10 +32,14 @@
 #include "CSVTrainedParkingHmi.h"
 #include "CSVChangAnSwitchViewHmi.h"
 #include "CSVHmiIntent.h"
+#include "IF_General.h"
 
 REGISTER_HMI_CLASS(CSVDemoMainHmi)
 
+unsigned char m_DvrBaseVisible;
+
 static CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+
 
 class CMainSettingActionTrigger : public IActionTrigger
 {
@@ -363,10 +367,17 @@ public:
 		m_eventDel.PostEventPayload(tmp_payload);
 	
 		SAFE_FREE(tmp_payload);
-	}
+        Log_Message("-----------CMainDvrActionTrigger");
+
+ //       CSVHmiIntent::GetInstance->GetCurrentHmi();
+	    m_DvrBaseVisible = 1;
+    }
 	virtual Void OnRelease(Int32 id, Boolean isIn)
 	{
-
+        char* hmiName = "CSVDvrBaseHmi";
+	    CSVHmiIntent::GetInstance()->Intent(hmiName);
+//        DeleteGeneralLayout(m_general_hmi);
+//        m_general_hmi = NewGeneralLayout();
 	}
 
 	
@@ -383,6 +394,7 @@ CSVDemoMainHmi::CSVDemoMainHmi()
 	memset(m_buttonVisibility, 1, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));	
 	memset(m_buttonImage, 0, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));
 	m_subHmiVisibility[DEMO_SWITCH_VIEW_HMI] = 1;
+    m_DvrBaseVisible = 0;
 }
 
 CSVDemoMainHmi::~CSVDemoMainHmi()
@@ -485,7 +497,7 @@ int CSVDemoMainHmi::Init(int window_width, int window_height)
 	m_screenHeight = window_height;
 	float heightInterval = 80.0;
 	float menuIconInterval = 0.0;//(window_height - 160.0)/(DEMO_MAIN_MENU_DVR - DEMO_MAIN_MENU_SETTING + 1.0) - 20.0;
-
+    
 	SetHmiElementProperty(DEMO_MAIN_MENU_BKG, 0.0, heightInterval - 10.0, 117.0, 586.0);
 	SetHmiElementProperty(DEMO_MAIN_MENU_OC,m_buttonPos[DEMO_MAIN_MENU_BKG][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_BKG][BUTTON_POS_Y] + 25.0, 116.0, 47.0);
 	SetHmiElementProperty(DEMO_MAIN_MENU_LDW, m_buttonPos[DEMO_MAIN_MENU_OC][BUTTON_POS_X], m_buttonPos[DEMO_MAIN_MENU_OC][BUTTON_POS_Y] + m_buttonSize[DEMO_MAIN_MENU_OC][BUTTON_SIZE_HEIGHT] + menuIconInterval, 116.0, 47.0);
@@ -521,7 +533,10 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	m_buttonImage[DEMO_MAIN_MENU_CTA] = mainMenuData.iconStatus[MAIN_MENU_CTA];
 	m_buttonImage[DEMO_MAIN_MENU_PD] = mainMenuData.iconStatus[MAIN_MENU_PD];
 	m_buttonImage[DEMO_MAIN_MENU_DVR] = mainMenuData.iconStatus[MAIN_MENU_DVR];
-
+    if(m_DvrBaseVisible == 1)
+    {
+        m_buttonImage[DEMO_MAIN_MENU_DVR] = BUTTON_ON_IMAGE;        
+    }
 	/*m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 1;
 	static int cnt = 0;
 
@@ -536,6 +551,16 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 	{
 		cnt = 101;
 	}*/
+
+    if(m_buttonImage[DEMO_MAIN_MENU_DVR] == BUTTON_ON_IMAGE)
+    {
+//        char* hmiName = "CSVDvrBaseHmi";
+//	    CSVHmiIntent::GetInstance()->Intent(hmiName);
+    }
+    else
+    {
+      
+    }
 
 	if(m_buttonImage[DEMO_MAIN_MENU_LKA] == BUTTON_ON_IMAGE
 		|| m_buttonImage[DEMO_MAIN_MENU_LC] == BUTTON_ON_IMAGE)

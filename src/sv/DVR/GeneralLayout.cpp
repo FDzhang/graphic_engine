@@ -24,7 +24,6 @@
  * VERSION: 19 6月 2017 dota2_black
  *------------------------------------------------------------------------------------------*/
 #include "GeneralLayout.h"
-#include "DvrLayout.h"
 namespace GUI
 {
     GeneralLayout* GeneralLayout::m_layout = NULL;
@@ -103,7 +102,6 @@ namespace GUI
         if(m_cursor)
         {
             m_cursor->Enable(flag);
-            DvrLayout::m_media_play->Enable(flag);
         }
     }
 };
