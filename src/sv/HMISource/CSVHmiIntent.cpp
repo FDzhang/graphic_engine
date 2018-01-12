@@ -83,8 +83,10 @@ int CSVHmiIntent::Intent(char* pToHmi)
 	m_fromHmi = GetCurrentHmi();
 	
 	m_toHmi = static_cast<ISVHmi*>(CSVHmiFactory::CreateHmi(&pToHmi));
-	m_toHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
-
+	if(m_toHmi)
+	{
+		m_toHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
+	}
 	//m_toHmi->SetIntent(this);
 }
 int CSVHmiIntent::StartHmi(void* hmiMsg)
@@ -95,8 +97,10 @@ int CSVHmiIntent::StartHmi(void* hmiMsg)
 		m_fromHmi = NULL;
 	}
 
-	m_toHmi->Update(*((Hmi_Message_T*)hmiMsg));
-
+	if(m_toHmi)
+	{	
+		m_toHmi->Update(*((Hmi_Message_T*)hmiMsg));
+	}
 	return 0;
 }
 
