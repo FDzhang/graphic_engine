@@ -507,7 +507,15 @@ xr_state CMaterial::GetDefaultLightDirection(Float32* x, Float32* y, Float32* z)
 	*z = m_defaultLightDir->z.Get();
 	return XR_OK;
 }
-
+xr_state CMaterial::SetOpacity(Float32 opacity)
+{
+	m_opacity = opacity;
+	return XR_OK;
+}
+Float32   CMaterial::GetOpacity()
+{
+	return m_opacity;
+}
 Int32 CMaterial::Release()
 {
 	Int32 refcnt = DecRef();

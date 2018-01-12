@@ -77,6 +77,8 @@ public:
 	virtual xr_state SetTransparencyMap(CXrTextureEx* tex);
 	virtual xr_state SetDefaultLightDirection(Float32 x, Float32 y, Float32 z);
 	virtual xr_state GetDefaultLightDirection(Float32* x, Float32* y, Float32* z);
+	virtual xr_state SetOpacity(Float32 opacity);
+	virtual Float32   GetOpacity();
 	xr_state SetAmbientMap(CXrTextureEx* tex);
 
 	virtual Int32 Release();
@@ -138,6 +140,7 @@ private:
 	CAVector4*							m_emissionColor;
 	CAVector3*							m_defaultLightDir;
 	CAProperty							m_shininessValue;
+	Float32                             m_opacity;
 //	CXrBiLinkList<CBatchRender>	    m_renderQuene;	//render quene for blending primitive
 };
 
