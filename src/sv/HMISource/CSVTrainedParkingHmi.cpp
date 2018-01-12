@@ -1,5 +1,5 @@
 #include "CSVTrainedParkingHmi.h"
-#include <log/log.h>
+#include "gpu_log.h"
 
 extern Region CenterReg;
 extern Region RightReg;
@@ -537,6 +537,7 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 
 		m_tpParkingInPromptBoxVisibility = 1;
 		static int m_tpParkingInPromptBoxVisibilityCnt = 0;
+		m_tpParkingInPromptBoxShowNum = 0;
 		switch(tpReslt.tp_button.tp_buttonR_flag)
 		{
 		case TP_BUTTONRFLAG_ERROR:
@@ -609,6 +610,7 @@ int CSVTrainedParkingHmi::UpdateTpElem(Hmi_Message_T* hmiMsg)
 			m_tpParkingInPromptBoxVisibilityCnt = 0;
 		break;
 		default:
+			m_tpParkingInPromptBoxShowNum = 
 			m_tpParkingInPromptBoxVisibility = 0;
 			m_tpParkingInPromptBoxVisibilityCnt = 0;
 		break;
@@ -646,17 +648,16 @@ int CSVTrainedParkingHmi::ProcessIconTouchEvent()
 		{
 	        tpIcon[TP_NAVIGATING_ICON]->onClickListener(x,y,touchType);
         	tpIcon[TP_CONTROL_ICON]->onClickListener(x,y,touchType);
-       	 	tpIcon[TP_PARKING_IN_ICON]->onClickListener(x,y,touchType);
+       	 	//tpIcon[TP_PARKING_IN_ICON]->onClickListener(x,y,touchType);
 		}
-		else
-		{
-			if(m_tpParkingInPromptBoxVisibility == 0
-				||m_tpParkingInPromptBoxShowNum == PROMPT_BOX_SEARCHING_FAILED
-				|| m_tpParkingInPromptBoxShowNum == PROMPT_BOX_LOCATION_FAILED)
-			{		
-				tpIcon[TP_PARKING_IN_ICON]->onClickListener(x,y,touchType);
-			}
+	
+		if(m_tpParkingInPromptBoxVisibility == 0
+			||m_tpParkingInPromptBoxShowNum == PROMPT_BOX_SEARCHING_FAILED
+			|| m_tpParkingInPromptBoxShowNum == PROMPT_BOX_LOCATION_FAILED)
+		{		
+			tpIcon[TP_PARKING_IN_ICON]->onClickListener(x,y,touchType);
 		}
+		
 	}
 	
 	return HMI_SUCCESS;

@@ -97,6 +97,8 @@ bool ISVHmi::GetTouchEventInfo(int &x, int &y, int &type)
 			type = TouchEvent_Down;
 			x = touchData.x;
 			y = touchData.y;
+			touchData.touchAction = 0;
+			CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
 			return true;
 		}
 		else
