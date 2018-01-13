@@ -1,0 +1,511 @@
+/*===========================================================================*\
+ * FILE: CAvmRenderDataBase.h
+ *===========================================================================
+ * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
+ * O-Film Confidential
+ *
+ * DESCRIPTION:
+ *
+ * ABBREVIATIONS:
+ *   TODO: List of abbreviations used, or reference(s) to external document(s)
+ *
+ * TRACEABILITY INFO:
+ *   Design Document(s):
+ *     TODO: Update list of design document(s)
+ *
+ *   Requirements Document(s):
+ *     TODO: Update list of requirements document(s)
+ *
+ *   Applicable Standards (in order of precedence: highest first):
+ *
+ * DEVIATIONS FROM STANDARDS:
+ *   TODO: List of deviations from standards in this file, or
+ *   None.
+ *
+\*===========================================================================*/
+
+#ifndef _CAVM_DATABASE_H_
+#define _CAVM_DATABASE_H_
+
+//#include <mutex>
+#include "../../XrCore/XrSrc/External/XrHeaders.h"
+#include "../SVNode2DStich.h"
+#include "../DataStruct.h"
+#include "../GlSV2D.h"
+#include "GPU_Module_Interface.h"
+#include <pthread.h>
+#include "gpu_log.h"
+#define PropertyBuilderByName(type, name, access_permission) \
+    access_permission:\
+        type* m_##name;\
+        unsigned char m_##name##InitFlag;\
+    public:\
+        inline void Set##name(type* data){\
+			static unsigned char initFlag = 0;\
+			if(initFlag == 0)\
+			{\
+				m_##name = new type;\
+				initFlag = 1;\				
+				m_##name##InitFlag = 1;\
+			}\
+			if(data == NULL)\
+			{\
+				return;\
+			}\
+			memcpy(m_##name, data, sizeof(type));\
+        }\
+        inline void Get##name(type* data){\
+			if(data == NULL)\
+			{\
+				data = new type;\
+			}\
+			if(m_##name##InitFlag == 1)\
+			{\
+				memcpy(data, m_##name, sizeof(type));\
+			}\
+        }\
+		inline void Get##name(type** data){\
+			if(*data == NULL)\
+			{\
+				*data = new type;\
+			}\
+			if(m_##name##InitFlag == 1)\
+			{\
+				memcpy(*data, m_##name, sizeof(type));\
+			}\
+        }
+
+#define PropertyBuilderExt1ByName(type, name, access_permission) \
+    access_permission:\
+        type* m_##name;\
+    public:\
+        inline void Set##name(type* data){\
+			m_##name = data;\
+        }\
+        inline void Get##name(type* data){\
+			data = m_##name;\
+        }\
+		inline void Get##name(type** data){\
+			*data = m_##name;\
+        }
+
+#define PropertyBuilderExt2ByName(type1, type2, name, access_permission)\
+    access_permission:\
+        type1* m_##name##Param1;\
+        type2* m_##name##Param1;\
+        unsigned char m_##name##InitFlag;\
+    public:\
+        inline void Set##name(type1* data1, type2* data2){\
+			static unsigned char initFlag = 0;\
+			if(initFlag == 0)\
+			{\
+				m_##name##Param1 = new type1;\\
+				m_##name##Param2 = new type2;\
+				initFlag = 1;\				
+				m_##name##InitFlag = 1;\
+			}\
+			if(data1 == NULL)\
+			{\
+				return;\
+			}\
+			memcpy(m_##name##Param1, data1, sizeof(type1));\
+			if(data2 == NULL)\
+			{\
+				return;\
+			}\
+			memcpy(m_##name##Param2, data2, sizeof(type2));\
+        }\
+        inline void Get##name(type1* data1, type2* data2){\
+			if(data1 == NULL)\
+			{\
+				data1 = new type1;\
+			}\
+			if(data2 == NULL)\
+			{\
+				data2 = new type2;\
+			}\
+			if(m_##name##InitFlag == 1)\
+			{\
+				memcpy(data1, m_##name##Param1, sizeof(type1));\			
+				memcpy(data2, m_##name##Param2, sizeof(type2));\
+			}\
+        }
+
+#define PropertyBuilderExt3ByName(type, name, access_permission) \
+    access_permission:\
+        type m_##name;\
+    public:\
+        inline void Set##name(type data){\
+			m_##name = data;\
+        }\
+        inline void Get##name(type& data){\
+			data = m_##name;\
+        }
+
+typedef struct TouchDataTag
+{
+	int x;
+	int y;
+	unsigned char touchAction;
+}
+TouchDataT;
+
+
+
+class CAvmRenderDataBase
+{
+public:
+	CAvmRenderDataBase();
+	~CAvmRenderDataBase();
+
+	static CAvmRenderDataBase* GetInstance();
+
+	void SetDisplayViewCmd(unsigned char displayViewCmd);
+	void GetDisplayViewCmd(unsigned char& displayViewCmd);
+
+private:
+	unsigned char m_DisplayViewCmd;
+	unsigned char m_DisplayViewCmdInitFlag;
+
+public:
+	void SetCanData(unsigned char* canData);
+	void GetCanData(unsigned char* pCanData);
+	void GetCanData(unsigned char** ppCanData);
+private:
+	unsigned char* m_CanData;
+    unsigned char m_CanDataInitFlag;
+	pthread_mutex_t m_canDataMutex;
+
+	//PropertyBuilderExt3ByName(unsigned char, DisplayViewCmd, private)
+	//PropertyBuilderByName(unsigned char, CanData, private)
+	//PropertyBuilderByName(TouchDataT, TouchData, private)
+
+public:
+	void SetTouchData(TouchDataT* touchData);
+	void GetTouchData(TouchDataT* pTouchData);
+	void GetTouchData(TouchDataT** ppTouchData);
+private:
+	TouchDataT* m_TouchData;
+    unsigned char m_TouchDataInitFlag;
+	pthread_mutex_t m_touchDataMutex;
+
+public:
+    void Set3dViewRegion(Region* data);
+	void Get3dViewRegion(Region* data);
+	void Get3dViewRegion(Region** data);
+private:
+    Region* m_3dViewRegion;
+	unsigned char m_3dViewRegionInitFlag;
+	
+public:
+    void SetStitchViewRegion(Region* data);
+	void GetStitchViewRegion(Region* data);
+	void GetStitchViewRegion(Region** data);
+private:
+    Region* m_StitchViewRegion;
+	unsigned char m_StitchViewRegionInitFlag;
+
+public:
+    void SetSingleViewRegion(Region* data);
+	void GetSingleViewRegion(Region* data);
+	void GetSingleViewRegion(Region** data);
+private:
+    Region* m_SingleViewRegion;
+	unsigned char m_SingleViewRegionInitFlag;
+
+public:
+    void SetObjectViewRegion(Region* data);
+	void GetObjectViewRegion(Region* data);
+	void GetObjectViewRegion(Region** data);
+private:
+    Region* m_ObjectViewRegion;
+	unsigned char m_ObjectViewRegionInitFlag;
+	
+public:
+    void SetLinearViewRegion(Region* data);
+	void GetLinearViewRegion(Region* data);
+	void GetLinearViewRegion(Region** data);
+private:
+    Region* m_LinearViewRegion;
+	unsigned char m_LinearViewRegionInitFlag;
+	
+	//PropertyBuilderByName(Region, 3dViewRegion, private)
+	//PropertyBuilderByName(Region, StitchViewRegion, private)	
+	//PropertyBuilderByName(Region, SingleViewRegion, private)
+	//PropertyBuilderByName(Region, ObjectViewRegion, private)
+	//PropertyBuilderByName(Region, LinearViewRegion, private)
+
+public:
+    void Set3dViewCameraParams(SurroundViewCameraParamsT* data);
+	void Get3dViewCameraParams(SurroundViewCameraParamsT* data);
+	void Get3dViewCameraParams(SurroundViewCameraParamsT** data);
+private:
+    SurroundViewCameraParamsT* m_3dViewCameraParams;
+	unsigned char m_3dViewCameraParamsInitFlag;
+	
+public:
+    void SetStitchViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetStitchViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetStitchViewCameraParams(SurroundViewCameraParamsT** data);
+private:
+    SurroundViewCameraParamsT* m_StitchViewCameraParams;
+	unsigned char m_StitchViewCameraParamsInitFlag;
+
+public:
+    void SetSingleViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetSingleViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetSingleViewCameraParams(SurroundViewCameraParamsT** data);
+private:
+    SurroundViewCameraParamsT* m_SingleViewCameraParams;
+	unsigned char m_SingleViewCameraParamsInitFlag;
+
+public:
+    void SetObjectViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetObjectViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetObjectViewCameraParams(SurroundViewCameraParamsT** data);
+private:
+    SurroundViewCameraParamsT* m_ObjectViewCameraParams;
+	unsigned char m_ObjectViewCameraParamsInitFlag;
+	
+public:
+    void SetLinearViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetLinearViewCameraParams(SurroundViewCameraParamsT* data);
+	void GetLinearViewCameraParams(SurroundViewCameraParamsT** data);
+private:
+    SurroundViewCameraParamsT* m_LinearViewCameraParams;
+	unsigned char m_LinearViewCameraParamsInitFlag;
+
+	//PropertyBuilderByName(SurroundViewCameraParamsT, ObjectViewCameraParams, private)
+	//PropertyBuilderByName(SurroundViewCameraParamsT, StitchViewCameraParams, private)
+	//PropertyBuilderByName(SurroundViewCameraParamsT, SingleViewCameraParams, private)
+	//PropertyBuilderByName(SurroundViewCameraParamsT, 3dViewCameraParams, private)	
+	//PropertyBuilderByName(SurroundViewCameraParamsT, LinearViewCameraParams, private)
+
+public:
+    void SetSingleViewChannel(unsigned char* data);
+	void GetSingleViewChannel(unsigned char* data);
+	void GetSingleViewChannel(unsigned char** data);
+private:
+    unsigned char* m_SingleViewChannel;
+	unsigned char m_SingleViewChannelInitFlag;
+	//PropertyBuilderByName(unsigned char, SingleViewChannel, private)
+
+public:
+    void Set3dViewIndex(unsigned char data);
+    void Get3dViewIndex(unsigned char& data);
+private:
+    unsigned char m_3dViewIndex;
+	//PropertyBuilderExt3ByName(unsigned char, 3dViewIndex, private)
+
+public:
+    void SetSingleViewNode(ISceneNode* data);
+    void GetSingleViewNode(ISceneNode* data);
+    void GetSingleViewNode(ISceneNode** data);
+private:
+	ISceneNode* m_SingleViewNode;
+
+public:
+    void SetStitchViewNode(ISceneNode* data);
+    void GetStitchViewNode(ISceneNode* data);
+    void GetStitchViewNode(ISceneNode** data);
+private:
+	ISceneNode* m_StitchViewNode;
+
+public:
+    void Set3dViewNode(ISceneNode* data);
+    void Get3dViewNode(ISceneNode* data);
+    void Get3dViewNode(ISceneNode** data);
+private:
+	ISceneNode* m_3dViewNode;
+
+public:
+    void SetObjectViewNode(ISceneNode* data);
+    void GetObjectViewNode(ISceneNode* data);
+    void GetObjectViewNode(ISceneNode** data);
+private:
+	ISceneNode* m_ObjectViewNode;
+	
+public:
+    void SetTimeStitcherNode(SVNode2DStich* data);
+    void GetTimeStitcherNode(SVNode2DStich* data);
+    void GetTimeStitcherNode(SVNode2DStich** data);
+private:
+	SVNode2DStich* m_TimeStitcherNode;
+	
+	//PropertyBuilderExt1ByName(ISceneNode, SingleViewNode, private)
+	//PropertyBuilderExt1ByName(ISceneNode, StitchViewNode, private)
+	//PropertyBuilderExt1ByName(ISceneNode, 3dViewNode, private)
+	//PropertyBuilderExt1ByName(ISceneNode, ObjectViewNode, private)
+	//PropertyBuilderExt1ByName(SVNode2DStich, TimeStitcherNode, private)
+
+
+public:
+    void SetApaOverlayResult(APAOverlayStruct* data);
+	void GetApaOverlayResult(APAOverlayStruct* data);
+	void GetApaOverlayResult(APAOverlayStruct** data);
+private:
+    APAOverlayStruct* m_ApaOverlayResult;
+	unsigned char m_ApaOverlayResultInitFlag;
+	
+	//PropertyBuilderByName(APAOverlayStruct, ApaOverlayResult, private)
+
+public:
+    void SetAnimationManager(IAnimationManager* data);
+    void GetAnimationManager(IAnimationManager* data);
+    void GetAnimationManager(IAnimationManager** data);
+private:
+	IAnimationManager* m_AnimationManager;
+
+public:
+    void SetSv2dData(GlSV2D* data);
+    void GetSv2dData(GlSV2D* data);
+    void GetSv2dData(GlSV2D** data);
+private:
+	GlSV2D* m_Sv2dData;
+
+	//PropertyBuilderExt1ByName(IAnimationManager, AnimationManager, private)
+
+	//PropertyBuilderExt1ByName(GlSV2D, Sv2dData, private)
+
+public:
+    void Set3dViewNodeStatus(unsigned char* data);
+	void Get3dViewNodeStatus(unsigned char* data);
+	void Get3dViewNodeStatus(unsigned char** data);
+private:
+    unsigned char* m_3dViewNodeStatus;
+	unsigned char m_3dViewNodeStatusInitFlag;
+	
+public:
+    void SetStitchViewNodeStatus(unsigned char* data);
+	void GetStitchViewNodeStatus(unsigned char* data);
+	void GetStitchViewNodeStatus(unsigned char** data);
+private:
+    unsigned char* m_StitchViewNodeStatus;
+	unsigned char m_StitchViewNodeStatusInitFlag;
+
+public:
+    void SetSingleViewNodeStatus(unsigned char* data);
+	void GetSingleViewNodeStatus(unsigned char* data);
+	void GetSingleViewNodeStatus(unsigned char** data);
+private:
+    unsigned char* m_SingleViewNodeStatus;
+	unsigned char m_SingleViewNodeStatusInitFlag;
+
+public:
+    void SetObjectViewNodeStatus(unsigned char* data);
+	void GetObjectViewNodeStatus(unsigned char* data);
+	void GetObjectViewNodeStatus(unsigned char** data);
+private:
+    unsigned char* m_ObjectViewNodeStatus;
+	unsigned char m_ObjectViewNodeStatusInitFlag;
+	
+public:
+    void SetCarTransparentStatus(unsigned char* data);
+	void GetCarTransparentStatus(unsigned char* data);
+	void GetCarTransparentStatus(unsigned char** data);
+private:
+    unsigned char* m_CarTransparentStatus;
+	unsigned char m_CarTransparentStatusInitFlag;
+
+	//PropertyBuilderByName(unsigned char, StitchViewNodeStatus, private)
+	//PropertyBuilderByName(unsigned char, 3dViewNodeStatus, private)
+	//PropertyBuilderByName(unsigned char, SingleViewNodeStatus, private)
+	//PropertyBuilderByName(unsigned char, ObjectViewNodeStatus, private)
+	//PropertyBuilderByName(unsigned char, CarTransparentStatus, private)
+
+public:
+    void SetLkaLcResult(LkaLcResultT* data);
+	void GetLkaLcResult(LkaLcResultT* data);
+	void GetLkaLcResult(LkaLcResultT** data);
+private:
+    LkaLcResultT* m_LkaLcResult;
+	unsigned char m_LkaLcResultInitFlag;
+	pthread_mutex_t m_lkaResultMutex;
+
+
+	//PropertyBuilderByName(LkaLcResultT, LkaLcResult, private)
+public:
+    void SetMainMenuStatus(MainMenuDataT* data);
+	void GetMainMenuStatus(MainMenuDataT* data);
+	void GetMainMenuStatus(MainMenuDataT** data);
+private:
+    MainMenuDataT* m_MainMenuStatus;
+	unsigned char m_MainMenuStatusInitFlag;
+	pthread_mutex_t m_mainMenuStatusMutex;
+
+	//PropertyBuilderByName(MainMenuDataT, MainMenuStatus, private)
+
+public:
+    void SetTpResult(Tp_Result* data);
+	void GetTpResult(Tp_Result* data);
+	void GetTpResult(Tp_Result** data);
+private:
+    Tp_Result* m_TpResult;
+    unsigned char m_TpResultInitFlag;
+	pthread_mutex_t m_TpResultMutex;
+	//PropertyBuilderByName(Tp_Result, TpResult, private);
+public:
+	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
+	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);
+
+	void SetSingleViewVertex(float* pSingleViewVertex[]);
+	void GetSingleViewVertex(float* pSingleViewVertex[]);
+
+	void SetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[]);
+	void GetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[]);
+
+
+	void Set3dViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void Get3dViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void Set180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+
+
+	void GetLeftRightViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex);
+	void SetLeftRightViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex);
+	void SetSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
+	void GetSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
+	void SetLargeSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
+	void GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
+
+	
+private:
+	static CAvmRenderDataBase* m_Instance;
+
+	unsigned char m_avm3dVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmSingleViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmStitchViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmObjViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avm180DegreeViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmLeftRightViewVisibility[PROCESS_FUNC_NUMS];
+
+	class IMesh*	  m_singleViewMesh[4];
+	class INode*	  m_singleViewPlaneNode[4];
+	float*			  m_singleViewVertex[4];
+	float*			  m_singleViewRoi[4];
+	float*			  m_largeSingleViewRoi[4];
+
+	Region 			  m_leftViewRegion;
+	Region 			  m_rightViewRegion;
+
+};
+
+
+#endif // _CAVM_DATABASE_H_
+
+/*===========================================================================*\
+ * File Revision History (top to bottom: first revision to last revision)
+ *===========================================================================
+ *
+ *   Date        userid       Description
+ * ----------- ----------    -----------
+ *  1/4/18   Jensen Wang   Create the CAvmRenderDataBase class.
+\*===========================================================================*/

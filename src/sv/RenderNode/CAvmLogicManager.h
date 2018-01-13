@@ -74,10 +74,7 @@ private:
 	st_ADAS_Mdl_HMI_T **			m_adasMdl;
 	int m_hmiNums;
 
-	ISVHmi* m_cameraHmi;
-	ISVHmi* m_mainHmi;
-	ISVHmi* m_dvrBaseHmi;
-	ISVHmi* m_dvrSettingTab;
+	ISVHmi* m_systemHmi;
 	
 	vector<ISVHmi*> m_avmHmi;
 	vector<ISVHmi*> m_dvrHmi;

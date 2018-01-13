@@ -236,6 +236,35 @@ void CTreeNode<T>::Isolate()
         while (temp);
     }
 }
+template <typename T>
+void CTreeNode<T>::MoveToAfter(CTreeNode* node)
+{
+	if (node->GetNext()) {
+        node->GetNext()->SetPrev(node->GetPrev());
+    }
+    if (node->GetPrev()) {
+        node->GetPrev()->SetNext(node->GetNext());
+    }
+   /* if (node->GetSuper() && node->GetSuper()->GetSub() == this) {
+        node->GetSuper()->SetSub(node->GetNext());
+    }*/
+
+	if (GetNext()) {
+        node->SetNext(GetNext());
+        GetNext()->SetPrev(node);
+    }	
+	else
+	{
+		node->SetNext(NULL);
+	}
+	SetNext(node);
+    node->SetPrev(this);
+	if(GetSuper())
+    {
+		node->SetSuper(GetSuper());
+	}
+
+}
 
 template <typename T>
 void CTreeNode<T>::ReLinkAsHeader(CTreeNode* header)
@@ -978,6 +1007,29 @@ xr_state CXrBiLinkList<T>::removeNode(T* node)
 	}
 	node->CBiLinkNode<T>::Remove();
 	return XR_OK;
+}
+template <typename T>
+xr_state CXrBiLinkList<T>::MoveToAfter(T*  targetNode, T* node, InsertFlag flag)
+{
+	if (!node) return XR_FAILED;
+
+	if(targetNode)
+	{
+		if (flag == InsertFlag_SiblingAfter) 
+		{
+			targetNode->MoveToAfter(node);
+			if (m_pTail == targetNode) {
+				m_pTail = node;
+			}
+
+			return XR_OK;
+		}
+		return XR_OK;
+	}
+	else
+	{
+		return XR_FAILED;
+	}
 }
 
 template <typename T>

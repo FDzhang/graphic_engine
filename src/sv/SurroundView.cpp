@@ -489,8 +489,11 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 {
     int data_size = 0;
 	int index_size = 0;
-	data_size = AVMData::GetInstance()->m_2D_lut->GetDataTotalCnt();
-	index_size = AVMData::GetInstance()->m_2D_lut->GetIndexTotalCnt();
+	if(AVMData::GetInstance()->m_2D_lut)
+	{
+		data_size = AVMData::GetInstance()->m_2D_lut->GetDataTotalCnt();
+		index_size = AVMData::GetInstance()->m_2D_lut->GetIndexTotalCnt();
+	}
 	if(svscn)
 	{
 		svscn->UpdateExternCalib2DReslt((GLfloat*)pdata,data_size,(GLushort *)pIndex,index_size);

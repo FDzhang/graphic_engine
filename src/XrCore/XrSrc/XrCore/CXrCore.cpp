@@ -201,6 +201,17 @@ xr_state CXrCore::GetPickerManager(
 	//*ppIPickerManager = &this->m_pickMngr;
 	return XR_OK;
 }
+ xr_state CXrCore::MoveToAfter(
+     /* [in] */ RenderNodeType type,
+     /* [in] */ Int32 TargetNodeID,
+     /* [in] */ Int32 NodeID)
+{
+	CRenderNode* node = m_node.Get(NodeID);
+	CRenderNode* tnode = m_node.Get(TargetNodeID);
+	m_RTnodeList.MoveToAfter(tnode, node, InsertFlag_SiblingAfter);
+
+	return XR_OK;
+}
  xr_state CXrCore::NodeInsertTo(
  /* [in] */ RenderNodeType type,
  /* [out] */ IRenderNode** ppIRenderNode)

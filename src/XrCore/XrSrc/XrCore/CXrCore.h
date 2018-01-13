@@ -41,6 +41,11 @@ public:
 
 	 virtual xr_state ReleaseRenderNode(
 		 /* [in] */ Int32 RenderNodeID);
+	 
+	 virtual xr_state MoveToAfter(
+	     /* [in] */ RenderNodeType type,
+	     /* [in] */ Int32 TargetNodeID,
+	     /* [in] */ Int32 NodeID);
 
 	 virtual xr_state NodeInsertTo(
 	 /* [in] */ RenderNodeType type,

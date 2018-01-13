@@ -87,6 +87,10 @@ public:
 		/* [in] */ Int32 y, 
 		/* [in] */ Int32 width, 
 		/* [in] */ Int32 height)=0;
+	virtual xr_state MoveToAfter(
+	    /* [in] */ RenderNodeType type,
+	    /* [in] */ Int32 TargetNodeID,
+	    /* [in] */ Int32 NodeID) = 0;
 
 };
 

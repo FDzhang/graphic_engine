@@ -485,6 +485,8 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 		case RENDER_DATA_VIEW_CMD:
 			static unsigned char lastViewStatus = 254;
 			currentViewStatus = *((unsigned char*)renderData);
+		
+			Log_Error("--------RENDER_DATA_VIEW_CMD: %d", currentViewStatus);
 			if(currentViewStatus != lastViewStatus)
 			{
 				CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(currentViewStatus);
@@ -498,6 +500,7 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 
 		break;
 		case RENDER_DATA_CAN:
+			
 			ProcCanData((CAN_DATA*)renderData);
 
 		break;
@@ -512,12 +515,10 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 
 		break;
 		case RENDER_DATA_STITCH_ANGLE:
-			
 			ProcStitch((StitchResultT*)renderData);
 
 		break;
 		case RENDER_DATA_APA_RESULT:
-			
 			ProcApa((APAOverlayStruct*)renderData);
 
 		break;
@@ -546,6 +547,22 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 		break;
 		case RENDER_DATA_TP_RESULT:
 			CAvmRenderDataBase::GetInstance()->SetTpResult((Tp_Result*)renderData);
+		break;
+		case RENDER_DATA_MOUSE_ICON:
+			if(renderData)
+			{
+				MouseDataT* mouseData = (MouseDataT*)renderData;
+				TouchDataT touchData;
+				
+				if(mouseData->touchData.touchAction == TOUCH_ACTION_MOVE)
+				{
+					touchData.x = mouseData->touchData.x;
+					touchData.y = mouseData->touchData.y;
+					touchData.touchAction = TouchEvent_Move;
+					CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
+				}
+				CAvmRenderDataBase::GetInstance()->SetMouseIconVisibility(mouseData->visibility);
+			}
 		break;
 		default:
 		break;

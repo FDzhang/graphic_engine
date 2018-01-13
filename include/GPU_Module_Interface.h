@@ -221,6 +221,31 @@ typedef struct LkaLcResultTag
 }
 LkaLcResultT;
 
+typedef enum SystemTouchActionTag
+{
+	TOUCH_ACTION_NONE = 0,
+	TOUCH_ACTION_PRESS,
+	TOUCH_ACTION_RELEASE,
+	TOUCH_ACTION_MOVE,
+	TOUCH_ACTION_NUM,
+}
+SystemTouchActionT;
+
+typedef struct SystemTouchDataTag
+{
+	int x;
+	int y;
+	SystemTouchActionT touchAction;
+}
+SystemTouchDataT;
+
+typedef struct MouseDataTag
+{
+	unsigned char visibility;
+	SystemTouchDataT touchData;
+}
+MouseDataT;
+
 
 typedef enum MainMenuElementIdTag
 {
@@ -278,6 +303,7 @@ typedef enum RenderDataTypeTag
 	RENDER_DATA_ALGO_STATUS,
 	RENDER_DATA_SONAR_PLD_RESULT,
 	RENDER_DATA_SHUT_DOWN_DISPLAY,
+	RENDER_DATA_MOUSE_ICON,
 	RENDER_DATA_TYPE_NUM,
 }
 RenderDataTypeT;

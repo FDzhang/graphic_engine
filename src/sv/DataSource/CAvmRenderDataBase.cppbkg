@@ -1,0 +1,1217 @@
+/*===========================================================================*\
+ * FILE: CAvmRenderInterface.h
+ *===========================================================================
+ * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
+ * O-Film Confidential
+ *
+ * DESCRIPTION:
+ *
+ * ABBREVIATIONS:
+ *   TODO: List of abbreviations used, or reference(s) to external document(s)
+ *
+ * TRACEABILITY INFO:
+ *   Design Document(s):
+ *     TODO: Update list of design document(s)
+ *
+ *   Requirements Document(s):
+ *     TODO: Update list of requirements document(s)
+ *
+ *   Applicable Standards (in order of precedence: highest first):
+ *
+ * DEVIATIONS FROM STANDARDS:
+ *   TODO: List of deviations from standards in this file, or
+ *   None.
+ *
+\*===========================================================================*/
+#include "CAvmRenderDataBase.h"
+#include "../AVMData.h"
+#include "gpu_log.h"
+
+#define MEMCPY_MUTEX_OPT(mutex, dist, src, type) \
+	pthread_mutex_lock(&mutex);\
+	memcpy(dist, src, sizeof(type));\	
+	pthread_mutex_unlock(&mutex);
+
+
+CAvmRenderDataBase* CAvmRenderDataBase::m_Instance = NULL;
+
+CAvmRenderDataBase* CAvmRenderDataBase::GetInstance()
+{
+	if(m_Instance == NULL)
+	{
+		m_Instance = new CAvmRenderDataBase;
+	}
+	return m_Instance;
+}
+
+
+CAvmRenderDataBase::CAvmRenderDataBase()
+{
+	pthread_mutex_init(&m_canDataMutex, NULL);
+	pthread_mutex_init(&m_touchDataMutex, NULL);
+	pthread_mutex_init(&m_lkaResultMutex, NULL);
+	pthread_mutex_init(&m_mainMenuStatusMutex, NULL);
+	pthread_mutex_init(&m_TpResultMutex, NULL);
+		
+}
+
+CAvmRenderDataBase::~CAvmRenderDataBase()
+{
+	pthread_mutex_destroy(&m_canDataMutex);
+	pthread_mutex_destroy(&m_touchDataMutex);
+	pthread_mutex_destroy(&m_lkaResultMutex);	
+	pthread_mutex_destroy(&m_mainMenuStatusMutex);
+	pthread_mutex_destroy(&m_TpResultMutex);
+}
+
+
+void CAvmRenderDataBase::SetSingleViewMesh(class IMesh* pSingleViewMesh[])
+{
+	m_singleViewMesh[0] = pSingleViewMesh[0];
+	m_singleViewMesh[1] = pSingleViewMesh[1];
+	m_singleViewMesh[2] = pSingleViewMesh[2];
+	m_singleViewMesh[3] = pSingleViewMesh[3];
+}
+void CAvmRenderDataBase::GetSingleViewMesh(class IMesh* pSingleViewMesh[])
+{
+	pSingleViewMesh[0] = m_singleViewMesh[0];
+	pSingleViewMesh[1] = m_singleViewMesh[1];
+	pSingleViewMesh[2] = m_singleViewMesh[2];
+	pSingleViewMesh[3] = m_singleViewMesh[3];
+}
+
+void CAvmRenderDataBase::SetSingleViewVertex(float* pSingleViewVertex[])
+{
+	m_singleViewVertex[0] = pSingleViewVertex[0];
+	m_singleViewVertex[1] = pSingleViewVertex[1];
+	m_singleViewVertex[2] = pSingleViewVertex[2];
+	m_singleViewVertex[3] = pSingleViewVertex[3];
+}
+void CAvmRenderDataBase::GetSingleViewVertex(float* pSingleViewVertex[])
+{
+	pSingleViewVertex[0] = m_singleViewVertex[0];
+	pSingleViewVertex[1] = m_singleViewVertex[1];
+	pSingleViewVertex[2] = m_singleViewVertex[2];
+	pSingleViewVertex[3] = m_singleViewVertex[3];
+}
+
+void CAvmRenderDataBase::SetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[])
+{
+	m_singleViewPlaneNode[0] = pSingleViewPlaneNode[eFrontSingle];
+	m_singleViewPlaneNode[1] = pSingleViewPlaneNode[eRearSingle];
+	m_singleViewPlaneNode[2] = pSingleViewPlaneNode[eLeftSingle];
+	m_singleViewPlaneNode[3] = pSingleViewPlaneNode[eRightSingle];
+}
+void CAvmRenderDataBase::GetSingleViewPlaneNode(class INode* pSingleViewPlaneNode[])
+{
+	pSingleViewPlaneNode[0] = m_singleViewPlaneNode[0];
+	pSingleViewPlaneNode[1] = m_singleViewPlaneNode[1];
+	pSingleViewPlaneNode[2] = m_singleViewPlaneNode[2];
+	pSingleViewPlaneNode[3] = m_singleViewPlaneNode[3];
+}
+
+void CAvmRenderDataBase::SetSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+
+	static unsigned initFlag[4] = {0};
+	if(initFlag[pViewIndex] == 0)
+	{
+		m_singleViewRoi[pViewIndex] = new float[28];
+		initFlag[pViewIndex] = 1;
+	}
+	
+	memcpy(m_singleViewRoi[pViewIndex], pSingleViewRoi, sizeof(float)*28);
+}
+void CAvmRenderDataBase::GetSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+	*pSingleViewRoi = m_singleViewRoi[pViewIndex];
+}
+
+void CAvmRenderDataBase::SetLargeSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+
+	static unsigned initFlag[4] = {0};
+	if(initFlag[pViewIndex] == 0)
+	{
+		m_largeSingleViewRoi[pViewIndex] = new float[4];
+		initFlag[pViewIndex] = 1;
+	}
+	
+	memcpy(m_largeSingleViewRoi[pViewIndex], pSingleViewRoi, sizeof(float)*4);
+}
+void CAvmRenderDataBase::GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+	*pSingleViewRoi = m_largeSingleViewRoi[pViewIndex];
+}
+
+void CAvmRenderDataBase::GetLeftRightViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex)
+{
+	if(viewIndex == left_camera_index)
+	{
+		*pLeftRightViewReg = &m_leftViewRegion; 
+	}
+	else if(viewIndex == right_camera_index)
+	{
+		*pLeftRightViewReg = &m_rightViewRegion; 
+	}	
+}
+void CAvmRenderDataBase::SetLeftRightViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex)
+{
+	if(viewIndex == left_camera_index)
+	{
+		m_leftViewRegion = *pLeftRightViewReg; 
+	}
+	else if(viewIndex == right_camera_index)
+	{
+		m_rightViewRegion = *pLeftRightViewReg; 
+	}
+}
+
+
+void CAvmRenderDataBase::Set3dViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avm3dVisibility[pFuncId] = pFlag;
+}
+void CAvmRenderDataBase::Get3dViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avm3dVisibility[pFuncId];
+}
+void CAvmRenderDataBase::SetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmStitchViewVisibility[pFuncId] = pFlag;
+}
+void CAvmRenderDataBase::GetStitchViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmStitchViewVisibility[pFuncId];
+}
+void CAvmRenderDataBase::SetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmSingleViewVisibility[pFuncId] = pFlag;
+}
+void CAvmRenderDataBase::GetSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmSingleViewVisibility[pFuncId];
+}
+void CAvmRenderDataBase::SetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmObjViewVisibility[pFuncId] = pFlag;
+}
+void CAvmRenderDataBase::GetObjectViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmObjViewVisibility[pFuncId];
+}
+void CAvmRenderDataBase::Set180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avm180DegreeViewVisibility[pFuncId] = pFlag;
+}
+void CAvmRenderDataBase::Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avm180DegreeViewVisibility[pFuncId];
+}
+void CAvmRenderDataBase::SetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmLeftRightViewVisibility[pFuncId] = pFlag;
+}
+void CAvmRenderDataBase::GetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmLeftRightViewVisibility[pFuncId];
+}
+
+
+void CAvmRenderDataBase::SetCanData(unsigned char* data)
+{
+	static unsigned char initFlag = 0;
+	if(initFlag == 0)
+	{
+		m_CanData = new unsigned char;
+		initFlag = 1;				
+		m_CanDataInitFlag = 1;
+	}
+	if(data == NULL)
+	{
+		return;
+	}
+	pthread_mutex_lock(&m_canDataMutex);
+	memcpy(m_CanData, data, sizeof(unsigned char));
+    pthread_mutex_unlock(&m_canDataMutex);
+}
+void CAvmRenderDataBase::GetCanData(unsigned char* data)
+{
+	if(data == NULL)
+	{
+		data = new unsigned char;
+	}
+	if(m_CanDataInitFlag == 1)
+	{
+		pthread_mutex_lock(&m_canDataMutex);
+		memcpy(data, m_CanData, sizeof(unsigned char));
+		pthread_mutex_unlock(&m_canDataMutex);
+	}
+}
+void CAvmRenderDataBase::GetCanData(unsigned char** data)
+{
+	if(*data == NULL)
+	{
+		*data = new unsigned char;
+	}
+	if(m_CanDataInitFlag == 1)
+	{
+		pthread_mutex_lock(&m_canDataMutex);
+		memcpy(*data, m_CanData, sizeof(unsigned char));	
+		pthread_mutex_unlock(&m_canDataMutex);
+	}
+}
+
+
+void CAvmRenderDataBase::SetDisplayViewCmd(unsigned char data)
+{
+    m_DisplayViewCmd = data;
+}
+void CAvmRenderDataBase::GetDisplayViewCmd(unsigned char& data)
+{
+    data = m_DisplayViewCmd;
+}
+
+void CAvmRenderDataBase::SetTouchData(TouchDataT* data)
+{
+	static unsigned char initFlag = 0;
+	if(initFlag == 0)
+	{
+		m_TouchData = new TouchDataT;
+		initFlag = 1;				
+		m_TouchDataInitFlag = 1;
+	}
+	if(data == NULL)
+	{
+		return;
+	}
+	
+	pthread_mutex_lock(&m_touchDataMutex);
+	memcpy(m_TouchData, data, sizeof(TouchDataT));
+	pthread_mutex_unlock(&m_touchDataMutex);
+}
+void CAvmRenderDataBase::GetTouchData(TouchDataT* data)
+{
+	if(data == NULL)
+	{
+		data = new TouchDataT;
+	}
+	if(m_TouchDataInitFlag == 1)
+	{
+	
+		pthread_mutex_lock(&m_touchDataMutex);
+		memcpy(data, m_TouchData, sizeof(TouchDataT));
+		pthread_mutex_unlock(&m_touchDataMutex);
+	}
+}
+void CAvmRenderDataBase::GetTouchData(TouchDataT** data)
+{
+	if(*data == NULL)
+	{
+		*data = new TouchDataT;
+	}
+	if(m_TouchDataInitFlag == 1)
+	{
+	
+		pthread_mutex_lock(&m_touchDataMutex);
+		memcpy(*data, m_TouchData, sizeof(TouchDataT));	
+		pthread_mutex_unlock(&m_touchDataMutex);
+	}
+}
+
+
+void CAvmRenderDataBase::Set3dViewRegion(Region* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_3dViewRegion = new Region;
+        initFlag = 1;				
+        m_3dViewRegionInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_3dViewRegion, data, sizeof(Region));
+}
+void CAvmRenderDataBase::Get3dViewRegion(Region* data)
+{
+    if(data == NULL)
+    {
+        data = new Region;
+    }
+    if(m_3dViewRegionInitFlag == 1)
+    {
+        memcpy(data, m_3dViewRegion, sizeof(Region));
+    }
+}
+void CAvmRenderDataBase::Get3dViewRegion(Region** data)
+{
+    if(*data == NULL)
+    {
+        *data = new Region;
+    }
+    if(m_3dViewRegionInitFlag == 1)
+    {
+        memcpy(*data, m_3dViewRegion, sizeof(Region));
+    }
+}
+
+void CAvmRenderDataBase::SetStitchViewRegion(Region* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_StitchViewRegion = new Region;
+        initFlag = 1;				
+        m_StitchViewRegionInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_StitchViewRegion, data, sizeof(Region));
+}
+void CAvmRenderDataBase::GetStitchViewRegion(Region* data)
+{
+    if(data == NULL)
+    {
+        data = new Region;
+    }
+    if(m_StitchViewRegionInitFlag == 1)
+    {
+        memcpy(data, m_StitchViewRegion, sizeof(Region));
+    }
+}
+void CAvmRenderDataBase::GetStitchViewRegion(Region** data)
+{
+    if(*data == NULL)
+    {
+        *data = new Region;
+    }
+    if(m_StitchViewRegionInitFlag == 1)
+    {
+        memcpy(*data, m_StitchViewRegion, sizeof(Region));
+    }
+}
+
+void CAvmRenderDataBase::SetSingleViewRegion(Region* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_SingleViewRegion = new Region;
+        initFlag = 1;				
+        m_SingleViewRegionInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_SingleViewRegion, data, sizeof(Region));
+}
+void CAvmRenderDataBase::GetSingleViewRegion(Region* data)
+{
+    if(data == NULL)
+    {
+        data = new Region;
+    }
+    if(m_SingleViewRegionInitFlag == 1)
+    {
+        memcpy(data, m_SingleViewRegion, sizeof(Region));
+    }
+}
+void CAvmRenderDataBase::GetSingleViewRegion(Region** data)
+{
+    if(*data == NULL)
+    {
+    
+        *data = new Region;
+    }
+    if(m_SingleViewRegionInitFlag == 1)
+    {
+        memcpy(*data, m_SingleViewRegion, sizeof(Region));
+		
+    }
+}
+
+void CAvmRenderDataBase::SetObjectViewRegion(Region* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_ObjectViewRegion = new Region;
+        initFlag = 1;				
+        m_ObjectViewRegionInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_ObjectViewRegion, data, sizeof(Region));
+}
+void CAvmRenderDataBase::GetObjectViewRegion(Region* data)
+{
+    if(data == NULL)
+    {
+        data = new Region;
+    }
+    if(m_ObjectViewRegionInitFlag == 1)
+    {
+        memcpy(data, m_ObjectViewRegion, sizeof(Region));
+    }
+}
+void CAvmRenderDataBase::GetObjectViewRegion(Region** data)
+{
+    if(*data == NULL)
+    {
+        *data = new Region;
+    }
+    if(m_ObjectViewRegionInitFlag == 1)
+    {
+        memcpy(*data, m_ObjectViewRegion, sizeof(Region));
+    }
+}
+
+void CAvmRenderDataBase::SetLinearViewRegion(Region* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_LinearViewRegion = new Region;
+        initFlag = 1;				
+        m_LinearViewRegionInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_LinearViewRegion, data, sizeof(Region));
+}
+void CAvmRenderDataBase::GetLinearViewRegion(Region* data)
+{
+    if(data == NULL)
+    {
+        data = new Region;
+    }
+    if(m_LinearViewRegionInitFlag == 1)
+    {
+        memcpy(data, m_LinearViewRegion, sizeof(Region));
+    }
+}
+void CAvmRenderDataBase::GetLinearViewRegion(Region** data)
+{
+    if(*data == NULL)
+    {
+        *data = new Region;
+    }
+    if(m_LinearViewRegionInitFlag == 1)
+    {
+        memcpy(*data, m_LinearViewRegion, sizeof(Region));
+    }
+}
+
+void CAvmRenderDataBase::Set3dViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_3dViewCameraParams = new SurroundViewCameraParamsT;
+        initFlag = 1;				
+        m_3dViewCameraParamsInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_3dViewCameraParams, data, sizeof(SurroundViewCameraParamsT));
+}
+void CAvmRenderDataBase::Get3dViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    if(data == NULL)
+    {
+        data = new SurroundViewCameraParamsT;
+    }
+    if(m_3dViewCameraParamsInitFlag == 1)
+    {
+        memcpy(data, m_3dViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+void CAvmRenderDataBase::Get3dViewCameraParams(SurroundViewCameraParamsT** data)
+{
+    if(*data == NULL)
+    {
+        *data = new SurroundViewCameraParamsT;
+    }
+    if(m_3dViewCameraParamsInitFlag == 1)
+    {
+        memcpy(*data, m_3dViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+
+void CAvmRenderDataBase::SetStitchViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_StitchViewCameraParams = new SurroundViewCameraParamsT;
+        initFlag = 1;				
+        m_StitchViewCameraParamsInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_StitchViewCameraParams, data, sizeof(SurroundViewCameraParamsT));
+}
+void CAvmRenderDataBase::GetStitchViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    if(data == NULL)
+    {
+        data = new SurroundViewCameraParamsT;
+    }
+    if(m_StitchViewCameraParamsInitFlag == 1)
+    {
+        memcpy(data, m_StitchViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+void CAvmRenderDataBase::GetStitchViewCameraParams(SurroundViewCameraParamsT** data)
+{
+    if(*data == NULL)
+    {
+        *data = new SurroundViewCameraParamsT;
+    }
+    if(m_StitchViewCameraParamsInitFlag == 1)
+    {
+        memcpy(*data, m_StitchViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+
+void CAvmRenderDataBase::SetSingleViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_SingleViewCameraParams = new SurroundViewCameraParamsT;
+        initFlag = 1;				
+        m_SingleViewCameraParamsInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_SingleViewCameraParams, data, sizeof(SurroundViewCameraParamsT));
+}
+void CAvmRenderDataBase::GetSingleViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    if(data == NULL)
+    {
+        data = new SurroundViewCameraParamsT;
+    }
+    if(m_SingleViewCameraParamsInitFlag == 1)
+    {
+        memcpy(data, m_SingleViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+void CAvmRenderDataBase::GetSingleViewCameraParams(SurroundViewCameraParamsT** data)
+{
+    if(*data == NULL)
+    {
+        *data = new SurroundViewCameraParamsT;
+    }
+    if(m_SingleViewCameraParamsInitFlag == 1)
+    {
+        memcpy(*data, m_SingleViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+
+void CAvmRenderDataBase::SetObjectViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_ObjectViewCameraParams = new SurroundViewCameraParamsT;
+        initFlag = 1;				
+        m_ObjectViewCameraParamsInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_ObjectViewCameraParams, data, sizeof(SurroundViewCameraParamsT));
+}
+void CAvmRenderDataBase::GetObjectViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    if(data == NULL)
+    {
+        data = new SurroundViewCameraParamsT;
+    }
+    if(m_ObjectViewCameraParamsInitFlag == 1)
+    {
+        memcpy(data, m_ObjectViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+void CAvmRenderDataBase::GetObjectViewCameraParams(SurroundViewCameraParamsT** data)
+{
+    if(*data == NULL)
+    {
+        *data = new SurroundViewCameraParamsT;
+    }
+    if(m_ObjectViewCameraParamsInitFlag == 1)
+    {
+        memcpy(*data, m_ObjectViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+
+void CAvmRenderDataBase::SetLinearViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_LinearViewCameraParams = new SurroundViewCameraParamsT;
+        initFlag = 1;				
+        m_LinearViewCameraParamsInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_LinearViewCameraParams, data, sizeof(SurroundViewCameraParamsT));
+}
+void CAvmRenderDataBase::GetLinearViewCameraParams(SurroundViewCameraParamsT* data)
+{
+    if(data == NULL)
+    {
+        data = new SurroundViewCameraParamsT;
+    }
+    if(m_LinearViewCameraParamsInitFlag == 1)
+    {
+        memcpy(data, m_LinearViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+void CAvmRenderDataBase::GetLinearViewCameraParams(SurroundViewCameraParamsT** data)
+{
+    if(*data == NULL)
+    {
+        *data = new SurroundViewCameraParamsT;
+    }
+    if(m_LinearViewCameraParamsInitFlag == 1)
+    {
+        memcpy(*data, m_LinearViewCameraParams, sizeof(SurroundViewCameraParamsT));
+    }
+}
+
+void CAvmRenderDataBase::SetCarTransparentStatus(unsigned char* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_CarTransparentStatus = new unsigned char;
+        initFlag = 1;				
+        m_CarTransparentStatusInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_CarTransparentStatus, data, sizeof(unsigned char));
+}
+void CAvmRenderDataBase::GetCarTransparentStatus(unsigned char* data)
+{
+    if(data == NULL)
+    {
+        data = new unsigned char;
+    }
+    if(m_CarTransparentStatusInitFlag == 1)
+    {
+        memcpy(data, m_CarTransparentStatus, sizeof(unsigned char));
+    }
+}
+void CAvmRenderDataBase::GetCarTransparentStatus(unsigned char** data)
+{
+    if(*data == NULL)
+    {
+        *data = new unsigned char;
+    }
+    if(m_CarTransparentStatusInitFlag == 1)
+    {
+        memcpy(*data, m_CarTransparentStatus, sizeof(unsigned char));
+    }
+}
+
+void CAvmRenderDataBase::SetSingleViewChannel(unsigned char* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_SingleViewChannel = new unsigned char;
+        initFlag = 1;				
+        m_SingleViewChannelInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_SingleViewChannel, data, sizeof(unsigned char));
+}
+void CAvmRenderDataBase::GetSingleViewChannel(unsigned char* data)
+{
+    if(data == NULL)
+    {
+        data = new unsigned char;
+    }
+    if(m_SingleViewChannelInitFlag == 1)
+    {
+        memcpy(data, m_SingleViewChannel, sizeof(unsigned char));
+    }
+}
+void CAvmRenderDataBase::GetSingleViewChannel(unsigned char** data)
+{
+    if(*data == NULL)
+    {
+        *data = new unsigned char;
+    }
+    if(m_SingleViewChannelInitFlag == 1)
+    {
+        memcpy(*data, m_SingleViewChannel, sizeof(unsigned char));
+    }
+}
+
+void CAvmRenderDataBase::Set3dViewIndex(unsigned char data)
+{
+    m_3dViewIndex = data;
+}
+void CAvmRenderDataBase::Get3dViewIndex(unsigned char& data)
+{
+    data = m_3dViewIndex;
+}
+
+void CAvmRenderDataBase::SetSingleViewNode(ISceneNode* data)
+{
+    m_SingleViewNode = data;
+}
+void CAvmRenderDataBase::GetSingleViewNode(ISceneNode* data)
+{
+    data = m_SingleViewNode;
+}
+void CAvmRenderDataBase::GetSingleViewNode(ISceneNode** data)
+{
+    *data = m_SingleViewNode;
+}
+
+void CAvmRenderDataBase::SetStitchViewNode(ISceneNode* data)
+{
+    m_StitchViewNode = data;
+}
+void CAvmRenderDataBase::GetStitchViewNode(ISceneNode* data)
+{
+    data = m_StitchViewNode;
+}
+void CAvmRenderDataBase::GetStitchViewNode(ISceneNode** data)
+{
+    *data = m_StitchViewNode;
+}
+
+void CAvmRenderDataBase::Set3dViewNode(ISceneNode* data)
+{
+    m_3dViewNode = data;
+}
+void CAvmRenderDataBase::Get3dViewNode(ISceneNode* data)
+{
+    data = m_3dViewNode;
+}
+void CAvmRenderDataBase::Get3dViewNode(ISceneNode** data)
+{
+    *data = m_3dViewNode;
+}
+
+void CAvmRenderDataBase::SetObjectViewNode(ISceneNode* data)
+{
+    m_ObjectViewNode = data;
+}
+void CAvmRenderDataBase::GetObjectViewNode(ISceneNode* data)
+{
+    data = m_ObjectViewNode;
+}
+void CAvmRenderDataBase::GetObjectViewNode(ISceneNode** data)
+{
+    *data = m_ObjectViewNode;
+}
+
+void CAvmRenderDataBase::SetTimeStitcherNode(SVNode2DStich* data)
+{
+    m_TimeStitcherNode = data;
+}
+void CAvmRenderDataBase::GetTimeStitcherNode(SVNode2DStich* data)
+{
+    data = m_TimeStitcherNode;
+}
+void CAvmRenderDataBase::GetTimeStitcherNode(SVNode2DStich** data)
+{
+    *data = m_TimeStitcherNode;
+}
+
+void CAvmRenderDataBase::SetApaOverlayResult(APAOverlayStruct* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_ApaOverlayResult = new APAOverlayStruct;
+        initFlag = 1;				
+        m_ApaOverlayResultInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_ApaOverlayResult, data, sizeof(APAOverlayStruct));
+}
+void CAvmRenderDataBase::GetApaOverlayResult(APAOverlayStruct* data)
+{
+    if(data == NULL)
+    {
+        data = new APAOverlayStruct;
+    }
+    if(m_ApaOverlayResultInitFlag == 1)
+    {
+        memcpy(data, m_ApaOverlayResult, sizeof(APAOverlayStruct));
+    }
+}
+void CAvmRenderDataBase::GetApaOverlayResult(APAOverlayStruct** data)
+{
+    if(*data == NULL)
+    {
+        *data = new APAOverlayStruct;
+    }
+    if(m_ApaOverlayResultInitFlag == 1)
+    {
+        memcpy(*data, m_ApaOverlayResult, sizeof(APAOverlayStruct));
+    }
+}
+
+void CAvmRenderDataBase::SetAnimationManager(IAnimationManager* data)
+{
+    m_AnimationManager = data;
+}
+void CAvmRenderDataBase::GetAnimationManager(IAnimationManager* data)
+{
+    data = m_AnimationManager;
+}
+void CAvmRenderDataBase::GetAnimationManager(IAnimationManager** data)
+{
+    *data = m_AnimationManager;
+}
+
+void CAvmRenderDataBase::SetSv2dData(GlSV2D* data)
+{
+    m_Sv2dData = data;
+}
+void CAvmRenderDataBase::GetSv2dData(GlSV2D* data)
+{
+    data = m_Sv2dData;
+}
+void CAvmRenderDataBase::GetSv2dData(GlSV2D** data)
+{
+    *data = m_Sv2dData;
+}
+
+void CAvmRenderDataBase::SetLkaLcResult(LkaLcResultT* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_LkaLcResult = new LkaLcResultT;
+        initFlag = 1;				
+        m_LkaLcResultInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+	MEMCPY_MUTEX_OPT(m_lkaResultMutex, m_LkaLcResult, data, LkaLcResultT)
+    //memcpy(m_LkaLcResult, data, sizeof(LkaLcResultT));
+}
+void CAvmRenderDataBase::GetLkaLcResult(LkaLcResultT* data)
+{
+    if(data == NULL)
+    {
+        data = new LkaLcResultT;
+    }
+    if(m_LkaLcResultInitFlag == 1)
+    {
+    
+		MEMCPY_MUTEX_OPT(m_lkaResultMutex, data, m_LkaLcResult, LkaLcResultT)
+        //memcpy(data, m_LkaLcResult, sizeof(LkaLcResultT));
+    }
+}
+void CAvmRenderDataBase::GetLkaLcResult(LkaLcResultT** data)
+{
+    if(*data == NULL)
+    {
+        *data = new LkaLcResultT;
+    }
+    if(m_LkaLcResultInitFlag == 1)
+    {
+    
+		MEMCPY_MUTEX_OPT(m_lkaResultMutex, *data, m_LkaLcResult, LkaLcResultT)
+        //memcpy(*data, m_LkaLcResult, sizeof(LkaLcResultT));
+    }
+}
+
+void CAvmRenderDataBase::SetMainMenuStatus(MainMenuDataT* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_MainMenuStatus = new MainMenuDataT;
+        initFlag = 1;				
+        m_MainMenuStatusInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+	MEMCPY_MUTEX_OPT(m_mainMenuStatusMutex, m_MainMenuStatus, data, MainMenuDataT)
+	
+    //memcpy(m_MainMenuStatus, data, sizeof(MainMenuDataT));
+}
+void CAvmRenderDataBase::GetMainMenuStatus(MainMenuDataT* data)
+{
+    if(data == NULL)
+    {
+        data = new MainMenuDataT;
+    }
+    if(m_MainMenuStatusInitFlag == 1)
+    {
+    
+		MEMCPY_MUTEX_OPT(m_mainMenuStatusMutex, data, m_MainMenuStatus, MainMenuDataT)
+        //memcpy(data, m_MainMenuStatus, sizeof(MainMenuDataT));
+    }
+}
+void CAvmRenderDataBase::GetMainMenuStatus(MainMenuDataT** data)
+{
+    if(*data == NULL)
+    {
+        *data = new MainMenuDataT;
+    }
+    if(m_MainMenuStatusInitFlag == 1)
+    {
+    
+		MEMCPY_MUTEX_OPT(m_mainMenuStatusMutex, *data, m_MainMenuStatus, MainMenuDataT)
+        //memcpy(*data, m_MainMenuStatus, sizeof(MainMenuDataT));
+    }
+}
+
+
+void CAvmRenderDataBase::SetTpResult(Tp_Result* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_TpResult = new Tp_Result;
+        initFlag = 1;				
+        m_TpResultInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+	
+	MEMCPY_MUTEX_OPT(m_TpResultMutex, m_TpResult, data, Tp_Result)
+	
+    //memcpy(m_TpResult, data, sizeof(Tp_Result));
+}
+void CAvmRenderDataBase::GetTpResult(Tp_Result* data)
+{
+    if(data == NULL)
+    {
+        data = new Tp_Result;
+    }
+    if(m_TpResultInitFlag == 1)
+    {  	
+		MEMCPY_MUTEX_OPT(m_TpResultMutex, data, m_TpResult, Tp_Result)
+       // memcpy(data, m_TpResult, sizeof(Tp_Result));
+    }
+}
+void CAvmRenderDataBase::GetTpResult(Tp_Result** data)
+{
+    if(*data == NULL)
+    {
+        *data = new Tp_Result;
+    }
+    if(m_TpResultInitFlag == 1)
+    {
+    
+		MEMCPY_MUTEX_OPT(m_TpResultMutex, *data, m_TpResult, Tp_Result)
+        //memcpy(*data, m_TpResult, sizeof(Tp_Result));
+    }
+}
+void CAvmRenderDataBase::Set3dViewNodeStatus(unsigned char* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_3dViewNodeStatus = new unsigned char;
+        initFlag = 1;				
+        m_3dViewNodeStatusInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_3dViewNodeStatus, data, sizeof(unsigned char));
+}
+void CAvmRenderDataBase::Get3dViewNodeStatus(unsigned char* data)
+{
+    if(data == NULL)
+    {
+        data = new unsigned char;
+    }
+    if(m_3dViewNodeStatusInitFlag == 1)
+    {
+        memcpy(data, m_3dViewNodeStatus, sizeof(unsigned char));
+    }
+}
+void CAvmRenderDataBase::Get3dViewNodeStatus(unsigned char** data)
+{
+    if(*data == NULL)
+    {
+        *data = new unsigned char;
+    }
+    if(m_3dViewNodeStatusInitFlag == 1)
+    {
+        memcpy(*data, m_3dViewNodeStatus, sizeof(unsigned char));
+    }
+}
+
+void CAvmRenderDataBase::SetStitchViewNodeStatus(unsigned char* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_StitchViewNodeStatus = new unsigned char;
+        initFlag = 1;				
+        m_StitchViewNodeStatusInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_StitchViewNodeStatus, data, sizeof(unsigned char));
+}
+void CAvmRenderDataBase::GetStitchViewNodeStatus(unsigned char* data)
+{
+    if(data == NULL)
+    {
+        data = new unsigned char;
+    }
+    if(m_StitchViewNodeStatusInitFlag == 1)
+    {
+        memcpy(data, m_StitchViewNodeStatus, sizeof(unsigned char));
+    }
+}
+void CAvmRenderDataBase::GetStitchViewNodeStatus(unsigned char** data)
+{
+    if(*data == NULL)
+    {
+        *data = new unsigned char;
+    }
+    if(m_StitchViewNodeStatusInitFlag == 1)
+    {
+        memcpy(*data, m_StitchViewNodeStatus, sizeof(unsigned char));
+    }
+}
+
+void CAvmRenderDataBase::SetSingleViewNodeStatus(unsigned char* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_SingleViewNodeStatus = new unsigned char;
+        initFlag = 1;				
+        m_SingleViewNodeStatusInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_SingleViewNodeStatus, data, sizeof(unsigned char));
+}
+void CAvmRenderDataBase::GetSingleViewNodeStatus(unsigned char* data)
+{
+    if(data == NULL)
+    {
+        data = new unsigned char;
+    }
+    if(m_SingleViewNodeStatusInitFlag == 1)
+    {
+        memcpy(data, m_SingleViewNodeStatus, sizeof(unsigned char));
+    }
+}
+void CAvmRenderDataBase::GetSingleViewNodeStatus(unsigned char** data)
+{
+    if(*data == NULL)
+    {
+        *data = new unsigned char;
+    }
+    if(m_SingleViewNodeStatusInitFlag == 1)
+    {
+        memcpy(*data, m_SingleViewNodeStatus, sizeof(unsigned char));
+    }
+}
+
+void CAvmRenderDataBase::SetObjectViewNodeStatus(unsigned char* data)
+{
+    static unsigned char initFlag = 0;
+    if(initFlag == 0)
+    {
+        m_ObjectViewNodeStatus = new unsigned char;
+        initFlag = 1;				
+        m_ObjectViewNodeStatusInitFlag = 1;
+    }
+    if(data == NULL)
+    {
+        return;
+    }
+    memcpy(m_ObjectViewNodeStatus, data, sizeof(unsigned char));
+}
+void CAvmRenderDataBase::GetObjectViewNodeStatus(unsigned char* data)
+{
+    if(data == NULL)
+    {
+        data = new unsigned char;
+    }
+    if(m_ObjectViewNodeStatusInitFlag == 1)
+    {
+        memcpy(data, m_ObjectViewNodeStatus, sizeof(unsigned char));
+    }
+}
+void CAvmRenderDataBase::GetObjectViewNodeStatus(unsigned char** data)
+{
+    if(*data == NULL)
+    {
+        *data = new unsigned char;
+    }
+    if(m_ObjectViewNodeStatusInitFlag == 1)
+    {
+        memcpy(*data, m_ObjectViewNodeStatus, sizeof(unsigned char));
+    }
+}
+
+/*===========================================================================*\
+ * File Revision History (top to bottom: first revision to last revision)
+ *===========================================================================
+ *
+ *   Date        userid       Description
+ * ----------- ----------    -----------
+ *  1/4/18     Jensen Wang   Create the CAvmRenderInterface .
+\*===========================================================================*/

@@ -136,6 +136,7 @@ public:
     void Remove();
     void Isolate();
     void CutBefore();
+	void MoveToAfter(CTreeNode* node);
 
     void ReLinkAsHeader(CTreeNode* header);
 
@@ -226,6 +227,7 @@ public:
 	//CBiLinkIteratorTest<T>* GetBiLinkListIteratorTest() { m_iterTest.SetHeader(m_pHead); return &m_iterTest; }
 	xr_state AddNode(T*  targetNode, T* node, InsertFlag flag);
 	xr_state removeNode(T* node);
+	xr_state MoveToAfter(T*  targetNode, T* node, InsertFlag flag);
 	T*	Extract();		//Get a node and remove from list
 
 protected:

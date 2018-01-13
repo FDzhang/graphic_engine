@@ -31,9 +31,10 @@
 #include "../HMISource/CSVChangAnHmi.h"
 #include "../HMISource/CSVChangAnMainHmi.h"
 #include "../HMISource/CSVDemoMainHmi.h"
+#include "../HMISource/CSVSystemHmi.h"
 #include "gpu_log.h"
 
-CAvmLogicManager::CAvmLogicManager():m_dvrBaseHmi(0),m_mainHmi(0)
+CAvmLogicManager::CAvmLogicManager():m_systemHmi(0)
 {
 	m_adasHmi = new SVNodeAdasHMI;
 }
@@ -132,7 +133,9 @@ int CAvmLogicManager::InitHmi()
 		m_dvrBaseHmi = new CSVDvrBaseHmi();	
 		//AddHmi(m_dvrBaseHmi, &m_avmHmi);
 	}*/
-
+	m_systemHmi = new CSVSystemHmi();
+	AddHmi(m_systemHmi, &m_avmHmi);
+	
     //注册事件
     AvmEventType eventType =  AvmRegisterEvent(ALGOHMI_EVENT_NAME, sizeof(Layout_Event_Payload_T));
     if(eventType == AvmEvent::Invalid_Event_Type)
@@ -149,6 +152,7 @@ int CAvmLogicManager::InitHmi()
 
 	//char* hmiName = "CSVChangAnMainHmi";
 	char* hmiName = "CSVDemoMainHmi";
+	//char* hmiName = "CSVDvrBaseHmi";
 	CSVHmiIntent::GetInstance()->Intent(hmiName);
 	//char* hmiName = "CSVDvrBaseHmi";
 	//CSVHmiIntent::GetInstance()->Intent(hmiName);	
@@ -173,10 +177,10 @@ int CAvmLogicManager::UpdateHmi()
 	CSVHmiIntent::GetInstance()->StartHmi(&hmiMsg);
 
 
-	/*for(vector<ISVHmi*>::iterator hmiObj = m_avmHmi.begin(); hmiObj != m_avmHmi.end(); hmiObj++)
+	for(vector<ISVHmi*>::iterator hmiObj = m_avmHmi.begin(); hmiObj != m_avmHmi.end(); hmiObj++)
 	{
 		(*hmiObj)->Update(hmiMsg);
-	}*/
+	}
 	//RemoveHmi(&m_avmHmi, m_dvrBaseHmi);
 
 	return AVM_LOGIC_CONTROL_NORMAL;

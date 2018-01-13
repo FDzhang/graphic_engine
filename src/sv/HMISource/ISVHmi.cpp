@@ -31,6 +31,10 @@ IUINode* ISVHmi::GetSvHmiNode(int& pUiNodeId)
 
 	return m_uiNode;
 }
+int	ISVHmi::GetSvHmiNodeId()
+{
+	return m_uiNodeId;
+}
 
 
 ISVHmi::~ISVHmi()

@@ -1,5 +1,5 @@
 /*===========================================================================*\
- * FILE: CSVHmiIntent.h
+ * FILE: CSVSystemHmi.h
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -27,41 +27,50 @@
 /*===========================================================================*\
  * Standard Header Files
 \*===========================================================================*/
+#ifndef _CSV_SYSTEM_HMI_H_
+#define _CSV_SYSTEM_HMI_H_
+
+#include "ISVHmi.h"
 
 
-#ifndef _CSV_HMI_INTENT_H_
-#define _CSV_HMI_INTENT_H_
+typedef enum SystemHmiElementTag
+{
+	SYSTEM_HMI_MOUSE_ICON = 0,
+	SYSTEM_HMI_ELEMEMT_NUM,
+}
+SystemHmiElementT;
 
-#include "../../XrCore/XrSrc/External/XrHeaders.h"
-
-class ISVHmi;
-
-class CSVHmiIntent
+class CSVSystemHmi : public ISVHmi
 {
 public:
 
-	CSVHmiIntent();
-	~CSVHmiIntent();
-
-	static CSVHmiIntent* GetInstance();
-	int Intent(ISVHmi* pFromHmi,  char* pToHmi);
-	int Intent(char* pToHmi); 
-	int StartHmi(void* hmiMsg);
-	int MoveToAfter(int TargetNodeID,int NodeID);
-	ISVHmi* GetCurrentHmi();
-
+	CSVSystemHmi();
+	~CSVSystemHmi();
+	HMI_BASE_INHERITANCE_FUNC()
+    
 private:
+	int SetHmiParams();
+	int RefreshHmi();
+private:
+	Hmi_Button_Data_T m_baseButtonData[SYSTEM_HMI_ELEMEMT_NUM];
+    HMIButton* m_baseButton[SYSTEM_HMI_ELEMEMT_NUM];
 
-	ISVHmi* m_fromHmi;
-	ISVHmi* m_toHmi;
+	Hmi_Message_T  m_hmiMsg;
 
-	unsigned char m_toHmiUpdateStatus;
+	float m_buttonPos[SYSTEM_HMI_ELEMEMT_NUM][BUTTON_POS];
+	float m_buttonSize[SYSTEM_HMI_ELEMEMT_NUM][BUTTON_SIZE];
 
+	IActionTrigger*	m_trigger[SYSTEM_HMI_ELEMEMT_NUM];
+	
+	unsigned char m_buttonStatus[SYSTEM_HMI_ELEMEMT_NUM];
+	unsigned char m_buttonVisibility[SYSTEM_HMI_ELEMEMT_NUM];
+
+	int     m_windowHeight;
+	int     m_windowWidth;
+	
 };
 
-
-#endif //_CSV_HMI_INTENT_H_
-
+#endif //_CSV_SYSTEM_HMI_H_
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
@@ -69,5 +78,5 @@ private:
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  12/16/17   Jensen Wang   Create the CSVHmiIntent class.
+ *  12/16/17   Jensen Wang   Create the CSVSystemHmi class.
 \*===========================================================================*/

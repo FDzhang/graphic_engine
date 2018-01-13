@@ -1,5 +1,5 @@
 /*===========================================================================*\
- * FILE: CSVHmiIntend.cpp
+ * FILE: CSVHmiIntent.cpp
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -31,7 +31,9 @@
 #include "ISVHmi.h"
 #include "CSVHmiFactory.h"
 
-CSVHmiIntent::CSVHmiIntent():m_fromHmi(0), m_toHmi(0)
+extern IXrCore* g_pIXrCore;
+
+CSVHmiIntent::CSVHmiIntent():m_fromHmi(0), m_toHmi(0),m_toHmiUpdateStatus(0)
 {
 
 }
@@ -86,6 +88,7 @@ int CSVHmiIntent::Intent(char* pToHmi)
 	if(m_toHmi)
 	{
 		m_toHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
+		m_toHmiUpdateStatus = 0;
 	}
 	//m_toHmi->SetIntent(this);
 }
@@ -100,6 +103,7 @@ int CSVHmiIntent::StartHmi(void* hmiMsg)
 	if(m_toHmi)
 	{	
 		m_toHmi->Update(*((Hmi_Message_T*)hmiMsg));
+		m_toHmiUpdateStatus = 1;
 	}
 	return 0;
 }
@@ -108,11 +112,21 @@ ISVHmi* CSVHmiIntent::GetCurrentHmi()
 {
 	return m_toHmi;
 }
+
+int CSVHmiIntent::MoveToAfter(int TargetNodeID,int NodeID)
+{
+	if(g_pIXrCore
+		&& m_toHmiUpdateStatus == 1)
+	{
+		g_pIXrCore->MoveToAfter(RenderNodeType_UI2D, TargetNodeID, NodeID);
+	}
+
+}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  12/16/17   Jensen Wang   Create the CSVHmiIntend class.
+ *  12/16/17   Jensen Wang   Create the CSVHmiIntent class.
 \*===========================================================================*/

@@ -149,6 +149,8 @@ public:
     bool GetAvmDisplayView(unsigned char &viewIndex);
 
 	IUINode* GetSvHmiNode(int& pUiNodeId);
+	int		 GetSvHmiNodeId();
+	
 protected:
     IUINode* m_uiNode;	
     int      m_uiNodeId;

@@ -152,11 +152,19 @@ int HMIButton::SetShowIconNum(unsigned int index)
 int HMIButton::SetX(float pos)
 {
     m_buttonSlot->buttonData->pos[0] = pos;
+	
+    ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	buttonLayer->SetX(m_buttonSlot->buttonData->pos[0]);
+	
     return BUTTON_NORMAL; 
 }
 int HMIButton::SetY(float pos)
 {
     m_buttonSlot->buttonData->pos[1] = pos;
+	
+    ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	buttonLayer->SetY(m_buttonSlot->buttonData->pos[1]);
+
     return BUTTON_NORMAL; 
 }
 int HMIButton::SetRotateZ(float rZ, float anchorPointX, float anchorPointY, int flag)

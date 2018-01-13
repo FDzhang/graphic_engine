@@ -162,6 +162,8 @@ public:
 	PropertyBuilderExt3ByName(unsigned char, DisplayViewCmd, private)
 	PropertyBuilderByName(unsigned char, CanData, private)
 	PropertyBuilderByName(TouchDataT, TouchData, private)
+
+	PropertyBuilderExt3ByName(unsigned char, MouseIconVisibility, private)
 	
 	PropertyBuilderByName(Region, 3dViewRegion, private)
 	PropertyBuilderByName(Region, StitchViewRegion, private)	
