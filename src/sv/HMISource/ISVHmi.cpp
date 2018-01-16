@@ -140,7 +140,7 @@ int ISVHmi::SetElementsVisibility(unsigned char pFlag)
 {
 	return HMI_SUCCESS;
 }
-int ISVHmi::SetMenuVisibility(unsigned char menuFlag)
+int ISVHmi::SetMenuVisibility()
 {
 	return HMI_SUCCESS;
 }

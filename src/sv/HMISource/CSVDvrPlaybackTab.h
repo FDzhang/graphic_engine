@@ -64,7 +64,7 @@ public:
 	~CSVDvrPlaybackTab();
 	HMI_BASE_INHERITANCE_FUNC()
 	virtual int SetElementsVisibility(unsigned char pFlag);
-	virtual int SetMenuVisibility(unsigned char menuFlag);
+	virtual int SetMenuVisibility();
     virtual int SetMenuHideCount(unsigned char visible);
 
 private:
@@ -86,7 +86,7 @@ private:
 	HmiDialogDataT   m_dialogData[DVR_PLAYBACK_DIALOG_NUM];
 	HMIDialog*		 m_dialog[DVR_PLAYBACK_DIALOG_NUM];
 	unsigned char 	 m_dialogVisibility[DVR_PLAYBACK_DIALOG_NUM];
-
+    unsigned char    m_menuVisibility;
 
 	IActionTrigger*	m_trigger[DVR_PLAYBACK_TAB_ELEMEMT_NUM];
 

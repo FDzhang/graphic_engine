@@ -136,7 +136,7 @@ public:
 
 	virtual int MockTouchEvent(Hmi_Message_T& hmiMsg);
     
-    virtual int SetMenuVisibility(unsigned char menuFlag);
+    virtual int SetMenuVisibility();
 
 	virtual int SetMenuHideCount(unsigned char visible);
 public:

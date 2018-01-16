@@ -2,7 +2,6 @@
 #include "DVR_GUI_OBJ.h"
 
 #define PB_HIDE_TIME 5000;
-unsigned char PbMenuVisible;
 unsigned int PbStartTime;
 unsigned int PbHideTimeCount;
 
@@ -23,42 +22,43 @@ enum
 
 static int pressCnt = 0;
 
-
 class CPbMenuHideActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbMenuHideActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
-public:
-
+  public:
     virtual Void OnPress(Int32 id)
     {
-        PbMenuVisible = 0;
+        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+        m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+        m_dvrCmd->parameter[0] = DVR_USER_CLICK_SIDEBAR;
+        m_dvrCmd->parameter[1] = GUI_SIDEBAR_STATUS_HIDE;
+        m_eventDel->PostEventPayload((void *)m_dvrCmd, sizeof(Ctrl_Cmd_T));
 
-		Log_Message("-----------CPbMenuHideActionTrigger: %d", sizeof(Ctrl_Cmd_T));         
+        Log_Message("-----------CPbMenuHideActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
-
-	}    
+    virtual Void OnRelease(Int32 id, Boolean isIn)
+    {
+    }
 };
 
-    
 class CPbMenuShowActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbMenuShowActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
-public:
-
+  public:
     virtual Void OnPress(Int32 id)
     {
-        PbMenuVisible = 1;
+        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+        m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+        m_dvrCmd->parameter[0] = DVR_USER_CLICK_SIDEBAR;
+        m_dvrCmd->parameter[1] = GUI_SIDEBAR_STATUS_SHOW;
+        m_eventDel->PostEventPayload((void *)m_dvrCmd, sizeof(Ctrl_Cmd_T));
 
-		Log_Message("-----------CPbMenuShowActionTrigger: %d", sizeof(Ctrl_Cmd_T));         
+        Log_Message("-----------CPbMenuShowActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
-
-	}    
+    virtual Void OnRelease(Int32 id, Boolean isIn)
+    {
+    }
 };
-
 
 class CPbPlayActionTrigger : public IActionTrigger
 {
@@ -500,7 +500,7 @@ CSVDvrPlaybackTab::~CSVDvrPlaybackTab()
 	 SAFE_DELETE(m_processBarData.iconFileName[PROCESS_BAR]);	
 	 SAFE_DELETE(m_processBarData.iconFileName[PROCESS_BAR_BACKGROUND]);
 	//SAFE_DELETE(m_processBar);
-	Log_Error("----------Release ~CSVDvrPlaybackTab!");
+//	Log_Error("----------Release ~CSVDvrPlaybackTab!");
 }
 
 
@@ -517,7 +517,7 @@ CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::I
 	
 	m_processBarVisibility = 0;
 	m_processBarForwardScale = 0;
-    PbMenuVisible = 1;
+    m_menuVisibility = GUI_SIDEBAR_STATUS_SHOW;
     PbStartTime = 0;
     PbHideTimeCount = PB_HIDE_TIME;
 	
@@ -1171,7 +1171,7 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 					&& playbackTabMsg[i].uStatus.ptr)
 				{
 					playbackTimeInfo = (GUI_OBJ_PLAY_TIME_INST*)playbackTabMsg[i].uStatus.ptr;
-					Log_Error("------PB_PLAY_TIMER: %d, pos: %d", playbackTimeInfo->duration, playbackTimeInfo->position);
+//					Log_Error("------PB_PLAY_TIMER: %d, pos: %d", playbackTimeInfo->duration, playbackTimeInfo->position);
 
 					ToString(playbackTimeInfo->duration, &m_textEditContent[PB_FILE_DURATION_TIME]);
 					ToString(playbackTimeInfo->position, &m_textEditContent[PB_FILE_CURRENT_TIME]);
@@ -1197,28 +1197,41 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 				{
 //					Log_Error("warning : %d", playbackTabMsg[i].status_type);
 				}
-				break;				
-			default:
+				break;
+
+            case GUI_OBJ_ID_SIDEBAR:
+
+                if (playbackTabMsg[i].bShow == GUI_SIDEBAR_STATUS_HIDE)
+                {
+                    m_menuVisibility = GUI_SIDEBAR_STATUS_HIDE;
+                }
+                else if (playbackTabMsg[i].bShow == GUI_SIDEBAR_STATUS_SHOW)
+                {
+                    m_menuVisibility = GUI_SIDEBAR_STATUS_SHOW;
+                }
+        
+                for (int i = DVR_PLAYBACK_TAB_MENU_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+                {
+                    m_buttonVisibility[i] = m_menuVisibility;
+                }
+                if (m_menuVisibility == GUI_SIDEBAR_STATUS_SHOW)
+                {
+                    m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_HIDE_ICON] = 1;
+                    m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_SHOW_ICON] = 0;
+                }
+                else if (m_menuVisibility == GUI_SIDEBAR_STATUS_HIDE)
+                {
+                    m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_HIDE_ICON] = 0;
+                    m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_SHOW_ICON] = 1;
+                }
+                break;
+
+            default:
 				break;
 			}	
 		}
-
 	}
 
-    for(int i = DVR_PLAYBACK_TAB_MENU_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
-    {
-        m_buttonVisibility[i] = PbMenuVisible;
-    } 
-    if(PbMenuVisible > 0)
-    {
-        m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_HIDE_ICON] = 1;
-        m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_SHOW_ICON] = 0;
-    }
-    else
-    {
-        m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_HIDE_ICON] = 0;
-        m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_SHOW_ICON] = 1;
-    }
 	
 	RefreshHmi();
 	
@@ -1250,9 +1263,9 @@ int CSVDvrPlaybackTab::RefreshHmi()
 	return HMI_SUCCESS;
 }
 
-int CSVDvrPlaybackTab::SetMenuVisibility(unsigned char menuFlag)
+int CSVDvrPlaybackTab::SetMenuVisibility()
 {
-     if(menuFlag == BUTTON_SHOW) PbMenuVisible = BUTTON_SHOW;
+     m_baseButtonData[DVR_PLAYBACK_TAB_MENU_SHOW_ICON].trigger->OnPress(0);
      return HMI_SUCCESS;
 }
 
@@ -1266,7 +1279,7 @@ int CSVDvrPlaybackTab::SetMenuHideCount(unsigned char visible)
     }
     else
     {
-        if(PbMenuVisible == 0)
+        if(m_menuVisibility == GUI_SIDEBAR_STATUS_HIDE)
         {
             PbHideTimeCount = PB_HIDE_TIME;
             PbStartTime = XrGetTime();            
@@ -1292,14 +1305,14 @@ int CSVDvrPlaybackTab::SetMenuHideCount(unsigned char visible)
                 else
                 {
                     PbHideTimeCount = PB_HIDE_TIME;
-                    PbMenuVisible = 0;
+                    m_baseButtonData[DVR_PLAYBACK_TAB_MENU_HIDE_ICON].trigger->OnPress(0);
                     Log_Message("hideTimeCount < durTime");
                 }            
             }         
         }
       
     }
-    Log_Message("par = %d,Visible = %d,WaitTime = %d",visible,PbMenuVisible,PbHideTimeCount);	
+    Log_Message("par = %d,Visible = %d,WaitTime = %d",visible,m_menuVisibility,PbHideTimeCount);	
     return HMI_SUCCESS;
 }
 
@@ -1309,7 +1322,6 @@ int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
     if(pFlag == BUTTON_HIDE)
     {
         for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
-
 	    {
             m_baseButton[i]->SetVisibility(BUTTON_HIDE);
         }       
@@ -1317,11 +1329,10 @@ int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
     else if(pFlag == BUTTON_SHOW)
     {
         for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_MENU_BKG; i++)
-
 	    {
 		    m_baseButton[i]->SetVisibility(BUTTON_SHOW);
 	    }
-        if(PbMenuVisible == BUTTON_HIDE)
+        if(m_menuVisibility == GUI_SIDEBAR_STATUS_HIDE)
         {
             m_baseButton[DVR_PLAYBACK_TAB_MENU_BKG]->SetVisibility(BUTTON_HIDE);
             m_baseButton[DVR_PLAYBACK_TAB_MENU_HIDE_ICON]->SetVisibility(BUTTON_HIDE);
@@ -1331,7 +1342,7 @@ int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
                 m_baseButton[i]->SetVisibility(BUTTON_HIDE);
             }
         }
-        else if(PbMenuVisible == BUTTON_SHOW)
+        else if(m_menuVisibility == GUI_SIDEBAR_STATUS_SHOW)
         {
             m_baseButton[DVR_PLAYBACK_TAB_MENU_BKG]->SetVisibility(BUTTON_SHOW);
             m_baseButton[DVR_PLAYBACK_TAB_MENU_HIDE_ICON]->SetVisibility(BUTTON_SHOW);

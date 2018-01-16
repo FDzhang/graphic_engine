@@ -47,19 +47,18 @@ private:
 	ISVHmi* m_dvrRecordTab;
 	ISVHmi* m_dvrPlaybackTab;
 	ISVHmi* m_dvrFileListTab;
+    ISVHmi* m_dvrPlayImageTab;
 
 	unsigned char m_dvrSettingTabVisibility;
 	unsigned char m_dvrRecordTabVisibility;
 	unsigned char m_dvrPlaybackTabVisibility;
 	unsigned char m_dvrFileListVisibility;
+    unsigned char m_dvrPlayImageTabVisibility;
 
     unsigned char m_avmViewLastStatus;
 
 	int     m_windowHeight;
 	int     m_windowWidth;
-
-    unsigned char m_dvrRecMenuVisibility = 1;
-    unsigned char m_dvrPbMenuVisibility = 1;
 	
 public:	
 	int SetDvrStatus(unsigned char pDvrStatus);

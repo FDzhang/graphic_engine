@@ -3,6 +3,7 @@
 #include "CSVDvrRecordTab.h"
 #include "CSVDvrPlaybackTab.h"
 #include "CSVDvrFileListTab.h"
+#include "CSVDvrPlayImageTab.h"
 #include "CSVHmiIntent.h"
 
 #include "DVR_GUI_OBJ.h"
@@ -164,11 +165,13 @@ CSVDvrBaseHmi::CSVDvrBaseHmi():m_avmViewLastStatus(0)
 	m_dvrRecordTab = new CSVDvrRecordTab(m_uiNode, m_uiNodeId);
 	m_dvrPlaybackTab = new CSVDvrPlaybackTab(m_uiNode, m_uiNodeId);
 	m_dvrFileListTab = new CSVDvrFileListTab(m_uiNode, m_uiNodeId);
+    m_dvrPlayImageTab = new CSVDvrPlayImageTab(m_uiNode, m_uiNodeId);
 
 	m_dvrSettingTabVisibility = 0;
 	m_dvrRecordTabVisibility = 0;
 	m_dvrPlaybackTabVisibility = 0;
 	m_dvrFileListVisibility = 0;
+    m_dvrPlayImageTabVisibility = 0;
 	
 }
 
@@ -178,6 +181,7 @@ CSVDvrBaseHmi::~CSVDvrBaseHmi()
 	SAFE_DELETE(m_dvrRecordTab);
 	SAFE_DELETE(m_dvrPlaybackTab);
 	SAFE_DELETE(m_dvrFileListTab);
+    SAFE_DELETE(m_dvrPlayImageTab);
 
 	for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
 	{
@@ -197,7 +201,7 @@ CSVDvrBaseHmi::~CSVDvrBaseHmi()
 		SAFE_DELETE(m_baseButton[i]);
 	}
 		
-	Log_Error("----------Release CSVDvrBaseHmi!");
+//	Log_Error("----------Release CSVDvrBaseHmi!");
 }
 
 	
@@ -292,6 +296,10 @@ int CSVDvrBaseHmi::SetHmiParams()
 	{
 		m_dvrFileListTab->Init(m_windowWidth, m_windowHeight);
 	}
+    if(m_dvrPlayImageTab)
+	{
+		m_dvrPlayImageTab->Init(m_windowWidth, m_windowHeight);
+	}
 	return HMI_SUCCESS;
 }
 int CSVDvrBaseHmi::Init(int window_width, int window_height)
@@ -345,7 +353,7 @@ int CSVDvrBaseHmi::Init(int window_width, int window_height)
 int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 {
     static DVR_GUI_LAYOUT_INST dvrGuiLayout;
-
+    static unsigned char preLayout = GUI_LAYOUT_NUM;
     m_buttonVisibility[DVR_BASE_TAB_BKG] = 1;			
     m_buttonStatus[DVR_BASE_TITLE_ICON] = 0;
 
@@ -371,15 +379,17 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
             m_dvrRecordTabVisibility = 0;
             m_dvrPlaybackTabVisibility = 0;
             m_dvrFileListVisibility = 0;
-            
-            m_dvrRecMenuVisibility = 1;
-            m_dvrPbMenuVisibility = 1;
+            m_dvrPlayImageTabVisibility = 0;
+
             break;
         case GUI_LAYOUT_RECORD:
             m_buttonStatus[DVR_BASE_SETTING_TAB] = BUTTON_OFF_IMAGE;
             m_buttonStatus[DVR_BASE_FILE_TAB] = BUTTON_OFF_IMAGE;
             m_buttonStatus[DVR_BASE_LIVE_VIDEO_TAB] = BUTTON_ON_IMAGE;
-
+            if(dvrGuiLayout.curLayout != preLayout)
+            {
+                m_dvrRecordTab->SetMenuVisibility();
+            }
             if(dvrGuiLayout.pTable)
             {				
                 m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
@@ -395,9 +405,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
             m_dvrRecordTabVisibility = 1;
             m_dvrPlaybackTabVisibility = 0;
             m_dvrFileListVisibility = 0;
-            
-            m_dvrRecMenuVisibility = 0;
-            m_dvrPbMenuVisibility = 1;
+            m_dvrPlayImageTabVisibility = 0;
 
             break;
         case GUI_LAYOUT_THUMB:
@@ -419,12 +427,14 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
             m_dvrRecordTabVisibility = 0;
             m_dvrPlaybackTabVisibility = 0;
             m_dvrFileListVisibility = 1;
-
-            m_dvrRecMenuVisibility = 1;
-            m_dvrPbMenuVisibility = 1;
+            m_dvrPlayImageTabVisibility = 0;
             
             break;
         case GUI_LAYOUT_PLAYBACK_VIDEO:	
+            if(dvrGuiLayout.curLayout != preLayout)
+            {
+                m_dvrPlaybackTab->SetMenuVisibility();
+            }
             if(dvrGuiLayout.pTable)
             {				
                 m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
@@ -438,22 +448,49 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
             m_buttonVisibility[DVR_BASE_TAB_BKG] = 0;	
             m_buttonStatus[DVR_BASE_TITLE_ICON] = 1;
+
             m_dvrSettingTabVisibility = 0;
             m_dvrRecordTabVisibility = 0;
             m_dvrPlaybackTabVisibility = 1;
             m_dvrFileListVisibility = 0;
+            m_dvrPlayImageTabVisibility = 0;
             
-            m_dvrRecMenuVisibility = 1;
-            m_dvrPbMenuVisibility = 0;
-            
+            break;
+        case GUI_LAYOUT_PLAYBACK_IMAGE:
+            if(dvrGuiLayout.curLayout != preLayout)
+            {
+                m_dvrPlayImageTab->SetMenuVisibility();
+            }
+            if (dvrGuiLayout.pTable)
+            {
+                m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
+                m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
+
+                if (m_dvrPlayImageTab)
+                {
+                    m_dvrPlayImageTab->Update(m_hmiMsg);
+                }
+            }
+            m_buttonVisibility[DVR_BASE_TAB_BKG] = 0;
+            m_buttonStatus[DVR_BASE_TITLE_ICON] = 1;
+
+            m_dvrSettingTabVisibility = 0;
+            m_dvrRecordTabVisibility = 0;
+            m_dvrPlaybackTabVisibility = 0;
+            m_dvrFileListVisibility = 0;
+            m_dvrPlayImageTabVisibility = 1;
+
             break;
         default:
             m_dvrSettingTabVisibility = 0;
             m_dvrRecordTabVisibility = 0;
             m_dvrPlaybackTabVisibility = 0;
             m_dvrFileListVisibility = 0;
+            m_dvrPlayImageTabVisibility = 0;
+
             break;
         }
+        preLayout = dvrGuiLayout.curLayout;
     }
     RefreshHmi();
     
@@ -497,25 +534,28 @@ int CSVDvrBaseHmi::RefreshHmi()
 
 	if(m_dvrRecordTab)
 	{
-	    m_dvrRecordTab->SetMenuHideCount(m_dvrRecordTabVisibility);
-		m_dvrRecordTab->SetMenuVisibility(m_dvrRecMenuVisibility);
+	    m_dvrRecordTab->SetMenuHideCount(m_dvrRecordTabVisibility);		
 		m_dvrRecordTab->SetElementsVisibility(m_dvrRecordTabVisibility);
 	}
 	
 	if(m_dvrPlaybackTab)
 	{
         m_dvrPlaybackTab->SetMenuHideCount(m_dvrPlaybackTabVisibility);
-	    m_dvrPlaybackTab->SetMenuVisibility(m_dvrPbMenuVisibility);
 		m_dvrPlaybackTab->SetElementsVisibility(m_dvrPlaybackTabVisibility);
 	}
 
 	if(m_dvrFileListTab)
-	{
-	
+	{	
 		m_dvrFileListTab->SetElementsVisibility(m_dvrFileListVisibility);
 	}
-		
-	return HMI_SUCCESS;
+
+    if (m_dvrPlayImageTab)
+    {
+        m_dvrPlayImageTab->SetMenuHideCount(m_dvrPlayImageTabVisibility);
+        m_dvrPlayImageTab->SetElementsVisibility(m_dvrPlayImageTabVisibility);
+    }
+
+    return HMI_SUCCESS;
 }
 
 int CSVDvrBaseHmi::ReturnHmiMsg(Hmi_Message_T* hmi_msg)

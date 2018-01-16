@@ -170,12 +170,11 @@ public:
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
 		
-/*		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd.parameter[0] = DVR_USER_CLICK_DIALOG;
 		m_dvrCmd.parameter[1] = DIALOG_SEL_YES;
 		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
-        */
 		
 		Log_Message("-----------CSettingDialogCautionConfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
@@ -196,18 +195,63 @@ public:
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
 		
-/*		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd.parameter[0] = DVR_USER_CLICK_DIALOG;
 		m_dvrCmd.parameter[1] = DIALOG_SEL_NO;
 		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
-*/		
+		
 		Log_Message("-----------CSettingDialogCautionCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
 
 };
 
+class CSettingDialogFormatOKActionTrigger : public IActionTrigger
+{
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd.parameter[1] = DIALOG_SEL_OK;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CSettingDialogCautionCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+};
 	
+class CSettingDialogFormatFailedActionTrigger : public IActionTrigger
+{
+	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+public:
+
+	virtual Void OnPress(Int32 id)
+	{
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn)
+	{	
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_DIALOG;
+		m_dvrCmd.parameter[1] = DIALOG_SEL_OK;
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CSettingDialogFormatFailedActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+};
+
 CSVDvrSettingTab::CSVDvrSettingTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	memset(m_trigger, NULL, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
@@ -256,7 +300,7 @@ CSVDvrSettingTab::~CSVDvrSettingTab()
         }
 		//SAFE_DELETE(m_dialog[i]);
 	}
-	Log_Error("----------Release ~CSVDvrSettingTab!");
+//	Log_Error("----------Release ~CSVDvrSettingTab!");
 }
 
 int CSVDvrSettingTab::SetHmiParams()
@@ -392,7 +436,7 @@ int CSVDvrSettingTab::SetHmiParams()
 	sprintf(m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_OK].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG],"%sCar/DVR/dlg_icon_ok_highlight.dds",XR_RES); 
 
 	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_OK].trigger[DIALOG_CONFIRM_CANCEL_BACKGROUND] = NULL;//new CSelectorFirstActionTrigger;
-	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_OK].trigger[DIALOG_CONFIRM] = NULL;
+	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_OK].trigger[DIALOG_CONFIRM] = new CSettingDialogFormatOKActionTrigger;
 	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_OK].trigger[DIALOG_CANCEL] = NULL;
 
 	m_dialog[DVR_SETTING_DIALOG_FORMATCARD_OK] = new HMIDialog(&m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_OK], m_uiNode);
@@ -410,7 +454,7 @@ int CSVDvrSettingTab::SetHmiParams()
 	sprintf(m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_FAILED].iconFileName[DIALOG_CONFIRM_HIGHLIGHT_IMG],"%sCar/DVR/dlg_icon_ok_highlight.dds",XR_RES); 
 
 	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_FAILED].trigger[DIALOG_CONFIRM_CANCEL_BACKGROUND] = NULL;//new CSelectorFirstActionTrigger;
-	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_FAILED].trigger[DIALOG_CONFIRM] = NULL;
+	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_FAILED].trigger[DIALOG_CONFIRM] = new CSettingDialogFormatFailedActionTrigger;;
 	m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_FAILED].trigger[DIALOG_CANCEL] = NULL;
 
 	m_dialog[DVR_SETTING_DIALOG_FORMATCARD_FAILED] = new HMIDialog(&m_dialogData[DVR_SETTING_DIALOG_FORMATCARD_FAILED], m_uiNode);
@@ -542,8 +586,8 @@ int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
 					&& settigTabMsg[i].uStatus.ptr)
 				{
 					dialogInst = (GUI_OBJ_DIALOG_INST*)settigTabMsg[i].uStatus.ptr;
-//                    m_dialogVisibility[dialogInst->subjectId] = fileListTabMsg[i].bShow;
-//					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, settigTabMsg[i].bShow);
+                    m_dialogVisibility[dialogInst->subjectId] = settigTabMsg[i].bShow;
+					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, settigTabMsg[i].bShow);
 				}
 
 				break;
@@ -599,12 +643,13 @@ int CSVDvrSettingTab::SetElementsVisibility(unsigned char pFlag)
 			m_dialog[i]->SetVisibility(m_dialogVisibility[i]);
 		}
 */
-   		m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD] = 0;
+//   		m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD] = 0;
 		m_dialog[DVR_SETTING_DIALOG_FORMATCARD]->SetVisibility(m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD]);
-        m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_CAUTION] = 0;
+//        m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_CAUTION] = 0;
 		m_dialog[DVR_SETTING_DIALOG_FORMATCARD_CAUTION]->SetVisibility(m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_CAUTION]);
-     	m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_OK] = 0;
-		m_dialog[DVR_SETTING_DIALOG_FORMATCARD_OK]->SetVisibility(m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_OK]);           
+//     	m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_OK] = 0;
+		m_dialog[DVR_SETTING_DIALOG_FORMATCARD_OK]->SetVisibility(m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_OK]);  
+        m_dialog[DVR_SETTING_DIALOG_FORMATCARD_FAILED]->SetVisibility(m_dialogVisibility[DVR_SETTING_DIALOG_FORMATCARD_FAILED]);         
 	}
 
 	return HMI_SUCCESS;

@@ -293,7 +293,7 @@ CSVDvrFileListTab::CSVDvrFileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1
 
 CSVDvrFileListTab::~CSVDvrFileListTab()
 {
-    Log_Error("----------Release ~CSVDvrFileListTab");
+//    Log_Error("----------Release ~CSVDvrFileListTab");
     for(int i = 0; i < DVR_FILELIST_TAB_ELEMEMT_NUM; i++)
 	{	
 		//SAFE_DELETE(m_baseButton[i]);
@@ -335,7 +335,7 @@ CSVDvrFileListTab::~CSVDvrFileListTab()
 	}
 	//SAFE_DELETE(m_imageGridList);		
 	
-	Log_Error("----------Release ~CSVDvrFileListTab!");
+//	Log_Error("----------Release ~CSVDvrFileListTab!");
 
 }
 int CSVDvrFileListTab::SetHmiParams()
@@ -868,7 +868,7 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 				{
 					dialogInst = (GUI_OBJ_DIALOG_INST*)fileListTabMsg[i].uStatus.ptr;
 					m_dialogVisibility[dialogInst->subjectId] = fileListTabMsg[i].bShow;
-
+//                    Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, fileListTabMsg[i].bShow);
 				}
 
 				break;

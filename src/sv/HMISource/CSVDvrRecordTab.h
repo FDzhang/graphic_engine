@@ -35,7 +35,7 @@ public:
 	HMI_BASE_INHERITANCE_FUNC()
 
 	virtual int SetElementsVisibility(unsigned char pFlag);
-    virtual int SetMenuVisibility(unsigned char menuFlag);
+    virtual int SetMenuVisibility();
 	virtual int SetMenuHideCount(unsigned char visible);
 	
 private:
@@ -50,7 +50,8 @@ private:
 
 	unsigned char m_buttonStatus[DVR_RECORD_TAB_ELEMEMT_NUM];
 	unsigned char m_buttonVisibility[DVR_RECORD_TAB_ELEMEMT_NUM];
-	
+	unsigned char m_menuVisibility;
+
 	IActionTrigger*	m_trigger[DVR_RECORD_TAB_ELEMEMT_NUM];
 
 
