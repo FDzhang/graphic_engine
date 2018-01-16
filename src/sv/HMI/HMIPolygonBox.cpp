@@ -84,6 +84,11 @@ HMIPolygonBox::HMIPolygonBox(HMIPolygonBoxDataT* pPolygonBoxData):m_modelNode(NU
 
 	m_mesh->LockData(&m_polygonVertex, &data_format, &m_vertexCount);
 
+	m_calibCenterX = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
+	m_calibCenterY = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
+	m_calibMmppX = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+	m_calibMmppY = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
+
 }
 HMIPolygonBox::~HMIPolygonBox()
 {
@@ -138,6 +143,23 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 	case REGION_3D:
 		break;
 	case REGION_BEV:
+		
+		for(int i = 0; i < m_polygonBoxData->polygonVertexNum; i++)
+		{    
+			imageCoord[0] = pInVertex[2*i];
+			imageCoord[1] = pInVertex[2*i+1];		
+        
+			gpuModelCoord[1] = 1.0-(((imageCoord[1])/(0.0-m_calibMmppY) + m_calibCenterY)/240.0);
+			gpuModelCoord[0] =((imageCoord[0])/m_calibMmppX + m_calibCenterX-108.0)/108.0;	
+
+			m_polygonVertex[slotid+0]= gpuModelCoord[0];
+			m_polygonVertex[slotid+2]= gpuModelCoord[1];
+			m_polygonVertex[slotid+1]= m_polygonVertex[slotid+2];
+
+			slotid+=8;
+
+		}
+
 		break;
 	case REGION_FISHEYE_SINGLEVIEW:
 		for(int i = 0; i < m_polygonBoxData->polygonVertexNum; i++)

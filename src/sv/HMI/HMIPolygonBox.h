@@ -72,7 +72,7 @@ public:
 	HMIPolygonBox(HMIPolygonBoxDataT* pPolygonBoxData);
 	~HMIPolygonBox();
 
-	int Update(float* pVertex, unsigned char pCameraIndex);
+	int Update(float* pVertex, unsigned char pCameraIndex = 0);
 	int SetVisibility(unsigned char flag);
 	int SetPolygonBoxImage(unsigned char flag);
 
@@ -93,6 +93,11 @@ private:
 
 	float*		m_polygonVertex;
 	int			m_vertexCount;
+	
+	float		m_calibCenterX;
+	float		m_calibCenterY;
+	float       m_calibMmppX;
+	float		m_calibMmppY;
 
 	unsigned char m_polygonBoxVisibility;
 

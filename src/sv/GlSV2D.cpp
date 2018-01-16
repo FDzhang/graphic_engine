@@ -82,18 +82,6 @@ extern GLuint uiConfigBin[][eConfigEnd];
 #define TOP_HMI_Y    1.0
 #define SINGLE_VIEW_BOTTOM_Y  BOTTOM_HMI_Y
 
-#define LEFT_SINGLE_LEFT 0.29456
-#define LEFT_SINGLE_RIGHT 0.95652 
-#define LEFT_SINGLE_TOP   0.0196
-#define LEFT_SINGLE_BOTTOM  1.0
-
-
-
-#define RIGHT_SINGLE_LEFT  0.75
-#define RIGHT_SINGLE_RIGHT  0.05
-#define RIGHT_SINGLE_TOP   1.0
-#define RIGHT_SINGLE_BOTTOM  0.0196
-
 #define TOP_LIMIT_Y   1.0
 
 

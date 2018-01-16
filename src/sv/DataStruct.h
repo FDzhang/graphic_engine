@@ -40,6 +40,7 @@
 #include "Database.h"
 #include "cta_embed_interface.h"
 #include "tp_embed_interface.h"
+#include "apa_modules_if.h"
 
 /*===========================================================================*\
  * Other Header Files
@@ -69,6 +70,7 @@ typedef enum GpuErrorCodeTag
 	CHANGAN_SWITCH_VIEW_HMI_NORMAL,
 	DEMO_HMI_NORMAL,
 	DEMO_LKA_HMI_NORMAL,
+	DEMO_SP_HMI_NORMAL,
 	TRAINED_PARKING_HMI_NORMAL,
 	HMI_ELEMENT_NULL,
 	GPU_ERROR_CODE_NUMS,
@@ -315,6 +317,8 @@ typedef struct {
 	char car_calib_name[MAX_NAME_LENGTH];
 	float front_single_view_rect[4];
 	float rear_single_view_rect[4];
+	float left_single_view_rect[4];
+	float right_single_view_rect[4];
 	CFG_SOURCE config_file_source;
 	PLATFORM_CONFIG platform_config;
 	BEV_CONFIG_T bev_conig;

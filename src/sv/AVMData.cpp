@@ -183,6 +183,9 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 
 	memcpy(m_pAVMData->m_front_single_view_rect,config.front_single_view_rect,4*sizeof(float));
 	memcpy(m_pAVMData->m_rear_single_view_rect,config.rear_single_view_rect,4*sizeof(float));
+	memcpy(m_pAVMData->m_left_single_view_rect,config.left_single_view_rect,4*sizeof(float));
+	memcpy(m_pAVMData->m_right_single_view_rect,config.right_single_view_rect,4*sizeof(float));
+
 	m_pAVMData->m_Veh_Data = config.vehicle_para;
 
 }
@@ -314,7 +317,7 @@ void AVMData::cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_
 	out_stich_Coord[1] = outPoint.y;
 	out_stich_Coord[2] = 0.1;
 }
-void AVMData::cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,bool rear_single_view)
+void AVMData::cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,bool single_view_index)
 {
     float in_coord_normal[2];
 	float camera_width,camera_height;
@@ -324,18 +327,32 @@ void AVMData::cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_im
 	in_coord_normal[0] = in_image_coord[0]/camera_width;
 	in_coord_normal[1] = in_image_coord[1]/camera_height;
 
-	if(rear_single_view == 1)
+	if(single_view_index == rear_camera_index)
 	{
 		out_gpu_Coord[2] = 0.0;
 		out_gpu_Coord[1] = -(in_coord_normal[1]-m_pAVMData->m_rear_single_view_rect[rect_top])/(m_pAVMData->m_rear_single_view_rect[rect_bottom]-m_pAVMData->m_rear_single_view_rect[rect_top])/0.5+1;
 		out_gpu_Coord[0] = (-in_coord_normal[0]+m_pAVMData->m_rear_single_view_rect[rect_left])/(m_pAVMData->m_rear_single_view_rect[rect_left]-m_pAVMData->m_rear_single_view_rect[rect_right])/0.5-1;
 	}
-	else
+	else if(single_view_index == front_camera_index)
 	{
-
+	
     	out_gpu_Coord[2] = 0.0;
     	out_gpu_Coord[1] = -(in_coord_normal[1]-m_pAVMData->m_front_single_view_rect[rect_top])/(m_pAVMData->m_front_single_view_rect[rect_bottom]-m_pAVMData->m_front_single_view_rect[rect_top])/0.5+1;
     	out_gpu_Coord[0] = (in_coord_normal[0]-m_pAVMData->m_front_single_view_rect[rect_left])/(m_pAVMData->m_front_single_view_rect[rect_right]-m_pAVMData->m_front_single_view_rect[rect_left])/0.5-1;
+	
+	}
+	else if(single_view_index == left_camera_index)
+	{
+    	out_gpu_Coord[2] = 0.0;
+    	out_gpu_Coord[1] = -(in_coord_normal[1]-m_pAVMData->m_left_single_view_rect[rect_top])/(m_pAVMData->m_left_single_view_rect[rect_bottom]-m_pAVMData->m_left_single_view_rect[rect_top])/0.5+1;
+    	out_gpu_Coord[0] = (in_coord_normal[0]-m_pAVMData->m_left_single_view_rect[rect_left])/(m_pAVMData->m_left_single_view_rect[rect_right]-m_pAVMData->m_left_single_view_rect[rect_left])/0.5-1;
+
+	}
+	else if(single_view_index == right_camera_index)
+	{
+		out_gpu_Coord[2] = 0.0;
+    	out_gpu_Coord[1] = -(in_coord_normal[1]-m_pAVMData->m_right_single_view_rect[rect_top])/(m_pAVMData->m_right_single_view_rect[rect_bottom]-m_pAVMData->m_right_single_view_rect[rect_top])/0.5+1;
+    	out_gpu_Coord[0] = (in_coord_normal[0]-m_pAVMData->m_right_single_view_rect[rect_left])/(m_pAVMData->m_right_single_view_rect[rect_right]-m_pAVMData->m_right_single_view_rect[rect_left])/0.5-1;
 
 	}
 }

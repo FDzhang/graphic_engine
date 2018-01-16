@@ -537,6 +537,11 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 			ProcSonarPld((Radar_PLD_Result*)renderData);
 
 		break;	
+		case RENDER_DATA_SONAR_RESULT:
+
+			CAvmRenderDataBase::GetInstance()->SetSonarResult((PLDRadarResult*)renderData);
+
+		break;	
 		case RENDER_DATA_SHUT_DOWN_DISPLAY:
 			
 			ProcShutdownDisplay();

@@ -201,7 +201,8 @@ public:
 
 	PropertyBuilderByName(LkaLcResultT, LkaLcResult, private)
 	PropertyBuilderByName(MainMenuDataT, MainMenuStatus, private)
-	PropertyBuilderByName(Tp_Result, TpResult, private);
+	PropertyBuilderByName(Tp_Result, TpResult, private)
+	PropertyBuilderByName(PLDRadarResult, SonarResult, private)
 
 	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
 	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);

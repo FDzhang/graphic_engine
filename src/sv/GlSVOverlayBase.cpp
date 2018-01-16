@@ -184,12 +184,9 @@ void GlSVOverlayBase::Cal_World_2_Model_Coordinate(float *out_Model_Coord,float 
 	    out_Model_Coord[0] = m_config.model_scale*(in_world_coord[0]);
     }
     else if(m_calib_mode == calib_2D_STICH)
-	{
-
-	   
+	{   
 	   out_Model_Coord[1] = 1.0-(((in_world_coord[1])/(0.0-m_config.m_calib_mmpp_y)+m_config.m_calib_center_y)/240.0);
-	   out_Model_Coord[0] =((in_world_coord[0])/m_config.m_calib_mmpp_x+m_config.m_calib_center_x-108.0)/108.0;
-	   
+	   out_Model_Coord[0] =((in_world_coord[0])/m_config.m_calib_mmpp_x+m_config.m_calib_center_x-108.0)/108.0;	   
     }
 
 }

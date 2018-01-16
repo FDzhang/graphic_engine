@@ -140,7 +140,7 @@ public:
 	
 	void cvtWorldPoint2ModelPoint3D(float *out_Model_Coord,float *in_world_coord);
 	
-	void cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,bool rear_single_view);
+	void cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,bool single_view_index);
 		DataExPosParam *m_exParam;
 		AVMCameraInternal *m_camInstrinct;
 		AVMLuminanceData *m_lumin_para;
@@ -158,6 +158,9 @@ private:
 	SV_VEHICLE_PARAM_T m_Veh_Data;
 	float m_front_single_view_rect[4];
 	float m_rear_single_view_rect[4];
+	float m_left_single_view_rect[4];
+	float m_right_single_view_rect[4];
+	
 	Calib_3D_Para m_calib_3d;
     
 	BEV_CONFIG_T		   m_bevConfig;

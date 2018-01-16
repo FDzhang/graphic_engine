@@ -287,6 +287,16 @@ bool XRSV::init(int width, int height, st_GPU_Init_Config_T& gpu_init_cfg)
 	m_sv_data_config.rear_single_view_rect[rect_right]=REAR_SINGLE_RIGHT;
 	m_sv_data_config.rear_single_view_rect[rect_bottom]=REAR_SINGLE_BOTTOM;
 
+	m_sv_data_config.left_single_view_rect[rect_left]=LEFT_SINGLE_LEFT;
+	m_sv_data_config.left_single_view_rect[rect_top]=LEFT_SINGLE_TOP;
+	m_sv_data_config.left_single_view_rect[rect_right]=LEFT_SINGLE_RIGHT;
+	m_sv_data_config.left_single_view_rect[rect_bottom]=LEFT_SINGLE_BOTTOM;
+
+	m_sv_data_config.right_single_view_rect[rect_left]=RIGHT_SINGLE_LEFT;
+	m_sv_data_config.right_single_view_rect[rect_top]=RIGHT_SINGLE_TOP;
+	m_sv_data_config.right_single_view_rect[rect_right]=RIGHT_SINGLE_RIGHT;
+	m_sv_data_config.right_single_view_rect[rect_bottom]=RIGHT_SINGLE_BOTTOM;
+
 	m_sv_data_config.platform_config = PLATFORM_J6;
 	m_sv_data_config.config_file_source = CFG_FROM_SYS;
 	m_adjust->Init(ADJUST_PARAM,sizeof(ADJUST_PARAM),exAdjustFile);
