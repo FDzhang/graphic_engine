@@ -3,7 +3,6 @@
 
 #include "ISVHmi.h"
 
-
 typedef enum DvrBaseHmiElementTag
 {
 	DVR_BASE_TITLE_BKG = 0,
@@ -25,6 +24,8 @@ public:
 	~CSVDvrBaseHmi();
 	HMI_BASE_INHERITANCE_FUNC()
     
+    int GetProcessXX();
+
 private:
 	int SetHmiParams();
 	int RefreshHmi();

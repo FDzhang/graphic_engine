@@ -2,6 +2,8 @@
 #include "DVR_GUI_OBJ.h"
 
 static int imageItemId[IMAGE_GRID_LIST_ITEM_NUM];
+static int selBoxItemId[IMAGE_GRID_LIST_ITEM_NUM];
+static int selFlagItemId[IMAGE_GRID_LIST_ITEM_NUM];
 static int editStatus = GUI_SWITCH_STATE_OFF;
 
 class CLoopRecTabActionTrigger : public IActionTrigger
@@ -192,7 +194,6 @@ public:
 			}
 		}
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-	
 		Log_Message("-----------CEditSelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn)
@@ -200,7 +201,61 @@ public:
 
 	}
 };
-	
+
+class CEditSelBoxActionTrigger : public IActionTrigger
+{
+    ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditSelBoxActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+  public:
+    virtual Void OnPress(Int32 id)
+    {
+        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+        m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+
+        m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_SEL;
+
+        for (int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+        {
+            if (id == selBoxItemId[i])
+            {
+                m_dvrCmd->parameter[1] = i;
+            }
+        }
+        m_eventDel->PostEventPayload((void *)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+
+        Log_Message("-----------CEditSelBoxActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+    }
+    virtual Void OnRelease(Int32 id, Boolean isIn)
+    {
+    }
+};
+
+class CEditSelFlagActionTrigger : public IActionTrigger
+{
+    ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditSelFlagActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+  public:
+    virtual Void OnPress(Int32 id)
+    {
+        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+        m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+
+        m_dvrCmd->parameter[0] = DVR_USER_CLICK_THUMB_EDIT_SEL;
+
+        for (int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+        {
+            if (id == selFlagItemId[i])
+            {
+                m_dvrCmd->parameter[1] = i;
+            }
+        }
+        m_eventDel->PostEventPayload((void *)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+
+        Log_Message("-----------CEditSelFlagActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+    }
+    virtual Void OnRelease(Int32 id, Boolean isIn)
+    {
+    }
+};
+
 class CEditDialogDelConfirmActionTrigger : public IActionTrigger
 {
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
@@ -293,7 +348,6 @@ CSVDvrFileListTab::CSVDvrFileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1
 
 CSVDvrFileListTab::~CSVDvrFileListTab()
 {
-//    Log_Error("----------Release ~CSVDvrFileListTab");
     for(int i = 0; i < DVR_FILELIST_TAB_ELEMEMT_NUM; i++)
 	{	
 		//SAFE_DELETE(m_baseButton[i]);
@@ -334,8 +388,6 @@ CSVDvrFileListTab::~CSVDvrFileListTab()
 		SAFE_DELETE(m_dialogData[DVR_FILELIST_DIALOG_DEL].trigger[i]);
 	}
 	//SAFE_DELETE(m_imageGridList);		
-	
-//	Log_Error("----------Release ~CSVDvrFileListTab!");
 
 }
 int CSVDvrFileListTab::SetHmiParams()
@@ -460,12 +512,14 @@ int CSVDvrFileListTab::SetHmiParams()
 		m_baseButtonData[i].show_icon_num = 0;
 		m_baseButtonData[i].icon_file_name[0] = new char[50];
 		sprintf(m_baseButtonData[i].icon_file_name[0],"%sCar/DVR/edit_box.dds",XR_RES); 
-	
+        m_trigger[i] = new CEditSelBoxActionTrigger;
+
 		m_baseButtonData[i + 1].icon_type = STATIC_ICON;
 		m_baseButtonData[i + 1].show_flag = 0;
 		m_baseButtonData[i + 1].show_icon_num = 0;
 		m_baseButtonData[i + 1].icon_file_name[0] = new char[50];
-		sprintf(m_baseButtonData[i + 1].icon_file_name[0],"%sCar/DVR/edit_sel_flag.dds",XR_RES); 
+		sprintf(m_baseButtonData[i + 1].icon_file_name[0],"%sCar/DVR/edit_sel_flag.dds",XR_RES);
+        m_trigger[i + 1] = new CEditSelFlagActionTrigger;
 
 	}
 
@@ -507,6 +561,12 @@ int CSVDvrFileListTab::SetHmiParams()
 		m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
 		m_baseButton[i]->SetVisibility(0);
 	}
+
+    for(int i = DVR_FILELIST_TAB_EDIT_SEL_BOX_1; i <= DVR_FILELIST_TAB_EDIT_SEL_FLAG_6; i += 2)
+    {
+        selBoxItemId[(i - DVR_FILELIST_TAB_EDIT_SEL_BOX_1)/2] = m_baseButton[i]->GetButtonId();
+        selFlagItemId[(i + 1 - DVR_FILELIST_TAB_EDIT_SEL_FLAG_1)/2] = m_baseButton[i + 1]->GetButtonId();
+    }
 
 	m_dialogData[DVR_FILELIST_DIALOG_DEL].dialogType = DIALOG_CONFIRM_CANCEL;
 	m_dialogData[DVR_FILELIST_DIALOG_DEL].showFlag = 0;

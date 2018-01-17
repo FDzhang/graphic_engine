@@ -27,7 +27,7 @@
 /*===========================================================================*\
  * Standard Header Files
 \*===========================================================================*/
-
+#include "gpu_log.h"
 #include "HMIProcessBar.h"
 
 extern IXrCore* g_pIXrCore;
@@ -212,9 +212,9 @@ Boolean HmiProcessBar::OnTouchEvent(
 	/* [in] */Int32 type)
 {
 	if (type == TouchEvent_Down) {
-		if (m_trigger) m_trigger->OnPress(layerId);
-
-		CalProcessBarPos(x, y);
+		m_clickX = x;
+        if (m_trigger) m_trigger->OnPress(layerId);
+//		CalProcessBarPos(x, y);
 	}
 	else if (type == TouchEvent_Up) {
 		if (m_trigger) m_trigger->OnRelease(layerId, true);
@@ -259,6 +259,11 @@ Void HmiProcessBar::SetName(String name)
 	}
 	if (!m_name) return;
 	strcpy(m_name, name);
+}
+
+int HmiProcessBar::GetClickX()
+{
+    return m_clickX;
 }
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)

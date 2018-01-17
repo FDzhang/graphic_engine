@@ -388,7 +388,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
             m_buttonStatus[DVR_BASE_LIVE_VIDEO_TAB] = BUTTON_ON_IMAGE;
             if(dvrGuiLayout.curLayout != preLayout)
             {
-                m_dvrRecordTab->SetMenuVisibility();
+//                m_dvrRecordTab->SetMenuVisibility();
             }
             if(dvrGuiLayout.pTable)
             {				
@@ -433,7 +433,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
         case GUI_LAYOUT_PLAYBACK_VIDEO:	
             if(dvrGuiLayout.curLayout != preLayout)
             {
-                m_dvrPlaybackTab->SetMenuVisibility();
+//                m_dvrPlaybackTab->SetMenuVisibility();
             }
             if(dvrGuiLayout.pTable)
             {				
@@ -459,7 +459,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
         case GUI_LAYOUT_PLAYBACK_IMAGE:
             if(dvrGuiLayout.curLayout != preLayout)
             {
-                m_dvrPlayImageTab->SetMenuVisibility();
+//                m_dvrPlayImageTab->SetMenuVisibility();
             }
             if (dvrGuiLayout.pTable)
             {
@@ -534,13 +534,13 @@ int CSVDvrBaseHmi::RefreshHmi()
 
 	if(m_dvrRecordTab)
 	{
-	    m_dvrRecordTab->SetMenuHideCount(m_dvrRecordTabVisibility);		
+//	    m_dvrRecordTab->SetMenuHideCount(m_dvrRecordTabVisibility);		
 		m_dvrRecordTab->SetElementsVisibility(m_dvrRecordTabVisibility);
 	}
 	
 	if(m_dvrPlaybackTab)
 	{
-        m_dvrPlaybackTab->SetMenuHideCount(m_dvrPlaybackTabVisibility);
+//        m_dvrPlaybackTab->SetMenuHideCount(m_dvrPlaybackTabVisibility);
 		m_dvrPlaybackTab->SetElementsVisibility(m_dvrPlaybackTabVisibility);
 	}
 
@@ -551,7 +551,7 @@ int CSVDvrBaseHmi::RefreshHmi()
 
     if (m_dvrPlayImageTab)
     {
-        m_dvrPlayImageTab->SetMenuHideCount(m_dvrPlayImageTabVisibility);
+//        m_dvrPlayImageTab->SetMenuHideCount(m_dvrPlayImageTabVisibility);
         m_dvrPlayImageTab->SetElementsVisibility(m_dvrPlayImageTabVisibility);
     }
 
@@ -567,5 +567,8 @@ int CSVDvrBaseHmi::DestroyHmiElems()
 	return HMI_SUCCESS;
 }
 
-
+int CSVDvrBaseHmi::GetProcessXX()
+{
+    return ((CSVDvrPlaybackTab*)m_dvrPlaybackTab)->GetProcessX();
+}
 

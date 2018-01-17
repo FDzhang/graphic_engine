@@ -1,9 +1,13 @@
 #include "CSVDvrPlaybackTab.h"
+#include "CSVDvrBaseHmi.h"
 #include "DVR_GUI_OBJ.h"
 
 #define PB_HIDE_TIME 5000;
 unsigned int PbStartTime;
 unsigned int PbHideTimeCount;
+
+unsigned int ProcessBarWidth;
+unsigned int ProcessBarTotalTime;
 
 enum
 {
@@ -367,22 +371,23 @@ public:
 
 class CPbSetPosActionTrigger : public IActionTrigger
 {
-	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbSetPosActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
-public:
-
-	virtual Void OnPress(Int32 id)
-	{
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
-	{
-		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
-		//m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DC_SWITCH;
-		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
-		
-		Log_Message("-----------CPbSetPosActionTrigger: %d", sizeof(Ctrl_Cmd_T));
-
-	}
+    ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbSetPosActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
+  public:
+    virtual Void OnPress(Int32 id)
+    {
+        int clickX = ((CSVDvrBaseHmi*)(CSVHmiIntent::GetInstance()->GetCurrentHmi()))->GetProcessXX();
+ //       Log_Error("-------------------------clickX=%d----------------", clickX);
+        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+        m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+        m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SEEK;
+        m_dvrCmd->parameter[1] = 1000 * clickX * ProcessBarTotalTime / ProcessBarWidth;
+        m_eventDel->PostEventPayload((void *)m_dvrCmd, sizeof(Ctrl_Cmd_T));
+ //       Log_Error("-------------------------p1=%d,  p2=%d ----------------", m_dvrCmd->parameter[0], m_dvrCmd->parameter[1]);
+        Log_Message("-----------CPbSetPosActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+    }
+    virtual Void OnRelease(Int32 id, Boolean isIn)
+    {
+    }
 };
 
 class CPbDialogDelConfirmActionTrigger : public IActionTrigger
@@ -962,10 +967,11 @@ int CSVDvrPlaybackTab::Init(int window_width, int window_height)
 
 	m_processBarData.width = 833.0;
 	m_processBarData.height = 6.0;
-	m_processBarData.pos[0] = m_buttonPos[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_POS_X];
+	m_processBarData.pos[0] = radio*window_width + ((1.0 - radio)*window_width - m_processBarData.width) * 0.5;
 	m_processBarData.pos[1] = m_buttonPos[DVR_PLAYBACK_TAB_PLAYER_BKG][BUTTON_POS_Y] - m_processBarData.height - 5.0;
 	m_processBarData.withBkgFlag = 1;
 	m_processBarData.withBarIconFlag = 0;
+    ProcessBarWidth = m_processBarData.width;
 
 	m_textEditData[PB_FILENAME_TITLE].width = 30;
 	m_textEditData[PB_FILENAME_TITLE].pos[0] = m_buttonPos[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_POS_X] + (m_buttonPos[DVR_PLAYBACK_TAB_FILE_TITLE_BKG][BUTTON_POS_X] - m_textEditData[0].width) * 0.5;
@@ -1175,8 +1181,9 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 
 					ToString(playbackTimeInfo->duration, &m_textEditContent[PB_FILE_DURATION_TIME]);
 					ToString(playbackTimeInfo->position, &m_textEditContent[PB_FILE_CURRENT_TIME]);
-
-					m_processBarForwardScale = ((float)playbackTimeInfo->position / (float)playbackTimeInfo->duration);
+                    ProcessBarTotalTime = playbackTimeInfo->duration;
+                    m_processBarForwardScale = ((float)playbackTimeInfo->position / (float)playbackTimeInfo->duration);
+//		            Log_Error("-------------------------duration = %d, position = %d----------------",playbackTimeInfo->duration,playbackTimeInfo->position);
 
 				}
 
@@ -1419,4 +1426,7 @@ int CSVDvrPlaybackTab::ToString(int pTime, char** pOutString)
 	return HMI_SUCCESS;
 }
 
-
+int CSVDvrPlaybackTab::GetProcessX()
+{
+    return m_processBar->GetClickX();
+}

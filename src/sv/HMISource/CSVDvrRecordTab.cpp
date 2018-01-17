@@ -218,7 +218,8 @@ CSVDvrRecordTab::~CSVDvrRecordTab()
         //SAFE_DELETE(m_baseButton[i]);
 		SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
 
-		if(i == DVR_RECORD_TAB_RECORD_SWITCH
+		if(i == DVR_RECORD_TAB_RED_DOT
+            || i == DVR_RECORD_TAB_RECORD_SWITCH
 			|| i == DVR_RECORD_TAB_CAPTURE_ICON
 			|| i == DVR_RECORD_TAB_EMERGENCY_ICON
 			|| i == DVR_RECORD_TAB_VIEW_FRONT
@@ -236,8 +237,16 @@ CSVDvrRecordTab::~CSVDvrRecordTab()
 
 int CSVDvrRecordTab::SetHmiParams()
 {
+    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_type = STATIC_ICON;
+    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].show_flag = 1;
+    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].show_icon_num = 0;
+    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[0] = new char[50];
+    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[1] = new char[50];
+    sprintf(m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[0], "%sCar/DVR/record_red_dot_normal.dds", XR_RES);
+    sprintf(m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[1], "%sCar/DVR/record_red_dot_highlight.dds", XR_RES);
+    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].animationStyle = BUTTON_NOMAL;
 
-	m_baseButtonData[DVR_RECORD_TAB_RECORD_BKG].icon_type = STATIC_ICON;
+    m_baseButtonData[DVR_RECORD_TAB_RECORD_BKG].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_RECORD_TAB_RECORD_BKG].show_flag = 1;
 	m_baseButtonData[DVR_RECORD_TAB_RECORD_BKG].show_icon_num = 0;
 	m_baseButtonData[DVR_RECORD_TAB_RECORD_BKG].icon_file_name[0] = new char[50];
@@ -371,7 +380,7 @@ int CSVDvrRecordTab::SetHmiParams()
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_VIEW_RIGHT].icon_file_name[1],"%sCar/DVR/record_view_right_highlight.dds",XR_RES); 
 	m_trigger[DVR_RECORD_TAB_VIEW_RIGHT] = new CRecordRightViewActionTrigger;
 
-	for(int i = DVR_RECORD_TAB_RECORD_BKG; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
+	for(int i = DVR_RECORD_TAB_RED_DOT; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
 	{
 		m_baseButtonData[i].pos[0] = m_buttonPos[i][BUTTON_POS_X];
 		m_baseButtonData[i].pos[1] = m_buttonPos[i][BUTTON_POS_Y];
@@ -390,6 +399,11 @@ int CSVDvrRecordTab::SetHmiParams()
 int CSVDvrRecordTab::Init(int window_width, int window_height)
 {
 	float radio = 227.0/1280.0;
+
+	m_buttonSize[DVR_RECORD_TAB_RED_DOT][BUTTON_SIZE_WIDTH] = 108.0;
+	m_buttonSize[DVR_RECORD_TAB_RED_DOT][BUTTON_SIZE_HEIGHT] = 26.0;
+	m_buttonPos[DVR_RECORD_TAB_RED_DOT][BUTTON_POS_X] = window_width - m_buttonSize[DVR_RECORD_TAB_RED_DOT][BUTTON_SIZE_WIDTH] - 20.0;
+	m_buttonPos[DVR_RECORD_TAB_RED_DOT][BUTTON_POS_Y] = 100.0;
 
 	m_buttonSize[DVR_RECORD_TAB_RECORD_BKG][BUTTON_SIZE_WIDTH] = 372.0;
 	m_buttonSize[DVR_RECORD_TAB_RECORD_BKG][BUTTON_SIZE_HEIGHT] = 560.0;
@@ -506,14 +520,17 @@ int CSVDvrRecordTab::Update(Hmi_Message_T& hmiMsg)
 				if(recordTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_OFF)
 				{
 					m_buttonStatus[DVR_RECORD_TAB_RECORD_SWITCH] = BUTTON_OFF_IMAGE;
+                    m_buttonVisibility[DVR_RECORD_TAB_RED_DOT] = 0;
 				}
 				else if(recordTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_ON)
 				{
 					m_buttonStatus[DVR_RECORD_TAB_RECORD_SWITCH] = BUTTON_ON_IMAGE;
+                    m_buttonVisibility[DVR_RECORD_TAB_RED_DOT] = 1;
 				}				
 				break;
 
 			case GUI_OBJ_ID_REC_STATE:
+//                Log_Error("-----------------rec status = %d", recordTabMsg[i].bShow);
 				break;
 
 			case  GUI_OBJ_ID_REC_EVENT_RECORD_STATE:
@@ -594,7 +611,7 @@ int CSVDvrRecordTab::Update(Hmi_Message_T& hmiMsg)
 }
 int CSVDvrRecordTab::RefreshHmi()
 {
-	for(int i = DVR_RECORD_TAB_RECORD_BKG; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
+	for(int i = DVR_RECORD_TAB_RED_DOT; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
 	{
 		m_baseButton[i]->SetShowIconNum(m_buttonStatus[i]);
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
@@ -660,7 +677,7 @@ int CSVDvrRecordTab::SetElementsVisibility(unsigned char pFlag)
     memset(m_buttonVisibility, pFlag, DVR_RECORD_TAB_ELEMEMT_NUM * sizeof(unsigned char));    
     if(pFlag == BUTTON_HIDE)
     {
-	    for(int i = DVR_RECORD_TAB_RECORD_BKG; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
+	    for(int i = DVR_RECORD_TAB_RED_DOT; i < DVR_RECORD_TAB_ELEMEMT_NUM; i++)
 	    {
 		    m_baseButton[i]->SetVisibility(BUTTON_HIDE);
 	    }        

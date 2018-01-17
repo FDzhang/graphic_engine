@@ -586,7 +586,18 @@ int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
 					&& settigTabMsg[i].uStatus.ptr)
 				{
 					dialogInst = (GUI_OBJ_DIALOG_INST*)settigTabMsg[i].uStatus.ptr;
-                    m_dialogVisibility[dialogInst->subjectId] = settigTabMsg[i].bShow;
+                    for(int j = DVR_SETTING_DIALOG_FORMATCARD; j < DVR_SETTING_DIALOG_DIALOG_NUM; j ++)
+                    {
+                        if(j == dialogInst->subjectId)
+                        {
+                            m_dialogVisibility[j] = settigTabMsg[i].bShow;
+                        }
+                        else
+                        {
+                            m_dialogVisibility[j] = 0;    
+                        }                    
+                    }
+                    
 					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, settigTabMsg[i].bShow);
 				}
 

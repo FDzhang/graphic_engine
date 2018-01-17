@@ -83,8 +83,12 @@ public:
 	virtual int Update();
 	int SetVisibility(unsigned char pFlag);
 	int Move(float pScale, HmiProcessBarMovingModeT pMovingMode);
+//    unsigned int GetCurrentValue();
+    int GetClickX();
+
 private:
 	int CalProcessBarPos(int x, int y);
+
 private:
 	virtual Boolean OnTouchEvent(
 	/* [in] */Int32 layerId,
@@ -104,6 +108,8 @@ private:
 	int m_bkgId;
 	int m_barIconId;
 	int m_processBarId;
+
+    int m_clickX;
 
 	IMaterial* m_processBarBkgMtl;
 	int m_processBarBkgMtlId;
