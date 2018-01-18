@@ -8,7 +8,7 @@ class CTimeFirstSelectorActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeFirstSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -22,9 +22,13 @@ public:
 	
 		Log_Message("-----------CTimeSelectorFirstActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 
 };
@@ -34,7 +38,7 @@ class CTimeSecondSelectorActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeSecondSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -48,9 +52,13 @@ public:
 	
 		Log_Message("-----------CTimeSecondSelectorActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 
 };
@@ -60,7 +68,7 @@ class CTimeThirdSelectorActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CTimeThirdSelectorActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -74,11 +82,14 @@ public:
 	
 		Log_Message("-----------CTimeThirdSelectorActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CSdFormatActionTrigger  : public IActionTrigger
@@ -86,7 +97,7 @@ class CSdFormatActionTrigger  : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CSdFormatActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -99,11 +110,14 @@ public:
 	
 		Log_Message("-----------CSdFormatActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CSettingDialogFormatConfirmActionTrigger : public IActionTrigger
@@ -111,10 +125,10 @@ class CSettingDialogFormatConfirmActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -128,7 +142,10 @@ public:
 		
 		Log_Message("-----------CPbDialogDelConfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CSettingDialogFormatCancelActionTrigger : public IActionTrigger
@@ -136,10 +153,10 @@ class CSettingDialogFormatCancelActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -153,7 +170,10 @@ public:
 		
 		Log_Message("-----------CPbDialogDelCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CSettingDialogCautionConfirmActionTrigger : public IActionTrigger
@@ -161,10 +181,10 @@ class CSettingDialogCautionConfirmActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -178,7 +198,10 @@ public:
 		
 		Log_Message("-----------CSettingDialogCautionConfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CSettingDialogCautionCancelActionTrigger : public IActionTrigger
@@ -186,10 +209,10 @@ class CSettingDialogCautionCancelActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -203,7 +226,10 @@ public:
 		
 		Log_Message("-----------CSettingDialogCautionCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CSettingDialogFormatOKActionTrigger : public IActionTrigger
@@ -211,10 +237,10 @@ class CSettingDialogFormatOKActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
@@ -227,6 +253,10 @@ public:
 		
 		Log_Message("-----------CSettingDialogCautionCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 	
 class CSettingDialogFormatFailedActionTrigger : public IActionTrigger
@@ -234,10 +264,10 @@ class CSettingDialogFormatFailedActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{	
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
@@ -249,6 +279,10 @@ public:
 		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
 		
 		Log_Message("-----------CSettingDialogFormatFailedActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 

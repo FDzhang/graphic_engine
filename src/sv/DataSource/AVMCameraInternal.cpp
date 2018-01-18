@@ -143,7 +143,11 @@ int AVMCameraInternal::get_camera_config(CAMERA_CFG *cam_model, BEV_CONFIG_T pco
 
 AVMCameraInternal::AVMCameraInternal()
 {
-
+	mp_full_cam_model[0] = NULL;
+	mp_full_cam_model[1] = NULL;
+	mp_full_cam_model[2] = NULL;
+	mp_full_cam_model[3] = NULL;
+	
 }
 AVMCameraInternal::~AVMCameraInternal()
 {

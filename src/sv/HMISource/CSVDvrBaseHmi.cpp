@@ -19,7 +19,7 @@ class CLiveVideoTabActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CLiveVideoTabActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
@@ -33,9 +33,13 @@ public:
 		Log_Message("-----------CLiveVideoTabActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -44,7 +48,7 @@ class CFileTabActionTrigger : public IActionTrigger
 
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CFileTabActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:		
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
@@ -56,11 +60,14 @@ public:
 		
 		Log_Message("-----------CFileTabActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 };
 
@@ -69,7 +76,7 @@ class CSettingTabActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CSettingTabActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
@@ -82,11 +89,14 @@ public:
 		
 		Log_Message("-----------CSettingTabActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 };
 
@@ -95,7 +105,7 @@ class CReturnDvrActionTrigger:public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CReturnDvrActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
@@ -107,11 +117,14 @@ public:
 		
 		Log_Message("-----------CReturnDvrActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 };
 
@@ -119,7 +132,7 @@ class CBackMainHmiActionTrigger:public IActionTrigger
 {
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CBackMainHmiActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);       
 		Layout_Event_Payload_T* tmp_payload = NULL;
@@ -131,7 +144,7 @@ public:
 		SAFE_FREE(tmp_payload);
         Log_Message("-----------CBackMainHmiActionTrigger");
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 /*		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
 		Ctrl_Cmd_T m_dvrCmd;
@@ -146,7 +159,10 @@ public:
 //   	char* hmiName = "CSVDemoMainHmi";
 //		CSVHmiIntent::GetInstance()->Intent(hmiName);    
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 

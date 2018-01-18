@@ -11,7 +11,7 @@ class CLoopRecTabActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CLoopRecTabActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -21,10 +21,15 @@ public:
 	
 		Log_Message("-----------CLoopRecTabActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
+
 };
 
 class CEmergencyTabActionTrigger : public IActionTrigger
@@ -32,7 +37,7 @@ class CEmergencyTabActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEmergencyTabActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -42,9 +47,13 @@ public:
 	
 		Log_Message("-----------CEmergencyTabActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -53,7 +62,7 @@ class CPhotoFileTabActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CPhotoFileTabActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -63,9 +72,13 @@ public:
 	
 		Log_Message("-----------CPhotoFileTabActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -74,7 +87,7 @@ class CEditActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -83,9 +96,13 @@ public:
 	
 		Log_Message("-----------CEditActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 	
@@ -94,10 +111,10 @@ class CEditCancelActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -107,6 +124,10 @@ public:
 		Log_Message("-----------CEditCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEditSaveActionTrigger : public IActionTrigger
@@ -114,10 +135,10 @@ class CEditSaveActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditSaveActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -126,6 +147,10 @@ public:
 		
 		Log_Message("-----------CEditSaveActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEditDeleteActionTrigger : public IActionTrigger
@@ -133,10 +158,10 @@ class CEditDeleteActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditDeleteActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -145,6 +170,10 @@ public:
 		
 		Log_Message("-----------CEditDeleteActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEditSelAllActionTrigger : public IActionTrigger
@@ -152,10 +181,10 @@ class CEditSelAllActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditSelAllActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -165,6 +194,10 @@ public:
 		Log_Message("-----------CEditSelAllActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEditSelActionTrigger : public IActionTrigger
@@ -172,7 +205,7 @@ class CEditSelActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditSelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -196,9 +229,13 @@ public:
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
 		Log_Message("-----------CEditSelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -206,7 +243,7 @@ class CEditSelBoxActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditSelBoxActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -224,16 +261,20 @@ class CEditSelBoxActionTrigger : public IActionTrigger
 
         Log_Message("-----------CEditSelBoxActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEditSelFlagActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditSelFlagActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -251,9 +292,13 @@ class CEditSelFlagActionTrigger : public IActionTrigger
 
         Log_Message("-----------CEditSelFlagActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEditDialogDelConfirmActionTrigger : public IActionTrigger
@@ -261,10 +306,10 @@ class CEditDialogDelConfirmActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -274,6 +319,10 @@ public:
 		
 		Log_Message("-----------CEditDialogDelConfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEditDialogDelCancelActionTrigger : public IActionTrigger
@@ -281,10 +330,10 @@ class CEditDialogDelCancelActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEditDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -294,6 +343,10 @@ public:
 		
 		Log_Message("-----------CEditDialogDelCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 
@@ -302,10 +355,10 @@ class CFileScrollUpActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CFileScrollUpActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -314,6 +367,10 @@ public:
 		
 		Log_Message("-----------CFileScrollUpActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CFileScrollDownActionTrigger : public IActionTrigger
@@ -321,10 +378,10 @@ class CFileScrollDownActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CFileScrollDownActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -332,6 +389,10 @@ public:
 		m_eventDel->PostEventPayload((void*)m_dvrCmd, sizeof(Ctrl_Cmd_T));
 		
 		Log_Message("-----------CFileScrollDownActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 

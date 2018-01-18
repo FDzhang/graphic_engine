@@ -19,7 +19,7 @@ class CPbImageMenuHideActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageMenuHideActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -29,16 +29,20 @@ class CPbImageMenuHideActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageMenuHideActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageMenuShowActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageMenuShowActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -48,9 +52,13 @@ class CPbImageMenuShowActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageMenuShowActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbPlayImageActionTrigger : public IActionTrigger
@@ -58,7 +66,7 @@ class CPbPlayImageActionTrigger : public IActionTrigger
 
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbPlayImageActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
 /*        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -68,9 +76,13 @@ class CPbPlayImageActionTrigger : public IActionTrigger
 */
         Log_Message("-----------CPbPlayImageActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbPreImageActionTrigger : public IActionTrigger
@@ -78,7 +90,7 @@ class CPbPreImageActionTrigger : public IActionTrigger
 
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbPreImageActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -87,9 +99,13 @@ class CPbPreImageActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbPreImageActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbNextImageActionTrigger : public IActionTrigger
@@ -97,7 +113,7 @@ class CPbNextImageActionTrigger : public IActionTrigger
 
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbNextImageActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -106,16 +122,20 @@ class CPbNextImageActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbNextImageActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageFrontViewActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageFrontViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -126,16 +146,20 @@ class CPbImageFrontViewActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageFrontViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageRearViewActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageRearViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -146,16 +170,20 @@ class CPbImageRearViewActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageRearViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageLeftViewActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageLeftViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -166,16 +194,20 @@ class CPbImageLeftViewActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageLeftViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageRightViewActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageRightViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -186,16 +218,20 @@ class CPbImageRightViewActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageRightViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageEmergencySaveActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageEmergencySaveActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -205,16 +241,20 @@ class CPbImageEmergencySaveActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageEmergencySaveActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageDeleteActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageDeleteActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -224,16 +264,20 @@ class CPbImageDeleteActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageDeleteActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageDcSwitchActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageDcSwitchActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -243,19 +287,23 @@ class CPbImageDcSwitchActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageDcSwitchActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageDialogDelConfirmActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageDialogDelConfirmActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -265,16 +313,20 @@ class CPbImageDialogDelConfirmActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbDialogDelCoCPbImageDialogDelConfirmActionTriggernfirmActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CPbImageDialogDelCancelActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CPbImageDialogDelCancelActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
@@ -284,6 +336,10 @@ class CPbImageDialogDelCancelActionTrigger : public IActionTrigger
 
         Log_Message("-----------CPbImageDialogDelCancelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 CSVDvrPlayImageTab::~CSVDvrPlayImageTab()

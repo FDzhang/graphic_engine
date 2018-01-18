@@ -38,13 +38,17 @@ class CMouseIconActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CLiveVideoTabActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 

@@ -203,13 +203,17 @@ class AdjustPanelTrigger : public IActionTrigger
 {
 public:
 	AdjustPanelTrigger(class SVCalibration* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		//m_app->TriggerAdjustPanel();
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->ToggleShow();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVCalibration* m_app;
@@ -220,12 +224,16 @@ class RippleTrigger : public IActionTrigger
 {
 public:
 	RippleTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->ToggleRipple();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -235,12 +243,16 @@ class FrostTrigger : public IActionTrigger
 {
 public:
 	FrostTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->ToggleFrost();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -250,7 +262,7 @@ class NavigatorTrigger : public IActionTrigger
 {
 public:
 	NavigatorTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		if (id==0) {
 			m_app->svscn->EnterFreeView(CameraPosition_Free);
@@ -269,10 +281,14 @@ public:
 			selector->ClearSelect();
 		}
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 		if (m_app->m_modeAutoHide) m_app->TriggerShowMode();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -283,11 +299,11 @@ class SelectorTrigger : public IActionTrigger
 {
 public:
 	SelectorTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		Int32 camPos;
 		if (id==0) camPos = CameraPosition_Front;
@@ -298,7 +314,10 @@ public:
         m_app->m_pCamDirSelect->ClearSelect();
 		if (m_app->m_modeAutoHide) m_app->TriggerShowMode();
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -307,11 +326,11 @@ class ModeSelectorTrigger : public IActionTrigger
 {
 public:
 	ModeSelectorTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    m_app->m_pModeSelect->ClearSelect();
 		if (id==1) {
@@ -330,7 +349,10 @@ public:
 			m_app->svscn->ZoomFunction(ZOOM_TURN);
 		}		
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -342,11 +364,11 @@ class AliCtrlTriggerFB : public IActionTrigger
 {
 public:
 	AliCtrlTriggerFB(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	 	m_app->svscn->SwitchViewCtrlButton(id);
@@ -354,7 +376,10 @@ public:
 	    AliCtrlSelFB->ClearSelect();
 		AliCtrlSelLR->ClearSelect();
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -365,11 +390,11 @@ class AliCtrlTriggerLR : public IActionTrigger
 {
 public:
 	AliCtrlTriggerLR(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
         if(id == 0)
         {
@@ -389,7 +414,10 @@ public:
 	    AliCtrlSelFB->ClearSelect();
 		AliCtrlSelLR->ClearSelect();
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -401,7 +429,7 @@ class TopDockSelectorTrigger : public IActionTrigger
 {
 public:
 	TopDockSelectorTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	    //if(id<3)
 	    m_app->m_dockTrigger[id]->OnPress(id);
@@ -414,14 +442,17 @@ public:
 	 	m_app->svscn->SwitchCameraPosition(camPos);
 		#endif
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    Tempselector->ClearSelect();
 	   // if(id<3)
 
 	    m_app->m_dockTrigger[id]->OnRelease(id,isIn);
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -432,19 +463,22 @@ class ProductSelectorTrigger : public IActionTrigger
 {
 public:
 	ProductSelectorTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 
 	 	m_app->svscn->ShowProduct(id);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    Productselector->ClearSelect();
 
 	   // m_app->m_dockTrigger[id]->OnRelease(id,isIn);
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -454,19 +488,22 @@ class ZoomSelectorTrigger : public IActionTrigger
 {
 public:
 	ZoomSelectorTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 
 	 	m_app->svscn->ZoomFunction(id);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	   // Productselector->ClearSelect();
 
 	   // m_app->m_dockTrigger[id]->OnRelease(id,isIn);
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -478,19 +515,22 @@ class ProductPositionTrigger : public IActionTrigger
 {
 public:
 	ProductPositionTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 
 	 	m_app->svscn->AdjustProductPosition(id);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    ProductPositionselector->ClearSelect();
 
 	   // m_app->m_dockTrigger[id]->OnRelease(id,isIn);
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -501,19 +541,22 @@ class HMIPositionTrigger : public IActionTrigger
 {
 public:
 	HMIPositionTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 
 	 	m_app->TriggerShowPosition();
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    ProductPositionselector->ClearSelect();
 
 	   // m_app->m_dockTrigger[id]->OnRelease(id,isIn);
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -521,19 +564,22 @@ class SideProductTrigger : public IActionTrigger
 {
 public:
 	SideProductTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    ProductPositionselector->ClearSelect();
 	 	m_app->TriggerShowSideProduct();
 
 	   // m_app->m_dockTrigger[id]->OnRelease(id,isIn);
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -542,13 +588,17 @@ class DockTriggerMode : public IActionTrigger
 {
 public:
 	DockTriggerMode(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowMode();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -558,13 +608,17 @@ class DockTriggerCANSim : public IActionTrigger
 {
 public:
 	DockTriggerCANSim(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowCANSim();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -573,13 +627,17 @@ class DockTriggerCamDir : public IActionTrigger
 {
 public:
 	DockTriggerCamDir(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowCamDir();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -588,13 +646,17 @@ class DockTriggerModeSel : public IActionTrigger
 {
 public:
 	DockTriggerModeSel(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowModeSelect();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -604,13 +666,17 @@ class DockTriggerZoomSim : public IActionTrigger
 {
 public:
 	DockTriggerZoomSim(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowZoom();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -620,13 +686,17 @@ class DockTriggerSettings : public IActionTrigger
 {
 public:
 	DockTriggerSettings(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowSettings();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -635,13 +705,17 @@ class DockTriggerStyle : public IActionTrigger
 {
 public:
 	DockTriggerStyle(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowStyle();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -651,13 +725,17 @@ class DockTriggerLiscense : public IActionTrigger
 {
 public:
 	DockTriggerLiscense(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowLiscence();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -667,13 +745,17 @@ class DockTriggerReset : public IActionTrigger
 {
 public:
 	DockTriggerReset(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->svscn->ResetStyleSetting();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -683,13 +765,17 @@ class DockTriggerModelButton : public IActionTrigger
 {
 public:
 	DockTriggerModelButton(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowModel();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -698,13 +784,17 @@ class DockTriggerColorButton : public IActionTrigger
 {
 public:
 	DockTriggerColorButton(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowColor();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -714,13 +804,17 @@ class DockTriggerLiscenseKeyboard4 : public IActionTrigger
 {
 public:
 	DockTriggerLiscenseKeyboard4(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
          m_app->TriggerShowKeyboard(id+29);
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -729,13 +823,17 @@ class DockTriggerLiscenseKeyboard5 : public IActionTrigger
 {
 public:
 	DockTriggerLiscenseKeyboard5(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
          m_app->TriggerShowKeyboard(id+36);
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -745,13 +843,17 @@ class DockTriggerLiscenseKeyboard3 : public IActionTrigger
 {
 public:
 	DockTriggerLiscenseKeyboard3(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowKeyboard(id+20);
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -760,14 +862,18 @@ class DockTriggerLiscenseKeyboard1 : public IActionTrigger
 {
 public:
 	DockTriggerLiscenseKeyboard1(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowKeyboard(id);
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -776,15 +882,19 @@ class DockTriggerModelPanel : public IActionTrigger
 {
 public:
 	DockTriggerModelPanel(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    m_app->m_pModelSelect->ClearSelect();
 		m_app->svscn->SwitchCarModel(id);
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -793,11 +903,11 @@ class DockTriggerColorPanel : public IActionTrigger
 {
 public:
 	DockTriggerColorPanel(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    m_app->m_pCANSimSelect->ClearSelect();
 		if(id ==0)
@@ -808,6 +918,10 @@ public:
 		m_app->svscn->TurnLightAction(id-5);
 
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -815,11 +929,11 @@ class DockTriggerStyleAliPanel : public IActionTrigger
 {
 public:
 	DockTriggerStyleAliPanel(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    m_app->m_pStyleSelect->ClearSelect();
 		if(id ==0)
@@ -831,6 +945,10 @@ public:
 			
 
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVUI* m_app;
 };
@@ -840,15 +958,19 @@ class DockTriggerZoomPanel : public IActionTrigger
 {
 public:
 	DockTriggerZoomPanel(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	    m_app->m_pZoomSimSelect->ClearSelect();
 		m_app->svscn->ZoomFunction(id);
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -859,14 +981,18 @@ class DockTriggerLiscenseChinese : public IActionTrigger
 {
 public:
 	DockTriggerLiscenseChinese(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerChineseKeyboard(id);
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -876,13 +1002,17 @@ class DockTriggerLiscenseKeyboard2 : public IActionTrigger
 {
 public:
 	DockTriggerLiscenseKeyboard2(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowKeyboard(id+10);
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -893,12 +1023,16 @@ class ModeTrigger : public IActionTrigger
 {
 public:
 	ModeTrigger(class SVUI* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->TriggerShowMode();
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 private:
 	SVUI* m_app;
@@ -914,6 +1048,7 @@ public:
 		m_app->OnSettingsShowHide(caller->Get());
 		return TRUE;
 	}
+
 private:
 	SVUI* m_app;
 };

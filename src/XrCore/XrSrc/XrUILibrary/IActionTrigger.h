@@ -7,8 +7,9 @@ class IActionTrigger
 { 
 public:
 
-	virtual Void OnPress(Int32 id)=0;
-	virtual Void OnRelease(Int32 id, Boolean isIn)=0;
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)=0;
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)=0;
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0) = 0;
 };
 
 #endif  //__IBUTTONACTION_H__

@@ -41,18 +41,21 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
 
+	}
 private:
 };
 
@@ -63,17 +66,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(REAR_SINGLE_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -85,18 +91,21 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 };
 
@@ -107,17 +116,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(RIGHT_SINGLE_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -129,17 +141,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_REAR_3D_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -151,17 +166,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_3D_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -173,17 +191,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -195,17 +216,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -217,17 +241,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_FRONT_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -239,17 +266,20 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_FRONT_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -261,18 +291,21 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_REAR_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 };
 
@@ -283,18 +316,21 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_REAR_VIEW);
 		CSVChangAnSwitchViewHmi::m_startCountTime = XrGetTime();
 		CSVChangAnSwitchViewHmi::m_hasBeenTouched = 1;
 	}
 
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 };
 

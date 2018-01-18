@@ -42,11 +42,11 @@ public:
 	CEnterMenuActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		Log_Message("-----------CEnterMenuActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 		for(int i = 0; i < CHANGAN_MAIN_ELEMENT_NUM; i ++)
@@ -55,7 +55,10 @@ public:
 		}
 		hmiElementVisibility[CHANGAN_MAIN_MENU_ENTER_ICON] = 0;
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
 
+	}
 	
 
 private:
@@ -68,11 +71,11 @@ public:
 	{ 
 		;
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		int i = 0;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	
 		Log_Message("-----------CExitMenuActionTrigger: %d", sizeof(Ctrl_Cmd_T));
@@ -83,7 +86,10 @@ public:
 		hmiElementVisibility[CHANGAN_MAIN_MENU_ENTER_ICON] = 1;
 	}
 
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 };
 
@@ -92,12 +98,12 @@ class CStartDvrActionTrigger : public IActionTrigger
 	//ACTION_TRIGGER_EVENT_CONSTRUCTION(CStartDvrActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
 
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 	/*
 		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
@@ -119,7 +125,10 @@ public:
 */
 	}
 
-	
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+
+	}
 
 private:
 

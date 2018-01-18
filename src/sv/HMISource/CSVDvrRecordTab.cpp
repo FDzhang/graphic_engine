@@ -9,7 +9,7 @@ class CRecordMenuHideActionTrigger : public IActionTrigger
 {
     ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordMenuHideActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
   public:
-    virtual Void OnPress(Int32 id)
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
 //        RecMenuVisible = BUTTON_HIDE;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -20,9 +20,13 @@ class CRecordMenuHideActionTrigger : public IActionTrigger
 
         Log_Message("-----------CRecordHideActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
-    virtual Void OnRelease(Int32 id, Boolean isIn)
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
     }
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CRecordMenuShowActionTrigger : public IActionTrigger
@@ -30,7 +34,7 @@ class CRecordMenuShowActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordMenuShowActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 //	    RecMenuVisible = BUTTON_SHOW;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -41,9 +45,13 @@ public:
 
 		Log_Message("-----------CRecordHideActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -53,7 +61,7 @@ class CRecordSwitchActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordSwitchActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -63,9 +71,13 @@ public:
 	
 		Log_Message("-----------CRecordSwitchActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -74,11 +86,11 @@ class CCaptureActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CCaptureActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -89,6 +101,10 @@ public:
 		Log_Message("-----------CCaptureActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 
 	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 };
 
 class CEventRecordActionTrigger : public IActionTrigger
@@ -96,7 +112,7 @@ class CEventRecordActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CEventRecordActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -106,9 +122,13 @@ public:
 	
 		Log_Message("-----------CEventRecordActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -117,7 +137,7 @@ class CRecordFrontViewActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordFrontViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -128,9 +148,13 @@ public:
 	
 		Log_Message("-----------CRecordFrontViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -139,7 +163,7 @@ class CRecordRearViewActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordRearViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -150,9 +174,13 @@ public:
 	
 		Log_Message("-----------CRecordRearViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -161,7 +189,7 @@ class CRecordLeftViewActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordLeftViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -172,9 +200,13 @@ public:
 	
 		Log_Message("-----------CRecordLeftViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 
@@ -183,7 +215,7 @@ class CRecordRightViewActionTrigger : public IActionTrigger
 	ACTION_TRIGGER_EVENT_CONSTRUCTION(CRecordRightViewActionTrigger, m_eventDel, INPUT_EVENT_CTRL_CMD, Ctrl_Cmd_T, m_dvrCmd)
 public:
 
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
         RecHideTimeCount = REC_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
@@ -194,9 +226,13 @@ public:
 	
 		Log_Message("-----------CRecordRightViewActionTrigger: %d", sizeof(Ctrl_Cmd_T));
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
 	}
 };
 

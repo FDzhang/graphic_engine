@@ -47,11 +47,11 @@ public:
 	CMainSettingActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
@@ -62,7 +62,7 @@ private:
 class CMainLdwActionTrigger : public IActionTrigger
 {
 public:
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 	
 		Layout_Event_Payload_T* tmp_payload = NULL;
@@ -78,11 +78,14 @@ public:
 		Log_Message("-----------CMainLdwActionTrigger");
 
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 	
 
 private:
@@ -94,7 +97,7 @@ public:
 	CMainLkaActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -107,12 +110,15 @@ public:
 
 		Log_Message("-----------CMainLKAActionTrigger");
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
 
-	
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 
 private:
 };
@@ -123,7 +129,7 @@ public:
 	CMainLcActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -136,11 +142,14 @@ public:
 
 		Log_Message("-----------CMainLCActionTrigger");
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 	
 
 private:
@@ -152,7 +161,7 @@ public:
 	CMainBsdActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
@@ -167,11 +176,14 @@ public:
 
 		Log_Message("-----------CMainLdwActionTrigger");
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 	
 
 private:
@@ -183,7 +195,7 @@ public:
 	CMainParkingInActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
@@ -196,11 +208,14 @@ public:
 	
 		SAFE_FREE(tmp_payload);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 	
 
 private:
@@ -212,7 +227,7 @@ public:
 	CMainParkingOutActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
@@ -225,11 +240,14 @@ public:
 	
 		SAFE_FREE(tmp_payload);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 	
 
 private:
@@ -241,7 +259,7 @@ public:
 	CMainTrainedParkingActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{		
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -252,12 +270,15 @@ public:
 	
 		SAFE_FREE(tmp_payload);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
 
-	
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}	
 
 private:
 };
@@ -268,7 +289,7 @@ public:
 	CMainCtaActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
@@ -281,11 +302,14 @@ public:
 	
 		SAFE_FREE(tmp_payload);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 	
 
 private:
@@ -297,7 +321,7 @@ public:
 	CMainPdActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -310,12 +334,15 @@ public:
 
 		Log_Message("-----------CMainPDActionTrigger");
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
 
-	
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}	
 
 private:
 };
@@ -326,7 +353,7 @@ public:
 	CMainOcActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		Layout_Event_Payload_T* tmp_payload = NULL;
 		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
@@ -339,11 +366,14 @@ public:
 
 		Log_Message("-----------CMainOcActionTrigger");
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-	
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}	
 
 private:
 };
@@ -355,7 +385,7 @@ public:
 	CMainDvrActionTrigger()
 	{ 
 	}
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		//CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 	
@@ -372,7 +402,7 @@ public:
  //       CSVHmiIntent::GetInstance->GetCurrentHmi();
 //	    m_DvrBaseVisible = 1;
     }
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 //        char* hmiName = "CSVDvrBaseHmi";
 //	    CSVHmiIntent::GetInstance()->Intent(hmiName);
@@ -380,7 +410,10 @@ public:
 //        m_general_hmi = NewGeneralLayout();
 	}
 
-	
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}	
 
 private:
 };

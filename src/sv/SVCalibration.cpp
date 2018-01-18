@@ -37,15 +37,18 @@ class ChannelSelectorTrigger : public IActionTrigger
 {
 public:
 	ChannelSelectorTrigger(class SVCalibration* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		m_app->SetChannel(id);
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVCalibration* m_app;
 };
@@ -59,7 +62,7 @@ class RTButtonTrigger : public IActionTrigger
 {
 public:
 	RTButtonTrigger(SVCalibration* app) { m_app = app; }
-	virtual Void OnPress(Int32 id)
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
 		if (id == RButtonId[0])      m_app->SetChangeRZ(CALIDELTA);
 		else if (id == RButtonId[1]) m_app->SetChangeRX(CALIDELTA);
@@ -76,7 +79,7 @@ public:
 		else if (id == CButtonId[0]) m_app->SaveExParam();
 		
 	}
-	virtual Void OnRelease(Int32 id, Boolean isIn)
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
 		if (id == RButtonId[0]) m_app->SetChangeRZ(0);
 		else if (id == RButtonId[1]) m_app->SetChangeRX(0);
@@ -91,7 +94,10 @@ public:
 		else if (id == TButtonId[4]) m_app->SetChangeTX(0);
 		else if (id == TButtonId[5]) m_app->SetChangeTZ(0);
 	}
-
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
 private:
 	SVCalibration* m_app;
 };
