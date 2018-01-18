@@ -86,6 +86,15 @@ AVMData::AVMData()
 	m_3dParamUpdateFlag = 0;
 	m_seamDataChangeFlag = 0;
 
+	m_exParam = NULL;
+	m_camInstrinct = NULL;
+	m_lumin_para = NULL;
+	m_2D_lut = NULL;
+	m_usc_data = NULL;
+	m_p_can_data = NULL;
+	m_cam_source = NULL;
+	m_process_info = NULL;
+
 }
 AVMData* AVMData::GetInstance()
 {

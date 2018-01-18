@@ -492,7 +492,6 @@ void XRSV::Update3DParam(float *pose)
 		}
 
 	}
-	Log_Error("Update3DParam");
 }
 
 void XRSV::Update2DParam(void *pdata,void *pIndex)
@@ -517,7 +516,6 @@ void XRSV::Update2DParam(void *pdata,void *pIndex)
 			m_avmLogicManager->UpdateExternCalib2DReslt();
 		}
 	}
-	Log_Error("Update2DParam");
 }
 
 void XRSV::UpdateCtaResult(unsigned char pCtaStatus, void* pCtaRst)

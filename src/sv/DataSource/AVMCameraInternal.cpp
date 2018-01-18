@@ -147,6 +147,21 @@ AVMCameraInternal::AVMCameraInternal()
 	mp_full_cam_model[1] = NULL;
 	mp_full_cam_model[2] = NULL;
 	mp_full_cam_model[3] = NULL;
+
+	m_camera_lut[0] = NULL;
+	m_camera_lut[1] = NULL;
+	m_camera_lut[2] = NULL;
+	m_camera_lut[3] = NULL;
+
+	mp_undist_linear_mdl[0] = NULL;
+	mp_undist_linear_mdl[1] = NULL;
+	mp_undist_linear_mdl[2] = NULL;
+	mp_undist_linear_mdl[3] = NULL;
+
+	mp_undist_Cyli_mdel[0] = NULL;
+	mp_undist_Cyli_mdel[1] = NULL;
+	mp_undist_Cyli_mdel[2] = NULL;
+	mp_undist_Cyli_mdel[3] = NULL;
 	
 }
 AVMCameraInternal::~AVMCameraInternal()
