@@ -429,14 +429,11 @@ class CPbSetPosActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-//        int clickX = ((CSVDvrBaseHmi*)(CSVHmiIntent::GetInstance()->GetCurrentHmi()))->GetProcessXX();
- //       Log_Error("-------------------------clickX=%d----------------", clickX);
-//        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
-//        m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
- //       m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SEEK;
- //       m_dvrCmd->parameter[1] = 1000 * clickX * ProcessBarTotalTime / ProcessBarWidth;
- //       m_eventDel->PostEventPayload((void *)m_dvrCmd, sizeof(Ctrl_Cmd_T));
- //       Log_Error("-------------------------p1=%d,  p2=%d ----------------", m_dvrCmd->parameter[0], m_dvrCmd->parameter[1]);
+        m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+        m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+        m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SEEK;
+        m_dvrCmd->parameter[1] = 1000 * x * ProcessBarTotalTime / ProcessBarWidth;
+        m_eventDel->PostEventPayload((void *)m_dvrCmd, sizeof(Ctrl_Cmd_T));
         Log_Message("-----------CPbSetPosActionTrigger: %d", sizeof(Ctrl_Cmd_T));
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)

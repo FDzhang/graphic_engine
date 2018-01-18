@@ -213,7 +213,7 @@ Boolean HmiProcessBar::OnTouchEvent(
 {
 	if (type == TouchEvent_Down) {
 //		m_clickX = x;
-        if (m_trigger) m_trigger->OnPress(layerId);
+        if (m_trigger) m_trigger->OnPress(layerId, x, y);
 //		CalProcessBarPos(x, y);
 	}
 	else if (type == TouchEvent_Up) {
