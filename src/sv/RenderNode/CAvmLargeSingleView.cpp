@@ -86,7 +86,7 @@ int CAvmLargeSingleView::Update()
 			CAvmRenderDataBase::GetInstance()->GetSingleViewRoi(&vertexData, largeViewCmd - FRONT_SINGLE_VIEW);
 			SetVertextValue(vertexData, largeViewCmd - FRONT_SINGLE_VIEW);
 			
-			Region* singleViewRegion;
+			Region* singleViewRegion = NULL;
 			CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 			m_singleViewNode->SetRenderROI(singleViewRegion);
 			m_singleViewNode->SetClear(FALSE,FALSE);
