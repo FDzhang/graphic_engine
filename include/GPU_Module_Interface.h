@@ -261,6 +261,8 @@ typedef enum MainMenuElementIdTag
 	MAIN_MENU_PD,
 	MAIN_MENU_DVR,
 	MAIN_MENU_ONLINE,
+	MAIN_MENU_EOL,
+	MAIN_MENU_GUIDELINE,
 	MAIN_MENU_ELEM_NUM,
 }
 MainMenuElementIdT;
