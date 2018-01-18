@@ -567,8 +567,8 @@ int CSVDvrBaseHmi::DestroyHmiElems()
 	return HMI_SUCCESS;
 }
 
-int CSVDvrBaseHmi::GetProcessXX()
-{
-    return ((CSVDvrPlaybackTab*)m_dvrPlaybackTab)->GetProcessX();
-}
+//int CSVDvrBaseHmi::GetProcessXX()
+//{
+//    return ((CSVDvrPlaybackTab*)m_dvrPlaybackTab)->GetProcessX();
+//}
 

@@ -68,7 +68,7 @@ public:
 	virtual int SetMenuVisibility();
     virtual int SetMenuHideCount(unsigned char visible);
 
-    int GetProcessX();
+//    int GetProcessX();
 
 private:
 	int SetHmiParams();

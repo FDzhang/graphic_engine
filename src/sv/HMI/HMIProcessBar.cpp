@@ -212,7 +212,7 @@ Boolean HmiProcessBar::OnTouchEvent(
 	/* [in] */Int32 type)
 {
 	if (type == TouchEvent_Down) {
-		m_clickX = x;
+//		m_clickX = x;
         if (m_trigger) m_trigger->OnPress(layerId);
 //		CalProcessBarPos(x, y);
 	}
@@ -261,10 +261,10 @@ Void HmiProcessBar::SetName(String name)
 	strcpy(m_name, name);
 }
 
-int HmiProcessBar::GetClickX()
-{
-    return m_clickX;
-}
+//int HmiProcessBar::GetClickX()
+//{
+//    return m_clickX;
+//}
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

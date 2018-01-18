@@ -24,7 +24,7 @@ public:
 	~CSVDvrBaseHmi();
 	HMI_BASE_INHERITANCE_FUNC()
     
-    int GetProcessXX();
+//    int GetProcessXX();
 
 private:
 	int SetHmiParams();
