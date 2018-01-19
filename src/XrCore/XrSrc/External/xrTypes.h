@@ -57,6 +57,12 @@ typedef const char*								ConstString;
 #define XR_SUCCEEDED(x) (x>=0)
 #define BYTES_PER_PIXEL(x) ((15&x)*3+((x&240)>>8))
 
+#define IsFloatEqual(x,y,epsilon) (((x)==(y))?true:\
+	(fabs((x)-(y))<(epsilon))?true:\
+	(fabs(x)>fabs(y))?\
+	((fabs(((x)-(y))/(x))<(epsilon))?true:false):\
+	((fabs(((x)-(y))/(y))<(epsilon))?true:false))
+
 #define XR_ERROR_MESSAGE printf
 #define XR_WARNING_MESSAGE printf
 

@@ -30,7 +30,8 @@
 #include "CSVS302MainHmi.h"
 
 static unsigned char s302HmiElementShowImage[S302_MAIN_ELEMENT_NUM];
-static unsigned char showSettingMenu = 0;
+static unsigned char s302ShowSettingMenu = 0;
+static unsigned char s302ShowCtrlBtns = 0;
 
 REGISTER_HMI_CLASS(CSVS302MainHmi)
 
@@ -114,7 +115,7 @@ public:
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
-        showSettingMenu = 1;
+        s302ShowSettingMenu = 1;
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -137,7 +138,7 @@ public:
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
-        showSettingMenu = 0;
+        s302ShowSettingMenu = 0;
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -253,6 +254,52 @@ public:
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         s302HmiElementShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] = 1 ;
+    }
+    virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+    {
+
+    }
+
+private:
+};
+
+class CS302CtrlBtnHideActionTrigger : public IActionTrigger
+{
+public:
+    CS302CtrlBtnHideActionTrigger()
+    {
+        ;
+    }
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
+    {
+        int i = 0;
+    }
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
+    {
+        s302ShowCtrlBtns = 0;
+    }
+    virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+    {
+
+    }
+
+private:
+};
+
+class CS302CtrlBtnShowActionTrigger : public IActionTrigger
+{
+public:
+    CS302CtrlBtnShowActionTrigger()
+    {
+        ;
+    }
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
+    {
+        int i = 0;
+    }
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
+    {
+        s302ShowCtrlBtns = 1;
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -393,6 +440,20 @@ int CSVS302MainHmi::SetHmiParams()
     sprintf(m_baseButtonData[S302_SETTING_MENU_CALIBRATION_STATUS].icon_file_name[1],"%sCar/s302_calib_enable.dds",XR_RES);
     m_trigger[S302_SETTING_MENU_CALIBRATION_STATUS] = new CS302SettingMenuCalibrationActionTrigger;
 
+    m_baseButtonData[S302_CONTROL_BUTTONS_HIDE].icon_file_name[0] = new char [50];
+    m_baseButtonData[S302_CONTROL_BUTTONS_HIDE].icon_file_name[1] = new char [50];
+    m_baseButtonData[S302_CONTROL_BUTTONS_HIDE].animationStyle = BUTTON_FLASH_HIGHLIGHT;
+    sprintf(m_baseButtonData[S302_CONTROL_BUTTONS_HIDE].icon_file_name[0],"%sCar/s302_ctrl_btn_hide_normal.dds",XR_RES);
+    sprintf(m_baseButtonData[S302_CONTROL_BUTTONS_HIDE].icon_file_name[1],"%sCar/s302_ctrl_btn_hide_highlight.dds",XR_RES);
+    m_trigger[S302_CONTROL_BUTTONS_HIDE] = new CS302CtrlBtnHideActionTrigger;
+
+    m_baseButtonData[S302_CONTROL_BUTTONS_SHOW].icon_file_name[0] = new char [50];
+    m_baseButtonData[S302_CONTROL_BUTTONS_SHOW].icon_file_name[1] = new char [50];
+    m_baseButtonData[S302_CONTROL_BUTTONS_SHOW].animationStyle = BUTTON_FLASH_HIGHLIGHT;
+    sprintf(m_baseButtonData[S302_CONTROL_BUTTONS_SHOW].icon_file_name[0],"%sCar/s302_ctrl_btn_show_normal.dds",XR_RES);
+    sprintf(m_baseButtonData[S302_CONTROL_BUTTONS_SHOW].icon_file_name[1],"%sCar/s302_ctrl_btn_show_highlight.dds",XR_RES);
+    m_trigger[S302_CONTROL_BUTTONS_SHOW] = new CS302CtrlBtnShowActionTrigger;
+
     for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
         m_baseButtonData[i].pos[0] = m_buttonPos[i][BUTTON_POS_X];
@@ -478,6 +539,16 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
         }
     }
 
+    float hide_show_button_width = 42.0;
+    float hide_show_button_height = 45.0;
+    for(int i = S302_CONTROL_BUTTONS_HIDE; i <= S302_CONTROL_BUTTONS_SHOW; i++)
+    {
+        m_buttonSize[i][BUTTON_SIZE_WIDTH] = hide_show_button_width;
+        m_buttonSize[i][BUTTON_SIZE_HEIGHT] = hide_show_button_height;
+        m_buttonPos[i][BUTTON_POS_X] = 0.0;
+        m_buttonPos[i][BUTTON_POS_Y] = (window_height - hide_show_button_height) * 0.5;
+    }
+
     SetHmiParams();
 
     return S302_MAIN_HMI_NORMAL;
@@ -490,15 +561,14 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_buttonVisibility[i] = 1;
     }
 
-    if(showSettingMenu == 1)
+    if(s302ShowSettingMenu == 1)
     {
         for(int i = S302_MAIN_MENU_BKG; i <= S302_MAIN_MENU_SETTING_ICON; i++)
         {
             m_buttonVisibility[i] = 0;
         }
     }
-
-    if(showSettingMenu == 0)
+    else if(s302ShowSettingMenu == 0)
     {
         for(int i = S302_SETTING_MENU_ITEMS; i <= S302_SETTING_MENU_CALIBRATION_STATUS; i++)
         {
@@ -510,6 +580,37 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
     {
         m_buttonShowImage[i] = s302HmiElementShowImage[i];
     }
+
+    if(s302ShowCtrlBtns == 0)
+    {
+        m_buttonVisibility[S302_CONTROL_BUTTONS_HIDE] = 0;
+    }
+    else if(s302ShowCtrlBtns == 1)
+    {
+        m_buttonVisibility[S302_CONTROL_BUTTONS_SHOW] = 0;
+    }
+
+    unsigned char currentViewType = 0;
+    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(currentViewType);
+    switch(currentViewType)
+    {
+        case FRONT_SINGLE_VIEW:
+            m_buttonShowImage[S302_VIEW_STATUS_ICON] = S302_FRONT120_ICON;
+            break;
+        case REAR_SINGLE_VIEW:
+            m_buttonShowImage[S302_VIEW_STATUS_ICON] = S302_REAR120_ICON;
+            break;
+        case LINEAR_FRONT_180_DEGREE_VIEW:
+            m_buttonShowImage[S302_VIEW_STATUS_ICON] = S302_FRONT_LEFT_RIGHT180_ICON;
+            break;
+        case LINEAR_REAR_180_DEGREE_VIEW:
+            m_buttonShowImage[S302_VIEW_STATUS_ICON] = S302_REAR_LEFT_RIGHT180_ICON;
+            break;
+        default:
+            m_buttonVisibility[S302_VIEW_STATUS_ICON] = 0;
+            break;
+    }
+
     RefreshHmi();
 
     return S302_MAIN_HMI_NORMAL;
@@ -524,11 +625,11 @@ int CSVS302MainHmi::RefreshHmi()
 
     for(int i = S302_MAIN_MENU_BKG; i <= S302_MAIN_MENU_SETTING_ICON; i++)
     {
-        if(showSettingMenu == 1)
+        if(s302ShowSettingMenu == 1)
         {
             m_baseButton[i]->SetVisibility(0);
         }
-        else if(showSettingMenu == 0)
+        else if(s302ShowSettingMenu == 0)
         {
             m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
         }
@@ -536,11 +637,11 @@ int CSVS302MainHmi::RefreshHmi()
 
     for(int i = S302_SETTING_MENU_ITEMS; i <= S302_SETTING_MENU_CALIBRATION_STATUS; i++)
     {
-        if(showSettingMenu == 0)
+        if(s302ShowSettingMenu == 0)
         {
             m_baseButton[i]->SetVisibility(0);
         }
-        else if(showSettingMenu == 1)
+        else if(s302ShowSettingMenu == 1)
         {
             m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
         }
@@ -554,6 +655,16 @@ int CSVS302MainHmi::RefreshHmi()
     {
         m_baseButton[i]->SetShowIconNum(m_buttonShowImage[i]);
         m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+    }
+    for(int i = S302_MAIN_MENU_BKG; i <= S302_SETTING_MENU_CALIBRATION_STATUS; i++)
+    {
+        if(s302ShowCtrlBtns == 0)
+        {
+            m_baseButton[i]->SetVisibility(0);
+        }
+    }
+    for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
+    {
         m_baseButton[i]->Update();
     }
     return S302_MAIN_HMI_NORMAL;
