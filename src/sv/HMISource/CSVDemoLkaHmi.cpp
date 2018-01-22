@@ -83,6 +83,9 @@ CSVDemoLkaHmi::~CSVDemoLkaHmi()
         
         SAFE_DELETE(m_baseButton[i]);
     }
+
+    SAFE_DELETE(m_speedTxtData.textContent[0]);
+    SAFE_DELETE(m_speedTxt);
 }
     
 int CSVDemoLkaHmi::SetHmiParams()
@@ -175,11 +178,14 @@ int CSVDemoLkaHmi::SetHmiParams()
         m_baseButtonData[i].delegate_func = NULL;
         m_baseButtonData[i].trigger = m_trigger[i];
 
+        if(i == DEMO_LKA_CAR)
+        {
+            m_speedTxt = new HmiTextEdit(&m_speedTxtData, m_uiNode);
+        }
         m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
         m_baseButton[i]->SetVisibility(0);
     }
-
-
+    m_speedTxtVisibility = 0;
 
     return DEMO_LKA_HMI_NORMAL;
 }
@@ -201,7 +207,26 @@ int CSVDemoLkaHmi::Init(int window_width, int window_height)
     SetHmiElementProperty(DEMO_LKA_STATUS_BAR_BKG, stitchRegionWidth + left_panel_width, heightInterval, window_width - stitchRegionWidth - left_panel_width, 138.0);
     SetHmiElementProperty(DEMO_LKA_ERROR_WARNING_BKG, stitchRegionWidth + left_panel_width, heightInterval, window_width - stitchRegionWidth - left_panel_width, 138.0);
 
-    SetHmiElementProperty(DEMO_LKA_SPEED_PROMPT, m_buttonPos[DEMO_LKA_STATUS_BAR_BKG][BUTTON_POS_X] + iconHInterval, m_buttonPos[DEMO_LKA_STATUS_BAR_BKG][BUTTON_POS_Y] + iconHInterval, 29.0, 13.0);
+
+    m_speedTxtData.pos[0] = m_buttonPos[DEMO_LKA_STATUS_BAR_BKG][BUTTON_POS_X] + 15.0;
+    m_speedTxtData.pos[1] = m_buttonPos[DEMO_LKA_STATUS_BAR_BKG][BUTTON_POS_Y] + 42.0;
+    m_speedTxtData.width = 50;
+    m_speedTxtData.font_size = 40.0;
+    m_speedTxtData.line_num = 1;
+    m_speedTxtData.visibilityStatus = 1;
+    m_speedTxtData.targetIndex = -1;
+    m_speedTxtData.insertFlag = InsertFlag_Default;
+    m_speedTxtData.fontTypeMtlName = XR_RES"text_box.ttf";
+    m_speedTxtData.trigger = NULL;
+    m_speedTxtData.textColor[0] = 1.0;
+    m_speedTxtData.textColor[1] = 1.0;
+    m_speedTxtData.textColor[2] = 1.0;
+    m_speedTxtData.textContent[0] = new char[100];
+    char* ptext = "75";
+    sprintf(m_speedTxtData.textContent[0],"%s", ptext);
+    
+
+    SetHmiElementProperty(DEMO_LKA_SPEED_PROMPT, m_speedTxtData.pos[0] + 90.0, m_speedTxtData.pos[1] + 35.0, 29.0, 13.0);
 
     m_buttonSize[DEMO_LKA_LANE_BKG][BUTTON_SIZE_HEIGHT] = 132.0;
     m_buttonSize[DEMO_LKA_LANE_BKG][BUTTON_SIZE_WIDTH] = 287.0;
@@ -225,6 +250,7 @@ int CSVDemoLkaHmi::Init(int window_width, int window_height)
     m_buttonSize[DEMO_LKA_ERROR_WARNING_TXT][BUTTON_SIZE_WIDTH] = 307.0;
     m_buttonSize[DEMO_LKA_ERROR_WARNING_TXT][BUTTON_SIZE_HEIGHT] = 40.0;
     SetHmiElementProperty(DEMO_LKA_ERROR_WARNING_TXT, m_buttonPos[DEMO_LKA_ERROR_WARNING_BKG][BUTTON_POS_X] + (m_buttonSize[DEMO_LKA_ERROR_WARNING_BKG][BUTTON_SIZE_WIDTH] - m_buttonSize[DEMO_LKA_ERROR_WARNING_TXT][BUTTON_SIZE_WIDTH]) * 0.5, m_buttonPos[DEMO_LKA_ERROR_WARNING_BKG][BUTTON_POS_Y] + (m_buttonSize[DEMO_LKA_ERROR_WARNING_BKG][BUTTON_SIZE_HEIGHT] - m_buttonSize[DEMO_LKA_ERROR_WARNING_TXT][BUTTON_SIZE_HEIGHT]) * 0.5, 307.0, 40.0);
+
 
 
     SetHmiParams();
@@ -284,23 +310,30 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
         m_buttonVisibility[DEMO_LKA_ERROR_WARNING_TXT] = 1;
     }
     else
-	{
-	    m_buttonVisibility[DEMO_LKA_ERROR_WARNING_BKG] = 0;     
-        m_buttonVisibility[DEMO_LKA_ERROR_WARNING_TXT] = 0;	
-	}
-	
+    {
+        m_buttonVisibility[DEMO_LKA_ERROR_WARNING_BKG] = 0;     
+        m_buttonVisibility[DEMO_LKA_ERROR_WARNING_TXT] = 0; 
+    }
+
+    float speed = 0.0;
+    AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
+
+    ToSpeedText(speed);
+    
     RefreshHmi();
 
     return DEMO_LKA_HMI_NORMAL;
 }
 int CSVDemoLkaHmi::RefreshHmi()
-{
+{   
     for(int i = DEMO_LKA_STATUS_BAR_BKG; i < DEMO_LKA_ICON_NUMS; i++)
     {
         m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
         m_baseButton[i]->SetShowIconNum(m_buttonImage[i]);
         m_baseButton[i]->Update();
     }
+    m_speedTxt->SetVisibility(m_speedTxtVisibility);
+    m_speedTxt->Update(m_speedTxtData.textContent[0]);
 
     return DEMO_LKA_HMI_NORMAL;
 }
@@ -310,6 +343,7 @@ int CSVDemoLkaHmi::SetElementsVisibility(unsigned char pFlag)
     for(int i = DEMO_LKA_STATUS_BAR_BKG; i < DEMO_LKA_ICON_NUMS; i++)
     {
         m_buttonVisibility[i] = pFlag;
+        
         if(pFlag == 0)
         {
             m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);          
@@ -328,6 +362,10 @@ int CSVDemoLkaHmi::SetElementsVisibility(unsigned char pFlag)
             }
         }
     }
+
+    m_speedTxtVisibility = pFlag;
+    
+    m_speedTxt->SetVisibility(pFlag);
 
     return DEMO_LKA_HMI_NORMAL;
 }
@@ -422,8 +460,26 @@ int CSVDemoLkaHmi::ProcessLc(LkaLcResultT pLkaLcResult)
     {
         m_buttonVisibility[DEMO_LKA_DIRECTION_PROMPT] = 0;  
     }
+    
     return DEMO_LKA_HMI_NORMAL;
 }
+
+void CSVDemoLkaHmi::ToSpeedText(float speed)
+{
+    if(speed >= 99.999999)
+    {
+        sprintf(m_speedTxtData.textContent[0], "%1.0f", speed);
+    }
+    else if(speed < 100.00 && speed >= 9.999999)
+    {
+        sprintf(m_speedTxtData.textContent[0], "%0.1f", speed);
+    }
+    else if(speed < 10.0 && speed >= 0.0)
+    {
+        sprintf(m_speedTxtData.textContent[0], "0%0.1f", speed);
+    }   
+}
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

@@ -73,6 +73,12 @@ HmiTextEdit::HmiTextEdit(HmiTextEditDataT* pTextEditData,IUINode* uiNode):m_text
 }
 HmiTextEdit::~HmiTextEdit()
 {
+	if(m_textLayer)
+	{
+    	m_textLayer->Release();
+	}
+    delete m_textEditData;
+
 }
 int HmiTextEdit::Init()
 {

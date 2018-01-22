@@ -69,6 +69,8 @@ private:
 	int ProcessLka(LkaLcResultT pLkaLcResult);
 	int ProcessLc(LkaLcResultT pLkaLcResult);
 
+	void ToSpeedText(float speed);
+
 private:
 	Hmi_Button_Data_T m_baseButtonData[DEMO_LKA_ICON_NUMS];
     HMIButton* m_baseButton[DEMO_LKA_ICON_NUMS];
@@ -80,6 +82,11 @@ private:
 	unsigned char m_buttonImage[DEMO_LKA_ICON_NUMS];
 	
 	IActionTrigger*	m_trigger[DEMO_LKA_ICON_NUMS];
+
+	HmiTextEditDataT m_speedTxtData;
+	HmiTextEdit*     m_speedTxt;
+
+	unsigned char m_speedTxtVisibility;
 
 
 	int m_screenWidth;
