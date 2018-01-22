@@ -33,6 +33,8 @@ static unsigned char s302HmiElementShowImage[S302_MAIN_ELEMENT_NUM];
 static unsigned char s302ShowSettingMenu = 0;
 static unsigned char s302ShowCtrlBtns = 0;
 
+static CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+
 REGISTER_HMI_CLASS(CSVS302MainHmi)
 
 class CS302Enter2dViewActionTrigger : public IActionTrigger
@@ -43,11 +45,23 @@ public:
     }
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        int i = 0;
+        
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = CMD_2D_VIEW_MODE;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302Enter2dViewActionTrigger");
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
 
+        
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -66,6 +80,18 @@ public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         int i = 0;
+
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = CMD_3D_VIEW_MODE;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302Enter3dViewActionTrigger");
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
@@ -92,6 +118,17 @@ public:
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = CMD_EXIT_AVM;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302ExitMenuActionTrigger");
 
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
@@ -116,6 +153,18 @@ public:
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         s302ShowSettingMenu = 1;
+
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = CMD_SETTING_PAGE;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302SettingActionTrigger");
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -162,6 +211,20 @@ public:
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         s302HmiElementShowImage[S302_SETTING_MENU_GUIDELINE_STATUS] = 1 - s302HmiElementShowImage[S302_SETTING_MENU_GUIDELINE_STATUS];
+
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = CMD_GUIDE_LINE_BUTTON;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302SettingMenuReturnActionTrigger");
+
+
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -185,6 +248,21 @@ public:
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         s302HmiElementShowImage[S302_SETTING_MENU_MOD_STATUS] = 1 - s302HmiElementShowImage[S302_SETTING_MENU_MOD_STATUS];
+
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = ALGO_PD_BUTTON;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302SettingMenuModActionTrigger");
+
+
+
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -208,6 +286,19 @@ public:
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         s302HmiElementShowImage[S302_SETTING_MENU_TURNLAMP_TRIGGER_AVM_STATUS] = 1 - s302HmiElementShowImage[S302_SETTING_MENU_TURNLAMP_TRIGGER_AVM_STATUS];
+
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = CMD_TURN_LIGHT_CONTRL_AVM;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302SettingMenuTurnlampTriggerAvmActionTrigger");
+
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -231,6 +322,20 @@ public:
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         s302HmiElementShowImage[S302_SETTING_MENU_RADAR_TRIGGER_AVM_STATUS] = 1 - s302HmiElementShowImage[S302_SETTING_MENU_RADAR_TRIGGER_AVM_STATUS];
+
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = CMD_RADAR_CONTRL_AVM;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302SettingMenuTurnlampTriggerAvmActionTrigger");
+
+
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -254,6 +359,18 @@ public:
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
         s302HmiElementShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] = 1 ;
+
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+        
+        tmp_payload->header.msg_id = ALGO_EOL_BUTTON;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
+        
+        SAFE_FREE(tmp_payload);
+        
+        Log_Message("-----------CS302SettingMenuCalibrationActionTrigger");
     }
     virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
     {
@@ -704,4 +821,5 @@ int CSVS302MainHmi::DestroyHmiElems()
  *   Date        userid       Description
  * ----------- ----------    -----------
  *  01/18/18   Chunh Huang   Create the CSVS302MainHmi class.
+ *  01/21/18   Jensen Wang   Add the avm event.
 \*===========================================================================*/
