@@ -327,16 +327,21 @@ int CSVDemoLkaHmi::ProcessLka(LkaLcResultT pLkaLcResult)
 	{
 		m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = pLkaLcResult.rtConfi - 1;
 	}
-	if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_LEFT
+	
+	if(pLkaLcResult.lkaFlag == 1)
+	{
+		if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_LEFT
 		||pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE2_LEFT)
-	{
-		m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = 2;
+		{
+			m_buttonImage[DEMO_LKA_LEFT_SIDE_LANE] = 2;
+		}
+		if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_RIGHT
+			|| pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE2_RIGHT)
+		{
+			m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = 2;
+		}
 	}
-	if(pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE1_RIGHT
-		|| pLkaLcResult.lkaAlgoMode == LKA_ALGO_CTRL_LKA_STAGE2_RIGHT)
-	{
-		m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = 2;
-	}
+
 	if(pLkaLcResult.workFlag == 1)
 	{
 		m_buttonVisibility[DEMO_LKA_CAR] = 1;
@@ -344,10 +349,8 @@ int CSVDemoLkaHmi::ProcessLka(LkaLcResultT pLkaLcResult)
 		m_buttonVisibility[DEMO_LKA_LEFT_SIDE_LANE] = 1;
 		m_buttonVisibility[DEMO_LKA_RIGHT_SIDE_LANE] = 1;
 	}
-	if(pLkaLcResult.lkaFlag == 1)
-	{
-		m_buttonImage[DEMO_LKA_RIGHT_SIDE_LANE] = 2;
-	}
+
+
 	if(pLkaLcResult.chimeFlag == 1)
 	{
 		m_buttonVisibility[DEMO_LKA_WARNING] = 1;
