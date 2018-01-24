@@ -300,8 +300,8 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
         ProcessLka(lkaLcResult);
         ProcessLc(lkaLcResult);
 
-        m_buttonVisibility[DEMO_LKA_CAR] = 1;
-        m_buttonVisibility[DEMO_LKA_LANE_BKG] = 1;
+        //m_buttonVisibility[DEMO_LKA_CAR] = 1;
+       // m_buttonVisibility[DEMO_LKA_LANE_BKG] = 1;
     }
 
     if(lkaLcResult.errorFlag == 1)
@@ -356,16 +356,19 @@ int CSVDemoLkaHmi::SetElementsVisibility(unsigned char pFlag)
                 && i != DEMO_LKA_STEERING_PROMPT
                 && i != DEMO_LKA_DIRECTION_PROMPT
                 && i != DEMO_LKA_ERROR_WARNING_BKG
-                && i != DEMO_LKA_ERROR_WARNING_TXT)
+                && i != DEMO_LKA_ERROR_WARNING_TXT
+                && i != DEMO_LKA_CAR
+                && i != DEMO_LKA_LANE_BKG
+                && i != DEMO_LKA_STATUS_BAR_BKG)
             {
                 m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);  
             }
         }
     }
 
-    m_speedTxtVisibility = pFlag;
+    m_speedTxtVisibility = m_buttonVisibility[DEMO_LKA_STATUS_BAR_BKG];
     
-    m_speedTxt->SetVisibility(pFlag);
+    m_speedTxt->SetVisibility(m_buttonVisibility[DEMO_LKA_STATUS_BAR_BKG]);
 
     return DEMO_LKA_HMI_NORMAL;
 }
@@ -438,7 +441,14 @@ int CSVDemoLkaHmi::ProcessLc(LkaLcResultT pLkaLcResult)
         m_buttonVisibility[DEMO_LKA_CAR] = 1;
         m_buttonVisibility[DEMO_LKA_LANE_BKG] = 1;
         m_buttonVisibility[DEMO_LKA_STEERING_PROMPT] = 1;
-        m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 0;
+		if(pLkaLcResult.lkaFlag == 0)
+		{			
+	        m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 1;
+		}
+		else
+		{		
+        	m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 0;
+		}
     }
     else
     {
