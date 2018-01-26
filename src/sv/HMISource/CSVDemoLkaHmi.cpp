@@ -319,6 +319,9 @@ int CSVDemoLkaHmi::Update(Hmi_Message_T& hmiMsg)
     AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&speed);
 
     ToSpeedText(speed);
+
+	m_speedTxtVisibility = m_buttonVisibility[DEMO_LKA_STATUS_BAR_BKG];
+	m_buttonVisibility[DEMO_LKA_SPEED_PROMPT] = m_speedTxtVisibility;
     
     RefreshHmi();
 
@@ -359,7 +362,8 @@ int CSVDemoLkaHmi::SetElementsVisibility(unsigned char pFlag)
                 && i != DEMO_LKA_ERROR_WARNING_TXT
                 && i != DEMO_LKA_CAR
                 && i != DEMO_LKA_LANE_BKG
-                && i != DEMO_LKA_STATUS_BAR_BKG)
+                && i != DEMO_LKA_STATUS_BAR_BKG
+                && i != DEMO_LKA_SPEED_PROMPT)
             {
                 m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);  
             }
@@ -367,7 +371,6 @@ int CSVDemoLkaHmi::SetElementsVisibility(unsigned char pFlag)
     }
 
     m_speedTxtVisibility = m_buttonVisibility[DEMO_LKA_STATUS_BAR_BKG];
-    
     m_speedTxt->SetVisibility(m_buttonVisibility[DEMO_LKA_STATUS_BAR_BKG]);
 
     return DEMO_LKA_HMI_NORMAL;
