@@ -424,6 +424,7 @@ int CSVDemoLkaHmi::ProcessLka(LkaLcResultT pLkaLcResult)
         m_buttonVisibility[DEMO_LKA_LANE_BKG] = 1;
         m_buttonVisibility[DEMO_LKA_LEFT_SIDE_LANE] = 1;
         m_buttonVisibility[DEMO_LKA_RIGHT_SIDE_LANE] = 1;
+		m_buttonVisibility[DEMO_LKA_STATUS_BAR_BKG] = 1;
     }
 
 
@@ -444,6 +445,7 @@ int CSVDemoLkaHmi::ProcessLc(LkaLcResultT pLkaLcResult)
         m_buttonVisibility[DEMO_LKA_CAR] = 1;
         m_buttonVisibility[DEMO_LKA_LANE_BKG] = 1;
         m_buttonVisibility[DEMO_LKA_STEERING_PROMPT] = 1;
+		m_buttonVisibility[DEMO_LKA_STATUS_BAR_BKG] = 1;
 		if(pLkaLcResult.lkaFlag == 0)
 		{			
 	        m_buttonImage[DEMO_LKA_STEERING_PROMPT] = 1;
