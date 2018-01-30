@@ -345,10 +345,10 @@ int CSVDemoLkaHmi::SetElementsVisibility(unsigned char pFlag)
 {
     for(int i = DEMO_LKA_STATUS_BAR_BKG; i < DEMO_LKA_ICON_NUMS; i++)
     {
-        m_buttonVisibility[i] = pFlag;
         
         if(pFlag == 0)
         {
+        	m_buttonVisibility[i] = pFlag;
             m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);          
         }
         else
@@ -365,6 +365,7 @@ int CSVDemoLkaHmi::SetElementsVisibility(unsigned char pFlag)
                 && i != DEMO_LKA_STATUS_BAR_BKG
                 && i != DEMO_LKA_SPEED_PROMPT)
             {
+            	m_buttonVisibility[i] = pFlag;
                 m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);  
             }
         }
