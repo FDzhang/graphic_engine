@@ -275,4 +275,14 @@ Void HMIButton::SetName(String name)
 	strcpy(m_name, name);
 }
 
+Boolean HMIButton::SetAnimationStyle(ButtonAnimationStyleT style)
+{
+    if(style >= BUTTON_NOMAL && style <= BUTTON_FLASH_HIGHLIGHT)
+    {
+        m_buttonSlot->buttonData->animationStyle = style;
+        return true;
+    }
+    return false;
+}
+
 

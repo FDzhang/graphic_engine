@@ -427,6 +427,11 @@ CSVDvrFileListTab::~CSVDvrFileListTab()
 			{
 				SAFE_DELETE(m_baseButtonData[j].icon_file_name[1]);
 			}
+                
+			if(j == DVR_FILELIST_TAB_EDIT_SAVE)
+			{
+				SAFE_DELETE(m_baseButtonData[j].icon_file_name[2]);
+			}                
 		}
 	}
 	for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
@@ -540,8 +545,10 @@ int CSVDvrFileListTab::SetHmiParams()
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].show_icon_num = 1;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[0] = new char[50];
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[1] = new char[50];
+    m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[2] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[0],"%sCar/DVR/edit_save_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[1],"%sCar/DVR/edit_save_press.dds",XR_RES); 
+    sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[2],"%sCar/DVR/edit_save_disable.dds",XR_RES); 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_FILELIST_TAB_EDIT_SAVE] = new CEditSaveActionTrigger;
 
@@ -874,57 +881,71 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
 				}
 				break;
 			case GUI_OBJ_ID_THUMB_EDIT:
-				
-				if(fileListTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_OFF)
+				if(GUI_OBJ_STATUS_TYPE_U32 == fileListTabMsg[i].status_type)
 				{
-					m_buttonStatus[DVR_FILELIST_TAB_EDIT_ICON] = BUTTON_OFF_IMAGE;
-					
-					for(int i = 0; i < NUM_THUMBNAIL_PER_PAGE; i++)
-					{							
-						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 0;												
-						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_FLAG_1 + 2 * i] = 0;
-					}
+                    if(fileListTabMsg[i].uStatus.ObjVal == GUI_THUMB_EDIT_STATE_OFF)
+                    {
+    					m_buttonStatus[DVR_FILELIST_TAB_EDIT_ICON] = BUTTON_OFF_IMAGE;
+    					
+    					for(int i = 0; i < NUM_THUMBNAIL_PER_PAGE; i++)
+    					{							
+    						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 0;												
+    						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_FLAG_1 + 2 * i] = 0;
+    					}
 
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_CANCEL] = 0;
-					m_buttonStatus[DVR_FILELIST_TAB_EDIT_CANCEL] = 0;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SAVE] = 0;
-					m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] = 0;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_DELETE] = 0;
-					m_buttonStatus[DVR_FILELIST_TAB_EDIT_DELETE] = 0;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
-					m_buttonStatus[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_BKG] = 0;
+    					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_CANCEL] = 0;
+    					m_buttonStatus[DVR_FILELIST_TAB_EDIT_CANCEL] = 0;
+    					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SAVE] = 0;
+    					m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] = 0;
+    					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_DELETE] = 0;
+    					m_buttonStatus[DVR_FILELIST_TAB_EDIT_DELETE] = 0;
+    					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
+    					m_buttonStatus[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 0;
+    					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_BKG] = 0;
 
-					editStatus = GUI_SWITCH_STATE_OFF;
+    					editStatus = GUI_SWITCH_STATE_OFF;                    
+                    }
+                    else if(fileListTabMsg[i].uStatus.ObjVal < GUI_THUMB_EDIT_STATE_NUM)
+                    {
+                        m_buttonStatus[DVR_FILELIST_TAB_EDIT_ICON] = BUTTON_ON_IMAGE;
+                        for(int i = 0; i < NUM_THUMBNAIL_PER_PAGE; i++)
+                        {   
+                            if(i < currentFileNum)
+                            {
+                                m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 1;
+                            }
+                            else
+                            {
+                                m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 0;
+                            }
+                            
+                            m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_FLAG_1 + 2 * i] = 0;
+                        }
+                        
+                        m_buttonVisibility[DVR_FILELIST_TAB_EDIT_CANCEL] = 1;
+                        m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SAVE] = 1;
+                        m_buttonVisibility[DVR_FILELIST_TAB_EDIT_DELETE] = 1;
+                        m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 1;
+                        m_buttonVisibility[DVR_FILELIST_TAB_EDIT_BKG] = 1;
+                
+                        editStatus = GUI_SWITCH_STATE_ON;
+                    }
+                    
+                    if(fileListTabMsg[i].uStatus.ObjVal == GUI_THUMB_EDIT_STATE_NORMAL_ON)
+                    {
+                        m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] = 0;
+                        m_baseButton[DVR_FILELIST_TAB_EDIT_SAVE]->SetAnimationStyle(BUTTON_FLASH_HIGHLIGHT);
+                        
+                    }
+                    else if(fileListTabMsg[i].uStatus.ObjVal == GUI_THUMB_EDIT_STATE_EMERGENCY_ON
+                        ||fileListTabMsg[i].uStatus.ObjVal == GUI_THUMB_EDIT_STATE_PHOTO_ON)
+                    {
+                        m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] = 2;
+                        m_baseButton[DVR_FILELIST_TAB_EDIT_SAVE]->SetAnimationStyle(BUTTON_NOMAL);
+                    }
 
+                    
 				}
-				else if(fileListTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_ON)
-				{
-					m_buttonStatus[DVR_FILELIST_TAB_EDIT_ICON] = BUTTON_ON_IMAGE;
-					for(int i = 0; i < NUM_THUMBNAIL_PER_PAGE; i++)
-					{	
-						if(i < currentFileNum)
-						{
-							m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 1;
-						}
-						else
-						{
-							m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_BOX_1 + 2 * i] = 0;
-						}
-						
-						m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SEL_FLAG_1 + 2 * i] = 0;
-					}
-					
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_CANCEL] = 1;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SAVE] = 1;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_DELETE] = 1;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_SELECTED_ALL] = 1;
-					m_buttonVisibility[DVR_FILELIST_TAB_EDIT_BKG] = 1;
-
-					
-					editStatus = GUI_SWITCH_STATE_ON;
-				}
-				
 				break;
 			case GUI_OBJ_ID_THUMB_EDIT_SEL_CHECKBOX:
 								

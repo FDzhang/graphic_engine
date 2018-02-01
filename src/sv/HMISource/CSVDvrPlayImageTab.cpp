@@ -348,13 +348,6 @@ CSVDvrPlayImageTab::~CSVDvrPlayImageTab()
     {
         SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
 
-        if (i == DVR_PLAYBACK_IMAGE_TAB_PLAY)
-        {
-            SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
-            SAFE_DELETE(m_baseButtonData[i].icon_file_name[2]);
-            SAFE_DELETE(m_baseButtonData[i].icon_file_name[3]);
-        }
-
         if (i == DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE || i == DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE || i == DVR_PLAYBACK_IMAGE_TAB_EMERGENCY_ICON || i == DVR_PLAYBACK_IMAGE_TAB_DELETE_ICON || i == DVR_PLAYBACK_IMAGE_TAB_DC_SWITCH || i == DVR_PLAYBACK_IMAGE_TAB_VIEW_FRONT
 
             || i == DVR_PLAYBACK_IMAGE_TAB_VIEW_REAR || i == DVR_PLAYBACK_IMAGE_TAB_VIEW_LEFT || i == DVR_PLAYBACK_IMAGE_TAB_VIEW_RIGHT)
@@ -425,17 +418,17 @@ int CSVDvrPlayImageTab::SetHmiParams()
     m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_FILE_TITLE_BKG].icon_file_name[0] = new char[50];
     sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_FILE_TITLE_BKG].icon_file_name[0], "%sCar/DVR/time_title_bkg.dds", XR_RES);
 
-	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_type = STATIC_ICON;
-	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].show_flag = 1;
-	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].show_icon_num =2;
-	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[0] = new char[100];
-	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[1] = new char[100];
-	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[2] = new char[100];
-	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[3] = new char[100];
-	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[0],"%sCar/DVR/player_play_normal.dds",XR_RES); 
-	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[1],"%sCar/DVR/player_play_highlight.dds",XR_RES); 
-	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[2],"%sCar/DVR/player_suspend_normal.dds",XR_RES); 
-	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[3],"%sCar/DVR/player_suspend_hightlight.dds",XR_RES); 
+//	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_type = STATIC_ICON;
+//	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].show_flag = 1;
+//	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].show_icon_num =2;
+//	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[0] = new char[100];
+//	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[1] = new char[100];
+//	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[2] = new char[100];
+//	m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[3] = new char[100];
+//	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[0],"%sCar/DVR/player_play_normal.dds",XR_RES); 
+//	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[1],"%sCar/DVR/player_play_highlight.dds",XR_RES); 
+//	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[2],"%sCar/DVR/player_suspend_normal.dds",XR_RES); 
+//	sprintf(m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_PLAY].icon_file_name[3],"%sCar/DVR/player_suspend_hightlight.dds",XR_RES); 
 
     m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE].icon_type = STATIC_ICON;
     m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE].show_flag = 1;
@@ -657,19 +650,19 @@ int CSVDvrPlayImageTab::Init(int window_width, int window_height)
     m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_FILE_TITLE_BKG][BUTTON_POS_X] = radio * window_width + ((1.0 - radio) * window_width - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_WIDTH]) * 0.5;
     m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_FILE_TITLE_BKG][BUTTON_POS_Y] = 80.0;
 
-	m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_WIDTH] = 56.0;
-	m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_HEIGHT] = 65.0;
-	m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_WIDTH] * 0.5 - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_WIDTH] * 0.5;
-	m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_POS_Y] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_Y] + (m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_HEIGHT] - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_HEIGHT]) * 0.5;
+//	m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_WIDTH] = 56.0;
+//	m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_HEIGHT] = 65.0;
+//	m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_WIDTH] * 0.5 - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_WIDTH] * 0.5;
+//	m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_POS_Y] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_Y] + (m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_HEIGHT] - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_HEIGHT]) * 0.5;
 
     m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE][BUTTON_SIZE_WIDTH] = 64.0;
     m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE][BUTTON_SIZE_HEIGHT] = 66.0;
-    m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_SIZE_WIDTH] + playerIconInterval;
+    m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_WIDTH] * 0.5 + playerIconInterval;
     m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE][BUTTON_POS_Y] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_Y] + (m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_HEIGHT] - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE][BUTTON_SIZE_HEIGHT]) * 0.5;
 
     m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE][BUTTON_SIZE_WIDTH] = 64.0;
     m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE][BUTTON_SIZE_HEIGHT] = 66.0;
-    m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAY][BUTTON_POS_X]- playerIconInterval - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE][BUTTON_SIZE_WIDTH] ;
+    m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE][BUTTON_POS_X] = m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_X] + m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_WIDTH] * 0.5 - playerIconInterval - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE][BUTTON_SIZE_WIDTH] ;
     m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE][BUTTON_POS_Y] =  m_buttonPos[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_POS_Y] + (m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG][BUTTON_SIZE_HEIGHT] - m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE][BUTTON_SIZE_HEIGHT]) * 0.5;
 
     m_buttonSize[DVR_PLAYBACK_IMAGE_TAB_MENU_BKG][BUTTON_SIZE_WIDTH] = 372.0;
@@ -823,15 +816,7 @@ int CSVDvrPlayImageTab::Update(Hmi_Message_T &hmiMsg)
                 if (GUI_OBJ_STATUS_TYPE_U32 == playbackTabMsg[i].status_type)
                 {
 
-                    if (playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_RUNNING)
-                    {
-                        m_buttonStatus[DVR_PLAYBACK_IMAGE_TAB_PLAY] = DVR_STATE_SUSPEND_NORMAL;
-                    }
-                    else if (playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_PAUSE)
-                    {
-                        m_buttonStatus[DVR_PLAYBACK_IMAGE_TAB_PLAY] = DVR_STATE_PLAY_NORMAL;
-                    }
-                    else if (playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_FAST_FORWARD)
+                    if (playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_FAST_FORWARD)
                     {
                     }
                     else if (playbackTabMsg[i].uStatus.ObjVal == GUI_PLAY_STATE_FAST_BACKWARD)
