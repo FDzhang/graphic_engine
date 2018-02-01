@@ -632,7 +632,7 @@ int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
                         }                    
                     }
                     
-					Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, settigTabMsg[i].bShow);
+					//Log_Error("dialog type: %d, Id: %d, show: %d", dialogInst->type, dialogInst->subjectId, settigTabMsg[i].bShow);
 				}
 
 				break;
