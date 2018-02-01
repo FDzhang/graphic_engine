@@ -4,7 +4,7 @@
 
 extern IXrCore* g_pIXrCore;
 
-ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0),m_touchEventFlag(0)
+ISVHmi::ISVHmi(IUINode* pUiNode, int pUiNodeId):m_viewState(0),m_touchEventFlag(0),m_extraData(0)
 {
 	if(pUiNode == NULL)
     {
@@ -148,6 +148,22 @@ int ISVHmi::SetMenuHideCount(unsigned char visible)
 {
 	return HMI_SUCCESS;
 }
+
+int ISVHmi::SetExtraData(void* pData)
+{
+	if(pData)
+	{
+		m_extraData = pData;
+	}
+	return HMI_SUCCESS;
+}
+
+void* ISVHmi::GetExtraData()
+{
+	return m_extraData;
+}
+
+
 int ISVHmi::MockTouchEvent(Hmi_Message_T& hmiMsg)
 {
 	return HMI_NO_MOCK_DATA;

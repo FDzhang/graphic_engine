@@ -84,7 +84,6 @@ private:
 	int SetHmiParams();
 	int RefreshHmi();
 	int ProcessPlaybackMode(unsigned char pDvrPlaybackMode);
-
 	int ToString(int pTime, char** pOutString);
 
 private:
@@ -115,6 +114,7 @@ private:
 	char*			 m_textEditContent[PB_TEXT_DISPLAY_NUM];
 	
 	ISVHmi* m_dvrAlgoPlaybackMenu;
+	int m_playbackMode;
 	int m_windowWidth;
 	int m_windowHeight;
 };

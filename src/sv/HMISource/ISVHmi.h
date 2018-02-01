@@ -140,6 +140,8 @@ public:
     virtual int SetMenuVisibility();
 
 	virtual int SetMenuHideCount(unsigned char visible);
+
+	virtual void* GetExtraData();
 public:
     int SetVisibility(unsigned int flag);  
     bool SetSingleTouchDownEvent(int x, int y);
@@ -148,6 +150,8 @@ public:
     bool GetCurrentView(unsigned char &viewIndex);
     bool SetAvmDisplayView(unsigned char viewIndex);
     bool GetAvmDisplayView(unsigned char &viewIndex);
+
+	int SetExtraData(void* pData);
 
 	IUINode* GetSvHmiNode(int& pUiNodeId);
 	int		 GetSvHmiNodeId();
@@ -165,6 +169,8 @@ private:
 
     unsigned char m_viewState;
     unsigned char m_avmDisplayViewState;
+
+	void* m_extraData;
 
 };
 

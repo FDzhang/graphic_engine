@@ -4,6 +4,7 @@
 #include "DVR_GUI_OBJ.h"
 
 #define PB_HIDE_TIME 5000;
+
 unsigned int PbStartTime;
 unsigned int PbHideTimeCount;
 
@@ -605,6 +606,7 @@ CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::I
 {
 	
 	m_dvrAlgoPlaybackMenu = NULL;
+	m_playbackMode = -1;
 
 	memset(m_trigger, NULL, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
@@ -1527,6 +1529,8 @@ int CSVDvrPlaybackTab::ToString(int pTime, char** pOutString)
 
 int CSVDvrPlaybackTab::ProcessPlaybackMode(unsigned char pDvrPlaybackMode)
 {
+	m_playbackMode = pDvrPlaybackMode;
+	
 	if(pDvrPlaybackMode == ALGO_PLAYBACK_MODE)
 	{
 		Hmi_Message_T hmiMsg;
@@ -1539,27 +1543,21 @@ int CSVDvrPlaybackTab::ProcessPlaybackMode(unsigned char pDvrPlaybackMode)
 		if(m_dvrAlgoPlaybackMenu)
 		{
 			m_dvrAlgoPlaybackMenu->Update(hmiMsg);
-			for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
-			{
-				m_buttonVisibility[i] = 0;
-			}
 		}
 		
 	}
 	else if(pDvrPlaybackMode == DVR_PLAYBACK_MODE)
 	{
-		if(m_dvrAlgoPlaybackMenu)
-		{
-			for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
-			{
-				m_buttonVisibility[i] = 1;
-			}
-		}
+
 		SAFE_DELETE(m_dvrAlgoPlaybackMenu)
 	}
 
+	SetExtraData(&m_playbackMode);
+	
 	return HMI_SUCCESS;
 }
+
+
 
 
 //int CSVDvrPlaybackTab::GetProcessX()

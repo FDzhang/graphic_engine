@@ -61,6 +61,8 @@ private:
 
     unsigned char m_avmViewLastStatus;
 
+	int 	m_playbackMode;
+
 	int     m_windowHeight;
 	int     m_windowWidth;
 	

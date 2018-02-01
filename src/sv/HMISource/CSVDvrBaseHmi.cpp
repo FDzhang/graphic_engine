@@ -12,7 +12,7 @@
 
 REGISTER_HMI_CLASS(CSVDvrBaseHmi);
 
-	
+
 class CLiveVideoTabActionTrigger : public IActionTrigger
 {
 
@@ -374,6 +374,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 	
     m_buttonStatus[DVR_BASE_TITLE_ICON] = 0;
 
+	int playbackMode = -1;
 
     if(0 == Dvr_App_Get_GuiLayOut(&dvrGuiLayout))
     {
@@ -461,6 +462,10 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
                 if(m_dvrPlaybackTab)
                 {
+                	if(m_dvrPlaybackTab->GetExtraData())
+                	{
+                		playbackMode = *((int *)(m_dvrPlaybackTab->GetExtraData()));
+            		}
                     m_dvrPlaybackTab->Update(m_hmiMsg);
                 }
             }
@@ -511,6 +516,8 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
         }
         preLayout = dvrGuiLayout.curLayout;
     }
+
+	ProcessPlaybackMode(playbackMode);
 	
     RefreshHmi();
     
@@ -578,6 +585,31 @@ int CSVDvrBaseHmi::RefreshHmi()
     return HMI_SUCCESS;
 }
 
+int CSVDvrBaseHmi::ProcessPlaybackMode(unsigned char pDvrPlaybackMode)
+{
+	m_playbackMode = pDvrPlaybackMode;
+	
+	if(pDvrPlaybackMode == GUI_PLAY_MODE_ALGO)
+	{
+		for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
+		{
+			m_buttonVisibility[i] = 0;
+		}		
+	}
+	else if(pDvrPlaybackMode == GUI_PLAY_MODE_DVR)
+	{
+		for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
+		{
+			if(i != DVR_BASE_TAB_BKG)
+			{
+				m_buttonVisibility[i] = 1;
+			}
+		}
+	}
+	
+	return HMI_SUCCESS;
+}
+
 int CSVDvrBaseHmi::ReturnHmiMsg(Hmi_Message_T* hmi_msg)
 {
 	return HMI_SUCCESS;
@@ -586,10 +618,4 @@ int CSVDvrBaseHmi::DestroyHmiElems()
 {
 	return HMI_SUCCESS;
 }
-
-
-//int CSVDvrBaseHmi::GetProcessXX()
-//{
-//    return ((CSVDvrPlaybackTab*)m_dvrPlaybackTab)->GetProcessX();
-//}
 
