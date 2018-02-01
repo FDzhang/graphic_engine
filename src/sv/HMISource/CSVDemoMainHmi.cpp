@@ -418,7 +418,7 @@ public:
 private:
 };
 
-CSVDemoMainHmi::CSVDemoMainHmi()
+CSVDemoMainHmi::CSVDemoMainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	memset(m_subHmiInitFlag, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(unsigned char));	
 	memset(m_subHmiVisibility, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(unsigned char));
@@ -432,6 +432,11 @@ CSVDemoMainHmi::CSVDemoMainHmi()
 
 CSVDemoMainHmi::~CSVDemoMainHmi()
 {
+	for(int i = DEMO_LKA_LC_HMI; i < DEMO_MENU_SUB_HMI_NUM; i++)
+	{
+		FreeSubHmi(i);
+	}
+	
 	for(int i = 0; i < DEMO_MAIN_ELEMENT_NUM; i++)
 	{
         SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
@@ -724,6 +729,7 @@ void CSVDemoMainHmi::FreeSubHmi(unsigned char pHmiIndex)
 	SAFE_DELETE(m_subHmi[pHmiIndex]);
 	m_subHmiInitFlag[pHmiIndex] = 0;
 }
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

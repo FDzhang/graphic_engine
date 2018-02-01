@@ -4,6 +4,15 @@
 #include "ISVHmi.h"
 //#include "CSVDvrBaseHmi.h"
 
+
+typedef enum DvrPlaybackModeTag
+{
+	DVR_PLAYBACK_MODE = 0,
+	ALGO_PLAYBACK_MODE,
+}
+DvrPlaybackModeT;
+
+
 typedef enum DvrPlaybackHmiElementTag
 {
 	DVR_PLAYBACK_TAB_PLAYER_BKG = 0,
@@ -14,6 +23,7 @@ typedef enum DvrPlaybackHmiElementTag
 	DVR_PLAYBACK_TAB_NEXT_PAGE,
 	DVR_PLAYBACK_TAB_PRE_PAGE,
 	DVR_PLAYBACK_TAB_SPEED,
+	DVR_PLAYBACK_TAB_MODE_SELECT,
 
 	DVR_PLAYBACK_TAB_MENU_BKG,
 

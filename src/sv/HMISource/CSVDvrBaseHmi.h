@@ -29,6 +29,9 @@ public:
 private:
 	int SetHmiParams();
 	int RefreshHmi();
+
+	int ProcessPlaybackMode(unsigned char pDvrPlaybackMode);
+	
 private:
 	Hmi_Button_Data_T m_baseButtonData[DVR_BASE_ELEMEMT_NUM];
     HMIButton* m_baseButton[DVR_BASE_ELEMEMT_NUM];
@@ -50,11 +53,14 @@ private:
 	ISVHmi* m_dvrFileListTab;
     ISVHmi* m_dvrPlayImageTab;
 
+	ISVHmi* m_dvrAlgoPlaybackMenu;
+
 	unsigned char m_dvrSettingTabVisibility;
 	unsigned char m_dvrRecordTabVisibility;
 	unsigned char m_dvrPlaybackTabVisibility;
 	unsigned char m_dvrFileListVisibility;
     unsigned char m_dvrPlayImageTabVisibility;
+	unsigned char m_dvrAlgoPlaybackMenuVisibility;
 
     unsigned char m_avmViewLastStatus;
 

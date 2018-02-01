@@ -69,6 +69,7 @@ typedef struct HmiDvrTabMsgTag
 {
 	void* tabMsgTable;
 	int  objNum; 
+	int  playbackMode;
 }
 HmiDvrTabMsgT;
 

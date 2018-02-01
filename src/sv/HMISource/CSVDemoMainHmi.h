@@ -69,11 +69,9 @@ class CSVDemoMainHmi : public ISVHmi
 {
 public:
 
-	CSVDemoMainHmi();
+	CSVDemoMainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
 	~CSVDemoMainHmi();
 	HMI_BASE_INHERITANCE_FUNC()
-
-
 
 private:
 	int SetHmiParams();
