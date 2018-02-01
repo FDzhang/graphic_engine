@@ -52,15 +52,12 @@ private:
 	ISVHmi* m_dvrPlaybackTab;
 	ISVHmi* m_dvrFileListTab;
     ISVHmi* m_dvrPlayImageTab;
-
-	ISVHmi* m_dvrAlgoPlaybackMenu;
-
+	
 	unsigned char m_dvrSettingTabVisibility;
 	unsigned char m_dvrRecordTabVisibility;
 	unsigned char m_dvrPlaybackTabVisibility;
 	unsigned char m_dvrFileListVisibility;
     unsigned char m_dvrPlayImageTabVisibility;
-	unsigned char m_dvrAlgoPlaybackMenuVisibility;
 
     unsigned char m_avmViewLastStatus;
 

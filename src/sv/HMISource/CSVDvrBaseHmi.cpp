@@ -4,7 +4,6 @@
 #include "CSVDvrPlaybackTab.h"
 #include "CSVDvrFileListTab.h"
 #include "CSVDvrPlayImageTab.h"
-#include "CSVDemoMainHmi.h"
 #include "CSVHmiIntent.h"
 
 #include "DVR_GUI_OBJ.h"
@@ -177,7 +176,6 @@ CSVDvrBaseHmi::CSVDvrBaseHmi():m_avmViewLastStatus(0)
 	m_dvrRecordTab = NULL;
 	m_dvrPlaybackTab = NULL;
 	m_dvrFileListTab = NULL;
-	m_dvrAlgoPlaybackMenu = NULL;
 
 	m_dvrSettingTab = new CSVDvrSettingTab(m_uiNode, m_uiNodeId);
 	m_dvrRecordTab = new CSVDvrRecordTab(m_uiNode, m_uiNodeId);
@@ -190,7 +188,6 @@ CSVDvrBaseHmi::CSVDvrBaseHmi():m_avmViewLastStatus(0)
 	m_dvrPlaybackTabVisibility = 0;
 	m_dvrFileListVisibility = 0;
     m_dvrPlayImageTabVisibility = 0;
-	m_dvrAlgoPlaybackMenuVisibility = 0;
 	
 }
 
@@ -201,7 +198,6 @@ CSVDvrBaseHmi::~CSVDvrBaseHmi()
 	SAFE_DELETE(m_dvrPlaybackTab);
 	SAFE_DELETE(m_dvrFileListTab);
     SAFE_DELETE(m_dvrPlayImageTab);
-	SAFE_DELETE(m_dvrAlgoPlaybackMenu);
 
 	for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
 	{
@@ -377,14 +373,10 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
     m_buttonVisibility[DVR_BASE_TAB_BKG] = 1;		
 	
     m_buttonStatus[DVR_BASE_TITLE_ICON] = 0;
-	
-	int dvrPlaybackMode = -1;
+
 
     if(0 == Dvr_App_Get_GuiLayOut(&dvrGuiLayout))
     {
-    
-		dvrPlaybackMode = dvrGuiLayout.mode;
-		m_hmiMsg.dvrTabMsg.playbackMode = dvrPlaybackMode;
 		
         switch(dvrGuiLayout.curLayout)
         {
@@ -519,8 +511,6 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
         }
         preLayout = dvrGuiLayout.curLayout;
     }
-
-	ProcessPlaybackMode(dvrPlaybackMode);
 	
     RefreshHmi();
     
@@ -594,42 +584,6 @@ int CSVDvrBaseHmi::ReturnHmiMsg(Hmi_Message_T* hmi_msg)
 }
 int CSVDvrBaseHmi::DestroyHmiElems()
 {
-	return HMI_SUCCESS;
-}
-
-int CSVDvrBaseHmi::ProcessPlaybackMode(unsigned char pDvrPlaybackMode)
-{
-	if(pDvrPlaybackMode == ALGO_PLAYBACK_MODE)
-	{
-		Hmi_Message_T hmiMsg;
-		hmiMsg.dvrTabMsg.playbackMode = ALGO_PLAYBACK_MODE;
-		if(m_dvrAlgoPlaybackMenu == NULL)
-		{		
-			m_dvrAlgoPlaybackMenu = new CSVDemoMainHmi(m_uiNode, m_uiNodeId);
-			m_dvrAlgoPlaybackMenu->Init(m_windowWidth, m_windowHeight);
-		}
-		if(m_dvrAlgoPlaybackMenu)
-		{
-			m_dvrAlgoPlaybackMenu->Update(hmiMsg);
-			for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
-			{
-				m_buttonVisibility[i] = 0;
-			}
-		}
-		
-	}
-	else if(pDvrPlaybackMode == DVR_PLAYBACK_MODE)
-	{
-		if(m_dvrAlgoPlaybackMenu)
-		{
-			for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
-			{
-				m_buttonVisibility[i] = 1;
-			}
-		}
-		SAFE_DELETE(m_dvrAlgoPlaybackMenu)
-	}
-
 	return HMI_SUCCESS;
 }
 

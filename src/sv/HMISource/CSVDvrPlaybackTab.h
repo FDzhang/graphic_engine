@@ -83,6 +83,7 @@ public:
 private:
 	int SetHmiParams();
 	int RefreshHmi();
+	int ProcessPlaybackMode(unsigned char pDvrPlaybackMode);
 
 	int ToString(int pTime, char** pOutString);
 
@@ -112,6 +113,10 @@ private:
 	HmiTextEdit*     m_textEdit[PB_TEXT_DISPLAY_NUM];	
 	unsigned char    m_textEditVisibility[PB_TEXT_DISPLAY_NUM];
 	char*			 m_textEditContent[PB_TEXT_DISPLAY_NUM];
+	
+	ISVHmi* m_dvrAlgoPlaybackMenu;
+	int m_windowWidth;
+	int m_windowHeight;
 };
 
 #endif //_CSV_DVR_PLAYBACK_TAB_H_
