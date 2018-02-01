@@ -374,8 +374,10 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 {
     static DVR_GUI_LAYOUT_INST dvrGuiLayout;
     static unsigned char preLayout = GUI_LAYOUT_NUM;
-    m_buttonVisibility[DVR_BASE_TAB_BKG] = 1;			
+    m_buttonVisibility[DVR_BASE_TAB_BKG] = 1;		
+	
     m_buttonStatus[DVR_BASE_TITLE_ICON] = 0;
+	
 	int dvrPlaybackMode = -1;
 
     if(0 == Dvr_App_Get_GuiLayOut(&dvrGuiLayout))
@@ -600,6 +602,7 @@ int CSVDvrBaseHmi::ProcessPlaybackMode(unsigned char pDvrPlaybackMode)
 	if(pDvrPlaybackMode == ALGO_PLAYBACK_MODE)
 	{
 		Hmi_Message_T hmiMsg;
+		hmiMsg.dvrTabMsg.playbackMode = ALGO_PLAYBACK_MODE;
 		if(m_dvrAlgoPlaybackMenu == NULL)
 		{		
 			m_dvrAlgoPlaybackMenu = new CSVDemoMainHmi(m_uiNode, m_uiNodeId);
@@ -617,6 +620,13 @@ int CSVDvrBaseHmi::ProcessPlaybackMode(unsigned char pDvrPlaybackMode)
 	}
 	else if(pDvrPlaybackMode == DVR_PLAYBACK_MODE)
 	{
+		if(m_dvrAlgoPlaybackMenu)
+		{
+			for(int i = DVR_BASE_TITLE_BKG; i < DVR_BASE_ELEMEMT_NUM; i++)
+			{
+				m_buttonVisibility[i] = 1;
+			}
+		}
 		SAFE_DELETE(m_dvrAlgoPlaybackMenu)
 	}
 

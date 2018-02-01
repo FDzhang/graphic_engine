@@ -1336,6 +1336,9 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
 		else if(playbackMode == ALGO_PLAYBACK_MODE)
 		{
 			m_buttonStatus[DVR_PLAYBACK_TAB_MODE_SELECT] = 0;
+			m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_SHOW_ICON] = 0;
+			m_buttonVisibility[DVR_PLAYBACK_TAB_MENU_HIDE_ICON] = 0;
+			CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);			
 		}
 	}
 	
@@ -1436,28 +1439,8 @@ int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)
     {
         for(int i = DVR_PLAYBACK_TAB_PLAYER_BKG; i < DVR_PLAYBACK_TAB_MENU_BKG; i++)
 	    {
-		    m_baseButton[i]->SetVisibility(BUTTON_SHOW);
+		    m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 	    }
-        if(m_menuVisibility == GUI_SIDEBAR_STATUS_HIDE)
-        {
-            m_baseButton[DVR_PLAYBACK_TAB_MENU_BKG]->SetVisibility(BUTTON_HIDE);
-            m_baseButton[DVR_PLAYBACK_TAB_MENU_HIDE_ICON]->SetVisibility(BUTTON_HIDE);
-            m_baseButton[DVR_PLAYBACK_TAB_MENU_SHOW_ICON]->SetVisibility(BUTTON_SHOW);
-            for(int i = DVR_PLAYBACK_TAB_EMERGENCY_TITLE; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
-            {
-                m_baseButton[i]->SetVisibility(BUTTON_HIDE);
-            }
-        }
-        else if(m_menuVisibility == GUI_SIDEBAR_STATUS_SHOW)
-        {
-            m_baseButton[DVR_PLAYBACK_TAB_MENU_BKG]->SetVisibility(BUTTON_SHOW);
-            m_baseButton[DVR_PLAYBACK_TAB_MENU_HIDE_ICON]->SetVisibility(BUTTON_SHOW);
-            m_baseButton[DVR_PLAYBACK_TAB_MENU_SHOW_ICON]->SetVisibility(BUTTON_HIDE);
-            for(int i = DVR_PLAYBACK_TAB_EMERGENCY_TITLE; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
-            {
-                m_baseButton[i]->SetVisibility(BUTTON_SHOW);
-            }
-        }
     }    
     
 	for(int i = PB_FILENAME_TITLE; i < PB_TEXT_DISPLAY_NUM; i++)

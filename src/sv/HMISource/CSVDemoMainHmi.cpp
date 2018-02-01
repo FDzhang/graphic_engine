@@ -591,7 +591,8 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 		cnt = 101;
 	}*/
 
-    if(m_buttonImage[DEMO_MAIN_MENU_DVR] == BUTTON_ON_IMAGE)
+    if(m_buttonImage[DEMO_MAIN_MENU_DVR] == BUTTON_ON_IMAGE
+		&& hmiMsg.dvrTabMsg.playbackMode != 1)
     {
         char* hmiName = "CSVDvrBaseHmi";
 	    CSVHmiIntent::GetInstance()->Intent(hmiName);
