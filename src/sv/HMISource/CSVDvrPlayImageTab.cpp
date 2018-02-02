@@ -1,9 +1,6 @@
 #include "CSVDvrPlayImageTab.h"
 #include "DVR_GUI_OBJ.h"
 
-#define PB_IMAGE_HIDE_TIME 5000;
-unsigned int PbImageStartTime;
-unsigned int PbImageHideTimeCount;
 
 enum
 {
@@ -137,7 +134,6 @@ class CPbImageFrontViewActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
         m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -161,7 +157,6 @@ class CPbImageRearViewActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
         m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -185,7 +180,6 @@ class CPbImageLeftViewActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
         m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -209,7 +203,6 @@ class CPbImageRightViewActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
         m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -233,7 +226,6 @@ class CPbImageEmergencySaveActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
         m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SAVE;
@@ -256,7 +248,6 @@ class CPbImageDeleteActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
         m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DELETE;
@@ -279,7 +270,6 @@ class CPbImageDcSwitchActionTrigger : public IActionTrigger
   public:
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
         m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
         m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
         m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DC_SWITCH;
@@ -400,8 +390,6 @@ CSVDvrPlayImageTab::CSVDvrPlayImageTab(IUINode *pUiNode, int pUiNodeId) : ISVHmi
     memset(m_dialogVisibility, 0, DVR_PLAYBACK_IMAGE_DIALOG_NUM * sizeof(unsigned char));
 
     m_menuVisibility = GUI_SIDEBAR_STATUS_SHOW;
-    PbImageStartTime = 0;
-    PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
 }
 
 int CSVDvrPlayImageTab::SetHmiParams()
@@ -963,52 +951,6 @@ int CSVDvrPlayImageTab::RefreshHmi()
 int CSVDvrPlayImageTab::SetMenuVisibility()
 {
     m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_MENU_SHOW_ICON].trigger->OnPress(0);
-    return HMI_SUCCESS;
-}
-
-int CSVDvrPlayImageTab::SetMenuHideCount(unsigned char visible)
-{
-    unsigned int endTime, durTime;
-    if (visible == 0)
-    {
-        PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
-        PbImageStartTime = XrGetTime();
-    }
-    else
-    {
-        if (m_menuVisibility == GUI_SIDEBAR_STATUS_HIDE)
-        {
-            PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
-            PbImageStartTime = XrGetTime();
-        }
-        else
-        {
-            if (PbImageStartTime == 0)
-            {
-                PbImageStartTime = XrGetTime();
-                Log_Message("startTime = %d", PbImageStartTime);
-            }
-            else
-            {
-                endTime = XrGetTime();
-                durTime = endTime - PbImageStartTime;
-                Log_Message("durTime = %d", durTime);
-                PbImageStartTime = endTime;
-                if (PbImageHideTimeCount > durTime)
-                {
-                    PbImageHideTimeCount = PbImageHideTimeCount - durTime;
-                    Log_Message("hideTimeCount > durTime");
-                }
-                else
-                {
-                    PbImageHideTimeCount = PB_IMAGE_HIDE_TIME;
-                    m_baseButtonData[DVR_PLAYBACK_IMAGE_TAB_MENU_HIDE_ICON].trigger->OnPress(0);
-                    Log_Message("hideTimeCount < durTime");
-                }
-            }
-        }
-    }
-    Log_Message("par = %d,Visible = %d,WaitTime = %d", visible, m_menuVisibility, PbImageHideTimeCount);
     return HMI_SUCCESS;
 }
 

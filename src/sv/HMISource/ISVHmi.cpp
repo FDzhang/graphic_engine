@@ -144,10 +144,6 @@ int ISVHmi::SetMenuVisibility()
 {
 	return HMI_SUCCESS;
 }
-int ISVHmi::SetMenuHideCount(unsigned char visible)
-{
-	return HMI_SUCCESS;
-}
 
 int ISVHmi::SetExtraData(void* pData)
 {

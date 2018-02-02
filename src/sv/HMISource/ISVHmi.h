@@ -139,8 +139,6 @@ public:
     
     virtual int SetMenuVisibility();
 
-	virtual int SetMenuHideCount(unsigned char visible);
-
 	virtual void* GetExtraData();
 public:
     int SetVisibility(unsigned int flag);  

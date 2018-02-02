@@ -37,7 +37,6 @@ public:
 
 	virtual int SetElementsVisibility(unsigned char pFlag);
     virtual int SetMenuVisibility();
-	virtual int SetMenuHideCount(unsigned char visible);
 	
 private:
 	int SetHmiParams();

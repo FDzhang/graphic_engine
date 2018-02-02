@@ -273,13 +273,13 @@ CSVDvrRecordTab::~CSVDvrRecordTab()
 
 int CSVDvrRecordTab::SetHmiParams()
 {
-    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_type = STATIC_ICON;
+    m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_type = DYNAMIC_ICON;
     m_baseButtonData[DVR_RECORD_TAB_RED_DOT].show_flag = 1;
     m_baseButtonData[DVR_RECORD_TAB_RED_DOT].show_icon_num = 0;
     m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[0] = new char[50];
     m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[1] = new char[50];
     sprintf(m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[0], "%sCar/DVR/record_red_dot_normal.dds", XR_RES);
-    sprintf(m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[1], "%sCar/DVR/record_red_dot_highlight.dds", XR_RES);
+    sprintf(m_baseButtonData[DVR_RECORD_TAB_RED_DOT].icon_file_name[1], "%sCar/DVR/record_red_dot_emergency.dds", XR_RES);
     m_baseButtonData[DVR_RECORD_TAB_RED_DOT].animationStyle = BUTTON_NOMAL;
 
     m_baseButtonData[DVR_RECORD_TAB_RECORD_BKG].icon_type = STATIC_ICON;
@@ -365,7 +365,7 @@ int CSVDvrRecordTab::SetHmiParams()
 	m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].icon_file_name[0],"%sCar/DVR/emergency_normal.dds",XR_RES); 
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].icon_file_name[1],"%sCar/DVR/emergency_highlight.dds",XR_RES); 
-	m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].animationStyle = BUTTON_FLASH_HIGHLIGHT;
+	m_baseButtonData[DVR_RECORD_TAB_EMERGENCY_ICON].animationStyle = BUTTON_NOMAL;
 	m_trigger[DVR_RECORD_TAB_EMERGENCY_ICON] = new CEventRecordActionTrigger;
 
 	m_baseButtonData[DVR_RECORD_TAB_VIEW_TITLE].icon_type = STATIC_ICON;
@@ -436,7 +436,7 @@ int CSVDvrRecordTab::Init(int window_width, int window_height)
 {
 	float radio = 227.0/1280.0;
 
-	m_buttonSize[DVR_RECORD_TAB_RED_DOT][BUTTON_SIZE_WIDTH] = 108.0;
+	m_buttonSize[DVR_RECORD_TAB_RED_DOT][BUTTON_SIZE_WIDTH] = 140.0;
 	m_buttonSize[DVR_RECORD_TAB_RED_DOT][BUTTON_SIZE_HEIGHT] = 26.0;
 	m_buttonPos[DVR_RECORD_TAB_RED_DOT][BUTTON_POS_X] = window_width - m_buttonSize[DVR_RECORD_TAB_RED_DOT][BUTTON_SIZE_WIDTH] - 20.0;
 	m_buttonPos[DVR_RECORD_TAB_RED_DOT][BUTTON_POS_Y] = 100.0;
@@ -555,29 +555,45 @@ int CSVDvrRecordTab::Update(Hmi_Message_T& hmiMsg)
 
 				if(recordTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_OFF)
 				{
-					m_buttonStatus[DVR_RECORD_TAB_RECORD_SWITCH] = BUTTON_OFF_IMAGE;
-                    m_buttonVisibility[DVR_RECORD_TAB_RED_DOT] = 0;
+					m_buttonStatus[DVR_RECORD_TAB_RECORD_SWITCH] = BUTTON_OFF_IMAGE;                    
 				}
 				else if(recordTabMsg[i].uStatus.ObjVal == GUI_SWITCH_STATE_ON)
 				{
 					m_buttonStatus[DVR_RECORD_TAB_RECORD_SWITCH] = BUTTON_ON_IMAGE;
-                    m_buttonVisibility[DVR_RECORD_TAB_RED_DOT] = 1;
 				}				
 				break;
 
 			case GUI_OBJ_ID_REC_STATE:
-//                Log_Error("-----------------rec status = %d", recordTabMsg[i].bShow);
+                if(recordTabMsg[i].uStatus.ObjVal == GUI_REC_STATE_START)
+                {
+                    if(recordTabMsg[i].bShow == 1)
+                    {
+                        m_buttonVisibility[DVR_RECORD_TAB_RED_DOT] = 1;
+                    }
+                    else if(recordTabMsg[i].bShow == 0)
+                    {
+                        m_buttonVisibility[DVR_RECORD_TAB_RED_DOT] = 0;
+                    }
+                }
+                else if(recordTabMsg[i].uStatus.ObjVal == GUI_REC_STATE_STOP)
+                {
+                    m_buttonVisibility[DVR_RECORD_TAB_RED_DOT] = 0;
+                }
 				break;
-
+                
 			case  GUI_OBJ_ID_REC_EVENT_RECORD_STATE:
 				
-                if(recordTabMsg[i].uStatus.ObjVal == GUI_EMERGENCY_REC_STOP)
+                if(recordTabMsg[i].bShow == GUI_EMERGENCY_REC_STOP)
 				{
 					m_buttonStatus[DVR_RECORD_TAB_EMERGENCY_ICON] = BUTTON_OFF_IMAGE;
-				}
-				else if(recordTabMsg[i].uStatus.ObjVal == GUI_EMERGENCY_REC_RUNNING)
+                    m_buttonStatus[DVR_RECORD_TAB_RED_DOT] = 0;
+                    m_baseButton[DVR_RECORD_TAB_RED_DOT] -> SetWidth(108.0);
+                }
+				else if(recordTabMsg[i].bShow == GUI_EMERGENCY_REC_RUNNING)
 				{
 					m_buttonStatus[DVR_RECORD_TAB_EMERGENCY_ICON] = BUTTON_ON_IMAGE;
+                    m_buttonStatus[DVR_RECORD_TAB_RED_DOT] = 1;
+                    m_baseButton[DVR_RECORD_TAB_RED_DOT] -> SetWidth(149.0);
 				}
 				break;
 
@@ -661,52 +677,6 @@ int CSVDvrRecordTab::SetMenuVisibility()
      m_baseButtonData[DVR_RECORD_TAB_SHOW_ICON].trigger->OnPress(0);
      return HMI_SUCCESS;
 }
-
-int CSVDvrRecordTab::SetMenuHideCount(unsigned char visible)
-{
-    unsigned int endTime, durTime;   
-    if(visible == 0)
-    {
-        RecHideTimeCount = REC_HIDE_TIME;
-        RecStartTime = XrGetTime();
-    }
-    else
-    {
-        if(m_menuVisibility == 0)
-        {
-            RecHideTimeCount = REC_HIDE_TIME;
-            RecStartTime = XrGetTime();            
-        }
-        else
-        {
-            if(RecStartTime == 0)
-            {
-                RecStartTime = XrGetTime();
-            }
-            else
-            {
-                endTime= XrGetTime(); 
-                durTime = endTime - RecStartTime;
-                RecStartTime = endTime;
-                if(RecHideTimeCount > durTime)
-                {   
-                    RecHideTimeCount = RecHideTimeCount - durTime;
-                }
-                else
-                {
-                    RecHideTimeCount = REC_HIDE_TIME;
-                    m_baseButtonData[DVR_RECORD_TAB_HIDE_ICON].trigger->OnPress(0);
-//                    m_menuVisibility = 0;
-//                    Log_Error("-----------------------------Count END-------------------------");
-                }            
-            }         
-        }
-      
-    }
-//    Log_Message("par = %d,Visible = %d,WaitTime = %d",visible,m_menuVisibility,RecHideTimeCount);	
-    return HMI_SUCCESS;
-}
-
 
 int CSVDvrRecordTab::SetElementsVisibility(unsigned char pFlag)
 {

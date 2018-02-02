@@ -65,6 +65,12 @@ private:
 	HMIImageGridList* m_imageGridList;
 	ImageGridListItemT m_imageGridListItem[IMAGE_GRID_LIST_ITEM_NUM];
 
+    HmiTextEdit*     m_pageNum;
+    HmiTextEditDataT m_pageNumData;    
+
+    HmiTextEdit*     m_noFileText;
+    HmiTextEditDataT m_noFileTextData;    
+
 	HmiTextEditDataT m_textEditData[IMAGE_GRID_LIST_ITEM_NUM];
 	HmiTextEdit*     m_textEdit[IMAGE_GRID_LIST_ITEM_NUM];
 

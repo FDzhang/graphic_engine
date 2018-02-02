@@ -2,7 +2,6 @@
 #define _CSV_DVR_PLAYBACK_TAB_H_
 
 #include "ISVHmi.h"
-//#include "CSVDvrBaseHmi.h"
 
 
 typedef enum DvrPlaybackModeTag
@@ -76,7 +75,6 @@ public:
 	HMI_BASE_INHERITANCE_FUNC()
 	virtual int SetElementsVisibility(unsigned char pFlag);
 	virtual int SetMenuVisibility();
-    virtual int SetMenuHideCount(unsigned char visible);
 
 //    int GetProcessX();
 
