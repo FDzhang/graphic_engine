@@ -57,10 +57,9 @@ CSVDemoSonarPldHmi::CSVDemoSonarPldHmi(IUINode* pUiNode, int pUiNodeId): ISVHmi:
 	for(int i = 0; i < SONAR_PLD_BEV_PARKING_PLOT_NUM; i++)
 	{
 		m_polygonBoxVisibility[SONAR_PLD_BEV_PARKING_PLOT][i] = 0;
+		m_polygonBox[SONAR_PLD_BEV_PARKING_PLOT][i] = 0;
+		m_polygonBoxVertex[SONAR_PLD_BEV_PARKING_PLOT][i] = 0;
 	}
-	memset(m_polygonBox, 0, SONAR_PLD_PARKING_PLOT_NUMS * SONAR_PLD_BEV_PARKING_PLOT_NUM * sizeof(HMIPolygonBox));
-	memset(m_polygonBoxVertex, 0, SONAR_PLD_PARKING_PLOT_NUMS * SONAR_PLD_BEV_PARKING_PLOT_NUM * sizeof(float));
-	 
 }
 
 CSVDemoSonarPldHmi::~CSVDemoSonarPldHmi()
@@ -74,9 +73,6 @@ int CSVDemoSonarPldHmi::SetHmiParams()
  		m_polygonBox[SONAR_PLD_BEV_PARKING_PLOT][i] = new HMIPolygonBox(&m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i]);
 		m_polygonBox[SONAR_PLD_BEV_PARKING_PLOT][i]->SetVisibility(m_polygonBoxVisibility[SONAR_PLD_BEV_PARKING_PLOT][i]);
 	}
-
-
-
 	return DEMO_SP_HMI_NORMAL;
 }
 int CSVDemoSonarPldHmi::Init(int window_width, int window_height)
@@ -86,15 +82,17 @@ int CSVDemoSonarPldHmi::Init(int window_width, int window_height)
 
 	for(int i = 0; i < SONAR_PLD_BEV_PARKING_PLOT_NUM; i++)
 	{
-		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].renderRegion = REGION_BEV;
-		CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].renderNode);
-		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].polygonVertexNum = 4;
+		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].renderRegion = REGION_BEV_APA_PARKING_LOT;
+		CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&(m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].renderNode));
+		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].polygonVertexNum = 8;
 		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].fillTextureName[0] = new char[50];
-		sprintf(m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].fillTextureName[0],"%sCar/green_blind_area.dds",XR_RES);
+		sprintf(m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].fillTextureName[0],"%sCar/apa_right_parking_lot.dds",XR_RES);
+		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].fillTextureName[1] = new char[50];
+		sprintf(m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].fillTextureName[1],"%sCar/apa_left_parking_lot.dds",XR_RES);	
+
 		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].fillTextureIndex = 0;
 		m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].materialType = Material_Rigid_Blend;
 	}
-
 
 	SetHmiParams();
 	
@@ -111,7 +109,39 @@ int CSVDemoSonarPldHmi::Update(Hmi_Message_T& hmiMsg)
 		m_polygonBoxVisibility[SONAR_PLD_BEV_PARKING_PLOT][i] = 0;
 	}
 
-	static float plotPoints[8] = {0};
+	const int TMP_PLOT_POINT_NUM = 8;
+	static float plotPoints[TMP_PLOT_POINT_NUM] = {0.0};
+
+	const int PARKING_LOT_POINT_NUM = 4;
+	const int LEFT_PARKING_LOT = 1;
+	const int RIGHT_PARKING_LOT = 0;
+
+	float tmpPointX = 0.0;
+	float tmpPointY = 0.0;
+
+	unsigned char parkingLotTextureIndex = 0;
+
+/*
+	pldRadarReslt.nParkingGarageNum = 1;
+
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[0].y = 1.0;
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[0].x = 0.0;
+
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[1].y = 3.0;
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[1].x = 0.0;
+
+
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[2].y = 1.0;
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[2].x = 3.0;
+
+
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[3].y = 3.0;
+	pldRadarReslt.gstParkingLotList[0].psSlotPoints[3].x = 3.0;
+
+	pldRadarReslt.gstParkingLotList[0].nlocation = RIGHT_PARKING_LOT;
+
+	Log_Error("----------Pld");
+*/
 	for(int i = 0; i < pldRadarReslt.nParkingGarageNum; i++)
 	{
 		if(i >= SONAR_PLD_BEV_PARKING_PLOT_NUM)
@@ -119,15 +149,55 @@ int CSVDemoSonarPldHmi::Update(Hmi_Message_T& hmiMsg)
 			break;
 		}
 
-		for(int i = 0; i < m_polygonBoxData[SONAR_PLD_BEV_PARKING_PLOT][i].polygonVertexNum; i++)
+		/* Left: 3 - 2  Right: 2 - 3 */
+		/*       |   |         |   | */
+		/*       1 - 0         0 - 1 */
+
+		for(int j = 0; j < PARKING_LOT_POINT_NUM; j++)
 		{
-			plotPoints[2 * i + 0] = pldRadarReslt.gstParkingLotList[i].psSlotPoints[i].x;
-			plotPoints[2 * i + 1] = pldRadarReslt.gstParkingLotList[i].psSlotPoints[i].y;
+			if(j >= PARKING_LOT_POINT_NUM)
+			{
+				break;
+			}
+
+			plotPoints[2 * j + 0] = pldRadarReslt.gstParkingLotList[i].psSlotPoints[j].y * 1000.0;
+			plotPoints[2 * j + 1] = pldRadarReslt.gstParkingLotList[i].psSlotPoints[j].x * 1000.0;
+		}	
+
+		if(pldRadarReslt.gstParkingLotList[i].nlocation == LEFT_PARKING_LOT)
+		{
+			tmpPointX = plotPoints[0];
+			tmpPointY = plotPoints[1];
+
+			plotPoints[0] = plotPoints[2];
+			plotPoints[1] = plotPoints[3];
+
+			plotPoints[2] = tmpPointX;
+			plotPoints[3] = tmpPointY;
+
+			tmpPointX = plotPoints[4];
+			tmpPointY = plotPoints[5];
+
+			plotPoints[4] = plotPoints[6];
+			plotPoints[5] = plotPoints[7];
+
+			plotPoints[6] = tmpPointX;
+			plotPoints[7] = tmpPointY;
+
+			parkingLotTextureIndex = LEFT_PARKING_LOT;
+			
+		}
+		else if(pldRadarReslt.gstParkingLotList[i].nlocation == RIGHT_PARKING_LOT)
+		{
+			parkingLotTextureIndex = RIGHT_PARKING_LOT;
 		}		
+		
 		m_polygonBoxVertex[SONAR_PLD_BEV_PARKING_PLOT][i] = plotPoints;
+		
 		if(m_polygonBoxVertex[SONAR_PLD_BEV_PARKING_PLOT][i])
 		{
 			m_polygonBoxVisibility[SONAR_PLD_BEV_PARKING_PLOT][i] = 1;
+			m_polygonBox[SONAR_PLD_BEV_PARKING_PLOT][i]->SetPolygonBoxImage(parkingLotTextureIndex);
 			m_polygonBox[SONAR_PLD_BEV_PARKING_PLOT][i]->Update(m_polygonBoxVertex[SONAR_PLD_BEV_PARKING_PLOT][i]);
 		}
 	}
@@ -155,7 +225,7 @@ int CSVDemoSonarPldHmi::SetElementsVisibility(unsigned char pFlag)
 	{
 		if(m_polygonBox[SONAR_PLD_BEV_PARKING_PLOT][i])
 		{
-			m_polygonBoxVisibility[SONAR_PLD_BEV_PARKING_PLOT][i] = 0;
+			m_polygonBoxVisibility[SONAR_PLD_BEV_PARKING_PLOT][i] = pFlag;
 			m_polygonBox[SONAR_PLD_BEV_PARKING_PLOT][i]->SetVisibility(m_polygonBoxVisibility[SONAR_PLD_BEV_PARKING_PLOT][i]);		
 		}
 	}	

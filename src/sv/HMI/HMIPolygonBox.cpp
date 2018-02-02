@@ -123,6 +123,7 @@ int HMIPolygonBox::SetVisibility(unsigned char flag)
 int HMIPolygonBox::SetPolygonBoxImage(unsigned char flag)
 {
 	m_polygonBoxData->fillTextureIndex = flag;
+	m_mtl->SetDiffuseMap(m_polygonBoxData->fillTextureName[m_polygonBoxData->fillTextureIndex]);
 
 	return POLYGON_BOX_NORMAL;
 }
@@ -137,7 +138,9 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 	unsigned int slotid=0;
 	float imageCoord[3]={0,0,0};
 	float gpuModelCoord[3];
-
+	float interval = 0.15;
+	float k[2],b[2];
+	
 	switch(m_polygonBoxData->renderRegion)
 	{
 	case REGION_3D:
@@ -160,6 +163,89 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 
 		}
 
+		break;
+	case REGION_BEV_APA_PARKING_LOT:
+
+		static float x[8], y[8];
+		for(int i = 0; i < 4; i++)
+		{    
+			imageCoord[0] = pInVertex[2*i];
+			imageCoord[1] = pInVertex[2*i+1];		
+        
+			gpuModelCoord[1] = 1.0-(((imageCoord[1])/(0.0-m_calibMmppY) + m_calibCenterY)/240.0);
+			gpuModelCoord[0] =((imageCoord[0])/m_calibMmppX + m_calibCenterX-108.0)/108.0;	
+
+			x[i] = gpuModelCoord[0];
+			y[i] = gpuModelCoord[1];
+
+			slotid+=8;
+
+		}
+		
+		for(int i = 0; i < 2; i++)
+		{
+			k[0 + i] = (y[0 + i] - y[2 + i])/(x[0 + i] - x[2 + i]);
+			if((IsFloatEqual(x[0 + i], x[2 + i], 0.0001)))
+			{
+				k[0 + i] = 0.00001;
+			}
+			if(k[0 + i] == 0.0)
+			{
+				k[0 + i] = 0.00001;
+			}
+
+			b[0 + i] = y[0 + i] - k[0 + i] * x[0 + i];
+
+			if((IsFloatEqual(x[0 + i], x[2 + i], 0.001)))
+			{
+				x[4 + i] = x[2 + i];
+				x[6 + i] = x[4 + i];
+				y[4 + i] = y[2 + i];
+				y[6 + i] = y[4 + i] + interval;
+				y[2 + i] = y[0 + i];
+				y[0 + i] = y[2 + i] - interval;
+			}
+			else
+			{
+				y[4 + i] = y[2 + i];
+				y[6 + i] = y[4 + i] + interval;
+				y[2 + i] = y[0 + i];
+				y[0 + i] = y[2 + i] - interval;
+
+				x[4 + i] = x[2 + i];
+				x[2 + i] = x[0 + i];
+				x[0 + i] = (y[0 + i] - b[0 + i])/k[0 + i];
+				x[6 + i] = (y[6 + i] - b[0 + i])/k[0 + i];
+			}
+		}
+
+		slotid = 0;
+
+		for(int i = 0; i < m_polygonBoxData->polygonVertexNum; i++)
+		{
+			m_polygonVertex[slotid+0]= x[i];
+			m_polygonVertex[slotid+2]= y[i];
+			m_polygonVertex[slotid+1]= m_polygonVertex[slotid+2];
+			
+			if(i == 0 || i == 1)
+			{
+				m_polygonVertex[slotid+7] = 1.0;
+			}
+			else if(i == 2 || i == 3)
+			{
+				m_polygonVertex[slotid+7] = 0.76;
+			}
+			else if(i == 4 || i == 5)
+			{
+				m_polygonVertex[slotid+7] = 0.24;
+			}
+			else if(i == 6 || i == 7)
+			{
+				m_polygonVertex[slotid+7] = 0.0;
+			}
+
+			slotid+=8;
+		}
 		break;
 	case REGION_FISHEYE_SINGLEVIEW:
 		for(int i = 0; i < m_polygonBoxData->polygonVertexNum; i++)
