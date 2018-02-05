@@ -27,7 +27,10 @@ static IActionTrigger* trigger = NULL;
 HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode)
 {
     //m_uiNodeId = g_pIXrCore->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_uiNode);
-    m_rotateFlag = 0;
+    m_rotateFlag = 0.0;
+	m_anchorPointX = 0.0;
+	m_anchorPointY = 0.0;
+	
     m_uiNode = uiNode;
     m_buttonSlot = new Hmi_Button_Slot_T();
     if(pButtonData != NULL)
@@ -45,7 +48,7 @@ HMIButton::~HMIButton()
     	ButtonLayer->Release();
     	//m_buttonSlot->iconMtl->Release();
 	}
-    delete m_buttonSlot;
+    SAFE_DELETE(m_buttonSlot);
 }
 
 int HMIButton::Init()
@@ -101,7 +104,8 @@ int HMIButton::Update()
             buttonLayer->SetY(m_buttonSlot->buttonData->pos[1] + m_rotateFlag * m_anchorPointY * m_buttonSlot->buttonData->height);
                 
 		    buttonLayer->SetWidth(m_buttonSlot->buttonData->width);
-            buttonLayer->SetHeight(m_buttonSlot->buttonData->height);            
+            buttonLayer->SetHeight(m_buttonSlot->buttonData->height);   			
+
         }
     }
     
