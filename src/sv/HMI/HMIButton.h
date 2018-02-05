@@ -134,6 +134,8 @@ public:
 
 	int ButtonHide();
 
+    Boolean SetAnimationStyle(ButtonAnimationStyleT style);
+
 private:
 	
 	virtual Boolean OnTouchEvent(

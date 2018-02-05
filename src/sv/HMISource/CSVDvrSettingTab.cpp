@@ -390,8 +390,10 @@ int CSVDvrSettingTab::SetHmiParams()
 	m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].show_icon_num = 0;
 	m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[0] = new char[50];
 	m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[1] = new char[50];
+    m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[2] = new char[50];
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[0],"%sCar/DVR/sd_format_normal.dds",XR_RES);
 	sprintf(m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[1],"%sCar/DVR/sd_format_press.dds",XR_RES);	
+    sprintf(m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].icon_file_name[2],"%sCar/DVR/sd_format_disable.dds",XR_RES);
 	m_baseButtonData[DVR_SETTING_TAB_SD_FORMAT_NORMAL].animationStyle = BUTTON_FLASH_HIGHLIGHT;
 	m_trigger[DVR_SETTING_TAB_SD_FORMAT_NORMAL] = new CSdFormatActionTrigger;
 
@@ -613,7 +615,16 @@ int CSVDvrSettingTab::Update(Hmi_Message_T& hmiMsg)
 				}
 				break;
 			case GUI_OBJ_ID_SETUP_FORMAT_CARD:
-				m_buttonStatus[DVR_SETTING_TAB_SD_FORMAT_NORMAL] = 0;
+                if(settigTabMsg[i].bEnable == 1)
+                {
+                   m_buttonStatus[DVR_SETTING_TAB_SD_FORMAT_NORMAL] = 0; 
+                   m_baseButton[DVR_SETTING_TAB_SD_FORMAT_NORMAL]->SetAnimationStyle(BUTTON_FLASH_HIGHLIGHT);
+                }
+				else if(settigTabMsg[i].bEnable == 0)
+                {
+                   m_buttonStatus[DVR_SETTING_TAB_SD_FORMAT_NORMAL] = 2; 
+                   m_baseButton[DVR_SETTING_TAB_SD_FORMAT_NORMAL]->SetAnimationStyle(BUTTON_NOMAL);
+                }
 				break;
 			case GUI_OBJ_ID_DIALOG:
 				if(GUI_OBJ_STATUS_TYPE_POINTER == settigTabMsg[i].status_type

@@ -3,11 +3,6 @@
 #include "CSVDemoMainHmi.h"
 #include "DVR_GUI_OBJ.h"
 
-#define PB_HIDE_TIME 5000;
-
-unsigned int PbStartTime;
-unsigned int PbHideTimeCount;
-
 unsigned int ProcessBarWidth;
 unsigned int ProcessBarTotalTime;
 
@@ -253,7 +248,6 @@ public:
 
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-        PbHideTimeCount = PB_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -279,7 +273,6 @@ public:
 
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-        PbHideTimeCount = PB_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -305,7 +298,6 @@ public:
 
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-        PbHideTimeCount = PB_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -331,7 +323,6 @@ public:
 
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-        PbHideTimeCount = PB_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_VIEW;
@@ -357,7 +348,6 @@ public:
 
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-        PbHideTimeCount = PB_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_SAVE;
@@ -382,7 +372,6 @@ public:
 
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-        PbHideTimeCount = PB_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DELETE;
@@ -407,7 +396,6 @@ public:
 
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-        PbHideTimeCount = PB_HIDE_TIME;
 		m_dvrCmd->MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
 		m_dvrCmd->MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
 		m_dvrCmd->parameter[0] = DVR_USER_CLICK_PLAYER_DC_SWITCH;
@@ -618,9 +606,6 @@ CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::I
 	m_processBarVisibility = 0;
 	m_processBarForwardScale = 0;
     m_menuVisibility = GUI_SIDEBAR_STATUS_SHOW;
-    PbStartTime = 0;
-    PbHideTimeCount = PB_HIDE_TIME;
-	
 }
 	
 int CSVDvrPlaybackTab::SetHmiParams()
@@ -1394,53 +1379,6 @@ int CSVDvrPlaybackTab::SetMenuVisibility()
 {
      m_baseButtonData[DVR_PLAYBACK_TAB_MENU_SHOW_ICON].trigger->OnPress(0);
      return HMI_SUCCESS;
-}
-
-int CSVDvrPlaybackTab::SetMenuHideCount(unsigned char visible)
-{
-    unsigned int endTime, durTime;   
-    if(visible == 0)
-    {
-        PbHideTimeCount = PB_HIDE_TIME;
-        PbStartTime = XrGetTime();
-    }
-    else
-    {
-        if(m_menuVisibility == GUI_SIDEBAR_STATUS_HIDE)
-        {
-            PbHideTimeCount = PB_HIDE_TIME;
-            PbStartTime = XrGetTime();            
-        }
-        else
-        {
-            if(PbStartTime == 0)
-            {
-                PbStartTime = XrGetTime();
-                Log_Message("startTime = %d",PbStartTime);	
-            }
-            else
-            {
-                endTime= XrGetTime(); 
-                durTime = endTime - PbStartTime;
-                Log_Message("durTime = %d",durTime);
-                PbStartTime = endTime;
-                if(PbHideTimeCount > durTime)
-                {   
-                    PbHideTimeCount = PbHideTimeCount - durTime;
-                    Log_Message("hideTimeCount > durTime");
-                }
-                else
-                {
-                    PbHideTimeCount = PB_HIDE_TIME;
-                    m_baseButtonData[DVR_PLAYBACK_TAB_MENU_HIDE_ICON].trigger->OnPress(0);
-                    Log_Message("hideTimeCount < durTime");
-                }            
-            }         
-        }
-      
-    }
-    Log_Message("par = %d,Visible = %d,WaitTime = %d",visible,m_menuVisibility,PbHideTimeCount);	
-    return HMI_SUCCESS;
 }
 
 int CSVDvrPlaybackTab::SetElementsVisibility(unsigned char pFlag)

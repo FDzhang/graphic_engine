@@ -6,7 +6,7 @@
 typedef enum DvrPlayImageHmiElementTag {
     DVR_PLAYBACK_IMAGE_TAB_PLAYER_BKG = 0,
     DVR_PLAYBACK_IMAGE_TAB_FILE_TITLE_BKG,
-    DVR_PLAYBACK_IMAGE_TAB_PLAY,
+//    DVR_PLAYBACK_IMAGE_TAB_PLAY,
     DVR_PLAYBACK_IMAGE_TAB_NEXT_PAGE,
     DVR_PLAYBACK_IMAGE_TAB_PRE_PAGE,
 
@@ -54,7 +54,6 @@ class CSVDvrPlayImageTab : public ISVHmi
     HMI_BASE_INHERITANCE_FUNC()
     virtual int SetElementsVisibility(unsigned char pFlag);
     virtual int SetMenuVisibility();
-    virtual int SetMenuHideCount(unsigned char visible);
 
   private:
     int SetHmiParams();
