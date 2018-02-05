@@ -67,6 +67,8 @@ int HMIButton::Init()
                                         m_buttonSlot->buttonData->height);
 
     m_buttonVisibleStatus = BUTTON_SHOW;
+    
+    m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num]);
 
     if(m_buttonSlot->buttonData->trigger)
     {
@@ -85,7 +87,7 @@ int HMIButton::Update()
     else if(m_buttonVisibleStatus == BUTTON_SHOW) 
     {
         buttonLayer->SetEnable(1);
-        m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num]);
+        
         if(m_buttonSlot->buttonData->icon_type == DYNAMIC_ICON)
         {
             if(m_rotateFlag == 1)
@@ -143,10 +145,13 @@ int HMIButton::ButtonEffectClick()
 	return BUTTON_NORMAL;
 }
 int HMIButton::SetShowIconNum(unsigned int index)
-{
+{   
+    if(m_buttonSlot->buttonData->animationStyle == BUTTON_FLASH_HIGHLIGHT)
+    {
+        return BUTTON_NORMAL;
+    }
     m_buttonSlot->buttonData->show_icon_num = index;
-	
-	m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num]);
+    m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num]);        
     return BUTTON_NORMAL; 
 }
 int HMIButton::SetX(float pos)
@@ -284,5 +289,6 @@ Boolean HMIButton::SetAnimationStyle(ButtonAnimationStyleT style)
     }
     return false;
 }
+
 
 

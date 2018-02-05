@@ -213,11 +213,11 @@ Boolean HmiProcessBar::OnTouchEvent(
 {
 	if (type == TouchEvent_Down) {
 //		m_clickX = x;
-        if (m_trigger) m_trigger->OnPress(layerId, x, y);
+        if (m_trigger) m_trigger->OnPress(layerId);
 //		CalProcessBarPos(x, y);
 	}
 	else if (type == TouchEvent_Up) {
-		if (m_trigger) m_trigger->OnRelease(layerId, true);
+		if (m_trigger) m_trigger->OnRelease(layerId, true, x, y);
 		m_adjustScaleSignal = 0;
 	}
 	else if(type == TouchEvent_Move)
@@ -231,6 +231,7 @@ Boolean HmiProcessBar::OnTouchEvent(
 			x = 0;
 		}
 		CalProcessBarPos(x, y);
+        if (m_trigger) m_trigger->OnMove(layerId, x, y);
 	}
 	return TRUE;
 }
