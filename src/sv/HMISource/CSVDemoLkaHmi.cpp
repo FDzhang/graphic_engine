@@ -150,7 +150,7 @@ int CSVDemoLkaHmi::SetHmiParams()
     sprintf(m_baseButtonData[DEMO_LKA_RIGHT_SIDE_LANE].icon_file_name[1],"%sCar/LKA/lane_right_blue.dds",XR_RES); 
     sprintf(m_baseButtonData[DEMO_LKA_RIGHT_SIDE_LANE].icon_file_name[2],"%sCar/LKA/lane_right_warning.dds",XR_RES); 
 
-    m_baseButtonData[DEMO_LKA_CAR].icon_type = DYNAMIC_ICON;
+    m_baseButtonData[DEMO_LKA_CAR].icon_type = STATIC_ICON;
     m_baseButtonData[DEMO_LKA_CAR].show_flag = 1;
     m_baseButtonData[DEMO_LKA_CAR].show_icon_num = 0;
     m_baseButtonData[DEMO_LKA_CAR].icon_file_name[0] = new char [50];
