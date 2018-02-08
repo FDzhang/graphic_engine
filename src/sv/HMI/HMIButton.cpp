@@ -71,6 +71,11 @@ int HMIButton::Init()
 
     m_buttonVisibleStatus = BUTTON_SHOW;
     
+    if(m_buttonSlot->buttonData->animationStyle == BUTTON_FLASH_HIGHLIGHT)
+    {
+        m_buttonSlot->buttonData->show_icon_num = 0;
+    }
+
     m_buttonSlot->iconMtl->SetDiffuseMap(m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num]);
 
     if(m_buttonSlot->buttonData->trigger)

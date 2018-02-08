@@ -338,7 +338,7 @@ int CSVDvrRecordTab::SetHmiParams()
 
 	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].show_flag = 1;
-	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].show_icon_num = 1;
+	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].show_icon_num = 0;
 	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].icon_file_name[0] = new char[50];
 	m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_RECORD_TAB_CAPTURE_ICON].icon_file_name[0],"%sCar/DVR/capture_normal.dds",XR_RES); 

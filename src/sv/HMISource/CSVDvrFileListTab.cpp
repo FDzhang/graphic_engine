@@ -534,7 +534,7 @@ int CSVDvrFileListTab::SetHmiParams()
 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].show_flag = 1;
-	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].show_icon_num = 1;
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].show_icon_num = 0;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].icon_file_name[0] = new char[50];
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_CANCEL].icon_file_name[0],"%sCar/DVR/edit_cancel_normal.dds",XR_RES); 
@@ -544,7 +544,7 @@ int CSVDvrFileListTab::SetHmiParams()
 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].show_flag = 1;
-	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].show_icon_num = 1;
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].show_icon_num = 0;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[0] = new char[50];
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[1] = new char[50];
     m_baseButtonData[DVR_FILELIST_TAB_EDIT_SAVE].icon_file_name[2] = new char[50];
@@ -556,7 +556,7 @@ int CSVDvrFileListTab::SetHmiParams()
 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].show_flag = 1;
-	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].show_icon_num = 1;
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].show_icon_num = 0;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_file_name[0] = new char[50];
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_DELETE].icon_file_name[0],"%sCar/DVR/edit_delete_normal.dds",XR_RES); 
@@ -566,7 +566,7 @@ int CSVDvrFileListTab::SetHmiParams()
 
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_type = STATIC_ICON;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].show_flag = 1;
-	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].show_icon_num = 1;
+	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].show_icon_num = 0;
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_file_name[0] = new char[50];
 	m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_file_name[1] = new char[50];
 	sprintf(m_baseButtonData[DVR_FILELIST_TAB_EDIT_SELECTED_ALL].icon_file_name[0],"%sCar/DVR/edit_sel_all_normal.dds",XR_RES); 
@@ -987,9 +987,14 @@ DVR_GRAPHIC_UIOBJ thumb_gui_table[] =
                     
                     if(fileListTabMsg[i].uStatus.ObjVal == GUI_THUMB_EDIT_STATE_NORMAL_ON)
                     {
-                        m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] = 0;
-                        m_baseButton[DVR_FILELIST_TAB_EDIT_SAVE]->SetAnimationStyle(BUTTON_FLASH_HIGHLIGHT);
-                        
+                        if(m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] == 2)
+                        {
+                            m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] = 0;
+                        }
+                        else if(m_buttonStatus[DVR_FILELIST_TAB_EDIT_SAVE] == 0)
+                        {
+                            m_baseButton[DVR_FILELIST_TAB_EDIT_SAVE]->SetAnimationStyle(BUTTON_FLASH_HIGHLIGHT);
+                        }
                     }
                     else if(fileListTabMsg[i].uStatus.ObjVal == GUI_THUMB_EDIT_STATE_EMERGENCY_ON
                         ||fileListTabMsg[i].uStatus.ObjVal == GUI_THUMB_EDIT_STATE_PHOTO_ON)
