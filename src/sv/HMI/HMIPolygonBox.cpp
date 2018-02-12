@@ -286,7 +286,9 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 
 			slotid+=8;
 					
-			imageCoord[1] += lineWidth;	
+			imageCoord[0] += lineWidth;
+			imageCoord[1] += lineWidth;
+			
 			gpuModelCoord[2] = 0.0;
     		gpuModelCoord[1] = -imageCoord[1]/XrGetScreenHeight()/0.5+1;
 			gpuModelCoord[0] = imageCoord[0]/XrGetScreenWidth()/0.5-1;

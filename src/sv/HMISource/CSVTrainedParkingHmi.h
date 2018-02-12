@@ -37,6 +37,30 @@ typedef enum TrainedParkingStatusTag
 }
 TrainedParkingStatusT;
 
+typedef enum TpPointCoordCvtModeTag
+{
+
+	TP_POINT_COORD_CVT_NORMAL = 0,
+
+	TP_POINT_COORD_CVT_GEELY,
+
+	TP_POINT_COORD_CVT_MODE_NUM,
+
+}
+TpPointCoordCvtModeT;
+
+typedef enum VehicleTypeTag
+{
+	VEHICLE_TYPE_NORMAL = 0,
+
+	VEHICLE_TYPE_GEELY,
+
+	VEHICLE_TYPE_NUM,
+
+}
+VehicleTypeT;
+
+
 class CSVTrainedParkingHmi : public ISVHmi
 {
 public:
@@ -63,7 +87,7 @@ private:
     int ProcessIconTouchEvent();
     int RefreshHmiIcon();
 	int UpdateTpElem(Hmi_Message_T* hmiMsg);
-	int AdapteTpPointCoord(float &pX, float &pY);
+	int AdapteTpPointCoord(float &pX, float &pY, TpPointCoordCvtModeT pCvtMode = TP_POINT_COORD_CVT_NORMAL);
 	    
 private:
     Hmi_Button_Data_T tpIconData[TP_ICON_NUMS];
@@ -107,6 +131,9 @@ private:
 	HMIPolygonBox*	   m_polygonBox;
 
 	IActionTrigger*	m_trigger[TP_ICON_NUMS];
+
+	unsigned char m_vehicleType;
+	TpPointCoordCvtModeT m_tpPointCvtMode;
 
 
 };
