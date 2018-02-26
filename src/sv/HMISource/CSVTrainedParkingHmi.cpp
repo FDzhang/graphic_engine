@@ -113,12 +113,12 @@ int CSVTrainedParkingHmi::Init(int window_width, int window_height)
     tpIconPos[TP_CONTROL_ICON][0] = window_width * f_stich_ratio + 100 + m_showRegionWidth/8 - 24 + m_showRegionWidth/4*2;
     tpIconWidth[TP_CONTROL_ICON] = tp_icon_width;
     tpIconHeight[TP_CONTROL_ICON] = tp_icon_height;
-    tpIconPos[TP_PARKING_IN_ICON][1] = tpIconPos[TP_CAPTURE_IMAGE_ICON][1];
+    tpIconPos[TP_CONTROL_ICON][1] = tpIconPos[TP_CAPTURE_IMAGE_ICON][1];
 
     tpIconPos[TP_PARKING_IN_ICON][0] = window_width * f_stich_ratio + 100 + m_showRegionWidth/8 - 24+ m_showRegionWidth/4*3;
-    tpIconPos[TP_PARKING_IN_ICON][1] = black_width + 16;
     tpIconWidth[TP_PARKING_IN_ICON] = tp_icon_width;
     tpIconHeight[TP_PARKING_IN_ICON] = tp_icon_height;
+	tpIconPos[TP_PARKING_IN_ICON][1] = tpIconPos[TP_CAPTURE_IMAGE_ICON][1];
 
     tpIconPos[TP_CAPTURE_IMAGE_PROMPT_BOX][0] = window_width * f_stich_ratio + 100 + m_showRegionWidth/2 - 162;
     tpIconPos[TP_CAPTURE_IMAGE_PROMPT_BOX][1] = black_width + m_showRegionHeight/2 - 46;
