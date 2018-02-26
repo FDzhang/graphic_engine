@@ -92,7 +92,7 @@ int CAvmViewControlModel::InitViewNode()
 	m_avm3dViewNode= new CAvm3dViewNode;
 	m_avmObjViewNode= new CAvmObjectViewNode;
 	m_avm180DegreeView = new CAvmLinearViewNode;
-	m_avmLeftRightView = new CAvmLeftRightView;
+	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
 	m_avmLarge3dView = new CAvmLarge3dView;
 
 	
@@ -223,7 +223,7 @@ int CAvmViewControlModel::InitViewNode()
 	{
 		m_avm180DegreeView->SetClear(FALSE, FALSE);
 	}
-	if(m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
+	if(m_avmLeftRightView && m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
 	{
 		m_avmLeftRightView->SetClear(FALSE, FALSE);
 	}	
