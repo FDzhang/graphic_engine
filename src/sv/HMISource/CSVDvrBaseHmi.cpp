@@ -376,7 +376,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
 	int playbackMode = -1;
 
-    if(0 == Dvr_App_Get_GuiLayOut(&dvrGuiLayout))
+    if(0)// == Dvr_App_Get_GuiLayOut(&dvrGuiLayout))
     {
 		
         switch(dvrGuiLayout.curLayout)
