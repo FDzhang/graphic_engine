@@ -148,7 +148,8 @@ CSVChangAnMainHmi::CSVChangAnMainHmi()
 	}
 	hmiElementVisibility[CHANGAN_MAIN_MENU_ENTER_ICON] = 1;
 
-	m_cameraHmi = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
+	m_cameraHmi = NULL;
+	//m_cameraHmi = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
 
 }
 
@@ -289,8 +290,10 @@ int CSVChangAnMainHmi::RefreshHmi()
 		m_baseButton[i]->Update();
 	}
 
-	m_cameraHmi->SetElementsVisibility(m_cameraHmiVisibility);
-
+	if(m_cameraHmi)
+	{
+		m_cameraHmi->SetElementsVisibility(m_cameraHmiVisibility);
+	}
 	return CHANGAN_MAIN_HMI_NORMAL;
 }
 

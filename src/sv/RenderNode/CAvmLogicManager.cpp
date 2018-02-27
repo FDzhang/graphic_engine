@@ -68,7 +68,8 @@ int CAvmLogicManager::UpdateStitchAngle()
 	}
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
-int CAvmLogicManager::UpdateExternCalib2DReslt()
+int CAvmLogicManager::UpdateExternCalib2DReslt()
+
 {	
 	if(m_avmViewControlModel)
 	{
@@ -76,7 +77,8 @@ int CAvmLogicManager::UpdateExternCalib2DReslt()
 	}
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
-int CAvmLogicManager::UpdateExternCalib3DReslt()
+int CAvmLogicManager::UpdateExternCalib3DReslt()
+
 {	
 	if(m_avmViewControlModel)
 	{
@@ -150,8 +152,8 @@ int CAvmLogicManager::InitHmi()
         return false;
     }
 
-	//char* hmiName = "CSVChangAnMainHmi";
-	char* hmiName = "CSVDemoMainHmi";
+	char* hmiName = "CSVChangAnMainHmi";
+	//char* hmiName = "CSVDemoMainHmi";
 	//char* hmiName = "CSVDvrBaseHmi";
 	CSVHmiIntent::GetInstance()->Intent(hmiName);
 	//char* hmiName = "CSVDvrBaseHmi";

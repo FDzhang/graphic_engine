@@ -121,6 +121,8 @@ int SVNodeAdasHMI::Update(void)
 	m_pLdwLine->Update();
 	m_pSingleviewRect->Update();
 	m_pBSDRadarIcon->Update();
+
+	m_AdasHMINode->SetEnable(0);
 	return 0;
 }
 void SVNodeAdasHMI::SetEnable(unsigned char flag)

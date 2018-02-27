@@ -116,20 +116,21 @@ int CAvmViewControlModel::InitViewNode()
 
     float stich_region_width = 0.35 *  XrGetScreenWidth();
 
-	float black_width = 80.0;
-	float left_panel_width = 100.0;
+	float black_width = 0.0;
+	float left_panel_width = 0.0;
+	float delta = -45.0;
 
 	stich2D_region[REGION_POS_LEFT] = 0.0 + left_panel_width;
-	stich2D_region[REGION_POS_RIGHT] = stich_region_width + left_panel_width;
+	stich2D_region[REGION_POS_RIGHT] = stich_region_width + left_panel_width + delta;
 	stich2D_region[REGION_POS_TOP] = 0+black_width;
 	stich2D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	single2D_region[REGION_POS_LEFT] = stich_region_width + left_panel_width;
+	single2D_region[REGION_POS_LEFT] = stich2D_region[REGION_POS_RIGHT];
 	single2D_region[REGION_POS_RIGHT] = XrGetScreenWidth();
 	single2D_region[REGION_POS_TOP] = 0+black_width;
 	single2D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	scene3D_region[REGION_POS_LEFT] = stich_region_width + left_panel_width;
+	scene3D_region[REGION_POS_LEFT] = stich2D_region[REGION_POS_RIGHT];
 	scene3D_region[REGION_POS_RIGHT] = XrGetScreenWidth();
 	scene3D_region[REGION_POS_TOP] = 0+black_width;
 	scene3D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
