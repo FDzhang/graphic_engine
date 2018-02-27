@@ -200,10 +200,6 @@ private:
 class CS302SettingMenuGuidelineActionTrigger : public IActionTrigger
 {
 public:
-    CS302SettingMenuReturnActionTrigger()
-    {
-        ;
-    }
     virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
     {
         int i = 0;
