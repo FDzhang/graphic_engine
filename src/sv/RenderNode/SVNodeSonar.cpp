@@ -6,7 +6,7 @@
 //#include "apa_modules_if.h"
 //#include "apa_interface.h"
 #include "apa_interface.h"
-#include "messagebus_api.h"
+//#include "messagebus_api.h"
 #include "gpu_log.h"
 
 /*----------------------------------------------
@@ -506,7 +506,7 @@ void SVNodeSonar::SetRadarPLDReslt()
 
 
 	}
-    MessageBus_SetTopic("PLD_RADAR_RESULT",&RadarPldRslt,sizeof(PLDRadarResult));
+    //MessageBus_SetTopic("PLD_RADAR_RESULT",&RadarPldRslt,sizeof(PLDRadarResult));
 	
 #if 0
 	if(pRadarPldRslt->sGround_Points[2].x < -3000 && 0 ==  m_track_park_lot_flag) 
@@ -624,8 +624,10 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 	 m_vehicle_state_buffer_index=0;
 	 ResetParkSlotInfo();
 	 TestVehicleMovment();
+	 /*
 	 MessageBus_CreateTopic("PLD_RADAR_RESULT",sizeof(PLDRadarResult));
 	 MessageBus_CreateTopic("RADAR_OBJ_POS",sizeof(SonarObjPos));
+	 */
 
 	 return 0;
 }
@@ -2087,7 +2089,7 @@ void SVNodeSonar::ProcessParkLotSearchLogic(void)
 
 	can_data = AVMData::GetInstance()->m_p_can_data->GetCANData();
 
-    MessageBus_GetTopic("RADAR_SLOT_CONTROL_INFO",&sSlotCtrl,sizeof(SlotControlInfo),false);
+    //MessageBus_GetTopic("RADAR_SLOT_CONTROL_INFO",&sSlotCtrl,sizeof(SlotControlInfo),false);
 
 	m_lot_upload_left_right_flag=sSlotCtrl.SelectPosition;
 
@@ -2415,7 +2417,7 @@ int  SVNodeSonar::Update(float steering_wheel_angle,float vehicle_speed,float le
 		 
 	    // fprintf(stdout,"   pos[%f,%f] dist[%f]",obj_pos_rslt.sonar_obj_pos[2*i],obj_pos_rslt.sonar_obj_pos[2*i+1],obj_dist[i]);
 	}
-	MessageBus_SetTopic("RADAR_OBJ_POS",&obj_pos_rslt,sizeof(SonarObjPos));
+	//MessageBus_SetTopic("RADAR_OBJ_POS",&obj_pos_rslt,sizeof(SonarObjPos));
 	
     for(int i=0;i<max_sonar_num;i++)
     {
