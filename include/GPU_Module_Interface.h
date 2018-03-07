@@ -221,6 +221,22 @@ typedef struct LkaLcResultTag
 }
 LkaLcResultT;
 
+typedef enum EolStatusTag
+{
+    EOL_CALIBRATION_STANDBY = 0,
+    EOL_CALIBRATION_PROCESS,
+    EOL_CALIBRATION_SUCCEEDED,
+    EOL_CALIBRATION_FAILED,
+    EOL_STATUS_NUM,
+}
+EolStatusT;
+
+typedef struct EolResultTag
+{
+    EolStatusT eolStatus;
+}
+EolResultT;
+
 typedef enum SystemTouchActionTag
 {
 	TOUCH_ACTION_NONE = 0,
@@ -283,6 +299,22 @@ typedef struct MainMenuDataTag
 }
 MainMenuDataT;
 
+typedef enum S302MainMenuElementIdTag
+{
+	S302_MAIN_MENU_EOL,
+	S302_MAIN_MENU_GUIDELINE,
+	S302_MAIN_MENU_PD,
+	S302_MAIN_MENU_ELEM_NUM,
+}
+S302MainMenuElementIdT;
+
+typedef struct S302MainMenuDataTag
+{
+	unsigned char iconStatus[S302_MAIN_MENU_ELEM_NUM];
+	unsigned char menuVisibility;
+}
+S302MainMenuDataT;
+
 typedef struct CtaResultTag
 {
 	unsigned char ctaStatus;
@@ -302,6 +334,7 @@ typedef enum RenderDataTypeTag
 	RENDER_DATA_CTA_RESULT,
 	RENDER_DATA_LKA_LC_RESULT,
 	RENDER_DATA_TP_RESULT,
+	RENDER_DATA_EOL_RESULT,
 	RENDER_DATA_ALGO_STATUS,
 	RENDER_DATA_SONAR_PLD_RESULT,
 	RENDER_DATA_SONAR_RESULT,

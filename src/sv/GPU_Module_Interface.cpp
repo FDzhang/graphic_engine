@@ -553,6 +553,14 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 		case RENDER_DATA_TP_RESULT:
 			CAvmRenderDataBase::GetInstance()->SetTpResult((Tp_Result*)renderData);
 		break;
+		case RENDER_DATA_EOL_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetEolResult((EolResultT*)renderData);
+
+			//debug code;need delete;
+			//EolResultT tmpTestResult;
+			//tmpTestResult.eolStatus = EOL_CALIBRATION_PROCESS;
+			//CAvmRenderDataBase::GetInstance()->SetEolResult(&tmpTestResult);
+		break;
 		case RENDER_DATA_MOUSE_ICON:
 			if(renderData)
 			{

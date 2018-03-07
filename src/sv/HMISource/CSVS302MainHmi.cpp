@@ -28,6 +28,7 @@
  * Standard Header Files
 \*===========================================================================*/
 #include "CSVS302MainHmi.h"
+#include "CSVDemoEolHmi.h"
 
 static unsigned char s302HmiElementShowImage[S302_MAIN_ELEMENT_NUM];
 static unsigned char s302ShowSettingMenu = 0;
@@ -206,6 +207,7 @@ public:
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
+        //can persist; Guideline is drawn by GPU, need not wait algo run;
         s302HmiElementShowImage[S302_SETTING_MENU_GUIDELINE_STATUS] = 1 - s302HmiElementShowImage[S302_SETTING_MENU_GUIDELINE_STATUS];
 
         Layout_Event_Payload_T* tmp_payload = NULL;
@@ -243,6 +245,7 @@ public:
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
+        //need delete, button should be control by SystemManager, NOT HMI;
         s302HmiElementShowImage[S302_SETTING_MENU_MOD_STATUS] = 1 - s302HmiElementShowImage[S302_SETTING_MENU_MOD_STATUS];
 
         Layout_Event_Payload_T* tmp_payload = NULL;
@@ -424,6 +427,9 @@ private:
 
 CSVS302MainHmi::CSVS302MainHmi()
 {
+    memset(m_subHmiInitFlag, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char)); 
+    memset(m_subHmiVisibility, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char));
+    memset(m_subHmi, NULL, S302_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
     memset(m_trigger, 0, S302_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
     memset(m_buttonVisibility, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
     memset(m_buttonShowImage, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
@@ -669,6 +675,20 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 
 int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 {
+    S302MainMenuDataT s302MainMenuData;
+    memset(&s302MainMenuData, 0, sizeof(S302MainMenuDataT));
+
+    //debug code,need delete;
+    /*static unsigned char initflag = 0;
+    if(initflag == 0)
+    {
+        s302MainMenuData.menuVisibility = 1;
+        CAvmRenderDataBase::GetInstance()->SetS302MainMenuStatus(&s302MainMenuData);
+        initflag=1;
+    }*/
+
+    CAvmRenderDataBase::GetInstance()->GetS302MainMenuStatus(&s302MainMenuData);
+
     for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
         m_buttonVisibility[i] = 1;
@@ -722,6 +742,56 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         default:
             m_buttonVisibility[S302_VIEW_STATUS_ICON] = 0;
             break;
+    }
+
+    if(m_buttonShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] == BUTTON_ON_IMAGE)
+    {
+        InitSubHmi(S302_DEMO_EOL_HMI);
+        if(m_subHmi[S302_DEMO_EOL_HMI])
+        {
+            //debug code, need delete;
+            /*CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(MATTS_VIEW);
+            S302MainMenuDataT tmpS302MainMenuData;
+            memset(&tmpS302MainMenuData, 0, sizeof(S302MainMenuDataT));
+            tmpS302MainMenuData.iconStatus[S302_MAIN_MENU_EOL] = 1;
+            tmpS302MainMenuData.menuVisibility = 0;
+            CAvmRenderDataBase::GetInstance()->SetS302MainMenuStatus(&tmpS302MainMenuData);*/
+
+            m_subHmiVisibility[S302_DEMO_EOL_HMI] = 1;
+            m_subHmi[S302_DEMO_EOL_HMI]->Update(hmiMsg);
+        }
+    }
+    else
+    {
+        m_subHmiVisibility[S302_DEMO_EOL_HMI] = 0;
+        FreeSubHmi(S302_DEMO_EOL_HMI);
+    }
+
+    //debug code;need delete;
+    /*EolResultT eolResult;
+    memset(&eolResult, 0, sizeof(EolResultT));
+    CAvmRenderDataBase::GetInstance()->GetEolResult(&eolResult);
+    if(eolResult.eolStatus == EOL_CALIBRATION_FAILED || eolResult.eolStatus == EOL_CALIBRATION_SUCCEEDED)
+    {
+        S302MainMenuDataT tmpS302MainMenuData;
+        memset(&tmpS302MainMenuData, 0, sizeof(S302MainMenuDataT));
+        tmpS302MainMenuData.iconStatus[S302_MAIN_MENU_EOL] = 0;
+        tmpS302MainMenuData.menuVisibility = 1;
+        CAvmRenderDataBase::GetInstance()->SetS302MainMenuStatus(&tmpS302MainMenuData);
+        s302HmiElementShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] = 0;
+    }*/
+
+    if(s302MainMenuData.iconStatus[S302_MAIN_MENU_PD] == 1)
+    {
+    }
+    else
+    {
+    }
+
+    if(s302MainMenuData.menuVisibility == 0)
+    {
+        //memset(m_subHmiVisibility, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char));
+        memset(m_buttonVisibility, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
     }
 
     RefreshHmi();
@@ -782,6 +852,32 @@ int CSVS302MainHmi::RefreshHmi()
     }
     return S302_MAIN_HMI_NORMAL;
 }
+
+void CSVS302MainHmi::InitSubHmi(unsigned char pHmiIndex)
+{
+    if(m_subHmiInitFlag[pHmiIndex] == 0)
+    {
+        switch(pHmiIndex)
+        {
+            case S302_DEMO_EOL_HMI:
+                m_subHmi[pHmiIndex] = new CSVDemoEolHmi(m_uiNode, m_uiNodeId);
+            break;
+            default:
+            break;
+        }
+        m_subHmi[pHmiIndex]->Init(m_screenWidth, m_screenHeight);
+        m_subHmiVisibility[pHmiIndex] = 1;
+        m_subHmiInitFlag[pHmiIndex] = 1;
+    }
+
+}
+void CSVS302MainHmi::FreeSubHmi(unsigned char pHmiIndex)
+{
+    m_subHmiVisibility[pHmiIndex] = 0;
+    SAFE_DELETE(m_subHmi[pHmiIndex]);
+    m_subHmiInitFlag[pHmiIndex] = 0;
+}
+
 
 int CSVS302MainHmi::SetElementsVisibility(unsigned char pFlag)
 {

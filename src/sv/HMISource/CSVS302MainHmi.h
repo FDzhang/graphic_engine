@@ -75,6 +75,15 @@ typedef enum S302MainHmiElementTag
 }
 S302MainHmiElementT;
 
+typedef enum S302MenuAlgoHmiTag
+{
+    S302_DEMO_EOL_HMI = 0,
+    S302_DEMO_GUIDELINE_HMI,
+    S302_DEMO_MOD_HMI,
+    S302_MENU_SUB_HMI_NUM,	
+}
+S302MenuAlgoHmiT;
+
 class CSVS302MainHmi : public ISVHmi
 {
 public:
@@ -88,6 +97,8 @@ public:
 private:
     int SetHmiParams();
     int RefreshHmi();
+    void InitSubHmi(unsigned char pHmiIndex);
+    void FreeSubHmi(unsigned char pHmiIndex);
 
 private:
     Hmi_Button_Data_T m_baseButtonData[S302_MAIN_ELEMENT_NUM];
@@ -100,6 +111,10 @@ private:
     unsigned char m_buttonShowImage[S302_MAIN_ELEMENT_NUM];
 
     IActionTrigger*	m_trigger[S302_MAIN_ELEMENT_NUM];
+
+    unsigned char m_subHmiInitFlag[S302_MENU_SUB_HMI_NUM];
+    unsigned char m_subHmiVisibility[S302_MENU_SUB_HMI_NUM];
+    ISVHmi*       m_subHmi[S302_MENU_SUB_HMI_NUM];
 
     ISVHmi* m_cameraHmi;
 

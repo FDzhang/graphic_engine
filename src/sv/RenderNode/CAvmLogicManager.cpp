@@ -155,6 +155,7 @@ int CAvmLogicManager::InitHmi()
 	char* hmiName = "CSVChangAnMainHmi";
 	//char* hmiName = "CSVDemoMainHmi";
 	//char* hmiName = "CSVDvrBaseHmi";
+	//char* hmiName = "CSVS302MainHmi";
 	CSVHmiIntent::GetInstance()->Intent(hmiName);
 	//char* hmiName = "CSVDvrBaseHmi";
 	//CSVHmiIntent::GetInstance()->Intent(hmiName);	

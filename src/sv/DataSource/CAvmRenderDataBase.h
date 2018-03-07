@@ -201,6 +201,8 @@ public:
 
 	PropertyBuilderByName(LkaLcResultT, LkaLcResult, private)
 	PropertyBuilderByName(MainMenuDataT, MainMenuStatus, private)
+	PropertyBuilderByName(S302MainMenuDataT, S302MainMenuStatus, private)
+	PropertyBuilderByName(EolResultT, EolResult, private)
 	PropertyBuilderByName(Tp_Result, TpResult, private)
 	PropertyBuilderByName(PLDRadarResult, SonarResult, private)
 
