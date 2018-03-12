@@ -148,8 +148,7 @@ CSVChangAnMainHmi::CSVChangAnMainHmi()
 	}
 	hmiElementVisibility[CHANGAN_MAIN_MENU_ENTER_ICON] = 1;
 
-	m_cameraHmi = NULL;
-	//m_cameraHmi = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
+	m_cameraHmi = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
 
 }
 

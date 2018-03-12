@@ -477,7 +477,7 @@ void ProcCanData(CAN_DATA* pCanData)
     AVMData::GetInstance()->m_p_can_data->UpdateCANData(*pCanData);
 }
 
-int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int dataLength)
+int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int dataLength)
 {
 	unsigned char currentViewStatus = 0;
 	switch(dataTypeId)
@@ -486,7 +486,7 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 			static unsigned char lastViewStatus = 254;
 			currentViewStatus = *((unsigned char*)renderData);
 		
-			Log_Error("--------RENDER_DATA_VIEW_CMD: %d", currentViewStatus);
+			//Log_Error("--------RENDER_DATA_VIEW_CMD: %d", currentViewStatus);
 			if(currentViewStatus != lastViewStatus)
 			{
 				CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(currentViewStatus);
@@ -520,6 +520,7 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 		break;
 		case RENDER_DATA_APA_RESULT:
 			ProcApa((APAOverlayStruct*)renderData);
+			CAvmRenderDataBase::GetInstance()->SetApaResult((APAOverlayStruct*)renderData);
 
 		break;
 		case RENDER_DATA_CTA_RESULT:
@@ -552,6 +553,12 @@ int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int d
 		break;
 		case RENDER_DATA_TP_RESULT:
 			CAvmRenderDataBase::GetInstance()->SetTpResult((Tp_Result*)renderData);
+		break;
+		case RENDER_DATA_SEA_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetSeaResult((Sea_Result_T*)renderData);
+		break;
+		case RENDER_DATA_MOD_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetModResult((Mod_Result_T*)renderData);
 		break;
 		case RENDER_DATA_EOL_RESULT:
 			CAvmRenderDataBase::GetInstance()->SetEolResult((EolResultT*)renderData);

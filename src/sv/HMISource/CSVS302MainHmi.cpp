@@ -745,7 +745,7 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
             break;
     }
 
-//    if(m_buttonShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] == BUTTON_ON_IMAGE)
+    if(m_buttonShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] == BUTTON_ON_IMAGE)
     {
         InitSubHmi(S302_DEMO_EOL_HMI);
         if(m_subHmi[S302_DEMO_EOL_HMI])
@@ -763,11 +763,11 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 //Log_Error("m_subHmi[S302_DEMO_EOL_HMI]->Update");			
         }
     }
-//    else
-//    {
-//        m_subHmiVisibility[S302_DEMO_EOL_HMI] = 0;
-//        FreeSubHmi(S302_DEMO_EOL_HMI);
-//    }
+    else
+    {
+        m_subHmiVisibility[S302_DEMO_EOL_HMI] = 0;
+        FreeSubHmi(S302_DEMO_EOL_HMI);
+    }
 
     //debug code;need delete;
     /*EolResultT eolResult;

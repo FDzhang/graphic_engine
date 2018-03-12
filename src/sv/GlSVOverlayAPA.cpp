@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-
+#include "gpu_log.h"
 
 /*----------------------------------------------
 
@@ -179,36 +179,36 @@ void GlSVOverlayAPA::ProcessStopSign(unsigned char sopt_flag,unsigned char end_f
 	m_pSignNode->GetMaterial(&pTempMaterial);
    if((sopt_flag == 1)&&(end_flag == 1))
    {
-       m_pSignNode->SetEnable(1);
+       m_pSignNode->SetEnable(0);
 	   pTempMaterial->SetDiffuseMap(m_stop_sign_texture);
    }
    else if((sopt_flag == 1)&&(end_flag == 0))
    {
 
-       m_pSignNode->SetEnable(1);
+       m_pSignNode->SetEnable(0);
        pTempMaterial->SetDiffuseMap(m_stop_sign_texture);
   
    }
    else if((sopt_flag ==0)&&(end_flag == 1))
    {
 
-       m_pSignNode->SetEnable(1);
+       m_pSignNode->SetEnable(0);
        pTempMaterial->SetDiffuseMap(m_end_sign_texture);
   
    }
    else if(park_lot_flag == 1&&(online_detect_flag == 0))
    {
-       m_pSignNode->SetEnable(1);
+       m_pSignNode->SetEnable(0);
        pTempMaterial->SetDiffuseMap(m_parklotdetect_texture);
    }  
    else if(park_lot_flag == 0&&(online_detect_flag == 1))
    {
-       m_pSignNode->SetEnable(1);
+       m_pSignNode->SetEnable(0);
        pTempMaterial->SetDiffuseMap(m_online_enable_texture);
    }  
    else if(park_lot_flag == 1&&(online_detect_flag == 1))
    {
-       m_pSignNode->SetEnable(1);
+       m_pSignNode->SetEnable(0);
        pTempMaterial->SetDiffuseMap(m_online_apa_conflict_texture);
    }    
    else
@@ -224,13 +224,13 @@ void GlSVOverlayAPA::ProcessArrowSign(int direct_indicate)
 	m_pArrowNode->GetMaterial(&pTempMaterial);
    if(direct_indicate ==DRIVE_BACKWARD)
    {
-       m_pArrowNode->SetEnable(1);
+       m_pArrowNode->SetEnable(0);
 	   pTempMaterial->SetDiffuseMap(m_backward_arrow_texture);
    }
    else if(direct_indicate ==DRIVE_FOWARD)
    {
 
-       m_pArrowNode->SetEnable(1);
+       m_pArrowNode->SetEnable(0);
        pTempMaterial->SetDiffuseMap(m_foward_arrow_texture);
   
    }
@@ -264,7 +264,7 @@ void GlSVOverlayAPA::ProcessScrollSign(int direct_indicate,float scroll_rate)
 	    pTempMaterial->SetDiffuseMap(m_scroll_backward_texture);	
 	}
 	
-	m_pScrollNode->SetEnable(1);
+	m_pScrollNode->SetEnable(0);
 	CalScrollPos(scroll_rate,pInput,pOutput,direct_indicate);
 
 
@@ -289,7 +289,7 @@ void GlSVOverlayAPA::ProcessParkLotSign(int park_lot_flag,float *lot_pos,unsigne
 	    return;
 	}
 	
-    m_pParkLotNode->SetEnable(1);
+    m_pParkLotNode->SetEnable(0);
 
 	for(int i =0;i<4;i++)
 	{

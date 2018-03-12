@@ -226,7 +226,7 @@ public:
 
 
 	int GenerateSideSingleViewLUT(int camera_index,float *pVert);
-	int InitSideViewBuffer(int width, int height, GLfloat **pData, GLushort **pIndex, unsigned int *puiVertSize, unsigned int *puiIndexSize);
+	int InitSideViewBuffer(int width, int height, GLfloat **pData, GLushort **pIndex, unsigned int *puiVertSize, unsigned int *puiIndexSize,unsigned char index_flag = 0);
 	void AdjustSideSingleViewLUT(int camera_index,unsigned char adjust_port,unsigned char adjust_direct);
 	int InitFrontRearViewBuffer(int width,int height,GLfloat **pData,GLushort **pIndex,unsigned int *puiVertSize,unsigned int *puiIndexSize);
 	int GenerateFrontRearSingleViewLUT(int camera_index,float *pVert);

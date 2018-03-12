@@ -19,6 +19,8 @@
 #include "../HMI/HMIDialog.h"
 #include "../HMI/HMIScroll.h"
 #include "../HMI/HMIPolygonBox.h"
+#include "../HMI/HMIGuideLine.h"
+
 
 #include "../CGpuAvmEventDelegate.h"
 

@@ -47,7 +47,7 @@ PolygonBoxRenderRegionTag;
 
 enum
 {
-	MAX_POLYGON_BOX_IMAGE_NUM = 4,
+	MAX_POLYGON_BOX_IMAGE_NUM = 10,
 };
 
 enum

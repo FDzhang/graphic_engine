@@ -280,6 +280,8 @@ typedef enum MainMenuElementIdTag
 	MAIN_MENU_ONLINE,
 	MAIN_MENU_EOL,
 	MAIN_MENU_GUIDELINE,
+	MAIN_MENU_SEA,
+	MAIN_MENU_MOD,
 	MAIN_MENU_ELEM_NUM,
 }
 MainMenuElementIdT;
@@ -335,6 +337,8 @@ typedef enum RenderDataTypeTag
 	RENDER_DATA_CTA_RESULT,
 	RENDER_DATA_LKA_LC_RESULT,
 	RENDER_DATA_TP_RESULT,
+	RENDER_DATA_SEA_RESULT,
+	RENDER_DATA_MOD_RESULT,
 	RENDER_DATA_EOL_RESULT,
 	RENDER_DATA_ALGO_STATUS,
 	RENDER_DATA_SONAR_PLD_RESULT,
@@ -361,7 +365,7 @@ RenderDataT;
 
 
 DLL_PUBLIC int SetRenderData(RenderDataT* pRenderData);	
-DLL_PUBLIC int UpdateRenderData(unsigned short dataTypeId, void* renderData, unsigned int dataLength);
+DLL_PUBLIC int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int dataLength);
 
 DLL_PUBLIC void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 DLL_PUBLIC void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf);

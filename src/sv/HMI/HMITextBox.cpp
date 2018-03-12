@@ -124,6 +124,11 @@ int HMITextBox::Update(void)
     	    {
     	    
 			    m_ptext_box_slot[i].pText[j]->SetEnable(1);
+				if(m_ptext_box_slot[i].text_line_num == 1)
+    	    	{
+					m_ptext_box_slot[i].pText[j]->SetX(m_ptext_box_slot[i].p_text_box_data->pos[0]);
+					m_ptext_box_slot[i].pText[j]->SetY(m_ptext_box_slot[i].p_text_box_data->pos[1]);
+				}
         	    m_ptext_box_slot[i].pText[j]->SetText(m_ptext_box_slot[i].p_text_box_data->text_content[j]);
                 m_ptext_box_slot[i].pText[j]->SetColor(m_ptext_box_slot[i].p_text_box_data->text_color[0],m_ptext_box_slot[i].p_text_box_data->text_color[1],m_ptext_box_slot[i].p_text_box_data->text_color[2]);
     	    }

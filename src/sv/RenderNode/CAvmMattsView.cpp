@@ -58,9 +58,14 @@ static GLfloat fVerticesMattsSingleView[200]={
 			RIGHT_X_END,BOTTOM_Y_END,1.000000,TEXTURE_RIGHT,TEXTURE_BOTTOM,1.0,0.0,
  };
 
-CAvmMattsView::CAvmMattsView()
+CAvmMattsView::CAvmMattsView():m_singleViewNode(0)
 {
-
+	for(int i = 0; i < 4; i++)
+	{
+		m_singleViewPlaneNode[i] = NULL;
+		m_singleViewVertex[i] = NULL;
+		m_singleViewMesh[i] = NULL;
+	}
 }
 CAvmMattsView::~CAvmMattsView()
 {

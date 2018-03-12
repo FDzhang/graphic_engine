@@ -196,6 +196,7 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	memcpy(m_pAVMData->m_right_single_view_rect,config.right_single_view_rect,4*sizeof(float));
 
 	m_pAVMData->m_Veh_Data = config.vehicle_para;
+    m_pAVMData->m_vehParam = config.pSmc->veh_param;
 
 }
 void AVMData::CalcUVTextureSV(float *pWorld,float *texture,int chann)
@@ -233,6 +234,18 @@ float AVMData::GetRearSingleViewRect(int index)
 
 	return m_pAVMData->m_rear_single_view_rect[index];
 }
+float AVMData::GetLeftSingleViewRect(int index)
+{
+
+	return m_pAVMData->m_left_single_view_rect[index];
+}
+float AVMData::GetRightSingleViewRect(int index)
+{
+
+	return m_pAVMData->m_right_single_view_rect[index];
+}
+
+
 
 void AVMData::GetFrontSingleViewRect(float *pData)
 {
@@ -250,6 +263,10 @@ void AVMData::GetVehicleParam(SV_VEHICLE_PARAM_T **pVehicleData)
 	*pVehicleData = &m_pAVMData->m_Veh_Data;
 }
 
+void AVMData::GetVehicleParam(Veh_Param_T **pVehicleData)
+{
+    *pVehicleData = &m_pAVMData->m_vehParam;
+}
 
 void AVMData::GetBevConfig(BEV_CONFIG_T* pConfig)
 {
@@ -326,7 +343,7 @@ void AVMData::cvtWorldPoint2Stich2DPoint(float *out_stich_Coord,float *in_world_
 	out_stich_Coord[1] = outPoint.y;
 	out_stich_Coord[2] = 0.1;
 }
-void AVMData::cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,bool single_view_index)
+void AVMData::cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,unsigned char single_view_index)
 {
     float in_coord_normal[2];
 	float camera_width,camera_height;

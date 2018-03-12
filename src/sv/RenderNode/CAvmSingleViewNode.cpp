@@ -31,7 +31,7 @@ static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 
-CAvmSingleViewNode::CAvmSingleViewNode():m_singleViewCameraParams(0)
+CAvmSingleViewNode::CAvmSingleViewNode():m_singleViewCameraParams(0),m_SV2DData(0)
 {
 }
 CAvmSingleViewNode::~CAvmSingleViewNode()

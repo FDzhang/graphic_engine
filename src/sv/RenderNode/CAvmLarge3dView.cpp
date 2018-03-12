@@ -26,7 +26,7 @@
 #include "CAvmLarge3dView.h"
 #include "../AVMData.h"
 
-CAvmLarge3dView::CAvmLarge3dView():m_lastLargeViewCmd(255)
+CAvmLarge3dView::CAvmLarge3dView():m_lastLargeViewCmd(255),m_3dViewNode(0),m_objViewNode(0)
 {
 }
 CAvmLarge3dView::~CAvmLarge3dView()

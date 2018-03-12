@@ -110,11 +110,15 @@ int CAvmLogicManager::InitAlgoHmiModel()
 	BEV_CONFIG_T bevConfig;
 	AVMData::GetInstance()->GetBevConfig(&bevConfig);
 
-	ISceneNode* singleViewNode;
-	ISceneNode* stitchViewNode;
+	ISceneNode* singleViewNode = NULL;
+	ISceneNode* stitchViewNode = NULL;
 	CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&singleViewNode);
 	CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&stitchViewNode);
-	m_adasHmi->Init(bevConfig,singleViewNode,stitchViewNode,m_adasMdl,m_hmiNums);
+	if(singleViewNode != NULL
+		&& stitchViewNode != NULL)
+	{
+		m_adasHmi->Init(bevConfig,singleViewNode,stitchViewNode,m_adasMdl,m_hmiNums);
+	}
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 

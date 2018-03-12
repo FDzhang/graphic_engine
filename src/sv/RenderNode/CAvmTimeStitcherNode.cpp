@@ -37,7 +37,7 @@ static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.fr
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 static char c_SV2DFragCarImageShaderSrcFile[]   = XR_RES"OVFragShaderSV2DCar.frg";
 
-CAvmTimeStitcherNode::CAvmTimeStitcherNode():m_stitchViewCameraParams(0)
+CAvmTimeStitcherNode::CAvmTimeStitcherNode():m_stitchViewCameraParams(0),m_SV2DData(0)
 {
 
 }
@@ -163,7 +163,7 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 
 	CAvmRenderDataBase::GetInstance()->SetStitchViewNode(m_stitchViewNode);
 
-	m_overlay = new CAvmApaBevOverlay;
+	//m_overlay = new CAvmApaBevOverlay;
 
 	m_sonarNode = new SVNodeSonar;
 	BEV_CONFIG_T bevConfig;
@@ -214,7 +214,7 @@ int CAvmTimeStitcherNode::UpdateNode()
 
 	lastTime = currentTime;
 
-	AddOverlay(m_overlay);
+	//AddOverlay(m_overlay);
 	
 	float *pdist =	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
 	m_sonarNode->Update(steer_angle, speed,

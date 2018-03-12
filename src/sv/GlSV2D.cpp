@@ -221,10 +221,10 @@ int GlSV2D::InitLinear()
 
 	 #ifdef _READ_BIN_FILE_
 
-	 for(int i=0;i<8;i++)
+	 //for(int i=0;i<8;i++)
 	 {
-		 AVMData::GetInstance()->m_2D_lut->GetLutData(&m_pfVertexBuff[i],i);
-		 AVMData::GetInstance()->m_2D_lut->GetLutIndex(&m_pucIndexBuff[i],i);
+		 //AVMData::GetInstance()->m_2D_lut->GetLutData(&m_pfVertexBuff[i],i);
+		 //AVMData::GetInstance()->m_2D_lut->GetLutIndex(&m_pucIndexBuff[i],i);
 	 
 
 	 }
@@ -234,35 +234,41 @@ int GlSV2D::InitLinear()
 
 	 #endif
 
-	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[0],rect_left);
-	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[1],rect_top);
-	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[7],rect_right);
-	 AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[15],rect_bottom);
+	// AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[0],rect_left);
+	// AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[1],rect_top);
+	// AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[7],rect_right);
+	// AVMData::GetInstance()->m_2D_lut->GetCarRect(&fCarView[15],rect_bottom);
 
 
-    fCarView[8] = fCarView[1];
-    fCarView[14] = fCarView[0];
-	fCarView[21] = fCarView[7];
-    fCarView[22] = fCarView[15];
+    //fCarView[8] = fCarView[1];
+   // fCarView[14] = fCarView[0];
+	//fCarView[21] = fCarView[7];
+    //fCarView[22] = fCarView[15];
 
 	 
-	//m_pfVertexBuff[eSingleViewMesh] = fVerticesSingleView;
-    m_pfVertexBuff[eCarImageMesh] = fCarView;
-	for(int i=eFrontSingle;i<eRightSingle;i++)
-	{
-	     m_pfVertexBuff[i]= fVerticesSingleView+28*(i-eFrontSingle);
-		 
-		 m_pucIndexBuff[i] = RectIndex;
-	}	 //
+    //m_pfVertexBuff[eCarImageMesh] = fCarView;
+	//for(int i = eFrontSingle; i < eMeshIndexMax; i++)
+	//{
+	//     m_pfVertexBuff[i]= fVerticesSingleView+28*(i-eFrontSingle);
+	//	 
+	//	 m_pucIndexBuff[i] = RectIndex;
+	//}	 
 
 #if 1
 
     InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eLeftSingle],&m_pucIndexBuff[eLeftSingle],
-		&m_SideViewVertSize[left_camera_index],&m_SideViewIndexSize[left_camera_index]);
+		&m_SideViewVertSize[left_camera_index],&m_SideViewIndexSize[left_camera_index], 1);
+	GenerateSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
+
 	InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
 	&m_pfVertexBuff[eRightSingle],&m_pucIndexBuff[eRightSingle],
 		&m_SideViewVertSize[right_camera_index],&m_SideViewIndexSize[right_camera_index]);
+
+	m_pucIndexBuff[eRightSingle] = m_pucIndexBuff[eLeftSingle];
+	m_SideViewIndexSize[right_camera_index] = m_SideViewIndexSize[left_camera_index];
+	
+	GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
 	/*InitFrontRearViewBuffer(FRONT_CLC_VIEW_MESH_WIDTH,FRONT_CLC_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eFrontSingle],&m_pucIndexBuff[eFrontSingle],
 		&m_SideViewVertSize[front_camera_index],&m_SideViewIndexSize[front_camera_index]);
@@ -271,8 +277,7 @@ int GlSV2D::InitLinear()
 		&m_SideViewVertSize[rear_camera_index],&m_SideViewIndexSize[rear_camera_index]);
 */
 	//GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
-	GenerateSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
-	GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+	
 	//GenerateFrontRearSingleViewLUT(front_camera_index,m_pfVertexBuff[eFrontSingle]);
 	//GenerateFrontRearSingleViewLUT(rear_camera_index,m_pfVertexBuff[eRearSingle]);
 
@@ -287,7 +292,7 @@ int GlSV2D::InitLinear()
 	ret = InitSideViewParams(&m_pfVertexBuff[eRearSingle], &m_pucIndexBuff[eRearSingle], rear_camera_index);
 
 #endif
-	m_pucIndexBuff[eCarImageMesh] = RectIndex;
+	//m_pucIndexBuff[eCarImageMesh] = RectIndex;
 	//m_pucIndexBuff[eRightBottomMesh] = RectIndex;
 
 	m_camType = CAM_LEFT_LINEAR;
@@ -422,20 +427,21 @@ int GlSV2D::GetIndexBuffer(int Index,GLushort **pIndexBuffer, unsigned int *BufS
 
 extern "C" FLT_T Cam_Lut_Linear[];
 //for side single view undistortion and turn function
-int GlSV2D::InitSideViewBuffer(int width,int height,GLfloat **pData,GLushort **pIndex,unsigned int *puiVertSize,unsigned int *puiIndexSize)
+int GlSV2D::InitSideViewBuffer(int width,int height,GLfloat **pData,GLushort **pIndex,unsigned int *puiVertSize,unsigned int *puiIndexSize, unsigned char index_flag)
 {
 	GLushort *pIndexTemp;
 	float Rot[3]={-1.57,0,0};
 	*pData = (GLfloat*)malloc(width*height*7*4);
 	int x, y;
-	*pIndex = (GLushort*)malloc((width-1)*(height-1)*6*2);
+	//*pIndex = (GLushort*)malloc((width-1)*(height-1)*6*2);
 	*puiIndexSize = (width-1)*(height-1)*6;
 	*puiVertSize = width*height*7;
-	
-	int slotId=0;
-	pIndexTemp = *pIndex;
 
-	//FILE* temp_file = fopen("text_wjx_index.txt","w");
+	if(index_flag == 1)
+	{
+		int slotId=0;
+		*pIndex = (GLushort*)malloc((width-1)*(height-1)*6*2);
+		pIndexTemp = *pIndex;
 
 	for (y=0; y<width-1; y++) {
 		for (x=0; x<height-1; x++) {
@@ -447,23 +453,16 @@ int GlSV2D::InitSideViewBuffer(int width,int height,GLfloat **pData,GLushort **p
 			pIndexTemp[slotId + 4] = (y + 1)*width + x + 1;
 			pIndexTemp[slotId + 5] = (y + 1)*width + x;
 
-			/*fprintf(temp_file, "%d,",pIndexTemp[slotId]);
-			fprintf(temp_file, "%d,",pIndexTemp[slotId + 1]);
-			fprintf(temp_file, "%d,",pIndexTemp[slotId + 2]);
-			fprintf(temp_file, "%d,",pIndexTemp[slotId + 3]);
-			fprintf(temp_file, "%d,",pIndexTemp[slotId + 4]);
-			fprintf(temp_file, "%d,\n",pIndexTemp[slotId + 5]);
-			*/
-			slotId+=6;
+				slotId+=6;
+
+			}
+		}
+
+		if(slotId == *puiIndexSize)
+		{
+		    printf("\r\n succeed in size check");
 		}
 	}
-
-    if(slotId == *puiIndexSize)
-    {
-        printf("\r\n succeed in size check");
-    }
-
-	//fclose(temp_file);
 
 	return 0;
 

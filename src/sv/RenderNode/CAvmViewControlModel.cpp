@@ -97,7 +97,9 @@ int CAvmViewControlModel::InitViewNode()
 
 	
 	m_xrCore = GetXrCoreInterface();
+	m_rm = NULL;
 	m_xrCore->GetDeviceManager(&m_rm);
+	m_am = NULL;
 	m_xrCore->GetAnimationManager(&m_am);
 
 	GlSV2D* sv2d = new GlSV2D;
@@ -224,10 +226,6 @@ int CAvmViewControlModel::InitViewNode()
 	{
 		m_avm180DegreeView->SetClear(FALSE, FALSE);
 	}
-	if(m_avmLeftRightView && m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
-	{
-		m_avmLeftRightView->SetClear(FALSE, FALSE);
-	}	
 	if(m_avm3dViewNode->InitNode(m_xrCore) == AVM_3DVIEW_NORMAL)
 	{
 		m_avm3dViewNode->SetClear(FALSE,FALSE);
@@ -777,6 +775,14 @@ int CAvmViewControlModel::ProcessLeftRightView()
 
 	if(leftRightViewCmd == LEFT_RIGHT_LINEAR_VIEW)
 	{
+		if(m_avmLeftRightView == NULL)
+		{
+			m_avmLeftRightView = new CAvmLeftRightView;
+			if(m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
+			{
+				m_avmLeftRightView->SetClear(FALSE, FALSE);
+			}
+		}
 		CAvmRenderDataBase::GetInstance()->Set3dViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetStitchViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
 		CAvmRenderDataBase::GetInstance()->SetSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);

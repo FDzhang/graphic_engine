@@ -96,7 +96,7 @@ HMIPolygonBox::~HMIPolygonBox()
 	m_polygonBoxData->renderNode->ReleaseMaterial(m_mtlId);
 	m_polygonBoxData->renderNode->ReleaseMesh(m_meshId);
 
-	delete m_polygonBoxData;
+	//SAFE_DELETE(m_polygonBoxData)
 
 }
 int HMIPolygonBox::Update(float* pVertex, unsigned char pCameraIndex)
@@ -184,10 +184,13 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 		
 		for(int i = 0; i < 2; i++)
 		{
-			k[0 + i] = (y[0 + i] - y[2 + i])/(x[0 + i] - x[2 + i]);
 			if((IsFloatEqual(x[0 + i], x[2 + i], 0.0001)))
 			{
 				k[0 + i] = 0.00001;
+			}
+			else
+			{
+				k[0 + i] = (y[0 + i] - y[2 + i])/(x[0 + i] - x[2 + i]);
 			}
 			if(k[0 + i] == 0.0)
 			{
@@ -205,7 +208,8 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 				y[2 + i] = y[0 + i];
 				y[0 + i] = y[2 + i] - interval;
 			}
-			else
+			else if(k[0 + i] > 1.0
+				|| k[0 + i] < -1.0)
 			{
 				y[4 + i] = y[2 + i];
 				y[6 + i] = y[4 + i] + interval;
@@ -217,6 +221,28 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 				x[0 + i] = (y[0 + i] - b[0 + i])/k[0 + i];
 				x[6 + i] = (y[6 + i] - b[0 + i])/k[0 + i];
 			}
+			else if(k[0 + i] <= 1.0
+					&& k[0 + i] >= -1.0)
+			{
+				x[4 + i] = x[2 + i];
+				x[2 + i] = x[0 + i];
+				if(x[2 + i] < x[4 + i])
+				{
+					x[0 + i] = x[2 + i] - interval;
+					x[6 + i] = x[4 + i] + interval;
+				}
+				else if(x[2 + i] > x[4 + i])
+				{
+					x[0 + i] = x[2 + i] + interval;
+					x[6 + i] = x[4 + i] - interval;
+				}
+
+				y[4 + i] = y[2 + i];
+				y[2 + i] = y[0 + i];
+				y[0 + i] = k[0 + i] * x[0 + i] + b[0 + i];
+				y[6 + i] = k[0 + i] * x[6 + i] + b[0 + i];	
+			}
+
 		}
 
 		slotid = 0;

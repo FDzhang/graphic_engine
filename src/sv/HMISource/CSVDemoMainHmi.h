@@ -36,6 +36,34 @@
 #include <memory>
 #include "ISVHmi.h"
 
+typedef enum Demo_Guideline_Type_Tag
+{
+    DEMO_GUIDELINE_BEV_DYNAMIC_POS_L,
+    DEMO_GUIDELINE_BEV_DYNAMIC_POS_R,
+
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R,
+   
+	DEMO_GUIDELINE_LEFT_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_RIGHT_SINGLEVIEW_STATIC,
+
+    DEMO_GUIDELINE_REAR_1mL_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_1mR_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mL_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mR_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mL_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mR_SINGLEVIEW_STATIC,
+
+    DEMO_GUIDELINE_REAR_1mL_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_1mR_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mL_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mR_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mL_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mR_HORIZON_SINGLEVIEW_STATIC,
+
+    DEMO_GUIDELINE_NUM,
+}
+Demo_Guideline_Type_T;
 
 typedef enum DemoHmiElementTag
 {
@@ -50,7 +78,9 @@ typedef enum DemoHmiElementTag
 	DEMO_MAIN_MENU_PARKING_T,
 	DEMO_MAIN_MENU_CTA,
 	DEMO_MAIN_MENU_PD,
-	DEMO_MAIN_MENU_DVR,
+	DEMO_MAIN_MENU_SEA,
+	DEMO_MAIN_MENU_MOD,
+	DEMO_MAIN_MENU_DVR,	
 	DEMO_MAIN_ELEMENT_NUM,
 }
 DemoMainHmiElementT;
@@ -60,6 +90,9 @@ typedef enum DemoMenuAlgoHmiTag
 {
 	DEMO_LKA_LC_HMI = 0,
 	DEMO_TP_HMI,
+	DEMO_SEA_HMI,
+	DEMO_MOD_HMI,
+	DEMO_APA_HMI,
 	DEMO_SWITCH_VIEW_HMI,
 	DEMO_MENU_SUB_HMI_NUM,	
 }
@@ -79,6 +112,11 @@ private:
 	void SetHmiElementProperty(unsigned char pIconIndex, float pIconPosX, float pIconPosY, float pIconWidth, float pIconHeight);
 	void InitSubHmi(unsigned char pHmiIndex);
 	void FreeSubHmi(unsigned char pHmiIndex);
+
+    void SetHmiGuideline();
+    void RefreshHmiGuideline();
+    
+
 private:
 	Hmi_Button_Data_T m_baseButtonData[DEMO_MAIN_ELEMENT_NUM];
     HMIButton* m_baseButton[DEMO_MAIN_ELEMENT_NUM];
@@ -97,6 +135,10 @@ private:
 	
 	int m_screenWidth;
 	int m_screenHeight;
+
+    HMIGuideLineDataT   m_guideLineData[DEMO_GUIDELINE_NUM];
+    HMIGuideLine*       m_guideLine[DEMO_GUIDELINE_NUM];
+    
 public:	
 
 };

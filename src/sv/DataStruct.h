@@ -38,8 +38,10 @@
 #include "smc.h"
 #include "commondef.h"
 #include "Database.h"
+#include "mod_embed_interface.h"
 #include "cta_embed_interface.h"
 #include "tp_embed_interface.h"
+#include "sea_embed_interface.h"
 #include "apa_modules_if.h"
 
 /*===========================================================================*\
@@ -73,8 +75,12 @@ typedef enum GpuErrorCodeTag
 	DEMO_HMI_NORMAL,
 	DEMO_LKA_HMI_NORMAL,
 	DEMO_SP_HMI_NORMAL,
+	DEMO_SEA_HMI_NORMAL,
+	DEMO_MOD_HMI_NORMAL,
 	TRAINED_PARKING_HMI_NORMAL,
+	DEMO_APA_HMI_NORMAL,
 	DEMO_EOL_HMI_NORMAL,
+	GET_SINGEL_VIEW_NODE_NULL,
 	HMI_ELEMENT_NULL,
 	GPU_ERROR_CODE_NUMS,
 }

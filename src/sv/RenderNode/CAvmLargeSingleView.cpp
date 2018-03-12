@@ -26,8 +26,15 @@
 #include "CAvmLargeSingleView.h"
 #include "../AVMData.h"
 
-CAvmLargeSingleView::CAvmLargeSingleView():m_lastLargeViewCmd(255)
+CAvmLargeSingleView::CAvmLargeSingleView():m_lastLargeViewCmd(255),m_singleViewNode(0)
 {
+	for(int i = 0; i < 4; i++)
+	{
+		m_singleViewPlaneNode[i] = NULL;
+		m_singleViewVertex[i] = NULL;
+		m_singleViewMesh[i] = NULL;
+		m_singleViewRoi[i] = NULL;
+	}
 }
 CAvmLargeSingleView::~CAvmLargeSingleView()
 {

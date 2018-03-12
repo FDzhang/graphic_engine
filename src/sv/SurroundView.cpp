@@ -926,13 +926,19 @@ void XRSV::KeyDown(int x)
 
 void XRSV::DisableCar()
 {
-    svscn->SetCarEnable(0);
+	if(svscn)
+    {
+    	svscn->SetCarEnable(0);
+	}
 }
 
 
 void XRSV::EnableCar()
 {
-    svscn->SetCarEnable(1);
+    if(svscn)
+    {
+    	svscn->SetCarEnable(1);
+	}
 }
 
 

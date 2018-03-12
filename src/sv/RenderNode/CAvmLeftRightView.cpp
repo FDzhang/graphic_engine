@@ -31,7 +31,8 @@
 
 CAvmLeftRightView::CAvmLeftRightView():m_leftRightViewCameraParams(0)
 {
-
+	m_leftRightViewMesh[0] = NULL;
+	m_leftRightViewMesh[1] = NULL;
 }
 CAvmLeftRightView::~CAvmLeftRightView()
 {
@@ -44,6 +45,7 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 		return LEFT_RIGHT_VIEW_NORMAL;
 	}
 
+	Log_Debug("---------Start Left right view init!");
 	m_xrCore = pXrcore;
 
 	int meshid;
@@ -62,14 +64,15 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 	// Interleaved vertex data
 	m_leftRightViewNodeId[0] = m_xrCore->CreateRenderNodeScene(0, &m_leftRightViewNode[0]);
  
- 	Region* viewRegion = NULL;
-	CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegion, left_camera_index);
-	m_leftRightViewNode[0]->SetRenderROI(viewRegion);
+ 	Region* leftViewRegion = NULL;
+	CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&leftViewRegion, left_camera_index);
+	m_leftRightViewNode[0]->SetRenderROI(leftViewRegion);
 
 	m_leftRightViewNodeId[1] = m_xrCore->CreateRenderNodeScene(0, &m_leftRightViewNode[1]);
 
-	CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegion, right_camera_index);
-	m_leftRightViewNode[1]->SetRenderROI(viewRegion);
+	Region* rightViewRegion = NULL;
+	CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&rightViewRegion, right_camera_index);
+	m_leftRightViewNode[1]->SetRenderROI(rightViewRegion);
 
 	m_SV2DData = new GlSV2D;
 	m_SV2DData->InitLinear();
@@ -96,10 +99,18 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 		
 		//AVMData::GetInstance()->SetLeftRightViewRoi(pData, i - eFrontSingle);
 
-		meshid = m_leftRightViewNode[i - eLeftSingle]->CreateMesh(ModelType_Null, 1,0,0,MeshName[i - eFrontSingle], &(m_leftRightViewMesh[i - eLeftSingle]));
 		m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
+		meshid = m_leftRightViewNode[i - eLeftSingle]->CreateMesh(ModelType_Null, 1,0,0,MeshName[i - eFrontSingle], &(m_leftRightViewMesh[i - eLeftSingle]));
+		Log_Debug("GetVertexBuffer Size: %d!", BufferSize);
+		/*for(int j = 0; j < BufferSize; j++)
+		{
+			Log_Error("---addr: %p, data[%d] = %0.5f", pData, j , pData[j]);
+		}*/
 		m_leftRightViewMesh[i - eLeftSingle]->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
+
+		Log_Debug("GetIndexBuffer Size!");
 		m_SV2DData->GetIndexBuffer(i,&pIndex,&BufferSize); 	
+		Log_Debug("GetIndexBuffer Size: %d!", BufferSize);
 		m_leftRightViewMesh[i - eLeftSingle]->LoadIndexFromArray(pIndex ,2* BufferSize);
 		
 		int iSize;
@@ -137,6 +148,8 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
     }
 	m_leftRightViewPlane[0]->SetEnable(1);
 	m_leftRightViewPlane[1]->SetEnable(1);
+
+	Log_Debug("Finish LeftRight View!");
 
 	return LEFT_RIGHT_VIEW_NORMAL;
 }

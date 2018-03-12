@@ -89,7 +89,7 @@ static char CARTEX[] = XR_RES"envision_white.tga";
 static char CARAMBIENTTEXTMASK[] = XR_RES"envision_mask.bmp";
 static char CARLIGHTON[]=XR_RES"envision_light_on.tga";
 static char CARTEXMASK[] = XR_RES"mask1.bmp";
-CAvmObjectViewNode::CAvmObjectViewNode():m_objViewCameraParams(0)
+CAvmObjectViewNode::CAvmObjectViewNode():m_objViewCameraParams(0),m_am(0)
 {
 
 }
@@ -459,7 +459,7 @@ int CAvmObjectViewNode::Calc3DGroundTexture()
 	    car_rect_adjust[i]=car_rect_image[i]+car_rect_adjust[i];
 	}
 
-	SVNode2DStich* stitchNode;
+	SVNode2DStich* stitchNode = NULL;
 	CAvmRenderDataBase::GetInstance()->GetTimeStitcherNode(&stitchNode);
 	if(stitchNode)
     {

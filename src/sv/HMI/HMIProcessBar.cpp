@@ -104,6 +104,36 @@ HmiProcessBar::HmiProcessBar(HmiProcessBarDataT* pProcessBarData,IUINode* uiNode
 }
 HmiProcessBar::~HmiProcessBar()
 {
+	ISpirit* ButtonLayer1 = m_uiNode->GetSpirit(m_processBarId);
+	if(ButtonLayer1 && m_processBarMtl)
+	{
+		ButtonLayer1->Release();
+		//m_uiNode->ReleaseMaterial(m_processBarMtlId);		
+	}
+
+	if(m_processBarData->withBkgFlag == 1)
+	{
+		ISpirit* ButtonLayer2 = m_uiNode->GetSpirit(m_bkgId);
+		if(ButtonLayer2 && m_processBarBkgMtl)
+		{
+	    	ButtonLayer2->Release();
+			//m_uiNode->ReleaseMaterial(m_processBarBkgMtlId);
+		}
+	}
+
+	if(m_processBarData->withBarIconFlag == 1)
+	{
+		ISpirit* ButtonLayer3 = m_uiNode->GetSpirit(m_barIconId);
+		if(ButtonLayer3 && m_processBarIconMtl)
+		{
+	    	ButtonLayer3->Release();
+			//m_uiNode->ReleaseMaterial(m_processBarIconMtlId);
+		}
+	}
+
+	SAFE_DELETE(m_processBarData);
+	
+
 }
 int HmiProcessBar::Init()
 {

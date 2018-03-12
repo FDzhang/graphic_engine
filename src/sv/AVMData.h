@@ -115,10 +115,13 @@ public:
 	static void CalcUVTextureSV(float *pWorld,float *texture,int chann);
 	float GetFrontSingleViewRect(int index);
 	float GetRearSingleViewRect(int index);
-	
+	float GetLeftSingleViewRect(int index);
+	float GetRightSingleViewRect(int index);
+    
 	void GetFrontSingleViewRect(float *pData);
 	void GetRearSingleViewRect(float *pData);
 	void GetVehicleParam(SV_VEHICLE_PARAM_T **pVehicleData);
+    void GetVehicleParam(Veh_Param_T **pVehicleData);
 	
 	void GetBevConfig(BEV_CONFIG_T* pConfig);
 	void SetBevConfig(BEV_CONFIG_T pConfig);
@@ -140,7 +143,7 @@ public:
 	
 	void cvtWorldPoint2ModelPoint3D(float *out_Model_Coord,float *in_world_coord);
 	
-	void cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,bool single_view_index);
+	void cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_image_coord,unsigned char single_view_index);
 		DataExPosParam *m_exParam;
 		AVMCameraInternal *m_camInstrinct;
 		AVMLuminanceData *m_lumin_para;
@@ -176,6 +179,8 @@ private:
 
 	unsigned char			m_3dParamUpdateFlag;
 	float*					m_3dParamPos;
+
+    Veh_Param_T             m_vehParam;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

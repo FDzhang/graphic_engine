@@ -229,15 +229,26 @@ HMIDialog::HMIDialog(HmiDialogDataT* pDialogData,IUINode* uiNode)
 }
 HMIDialog::~HMIDialog()
 {
+    ISpirit* DialogLayer = m_uiNode->GetSpirit(m_dialogId);
+	if(DialogLayer && m_dialogMtl)
+	{
+    	DialogLayer->Release();
+		m_uiNode->ReleaseMaterial(m_dialogMtlId);
+	}
+    SAFE_DELETE(m_dialogMtl);    
+    SAFE_DELETE(m_dialogTitle);   
+    for(int i = DIALOG_CONFIRM; i < DIALOG_CONFIRM_CANCEL_ELEMENT_NUM; i++)
+    {
+        SAFE_DELETE(m_dialogButton[i - 1]);
+    }
+    SAFE_DELETE(m_dialogMtl);   
 }
 int HMIDialog::Init()
 {
-
 	return HMI_DIALOG_NORMAL;
 }
 int HMIDialog::Update()
 {
-
 	return HMI_DIALOG_NORMAL;
 }
 

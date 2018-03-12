@@ -46,6 +46,7 @@ HMIButton::~HMIButton()
 	if(ButtonLayer && m_buttonSlot->iconMtl)
 	{
     	ButtonLayer->Release();
+		m_uiNode->ReleaseMaterial(m_mtlId);
     	//m_buttonSlot->iconMtl->Release();
 	}
     SAFE_DELETE(m_buttonSlot);
@@ -53,15 +54,14 @@ HMIButton::~HMIButton()
 
 int HMIButton::Init()
 {
-    int mtlId = 0;
-    mtlId = m_uiNode->CreateUIMaterial(Material_UI_Spirit, 
+    m_mtlId = m_uiNode->CreateUIMaterial(Material_UI_Spirit, 
                                          m_buttonSlot->buttonData->icon_file_name[m_buttonSlot->buttonData->show_icon_num],
                                          0,
                                          &m_buttonSlot->iconMtl);
     
     m_buttonId = m_uiNode->CreateSpirit(-1, 
                                         InsertFlag_Default, 
-                                        mtlId, 
+                                        m_mtlId, 
                                         1.0, 
                                         m_buttonSlot->buttonData->pos[0], 
                                         m_buttonSlot->buttonData->pos[1], 

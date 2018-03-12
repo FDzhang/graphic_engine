@@ -31,6 +31,9 @@
 #include "CSVDemoLkaHmi.h"
 #include "CSVTrainedParkingHmi.h"
 #include "CSVChangAnSwitchViewHmi.h"
+#include "CSVDemoSeaHmi.h"
+#include "CSVDemoModHmi.h"
+#include "CSVDemoApaHmi.h"
 #include "CSVHmiIntent.h"
 #include "IF_General.h"
 
@@ -44,17 +47,17 @@ static CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
 class CMainSettingActionTrigger : public IActionTrigger
 {
 public:
-	CMainSettingActionTrigger()
-	{ 
-	}
-	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
-	{
+    CMainSettingActionTrigger()
+    { 
+    }
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
+    {
 
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
-	{
+    }
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
+    {
 
-	}
+    }
 
 private:
 };
@@ -62,31 +65,31 @@ private:
 class CMainLdwActionTrigger : public IActionTrigger
 {
 public:
-	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
-	{
-	
-		Layout_Event_Payload_T* tmp_payload = NULL;
-		tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
-		memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+    virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
+    {
+    
+        Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
 
-		tmp_payload->header.msg_id = ALGO_LDW_BUTTON;
-		tmp_payload->body.onlyNotify = true;
-		m_eventDel.PostEventPayload(tmp_payload);
+        tmp_payload->header.msg_id = ALGO_LDW_BUTTON;
+        tmp_payload->body.onlyNotify = true;
+        m_eventDel.PostEventPayload(tmp_payload);
 
-		SAFE_FREE(tmp_payload);
+        SAFE_FREE(tmp_payload);
 
-		Log_Message("-----------CMainLdwActionTrigger");
+        Log_Message("-----------CMainLdwActionTrigger");
 
-	}
-	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
-	{
+    }
+    virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
+    {
 
-	}
-	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
-	{
-		
-	}
-	
+    }
+    virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+    {
+        
+    }
+    
 
 private:
 };
@@ -560,39 +563,22 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
 
 	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
 
-	m_buttonImage[DEMO_MAIN_MENU_OC] = mainMenuData.iconStatus[MAIN_MENU_ONLINE];
-	m_buttonImage[DEMO_MAIN_MENU_LDW] = mainMenuData.iconStatus[MAIN_MENU_LDW];
-	m_buttonImage[DEMO_MAIN_MENU_LKA] = mainMenuData.iconStatus[MAIN_MENU_LKA];
-	m_buttonImage[DEMO_MAIN_MENU_LC] = mainMenuData.iconStatus[MAIN_MENU_LC];
-	m_buttonImage[DEMO_MAIN_MENU_BSD] = mainMenuData.iconStatus[MAIN_MENU_BSD];
-	m_buttonImage[DEMO_MAIN_MENU_PARKING_I] = mainMenuData.iconStatus[MAIN_MENU_PARKING_IN];
-	m_buttonImage[DEMO_MAIN_MENU_PARKING_O] = mainMenuData.iconStatus[MAIN_MENU_PARKING_OUT];
-	m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = mainMenuData.iconStatus[MAIN_MENU_TRAINED_PARKING];
-	m_buttonImage[DEMO_MAIN_MENU_CTA] = mainMenuData.iconStatus[MAIN_MENU_CTA];
-	m_buttonImage[DEMO_MAIN_MENU_PD] = mainMenuData.iconStatus[MAIN_MENU_PD];
-	m_buttonImage[DEMO_MAIN_MENU_DVR] = mainMenuData.iconStatus[MAIN_MENU_DVR];
-/*    if(m_DvrBaseVisible == 1)
-    {
-        m_buttonImage[DEMO_MAIN_MENU_DVR] = BUTTON_ON_IMAGE;        
-    }
-*/
-	/*m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 1;
-	static int cnt = 0;
-
-	if(cnt > 100 && cnt <= 200)
-	{
-		m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 0;
-		m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = 0;
-		cnt ++;
-	}
-
-	if(cnt > 400)
-	{
-		cnt = 101;
-	}*/
+    m_buttonImage[DEMO_MAIN_MENU_OC] = mainMenuData.iconStatus[MAIN_MENU_ONLINE];
+    m_buttonImage[DEMO_MAIN_MENU_LDW] = mainMenuData.iconStatus[MAIN_MENU_LDW];
+    m_buttonImage[DEMO_MAIN_MENU_LKA] = mainMenuData.iconStatus[MAIN_MENU_LKA];
+    m_buttonImage[DEMO_MAIN_MENU_LC] = mainMenuData.iconStatus[MAIN_MENU_LC];
+    m_buttonImage[DEMO_MAIN_MENU_BSD] = mainMenuData.iconStatus[MAIN_MENU_BSD];
+    m_buttonImage[DEMO_MAIN_MENU_PARKING_I] = mainMenuData.iconStatus[MAIN_MENU_PARKING_IN];
+    m_buttonImage[DEMO_MAIN_MENU_PARKING_O] = mainMenuData.iconStatus[MAIN_MENU_PARKING_OUT];
+    m_buttonImage[DEMO_MAIN_MENU_PARKING_T] = mainMenuData.iconStatus[MAIN_MENU_TRAINED_PARKING];
+    m_buttonImage[DEMO_MAIN_MENU_CTA] = mainMenuData.iconStatus[MAIN_MENU_CTA];
+    m_buttonImage[DEMO_MAIN_MENU_PD] = mainMenuData.iconStatus[MAIN_MENU_PD];
+    m_buttonImage[DEMO_MAIN_MENU_DVR] = mainMenuData.iconStatus[MAIN_MENU_DVR];
+    m_buttonImage[DEMO_MAIN_MENU_SEA] = mainMenuData.iconStatus[MAIN_MENU_SEA];
+    m_buttonImage[DEMO_MAIN_MENU_MOD] = mainMenuData.iconStatus[MAIN_MENU_MOD];
 
     if(m_buttonImage[DEMO_MAIN_MENU_DVR] == BUTTON_ON_IMAGE
-		&& hmiMsg.dvrTabMsg.playbackMode != 1)
+        && hmiMsg.dvrTabMsg.playbackMode != 1)
     {
         char* hmiName = "CSVDvrBaseHmi";
 	    CSVHmiIntent::GetInstance()->Intent(hmiName);
@@ -602,23 +588,68 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
       
     }
 
-	if(m_buttonImage[DEMO_MAIN_MENU_LKA] == BUTTON_ON_IMAGE
-		|| m_buttonImage[DEMO_MAIN_MENU_LC] == BUTTON_ON_IMAGE)
+    if(m_buttonImage[DEMO_MAIN_MENU_SEA] == BUTTON_ON_IMAGE)
 	{
-		
-		InitSubHmi(DEMO_LKA_LC_HMI);
-		if(m_subHmi[DEMO_LKA_LC_HMI])
-		{
-			m_subHmiVisibility[DEMO_LKA_LC_HMI] = 1;
-			m_subHmi[DEMO_LKA_LC_HMI]->Update(hmiMsg);
-			//cnt++;
-		}
+        InitSubHmi(DEMO_SEA_HMI);
+        if(m_subHmi[DEMO_SEA_HMI])
+        {
+            m_subHmiVisibility[DEMO_SEA_HMI] = 1;
+            m_subHmi[DEMO_SEA_HMI]->Update(hmiMsg);
+        }		
 	}
 	else
-	{			
-		m_subHmiVisibility[DEMO_LKA_LC_HMI] = 0;
-		FreeSubHmi(DEMO_LKA_LC_HMI);
+	{
+	 	m_subHmiVisibility[DEMO_SEA_HMI] = 0;
+        FreeSubHmi(DEMO_SEA_HMI);
 	}
+
+	if(m_buttonImage[DEMO_MAIN_MENU_PARKING_I] == BUTTON_ON_IMAGE)
+	{
+        InitSubHmi(DEMO_APA_HMI);
+        if(m_subHmi[DEMO_APA_HMI])
+        {
+            m_subHmiVisibility[DEMO_APA_HMI] = 1;
+            m_subHmi[DEMO_APA_HMI]->Update(hmiMsg);
+        }		
+	}
+	else
+	{
+	 	m_subHmiVisibility[DEMO_APA_HMI] = 0;
+        FreeSubHmi(DEMO_APA_HMI);
+	}
+
+    if(m_buttonImage[DEMO_MAIN_MENU_MOD] == BUTTON_ON_IMAGE)
+    {
+        InitSubHmi(DEMO_MOD_HMI);
+        if(m_subHmi[DEMO_MOD_HMI])
+        {
+            m_subHmiVisibility[DEMO_MOD_HMI] = 1;
+            m_subHmi[DEMO_MOD_HMI]->Update(hmiMsg);
+        }		
+    }
+    else
+    {
+        m_subHmiVisibility[DEMO_MOD_HMI] = 0;
+        FreeSubHmi(DEMO_MOD_HMI);
+    }
+
+    if(m_buttonImage[DEMO_MAIN_MENU_LKA] == BUTTON_ON_IMAGE
+        || m_buttonImage[DEMO_MAIN_MENU_LC] == BUTTON_ON_IMAGE)
+    {
+        
+        InitSubHmi(DEMO_LKA_LC_HMI);
+        if(m_subHmi[DEMO_LKA_LC_HMI])
+        {
+            m_subHmiVisibility[DEMO_LKA_LC_HMI] = 1;
+            m_subHmi[DEMO_LKA_LC_HMI]->Update(hmiMsg);
+            //cnt++;
+        }
+    }
+    else
+    {           
+        m_subHmiVisibility[DEMO_LKA_LC_HMI] = 0;
+        FreeSubHmi(DEMO_LKA_LC_HMI);
+    }
 
 	if(m_buttonImage[DEMO_MAIN_MENU_PARKING_T] == BUTTON_ON_IMAGE)
 	{
@@ -658,12 +689,27 @@ int CSVDemoMainHmi::Update(Hmi_Message_T& hmiMsg)
  
 int CSVDemoMainHmi::RefreshHmi()
 {
-	for(int i = DEMO_MAIN_MENU_BKG; i < DEMO_MAIN_ELEMENT_NUM; i++)
-	{
-		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
-		m_baseButton[i]->SetShowIconNum(m_buttonImage[i]);
-		m_baseButton[i]->Update();
-	}
+    for(int i = DEMO_MAIN_MENU_BKG; i < DEMO_MAIN_ELEMENT_NUM; i++)
+    {
+        m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+        m_baseButton[i]->SetShowIconNum(m_buttonImage[i]);
+        m_baseButton[i]->Update();
+    }
+	
+    if(m_subHmi[DEMO_SEA_HMI])
+    {
+        m_subHmi[DEMO_SEA_HMI]->SetElementsVisibility(m_subHmiVisibility[DEMO_SEA_HMI]);
+    }
+	
+    if(m_subHmi[DEMO_APA_HMI])
+    {
+        m_subHmi[DEMO_APA_HMI]->SetElementsVisibility(m_subHmiVisibility[DEMO_APA_HMI]);
+    }
+
+    if(m_subHmi[DEMO_MOD_HMI])
+    {
+        m_subHmi[DEMO_MOD_HMI]->SetElementsVisibility(m_subHmiVisibility[DEMO_MOD_HMI]);
+    }
 
 	if(m_subHmi[DEMO_LKA_LC_HMI])
 	{
@@ -703,25 +749,35 @@ void CSVDemoMainHmi::SetHmiElementProperty(unsigned char pIconIndex, float pIcon
 
 void CSVDemoMainHmi::InitSubHmi(unsigned char pHmiIndex)
 {
-	if(m_subHmiInitFlag[pHmiIndex] == 0)
-	{
-		switch(pHmiIndex)
-		{
-			case DEMO_LKA_LC_HMI:				
-				m_subHmi[pHmiIndex] = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
+    if(m_subHmiInitFlag[pHmiIndex] == 0)
+    {
+        switch(pHmiIndex)
+        {
+            case DEMO_LKA_LC_HMI:               
+                m_subHmi[pHmiIndex] = new CSVDemoLkaHmi(m_uiNode, m_uiNodeId);
+            break;
+            case DEMO_TP_HMI:               
+                m_subHmi[pHmiIndex] = new CSVTrainedParkingHmi(m_uiNode, m_uiNodeId);
+            break;
+            case DEMO_SWITCH_VIEW_HMI:
+                m_subHmi[pHmiIndex] = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
 			break;
-			case DEMO_TP_HMI:				
-				m_subHmi[pHmiIndex] = new CSVTrainedParkingHmi(m_uiNode, m_uiNodeId);
+			case DEMO_SEA_HMI:
+				m_subHmi[pHmiIndex] = new CSVDemoSeaHmi(m_uiNode, m_uiNodeId);
 			break;
-			case DEMO_SWITCH_VIEW_HMI:
-				m_subHmi[pHmiIndex] = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
-			default:
+            case DEMO_MOD_HMI:
+				m_subHmi[pHmiIndex] = new CSVDemoModHmi(m_uiNode, m_uiNodeId);
 			break;
-		}
-		m_subHmi[pHmiIndex]->Init(m_screenWidth, m_screenHeight);
-		m_subHmiVisibility[pHmiIndex] = 1;
-		m_subHmiInitFlag[pHmiIndex] = 1;
-	}
+			case DEMO_APA_HMI:
+				m_subHmi[pHmiIndex] = new CSVDemoApaHmi(m_uiNode, m_uiNodeId);
+			break;
+            default:
+            break;
+        }
+        m_subHmi[pHmiIndex]->Init(m_screenWidth, m_screenHeight);
+        m_subHmiVisibility[pHmiIndex] = 1;
+        m_subHmiInitFlag[pHmiIndex] = 1;
+    }
 
 }
 void CSVDemoMainHmi::FreeSubHmi(unsigned char pHmiIndex)
@@ -729,6 +785,154 @@ void CSVDemoMainHmi::FreeSubHmi(unsigned char pHmiIndex)
 	m_subHmiVisibility[pHmiIndex] = 0;
 	SAFE_DELETE(m_subHmi[pHmiIndex]);
 	m_subHmiInitFlag[pHmiIndex] = 0;
+}
+
+
+void CSVDemoMainHmi::SetHmiGuideline()
+{
+    int i = 0;
+    Veh_Param_T* m_vehParam;
+    m_vehParam = NULL;
+    AVMData::GetInstance()->GetVehicleParam(&m_vehParam);
+    ISceneNode* m_avmViewNode = NULL;
+    CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&m_avmViewNode);
+    ISceneNode* m_singleViewNode = NULL;
+    CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&m_singleViewNode);
+
+    i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L;
+    m_guideLineData[i].guideLineLength = 6000.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
+    m_guideLineData[i].guideLineWidth = 100.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 40;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/guide_line_blue_new.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+    i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R;
+    m_guideLineData[i].guideLineLength = 6000.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
+    m_guideLineData[i].guideLineWidth = 100.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 40;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/guide_line_blue_new.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]);  
+    m_guideLine[i]->SetVisibility(1);
+
+    i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L;
+    m_guideLineData[i].guideLineLength = 3000.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L";
+    m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
+    m_guideLineData[i].guideLineWidth = 100.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 200.0;
+    m_guideLineData[i].guideLinePointNum = 40;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/guide_line_blue_new.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_singleViewNode, &m_guideLineData[i]);  
+    m_guideLine[i]->SetVisibility(1);    
+
+    i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R;
+    m_guideLineData[i].guideLineLength = 3000.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R";
+    m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
+    m_guideLineData[i].guideLineWidth = 100.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 200.0;
+    m_guideLineData[i].guideLinePointNum = 40;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/guide_line_blue_new.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_singleViewNode, &m_guideLineData[i]);  
+    m_guideLine[i]->SetVisibility(1);   
+
+//    Log_Error("===============SetHmiGuideline==============");
+}
+
+
+void CSVDemoMainHmi::RefreshHmiGuideline()
+{
+    float steer_angle = 0.0;
+    unsigned char gear_state = 0;
+    unsigned char m_displayViewCmd = 0;
+    
+    static int m_cnt = 0;
+    
+
+    AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);    
+    AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
+    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_displayViewCmd);
+
+//    steer_angle = 320;
+//    gear_state = GEAR_R;
+//    m_displayViewCmd = REAR_SINGLE_VIEW;
+//    
+//    steer_angle = m_cnt *4.8;
+//
+//    if(m_cnt < 250) steer_angle = steer_angle - 600;
+//    else steer_angle = steer_angle - 1800;
+//    
+//    if(m_cnt < 250) gear_state = GEAR_P;
+//    else gear_state = GEAR_R;
+//
+//    if(m_cnt < 250) m_displayViewCmd = FRONT_SINGLE_VIEW;
+//    else if(m_cnt <= 500) m_displayViewCmd = REAR_SINGLE_VIEW;
+//
+//    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_displayViewCmd);
+//    
+//    m_cnt ++;
+//    if(m_cnt == 500) m_cnt = 0;
+
+    m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_POS_L]->SetVisibility(1);
+    m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_POS_R]->SetVisibility(1);
+    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R; i++)
+    {
+        if(gear_state == GEAR_R)
+        {
+            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
+        }
+        else
+        {
+            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
+        }
+    }
+    
+    if(m_displayViewCmd == FRONT_SINGLE_VIEW)
+    {
+        m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L]->SetVisibility(1);
+        m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R]->SetVisibility(1);      
+        for (int i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R; i++)
+        {
+            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
+        }        
+    }   
+    else if(m_displayViewCmd == REAR_SINGLE_VIEW)
+    {
+        m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L]->SetVisibility(1);
+        m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R]->SetVisibility(1);      
+        for (int i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R; i++)
+        {
+            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
+        }        
+    }
+    else
+    {
+        m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L]->SetVisibility(0);
+        m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R]->SetVisibility(0);  
+    }
 }
 
 /*===========================================================================*\

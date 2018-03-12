@@ -155,6 +155,7 @@ private:
 private:
 	Hmi_Button_Slot_T* m_buttonSlot;
 	IUINode*		   m_uiNode;	
+	int				   m_mtlId;
 	int                m_uiNodeId;
 	int                m_buttonId;
 	int                m_buttonVisibleStatus;
