@@ -142,12 +142,12 @@ int CAvmViewControlModel::InitViewNode()
 	linear180DegreeRegion[REGION_POS_TOP] = 0+black_width;
 	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	leftViewRegion[REGION_POS_LEFT] = stich_region_width + left_panel_width;
-	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + left_panel_width + (XrGetScreenWidth() - stich_region_width)/2;
+	leftViewRegion[REGION_POS_LEFT] = stich_region_width + left_panel_width + delta;
+	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + left_panel_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2;
 	leftViewRegion[REGION_POS_TOP] = 0+black_width;
 	leftViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 		
-	rightViewRegion[REGION_POS_LEFT] = stich_region_width + (XrGetScreenWidth() - stich_region_width)/2 + left_panel_width ;
+	rightViewRegion[REGION_POS_LEFT] = stich_region_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2 + left_panel_width ;
 	rightViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
 	rightViewRegion[REGION_POS_TOP] = 0+black_width;
 	rightViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;

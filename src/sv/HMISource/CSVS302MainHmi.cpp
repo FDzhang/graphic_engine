@@ -29,6 +29,7 @@
 \*===========================================================================*/
 #include "CSVS302MainHmi.h"
 #include "CSVDemoEolHmi.h"
+#include "CSVChangAnSwitchViewHmi.h"
 
 static unsigned char s302HmiElementShowImage[S302_MAIN_ELEMENT_NUM];
 static unsigned char s302ShowSettingMenu = 0;
@@ -769,6 +770,13 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         FreeSubHmi(S302_DEMO_EOL_HMI);
     }
 
+    InitSubHmi(S302_DEMO_SWITCH_VIEW_HMI);
+    if(m_subHmi[S302_DEMO_SWITCH_VIEW_HMI])
+    {
+        m_subHmiVisibility[S302_DEMO_SWITCH_VIEW_HMI] = 1;
+        m_subHmi[S302_DEMO_SWITCH_VIEW_HMI]->Update(hmiMsg);
+    }
+
     //debug code;need delete;
     /*EolResultT eolResult;
     memset(&eolResult, 0, sizeof(EolResultT));
@@ -863,6 +871,9 @@ void CSVS302MainHmi::InitSubHmi(unsigned char pHmiIndex)
         {
             case S302_DEMO_EOL_HMI:
                 m_subHmi[pHmiIndex] = new CSVDemoEolHmi(m_uiNode, m_uiNodeId);
+            break;
+            case S302_DEMO_SWITCH_VIEW_HMI:
+                m_subHmi[pHmiIndex] = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
             break;
             default:
             break;

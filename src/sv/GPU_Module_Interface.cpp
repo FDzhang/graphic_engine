@@ -318,7 +318,7 @@ void UpdateAPAResult(APAOverlayStruct *pAPAReslt)
 	g_APA_Result.stop_sign_flag = pAPAReslt->stop_sign_flag;
 	g_APA_Result.vP_GearR_Text = pAPAReslt->vP_GearR_Text;
 	// udpate Gear_R indicate text when vertical parking first turn
-	g_GearRText.show_flag = pAPAReslt->vP_GearR_Text;
+	g_GearRText.show_flag = 0;//pAPAReslt->vP_GearR_Text;
 	g_GearRText.height = 155;
 	g_GearRText.width = 636;
 	g_GearRText.show_icon_num = 0;
