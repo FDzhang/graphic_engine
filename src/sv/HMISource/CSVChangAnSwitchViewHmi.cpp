@@ -508,7 +508,8 @@ int CSVChangAnSwitchViewHmi::Init(int window_width, int window_height)
 	m_screenHeight = window_height;
 	float leftPanelWidth = 0.0;
 	float heightInterval = 80.0;
-	float stitchRegionWidth = window_width * 0.35;
+	float delta = -45.0;
+	float stitchRegionWidth = window_width * 0.35 + delta;
 	float stitchRegionHeight = window_height - 2.0 * heightInterval;
 	
 	m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_WIDTH] = 378.0;
