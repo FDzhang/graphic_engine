@@ -117,10 +117,18 @@ int CAvmViewControlModel::InitViewNode()
 	float rightViewRegion[4];
 
     float stich_region_width = 0.35 *  XrGetScreenWidth();
+    unsigned char current_vehicle_type_id = 0;
+    CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(current_vehicle_type_id);
 
-	float black_width = 0.0;
-	float left_panel_width = 0.0;
-	float delta = -45.0;
+    float black_width = 80.0;
+    float left_panel_width = 100.0;
+    float delta = 0.0;
+    if(CHANGAN_S302 == current_vehicle_type_id)
+    {
+        stich_region_width = (480.0 / 1520.0) *  XrGetScreenWidth();
+        left_panel_width = 0;
+        black_width = 0;
+    }
 
 	stich2D_region[REGION_POS_LEFT] = 0.0 + left_panel_width;
 	stich2D_region[REGION_POS_RIGHT] = stich_region_width + left_panel_width + delta;
