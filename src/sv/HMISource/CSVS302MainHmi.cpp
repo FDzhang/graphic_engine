@@ -597,6 +597,12 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 
     float heightInterval = 80.0;
     float stitchRegionWidth = window_width * 0.35;
+    float stitchRegionHeight = window_height - heightInterval * 2.0;
+    Region currentStitchRegion;
+    CAvmRenderDataBase::GetInstance()->GetStitchViewRegion(&currentStitchRegion);
+    stitchRegionWidth = currentStitchRegion.right - currentStitchRegion.left;
+    stitchRegionHeight = currentStitchRegion.bottom- currentStitchRegion.top;
+    heightInterval = (window_height - stitchRegionHeight) * 0.5;
 
     m_buttonSize[S302_VIEW_STATUS_ICON][BUTTON_SIZE_WIDTH] = 122.0;
     m_buttonSize[S302_VIEW_STATUS_ICON][BUTTON_SIZE_HEIGHT] = 116.0;
@@ -835,13 +841,6 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         CAvmRenderDataBase::GetInstance()->SetS302MainMenuStatus(&tmpS302MainMenuData);
         s302HmiElementShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] = 0;
     }*/
-
-    if(s302MainMenuData.iconStatus[S302_MAIN_MENU_PD] == 1)
-    {
-    }
-    else
-    {
-    }
 
     if(s302MainMenuData.menuVisibility == 0)
     {

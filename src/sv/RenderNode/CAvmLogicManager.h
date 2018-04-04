@@ -60,6 +60,7 @@ private:
 	virtual int InitOverlayModel();
 	virtual int InitAlgoHmiModel();
 	virtual int InitHmi();
+	virtual int SetMainHmiName();
 	virtual int AddHmi(ISVHmi* pSvHmi, vector<ISVHmi*>* pHmi);
 
 	virtual int UpdateViewModel();
@@ -75,6 +76,8 @@ private:
 	int m_hmiNums;
 
 	ISVHmi* m_systemHmi;
+
+	char* m_mainHmiName;
 	
 	vector<ISVHmi*> m_avmHmi;
 	vector<ISVHmi*> m_dvrHmi;

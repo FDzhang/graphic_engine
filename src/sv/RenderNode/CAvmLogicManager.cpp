@@ -157,16 +157,33 @@ int CAvmLogicManager::InitHmi()
     }
 
 	//char* hmiName = "CSVChangAnMainHmi";
-	char* hmiName = "CSVDemoMainHmi";
+	//char* hmiName = "CSVDemoMainHmi";
 	//char* hmiName = "CSVDvrBaseHmi";
 	//char* hmiName = "CSVS302MainHmi";
-	CSVHmiIntent::GetInstance()->Intent(hmiName);
+	SetMainHmiName();
+	CSVHmiIntent::GetInstance()->Intent(m_mainHmiName);
 	//char* hmiName = "CSVDvrBaseHmi";
 	//CSVHmiIntent::GetInstance()->Intent(hmiName);	
 
 	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
+
+int CAvmLogicManager::SetMainHmiName()
+{
+	unsigned char currentVehicleTypeId;
+	CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(currentVehicleTypeId);
+
+	switch(currentVehicleTypeId)
+	{
+		case CHANGAN_S302:
+			m_mainHmiName = "CSVS302MainHmi";
+			break;
+		default:
+			m_mainHmiName = "CSVDemoMainHmi";
+	}
+}
+
 int CAvmLogicManager::AddHmi(ISVHmi* pSvHmi, vector<ISVHmi*>* pHmi)
 {
 	if(pSvHmi)

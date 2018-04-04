@@ -532,12 +532,18 @@ int CSVChangAnSwitchViewHmi::Init(int window_width, int window_height)
 {
 	m_screenWidth = window_width;
 	m_screenHeight = window_height;
-	float leftPanelWidth = 0.0;
+	float leftPanelWidth = 100.0;
 	float heightInterval = 80.0;
-	float delta = -45.0;
-	float stitchRegionWidth = window_width * 0.35 + delta;
-	float stitchRegionHeight = window_height - 2.0 * heightInterval;
-	
+	float delta = 0.0;
+	float stitchRegionWidth = window_width * 0.35;
+	float stitchRegionHeight = window_height - heightInterval * 2.0;
+	Region currentStitchRegion;
+	CAvmRenderDataBase::GetInstance()->GetStitchViewRegion(&currentStitchRegion);
+	stitchRegionWidth = currentStitchRegion.right - currentStitchRegion.left;
+	stitchRegionHeight = currentStitchRegion.bottom- currentStitchRegion.top;
+	heightInterval = (window_height - stitchRegionHeight) * 0.5;
+	leftPanelWidth = currentStitchRegion.left;
+
 	m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_WIDTH] = 378.0;
 	m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_HEIGHT] = 487.0;
 	m_buttonPos[CHANGAN_RED_TRACK][BUTTON_POS_X] = (stitchRegionWidth - m_buttonSize[CHANGAN_RED_TRACK][BUTTON_SIZE_WIDTH])/2.0 + leftPanelWidth;

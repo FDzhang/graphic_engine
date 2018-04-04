@@ -88,16 +88,16 @@ GpuErrorCodeT;
 
 typedef enum GpuVehicleTypeIdTag
 {
-    DEFAULT = 0x00,
+    DEFAULT_VEHICLE = 0x00,
     BUICK_ENVISION = 0xBE,
     BUICK_ENVISION_Power_Manager = 0xBF,
     BAIC_C53F = 0x53,
     BAIC_C62X = 0x62,
-    CHANGAN_S302 = 0xC2,
-    CHANGAN_V302 = 0xC3,
-    CHANGAN_CS75 = 0x75,
-    SAIC_EP21 = 0x21,
-    SAIC_EP21H = 0xE2,
+    CHANGAN_S302 = 0x85,
+    CHANGAN_S311 = 0x75,
+    CHANGAN_P201 = 0x21,
+    CHANGAN_V302 = 0x30,
+    JAC_S3 = 0x33,
     GEELY_DEMO = 0xA0,
 }
 GpuVehicleTypeIdT;
