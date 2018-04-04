@@ -23,6 +23,9 @@ IF(NOT j6armcomm_FOUND AND NOT j6armcomm_SOURCE_FOUND)
 	MESSAGE(FATAL_ERROR "No j6armcomm library found!")
 ENDIF()
 
+IF(NOT dvr_FOUND AND NOT dvr_SOURCE_FOUND)
+	MESSAGE(FATAL_ERROR "No dvr library found!")
+ENDIF()
 
 #设置包含目录
 INCLUDE_DIRECTORIES(include)

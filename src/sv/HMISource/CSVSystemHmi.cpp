@@ -109,8 +109,8 @@ int CSVSystemHmi::Init(int window_width, int window_height)
 
 	m_buttonPos[SYSTEM_HMI_MOUSE_ICON][BUTTON_POS_X] = 0.0;
 	m_buttonPos[SYSTEM_HMI_MOUSE_ICON][BUTTON_POS_Y] = 80.0;
-	m_buttonSize[SYSTEM_HMI_MOUSE_ICON][BUTTON_SIZE_WIDTH] = 64;
-	m_buttonSize[SYSTEM_HMI_MOUSE_ICON][BUTTON_SIZE_HEIGHT] = 64;
+	m_buttonSize[SYSTEM_HMI_MOUSE_ICON][BUTTON_SIZE_WIDTH] = 18;
+	m_buttonSize[SYSTEM_HMI_MOUSE_ICON][BUTTON_SIZE_HEIGHT] = 18;
 
 	SetHmiParams();
 

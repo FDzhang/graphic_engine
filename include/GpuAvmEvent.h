@@ -53,6 +53,7 @@ typedef struct
     union
     {
         bool onlyNotify; //只是发送notify通知，不要求对Event msg解析
+        unsigned char viewIndex;
         union  //! 通用AvmEvent消息
         {
             struct
@@ -154,6 +155,7 @@ typedef enum
     CMD_TURN_LIGHT_CONTRL_AVM,
     CMD_RADAR_CONTRL_AVM, 
     CMD_EXIT_AVM,
+    CMD_VIEW_INDEX,
     FULL_SCREEN_3D_TOUCHED = 0x50,
 }HMI_EVENT_ELEMENT_ID_T;
 

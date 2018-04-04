@@ -32,7 +32,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -T ${CMAKE_BINARY_DI
 
 ADD_LIBRARY(${gpu_project_name} SHARED ${gpu_c_src} ${gpu_cpp_src})
 
-#target_link_libraries(${gpu_project_name} dvr)
+target_link_libraries(${gpu_project_name} dvr)
 #设置输出路径
 SET(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
 

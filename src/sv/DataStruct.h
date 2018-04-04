@@ -86,6 +86,22 @@ typedef enum GpuErrorCodeTag
 }
 GpuErrorCodeT;
 
+typedef enum GpuVehicleTypeIdTag
+{
+    DEFAULT = 0x00,
+    BUICK_ENVISION = 0xBE,
+    BUICK_ENVISION_Power_Manager = 0xBF,
+    BAIC_C53F = 0x53,
+    BAIC_C62X = 0x62,
+    CHANGAN_S302 = 0xC2,
+    CHANGAN_V302 = 0xC3,
+    CHANGAN_CS75 = 0x75,
+    SAIC_EP21 = 0x21,
+    SAIC_EP21H = 0xE2,
+    GEELY_DEMO = 0xA0,
+}
+GpuVehicleTypeIdT;
+
 enum
 {
     front_camera_index=0,

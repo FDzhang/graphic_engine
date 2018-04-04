@@ -159,6 +159,7 @@ public:
 
 	static CAvmRenderDataBase* GetInstance();
 
+    PropertyBuilderExt3ByName(unsigned char, VehicleTypeId, private)
 	PropertyBuilderExt3ByName(unsigned char, DisplayViewCmd, private)
 	PropertyBuilderByName(unsigned char, CanData, private)
 	PropertyBuilderByName(TouchDataT, TouchData, private)

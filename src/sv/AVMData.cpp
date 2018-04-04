@@ -377,8 +377,8 @@ void AVMData::cvtSingleViewImagePoint2GpuPoint(float *out_gpu_Coord,float *in_im
 	else if(single_view_index == right_camera_index)
 	{
 		out_gpu_Coord[2] = 0.0;
-    	out_gpu_Coord[1] = -(in_coord_normal[1]-m_pAVMData->m_right_single_view_rect[rect_top])/(m_pAVMData->m_right_single_view_rect[rect_bottom]-m_pAVMData->m_right_single_view_rect[rect_top])/0.5+1;
-    	out_gpu_Coord[0] = (in_coord_normal[0]-m_pAVMData->m_right_single_view_rect[rect_left])/(m_pAVMData->m_right_single_view_rect[rect_right]-m_pAVMData->m_right_single_view_rect[rect_left])/0.5-1;
+    	out_gpu_Coord[1] = -(in_coord_normal[1]-m_pAVMData->m_right_single_view_rect[rect_bottom])/(m_pAVMData->m_right_single_view_rect[rect_top]-m_pAVMData->m_right_single_view_rect[rect_bottom])/0.5+1;
+    	out_gpu_Coord[0] = (in_coord_normal[0]-m_pAVMData->m_right_single_view_rect[rect_right])/(m_pAVMData->m_right_single_view_rect[rect_left]-m_pAVMData->m_right_single_view_rect[rect_right])/0.5-1;
 
 	}
 }

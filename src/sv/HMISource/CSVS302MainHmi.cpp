@@ -691,6 +691,51 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 
     CAvmRenderDataBase::GetInstance()->GetS302MainMenuStatus(&s302MainMenuData);
 
+    if(s302MainMenuData.iconStatus[S302_MAIN_MENU_PD] == 1)
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_MOD_STATUS] = BUTTON_ON_IMAGE;
+    }
+    else
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_MOD_STATUS] = BUTTON_OFF_IMAGE;
+    }
+
+    if(s302MainMenuData.iconStatus[S302_MAIN_MENU_GUIDELINE] == 1)
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_GUIDELINE_STATUS] = BUTTON_ON_IMAGE;
+    }
+    else
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_GUIDELINE_STATUS] = BUTTON_OFF_IMAGE;
+    }
+
+    if(s302MainMenuData.iconStatus[S302_MAIN_MENU_RADAR_CTRL_AVM] == 1)
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_RADAR_TRIGGER_AVM_STATUS] = BUTTON_ON_IMAGE;
+    }
+    else
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_RADAR_TRIGGER_AVM_STATUS] = BUTTON_OFF_IMAGE;
+    }
+
+    if(s302MainMenuData.iconStatus[S302_MAIN_MENU_TURNLIGHT_CTRL_AVM] == 1)
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_TURNLAMP_TRIGGER_AVM_STATUS] = BUTTON_ON_IMAGE;
+    }
+    else
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_TURNLAMP_TRIGGER_AVM_STATUS] = BUTTON_OFF_IMAGE;
+    }
+
+    if(s302MainMenuData.iconStatus[S302_MAIN_MENU_EOL] == 1)
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] = BUTTON_ON_IMAGE;
+    }
+    else
+    {
+        s302HmiElementShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] = BUTTON_OFF_IMAGE;
+    }
+
     for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
         m_buttonVisibility[i] = 1;

@@ -322,7 +322,8 @@ LutData,MAX_NAME_LENGTH);
     m_sv_data_config.pSmc = gpu_init_cfg.pSys_SMC;
 	m_sv_data_config.pPose = gpu_init_cfg.pPose;
     m_sv_data_config.pCamParam = gpu_init_cfg.camera_param;
-	m_vehicleId =  gpu_init_cfg.vehicle_type_id;
+	m_vehicleId =  gpu_init_cfg.pSys_SMC->vehicle_type;//gpu_init_cfg.vehicle_type_id;
+	CAvmRenderDataBase::GetInstance()->SetVehicleTypeId(m_vehicleId);
 
     m_sv_data_config.pSticherResult = gpu_init_cfg.sticher_result;
     //} add end ke.zhonghua

@@ -34,6 +34,8 @@ extern float car_rect[4];
 unsigned int CSVChangAnSwitchViewHmi::m_startCountTime = 0;
 unsigned char CSVChangAnSwitchViewHmi::m_hasBeenTouched = 0;
 
+static CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+
 class CFrontCamActionTrigger : public IActionTrigger
 {
 public:
@@ -93,6 +95,19 @@ public:
 	}
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
+		Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+
+        tmp_payload->header.msg_id = CMD_VIEW_INDEX;
+        tmp_payload->body.viewIndex = LEFT_SINGLE_VIEW;
+		
+        m_eventDel.PostEventPayload(tmp_payload);
+
+        SAFE_FREE(tmp_payload);
+
+        Log_Message("-----------CLeftCamActionTrigger");
+		
 		int i = 0;
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
@@ -118,7 +133,18 @@ public:
 	}
 	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
 	{
-		int i = 0;
+		Layout_Event_Payload_T* tmp_payload = NULL;
+        tmp_payload = (Layout_Event_Payload_T*) malloc(sizeof(Layout_Event_Payload_T));
+        memset(tmp_payload, 0, sizeof(Layout_Event_Payload_T));
+
+        tmp_payload->header.msg_id = CMD_VIEW_INDEX;
+        tmp_payload->body.viewIndex = RIGHT_SINGLE_VIEW;
+		
+        m_eventDel.PostEventPayload(tmp_payload);
+
+        SAFE_FREE(tmp_payload);
+
+        Log_Message("-----------CRightCamActionTrigger");
 	}
 	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
 	{
