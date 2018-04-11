@@ -32,6 +32,9 @@
 #include "../HMISource/CSVChangAnMainHmi.h"
 #include "../HMISource/CSVDemoMainHmi.h"
 #include "../HMISource/CSVSystemHmi.h"
+#include "../HMISource/CSVS302MainHmi.h"
+#include "../HMISource/CSVV302MainHmi.h"
+
 #include "gpu_log.h"
 
 CAvmLogicManager::CAvmLogicManager():m_systemHmi(0)
@@ -174,11 +177,16 @@ int CAvmLogicManager::SetMainHmiName()
 	unsigned char currentVehicleTypeId;
 	CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(currentVehicleTypeId);
 
+//    currentVehicleTypeId = CHANGAN_V302;
+
 	switch(currentVehicleTypeId)
 	{
 		case CHANGAN_S302:
 			m_mainHmiName = "CSVS302MainHmi";
 			break;
+        case CHANGAN_V302:
+            m_mainHmiName = "CSVV302MainHmi";
+            break;
 		default:
 			m_mainHmiName = "CSVDemoMainHmi";
 	}

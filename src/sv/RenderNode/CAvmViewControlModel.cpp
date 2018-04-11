@@ -119,6 +119,7 @@ int CAvmViewControlModel::InitViewNode()
     float stich_region_width = 0.35 *  XrGetScreenWidth();
     unsigned char current_vehicle_type_id = 0;
     CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(current_vehicle_type_id);
+    //current_vehicle_type_id = CHANGAN_V302;
 
     float black_width = 80.0;
     float left_panel_width = 100.0;
@@ -159,6 +160,32 @@ int CAvmViewControlModel::InitViewNode()
 	rightViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
 	rightViewRegion[REGION_POS_TOP] = 0+black_width;
 	rightViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
+
+    if(CHANGAN_V302 == current_vehicle_type_id)
+    {
+        float screenW = XrGetScreenWidth();
+        float screenH = XrGetScreenHeight();
+        screenW = screenH / 1130.0 * 960.0;
+
+        float screenXscal = screenW / 960.0;
+        float screenYscal = screenH / 1130.0;
+        
+    	stich2D_region[REGION_POS_LEFT] = 480.0 * screenXscal;
+    	stich2D_region[REGION_POS_RIGHT] = 960.0 * screenXscal;
+    	stich2D_region[REGION_POS_TOP] = 100.0 * screenYscal;
+    	stich2D_region[REGION_POS_BOTTOM] = 590.0 * screenYscal;   
+        
+    	single2D_region[REGION_POS_LEFT] = 0.0 * screenXscal;
+    	single2D_region[REGION_POS_RIGHT] = 960.0 * screenXscal;
+    	single2D_region[REGION_POS_TOP] = 590.0 * screenYscal;
+    	single2D_region[REGION_POS_BOTTOM] = 1130.0 * screenYscal;
+
+    	scene3D_region[REGION_POS_LEFT] =  single2D_region[REGION_POS_LEFT];
+    	scene3D_region[REGION_POS_RIGHT] = single2D_region[REGION_POS_RIGHT];
+    	scene3D_region[REGION_POS_TOP] = single2D_region[REGION_POS_TOP];
+    	scene3D_region[REGION_POS_BOTTOM] = single2D_region[REGION_POS_BOTTOM];        
+    
+    }
 	
 	Stich2DReg.Set(stich2D_region[REGION_POS_LEFT],stich2D_region[REGION_POS_RIGHT],stich2D_region[REGION_POS_TOP],stich2D_region[REGION_POS_BOTTOM]);
     SceneViewReg.Set(scene3D_region[REGION_POS_LEFT],scene3D_region[REGION_POS_RIGHT],scene3D_region[REGION_POS_TOP] ,scene3D_region[REGION_POS_BOTTOM]);
@@ -851,34 +878,35 @@ int CAvmViewControlModel::SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVis
 
 int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 {
+/*	viewIndex,postion_x, postion_y,postion_z,look_x,look_y,look_z,scrollX,scrollY,scrollZ,camPos;*/
 	 Avm3dViewCameraParamsT cameraParams[BMW_REAR_3D_VIEW - FRONT_3D_VIEW + 1] = 
-	{   {FRONT_3D_VIEW, 0.0, 0.0, 3600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free}, //rear 3d
+	{   {FRONT_3D_VIEW,                     0.0,    0.0, 3600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free}, //rear 3d
 		//{FRONT_3D_VIEW, 0.0, 0.0, 2820.0, 0.0, 0.0, -580.0, 0.0, 25.0, 0.0, CameraPosition_Free},
-		{REAR_3D_VIEW, 0.0, 0.0, 3600.0, 0.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Free},
-		{LEFT_FRONT_3D_VIEW, 1000.0, 100.0, 2000.0, 800.0, 100.0, 500.0, -10.0, 75.0, 0.0, CameraPosition_Left},
-		{RIGHT_FRONT_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 0.0, 25.0, 0.0, CameraPosition_Right},
-		{LEFT_REAR_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 25.0, CameraPosition_Left_Rear},
-		{RIGHT_REAR_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Rear},
-		{LEFT_TURN_SIGNAL_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Left_Front},
-		{RIGHT_TURN_SIGNAL_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Right_Front},
-		{LEFT_REAR_TURN_SIGNAL_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Left_Rear_Light},
-		{RIGHT_REAR_TURN_SIGNAL_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Right_Rear_Light},
-		{LEFT_HIGHT_SPEED_TURN_3D_VIEW, 400.0, 0.0, 3500.0, 400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Left_Front_Light},
-		{RIGHT_HIGHT_SPEED_TURN_3D_VIEW, -400.0, 0.0, 3500.0, -400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Front_Light},
-		{TOUR_VIEW, 0.0, 0.0, 2600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
-		{BOSH_FRONT_VIEW, 0.0, -500.0, -20.0, 0.0, -500.0, -40.0, 0.0, 0.0, 0.0, CameraPosition_BOSCH_Front},
-		{BOSH_FRONT_VIEW_TOP, 0.0, 800.0, -520.0, 0.0, 800.0, -1040.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Front_Top},
-		{BOSH_REAR_VIEW_TOP, 0.0, 400.0, 560.0, 0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
-		{LEFT_MIRROR_VIEW, 0.0, 400.0, 560.0, 0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
-		{RIGHT_MIRROR_VIEW, 0.0, 400.0, 560.0, 0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
-	 	{BMW_REAR_VIEW, -3600.0, 0.0, 0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear},
-		{BMW_LEFT_VIEW, -3600.0, -100.0, 0.0, 0.25*(-3600.0), -100.0, 0.0, 0.0, 38.0, 0.0,CameraPosition_BMW_Left}, //left 3d
-		{BMW_RIGHT_VIEW, 3600.0, -100.0, 0.0, 0.25*(3600.0), -100.0, 0.0, 0.0, 38.0, 0.0, CameraPosition_BMW_Right}, //right 3d
-		{BMW_LEFT_FRONT_VIEW, -2000.0, -100.0, -2250.0,  0.25*(-2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Front}, //front left 3d
-		{BMW_RIGHT_FRONT_VIEW, 2000.0, -100.0, -2250.0,  0.25*(2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Front}, //front right 3d
-		{BMW_LEFT_REAR_VIEW, -1150.0, -100.0, 2950.0, 0.5*(-1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Rear}, //rear left 3d
-		{BMW_RIGHT_REAR_VIEW, 1150.0, -100.0, 2950.0, 0.5*(1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Rear}, //rear right 3d
-	    {BMW_REAR_3D_VIEW, 0.0, 0.0, -3600.0, 0.0, 0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear}, //front 3d
+		{REAR_3D_VIEW,                      0.0,        0.0,    3600.0,     0.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Free},
+		{LEFT_FRONT_3D_VIEW,                1000.0,     100.0,  2000.0,     800.0, 100.0, 500.0, -10.0, 75.0, 0.0, CameraPosition_Left},
+		{RIGHT_FRONT_3D_VIEW,               400.0,      0.0,    3500.0,     400.0, 0.0, 0.0, 0.0, 25.0, 0.0, CameraPosition_Right},
+		{LEFT_REAR_3D_VIEW,                 -400.0,     0.0,    3500.0,     -400.0, 0.0, 0.0, 180.0, 25.0, CameraPosition_Left_Rear},
+		{RIGHT_REAR_3D_VIEW,                400.0,      0.0,    3500.0,     400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Rear},
+		{LEFT_TURN_SIGNAL_3D_VIEW,          -400.0,     0.0,    3500.0,     -400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Left_Front},
+		{RIGHT_TURN_SIGNAL_3D_VIEW,         400.0,      0.0,    3500.0,     400.0, 0.0, 0.0, 0.0, 50.0, 0.0, CameraPosition_Right_Front},
+		{LEFT_REAR_TURN_SIGNAL_3D_VIEW,     -400.0,     0.0,    3500.0,     -400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Left_Rear_Light},
+		{RIGHT_REAR_TURN_SIGNAL_3D_VIEW,    400.0,      0.0,    3500.0,     400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Right_Rear_Light},
+		{LEFT_HIGHT_SPEED_TURN_3D_VIEW,     400.0,      0.0,    3500.0,     400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Left_Front_Light},
+		{RIGHT_HIGHT_SPEED_TURN_3D_VIEW,    -400.0,     0.0,    3500.0,     -400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Front_Light},
+		{TOUR_VIEW,                         0.0,        0.0,    2600.0,     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
+		{BOSH_FRONT_VIEW,                   0.0,        -500.0, -20.0,      0.0, -500.0, -40.0, 0.0, 0.0, 0.0, CameraPosition_BOSCH_Front},
+		{BOSH_FRONT_VIEW_TOP,               0.0,        800.0,  -520.0,     0.0, 800.0, -1040.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Front_Top},
+		{BOSH_REAR_VIEW_TOP,                0.0,        400.0,  560.0,  0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
+		{LEFT_MIRROR_VIEW,                  0.0,        400.0,  560.0,  0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
+		{RIGHT_MIRROR_VIEW,                 0.0,        400.0,  560.0,      0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
+	 	{BMW_REAR_VIEW,                     -3600.0,    0.0,    0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear},
+		{BMW_LEFT_VIEW,                     -3600.0,    -100.0, 0.0, 0.25*(-3600.0), -100.0, 0.0, 0.0, 38.0, 0.0,CameraPosition_BMW_Left}, //left 3d
+		{BMW_RIGHT_VIEW,                    3600.0,     -100.0, 0.0, 0.25*(3600.0), -100.0, 0.0, 0.0, 38.0, 0.0, CameraPosition_BMW_Right}, //right 3d
+		{BMW_LEFT_FRONT_VIEW,               -2000.0,    -100.0, -2250.0,  0.25*(-2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Front}, //front left 3d
+		{BMW_RIGHT_FRONT_VIEW,              2000.0,     -100.0, -2250.0,  0.25*(2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Front}, //front right 3d
+		{BMW_LEFT_REAR_VIEW,                -1150.0,    -100.0, 2950.0, 0.5*(-1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Rear}, //rear left 3d
+		{BMW_RIGHT_REAR_VIEW,               1150.0,     -100.0, 2950.0, 0.5*(1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Rear}, //rear right 3d
+	    {BMW_REAR_3D_VIEW,                  0.0, 0.0,   -3600.0, 0.0, 0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear}, //front 3d
 		//{BMW_REAR_3D_VIEW, 0.0, 0.0, 3000.0, 0.0, 0.0, -600.0, 0.0, 22.0 , 0.0, CameraPosition_BMW_3D_Rear},
 
 	};
