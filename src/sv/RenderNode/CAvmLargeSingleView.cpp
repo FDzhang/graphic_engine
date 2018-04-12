@@ -57,11 +57,20 @@ int CAvmLargeSingleView::Init()
     float stich_region_width = 0.35 *  XrGetScreenWidth();
 
 	float black_width = 80.0;
+	unsigned char current_vehicle_type_id;
+	CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(current_vehicle_type_id);
 	
 	m_largeViewRegion.Set(100.0, XrGetScreenWidth(), black_width, XrGetScreenHeight() - black_width);
 	m_camDebugViewRegion.Set(0.0, XrGetScreenWidth(), 0, XrGetScreenHeight());
 	float radio = 227.0/1280.0;
 	m_dvrViewRegion.Set(radio * XrGetScreenWidth(), XrGetScreenWidth(), black_width, XrGetScreenHeight() - black_width);
+
+	if(CHANGAN_S302 == current_vehicle_type_id)
+	{
+	    black_width = 0.0;
+		m_largeViewRegion.Set(0.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
+		m_dvrViewRegion.Set(240.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
+	}
 
 	return LARGE_SINGLE_VIEW_NORMAL;
 }

@@ -37,6 +37,7 @@
 #include "CAvmLarge3dView.h"
 
 #include "../GlSV2D.h"
+#include "gpu_log.h"
 
 
 typedef struct Avm3dViewCameraParamsTag
@@ -501,7 +502,46 @@ int CAvmViewControlModel::InitTourDisplaySecEffect()
 	
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
+int CAvmViewControlModel::Process3dTouchData()
+{
+	TouchDataT touchData;
+	CAvmRenderDataBase::GetInstance()->GetTouchData(&touchData);
 
+	static int prePosX = touchData.x;
+	static int prePosY = touchData.y;
+
+	static int deltaPosX = prePosX - touchData.x;
+	static int deltaPosY = prePosY - touchData.y;
+
+	deltaPosX = prePosX - touchData.x;
+	deltaPosY = prePosY - touchData.y;
+
+	switch(touchData.touchAction)
+	{
+	case TouchEvent_Move:
+		if (m_scrollX) m_scrollX->DockToDeltaValue(Float32(deltaPosX)/4.0);
+		if (m_scrollY) m_scrollY->DockToDeltaValue(Float32(deltaPosY)/4.0);
+
+		break;
+	case TouchEvent_Up:
+
+		deltaPosX = 0;
+		deltaPosY = 0;
+		if (m_scrollX) m_scrollX->DockToDeltaValue(Float32(deltaPosX)/4.0);
+		if (m_scrollY) m_scrollY->DockToDeltaValue(Float32(deltaPosY)/4.0);
+
+		break;
+	case TouchEvent_Down:
+
+		break;
+	}
+	
+	prePosX = touchData.x;
+	prePosY = touchData.y;		
+
+
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
 int CAvmViewControlModel::SetCurrentView()
 {
 	ProcessTimeStitcher();

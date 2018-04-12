@@ -49,6 +49,7 @@ public:
 	virtual ~CAvmLogicManager();
 	virtual int Init();
 	virtual int Update();
+	virtual int ProcessTouchEvent();
 
 	int UpdateStitchAngle();	
 	int UpdateExternCalib2DReslt();

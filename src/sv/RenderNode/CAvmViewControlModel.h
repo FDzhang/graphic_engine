@@ -65,6 +65,8 @@ public:
 	virtual ~CAvmViewControlModel();
 	virtual int InitViewNode();
 
+	virtual int Process3dTouchData();
+
 	virtual int SetCurrentView();
 	virtual int SetViewNodeVisibility(VisibilityIndexT pFuncId);
 

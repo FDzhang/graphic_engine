@@ -54,6 +54,15 @@ int CAvmLogicManager::Init()
 	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
+int CAvmLogicManager::ProcessTouchEvent()
+{
+	if(m_avmViewControlModel)
+	{
+		m_avmViewControlModel->Process3dTouchData();
+	}
+	
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
 int CAvmLogicManager::Update()
 {
 	UpdateViewModel();
@@ -190,6 +199,8 @@ int CAvmLogicManager::SetMainHmiName()
 		default:
 			m_mainHmiName = "CSVDemoMainHmi";
 	}
+	
+	return AVM_LOGIC_CONTROL_NORMAL;
 }
 
 int CAvmLogicManager::AddHmi(ISVHmi* pSvHmi, vector<ISVHmi*>* pHmi)
