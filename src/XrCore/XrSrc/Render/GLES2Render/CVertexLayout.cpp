@@ -32,7 +32,31 @@ bool CVertexLayout::Init(XR_VERTEX_LAYOUT* pLayout, Int32 num)
 		}
 		else if (!strcmp(desc[i].semanticName, "LUMINANCECOF")) {
 			_layout |= XR_VERTEX_LAYOUT_K;
-		}		
+		}
+		else if (!strcmp(desc[i].semanticName, "TEXCOORD2")) {
+			_layout |= XR_VERTEX_LAYOUT_C;
+		}
+		else if (!strcmp(desc[i].semanticName, "WEIGHT2")) {
+			_layout |= XR_VERTEX_LAYOUT_D;
+		}
+		else if (!strcmp(desc[i].semanticName, "TEXCOORD3")) {
+			_layout |= XR_VERTEX_LAYOUT_E;
+		}
+		else if (!strcmp(desc[i].semanticName, "WEIGHT3")) {
+			_layout |= XR_VERTEX_LAYOUT_F;
+		}
+		else if (!strcmp(desc[i].semanticName, "TEXCOORD4")) {
+			_layout |= XR_VERTEX_LAYOUT_G;
+		}
+		else if (!strcmp(desc[i].semanticName, "WEIGHT4")) {
+			_layout |= XR_VERTEX_LAYOUT_H;
+		}
+		else if (!strcmp(desc[i].semanticName, "TEXCOORD5")) {
+			_layout |= XR_VERTEX_LAYOUT_J;
+		}
+		else if (!strcmp(desc[i].semanticName, "WEIGHT5")) {
+			_layout |= XR_VERTEX_LAYOUT_L;
+		}
 	}
 	layout = (XRVertexLayout)_layout;
 	elementNum = num;

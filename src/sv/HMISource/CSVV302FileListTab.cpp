@@ -6,7 +6,13 @@ CSVV302FileListTab::CSVV302FileListTab(IUINode* pUiNode = NULL, int pUiNodeId = 
 {}
 
 CSVV302FileListTab::~CSVV302FileListTab()
-{}
+{
+    for(int i = 0; i < V302_FILE_BUTTON_INDEX_NUM; i++)
+    {
+        SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
+        SAFE_DELETE(m_baseButton[i]);
+    }    
+}
 
 int CSVV302FileListTab::SetHmiParams()
 {

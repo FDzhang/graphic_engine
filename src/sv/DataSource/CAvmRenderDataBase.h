@@ -232,14 +232,21 @@ public:
 	void Get180DegreeViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
 	void SetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
 	void GetLeftRightViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
+	void SetSideBySideSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag);
+	void GetSideBySideSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag);
 
 
 	void GetLeftRightViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex);
 	void SetLeftRightViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex);
+	void GetSideBySideSingleViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex);
+	void SetSideBySideSingleViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex);
 	void SetSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
 	void GetSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
 	void SetLargeSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
 	void GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
+
+	void SetSideBySideSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex);
+	void GetSideBySideSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex);
 
 	
 private:
@@ -251,15 +258,22 @@ private:
 	unsigned char m_avmObjViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avm180DegreeViewVisibility[PROCESS_FUNC_NUMS];
 	unsigned char m_avmLeftRightViewVisibility[PROCESS_FUNC_NUMS];
+	unsigned char m_avmSideBySideSingleViewVisibility[PROCESS_FUNC_NUMS];
 
 	class IMesh*	  m_singleViewMesh[4];
 	class INode*	  m_singleViewPlaneNode[4];
 	float*			  m_singleViewVertex[4];
 	float*			  m_singleViewRoi[4];
 	float*			  m_largeSingleViewRoi[4];
+	float*			  m_sideBySideSingleViewRoi[4];
 
 	Region 			  m_leftViewRegion;
 	Region 			  m_rightViewRegion;
+
+	Region 			  m_leftSingleViewRegion;
+	Region 			  m_rightSingleViewRegion;
+
+	
 
 };
 

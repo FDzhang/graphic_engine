@@ -164,6 +164,54 @@ Void CRenderContext::SetVertexLayout(CVertexLayout* layout)
 		index++;
 		offset+= 4;
 	}
+	if (_layout & XR_VERTEX_LAYOUT_C) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 2*4;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_D) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 1, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 4;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_E) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 2 * 4;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_F) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 1, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 4;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_G) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 2 * 4;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_H) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 1, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 4;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_J) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 2 * 4;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_L) {
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 1, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+		index++;
+		offset += 4;
+	}
 
 }
 
@@ -206,7 +254,39 @@ Void CRenderContext::DisableVertexLayout(CVertexLayout* layout)
 	if (_layout & XR_VERTEX_LAYOUT_K) {
 		glDisableVertexAttribArray(index);
 		index++;
-	}	
+	}
+	if (_layout & XR_VERTEX_LAYOUT_C) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_D) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_E) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_F) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_G) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_H) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_J) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
+	if (_layout & XR_VERTEX_LAYOUT_L) {
+		glDisableVertexAttribArray(index);
+		index++;
+	}
 }
 
 xr_state CRenderContext::SetVertexBuffer(Int32 index, class CVertexBuffer* pVertexBuffer, CVertexLayout* layout)

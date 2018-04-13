@@ -7,6 +7,7 @@
 #include "../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
 #include "AVMData.h"
 
+#include "TS_config.h"
 
 #define RENDER_BUFFER_TOTAL 2
 #define FRAME_BUFFER_TOTAL 2

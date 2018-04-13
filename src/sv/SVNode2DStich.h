@@ -7,12 +7,15 @@
 
 #include "../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
 #include "vehicle_motion_model.h"
+#include "TS_config.h"
 
 #define LEFT_BOTTOM_POINT_INDEX 2
 #define RIGHT_BOTTOM_POINT_INDEX 3
 #define LEFT_TOP_POINT_INDEX  0
 #define RIGHT_TOP_POINT_INDEX 1
 
+#define CAR_LENGTH 4.667f
+#define CAR_WIDTH 1.839f
 
 
 class SVNode2DStich 
@@ -20,26 +23,26 @@ class SVNode2DStich
 public:
 	SVNode2DStich();
 
-	int Init();
-	int Update(float steering_wheel_angle,float vehicle_speed,float left_wheel_speed,float right_wheel_speed,unsigned char gear_state,int time_offset,float yaw_rate);
+	virtual int Init();
+	virtual int Update(float steering_wheel_angle,float vehicle_speed,float left_wheel_speed,float right_wheel_speed,unsigned char gear_state,int time_offset,float yaw_rate);
 	int GetKeyFrameTextureId();
 	int GetGroundTextureId();
-	int GetStichFrameTextureId();
-	void InitStichKeyFrameNodeRT(int j);
+	virtual int GetStichFrameTextureId();
+	virtual void InitStichKeyFrameNodeRT(int j);
 
-	void Init2DGroundNodeRT(int j);
+	virtual void Init2DGroundNodeRT(int j);
 	
 	int ProcessGroundCoord(float steering_wheel_angle,float vehicle_speed,float left_wheel_speed, float right_wheel_speed,unsigned char gear_state,int time_offset,float yaw_rate);
-	void UpdateGoundTextureCoord(GpuCvPoint2D32f *pTextureIndex);
+	virtual void UpdateGoundTextureCoord(GpuCvPoint2D32f *pTextureIndex);
 	//Update(unsigned char update_key_flag)
-	int SetEnable(unsigned char flag);
+	virtual int SetEnable(unsigned char flag);
 	
 	void UpdateStich2DReslt(int index);
-	void InitStichAreaRT(void);
+	virtual void InitStichAreaRT(void);
 	void CalcShadowTextureCoord(float *car_rect,float *shadow_rect,float *pshadow_texture);
 	void Update2DStichRslt(void);
 
-private:
+protected:
 		void Cvt4Point2Rect(float *pPoint,GpuCvPoint2D32f *pRect);
 		//void CvtPointWorld2Image(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
 		//void CvtPointImage2Wolrd(CvPoint2D32f InPoint,CvPoint2D32f *pOutPoint);
@@ -49,12 +52,13 @@ private:
 	IRenderTarget*		m_groundRT;	
 	Int32               m_GroundNodeId;
     IMesh*              m_pMeshStichGround;
+	class RenderDelegateSV2D_TS *svGroundDelegate;
 
 
-    ISceneNode* 		m_StichNode[3];
-    IMaterial*			m_StichNode_mtl[3];
-	IRenderTarget*		m_StichNodeRT[3];	
-	Int32               m_StichNodeId[3];    
+	ISceneNode* 		m_StichNode[IMG_NUM_LIMIT + 1];
+	IMaterial*			m_StichNode_mtl[IMG_NUM_LIMIT + 1];
+	IRenderTarget*		m_StichNodeRT[IMG_NUM_LIMIT + 1];
+	Int32               m_StichNodeId[IMG_NUM_LIMIT + 1];
     ISceneNode* 		m_StichAreaNode;
     IMaterial*			m_StichArea_mtl;
 	IRenderTarget*		m_StichAreaRT;	

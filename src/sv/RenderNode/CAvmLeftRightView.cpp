@@ -175,7 +175,7 @@ int CAvmLeftRightView::SetVisibility(unsigned char pVisibilityFlag)
 int CAvmLeftRightView::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
 {
 	m_leftRightViewNode[0]->SetClear(pColorFlag, pDepthFlag);
-	m_leftRightViewNode[1]->SetClear(pColorFlag, pDepthFlag);
+	//m_leftRightViewNode[1]->SetClear(pColorFlag, pDepthFlag);
 
 	return LEFT_RIGHT_VIEW_NORMAL;
 

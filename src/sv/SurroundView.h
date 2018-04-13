@@ -12,6 +12,10 @@
 #include "../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
 #include "AVMData.h"
 #include "HMISource/ISVHmi.h"
+#include "TS_config.h"
+#include "SVTimeStitcher.h"
+
+
 class SVAdjust;
 class XRSV
 {

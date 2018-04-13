@@ -199,6 +199,8 @@ public:
 	void Init2DStichAVMNode();
 	void Calc3DGroundTexture();
 
+    void updateCarLut(LUT_Car *gpu_lut);
+    
 public:
 	void SetTouchSelectView(unsigned char view_index);
 	void GetCurrentDisplayView(unsigned char &view_index);
@@ -374,7 +376,8 @@ private:
 	vehicle_param m_veh_param;
     //IMaterial* m_ground_mtl;
     bool m_SwitchViewLogicAgain;
-
+    
+    IMaterial* m_pGroundMtl;
 };
 
 

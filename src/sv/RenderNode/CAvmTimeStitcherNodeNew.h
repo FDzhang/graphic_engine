@@ -1,5 +1,5 @@
 /*===========================================================================*\
- * FILE: CAvmTimeStitcherNode.h
+ * FILE: CAvmTimeStitcherNodeNew.h
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -24,23 +24,24 @@
  *
 \*===========================================================================*/
 
-#ifndef _CAVM_TIMESTITCHER_NODE_H_
-#define _CAVM_TIMESTITCHER_NODE_H_
+#ifndef _CAVM_TIMESTITCHER_NODE_NEW_H_
+#define _CAVM_TIMESTITCHER_NODE_NEW_H_
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 #include "../DataStruct.h"
+#include "CAvmTimeStitcherNode.h"
 
-typedef enum AvmTimeStitcherErrorCodeTag
-{
-	TIME_STITCHER_NORMAL = 0,
-	TIME_STITCHER_XRCORE_NULL,
-};
+// typedef enum AvmTimeStitcherErrorCodeTag
+// {
+// 	TIME_STITCHER_NORMAL = 0,
+// 	TIME_STITCHER_XRCORE_NULL,
+// };
 
-class CAvmTimeStitcherNode
+class CAvmTimeStitcherNodeNew : public CAvmTimeStitcherNode
 {
 public:
-	CAvmTimeStitcherNode();
-	~CAvmTimeStitcherNode();
+	CAvmTimeStitcherNodeNew();
+	~CAvmTimeStitcherNodeNew();
 	virtual int InitNode(class IXrCore* pXrcore);
 	virtual int UpdateNode();
 	virtual int SetVisibility(unsigned char pVisibilityFlag);
@@ -50,31 +51,32 @@ public:
 private:
 	int AddOverlay(class IAvmOverlay * pOverlay);
 	
-protected:
-	class IXrCore*       m_xrCore;
-	class ISceneNode*   m_stitchViewNode;
-	class IMaterial*    m_stitchViewMtl;
-	class IMaterial*	m_SV2DMtl;
-
-	class IMesh*		m_planeMesh;
-	int					m_stitchViewNodeId;
-
-	class GlSV2D*				m_SV2DData;
-
-	class RenderDelegateSV2D*		m_renderDelegate; 
-	
-	class SVNode2DStich*			m_timeStitchNode;
-
-	SurroundViewCameraParamsT*   m_stitchViewCameraParams;
-	class ICamera*	m_stitchViewCamera;
-	int			m_stitchViewCameraId;
-
-	unsigned char m_visibilityFlag;
-
-	class IAvmOverlay*			m_overlay;
-	class SVNodeSonar*			m_sonarNode;
+private:
+//	class IXrCore*       m_xrCore;
+//	class ISceneNode*   m_stitchViewNode;
+//	class IMaterial*    m_stitchViewMtl;
+    class IMaterial*    m_groundMtl;
+//	class IMaterial*	m_SV2DMtl;
+//
+//	class IMesh*		m_planeMesh;
+//	int					m_stitchViewNodeId;
+//
+//	class GlSV2D*				m_SV2DData;
+//
+//	class RenderDelegateSV2D*		m_renderDelegate; 
+//	
+//	class SVNode2DStich*			m_timeStitchNode;
+//
+//	SurroundViewCameraParamsT*   m_stitchViewCameraParams;
+//	class ICamera*	m_stitchViewCamera;
+//	int			m_stitchViewCameraId;
+//
+//	unsigned char m_visibilityFlag;
+//
+//	class IAvmOverlay*			m_overlay;
+//	class SVNodeSonar*			m_sonarNode;
 };
-#endif // _CAVM_TIMESTITCHER_NODE_H_
+#endif // _CAVM_TIMESTITCHER_NODE_NEW_H_
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
@@ -82,5 +84,5 @@ protected:
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  11/01/17   Jensen Wang   Create the CAvmTimeStitcherNode class.
+ *  03/30/18   Zhu Hangman   Create the CAvmTimeStitcherNodeNew class.
 \*===========================================================================*/

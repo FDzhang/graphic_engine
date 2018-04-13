@@ -100,6 +100,7 @@ typedef enum GpuVehicleTypeIdTag
     CHANGAN_V302 = 0x30,
     JAC_S3 = 0x33,
     GEELY_DEMO = 0xA0,
+    SVW_GPU = 0xA1,
 }
 GpuVehicleTypeIdT;
 

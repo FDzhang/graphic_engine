@@ -12,6 +12,7 @@ const char* VS_PNT_dummy_fx = "";
 const char* VS_PNTWI_dummy_fx = "";
 const char* VS_PNBT_dummy_fx = "";
 const char* VS_PNBTWI_dummy_fx = "";
+const char* VS_PTACDEFGHJL_dummy_fx = "";
 
 const char* UI_Spirit = "UI_Spirit";
 /////////////////// 001 Shader_UI_Spirit /////////////////////

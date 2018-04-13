@@ -16,6 +16,7 @@ extern const char* VS_PNT_dummy_fx;
 extern const char* VS_PNTWI_dummy_fx;
 extern const char* VS_PNBT_dummy_fx;
 extern const char* VS_PNBTWI_dummy_fx;
+extern const char* VS_PTACDEFGHJL_dummy_fx;
 
 struct UI_Spirit_CB {
 	XRMat4 TransformMatrix;

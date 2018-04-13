@@ -91,7 +91,7 @@ private:
 	int Process180DegreeView();
 	int ProcessLeftRightView();
 	int ProcessLarge3dView();
-
+	int ProcessSideBySideSingleView();
 	int SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVisibility[AVM_VIEW_NODE_NUMS]);
 
 private:
@@ -105,6 +105,7 @@ private:
 	class CAvmLinearViewNode*  m_avm180DegreeView;
 	class CAvmLeftRightView* m_avmLeftRightView;
 	class CAvmLarge3dView *  m_avmLarge3dView;
+	class CAvmSideBySideSingleView* m_avmSideBySideSingleView;
 
 	class IScrollingAnimation*	m_scrollX;
 	class IScrollingAnimation*	m_scrollY;

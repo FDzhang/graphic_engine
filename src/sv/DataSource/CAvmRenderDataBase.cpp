@@ -124,6 +124,28 @@ void CAvmRenderDataBase::GetLargeSingleViewRoi(float** pSingleViewRoi, unsigned 
 	*pSingleViewRoi = m_largeSingleViewRoi[pViewIndex];
 }
 
+void CAvmRenderDataBase::SetSideBySideSingleViewRoi(float* pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+
+	static unsigned initFlag[4] = {0};
+	if(initFlag[pViewIndex] == 0)
+	{
+		m_sideBySideSingleViewRoi[pViewIndex] = new float[4];
+		initFlag[pViewIndex] = 1;
+	}
+	
+	memcpy(m_largeSingleViewRoi[pViewIndex], pSingleViewRoi, sizeof(float)*4);
+}
+void CAvmRenderDataBase::GetSideBySideSingleViewRoi(float** pSingleViewRoi, unsigned char pViewIndex)
+{
+	if(pViewIndex > right_camera_index)
+		pViewIndex = 0;
+	*pSingleViewRoi = m_sideBySideSingleViewRoi[pViewIndex];
+}
+
+
 void CAvmRenderDataBase::GetLeftRightViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex)
 {
 	if(viewIndex == left_camera_index)
@@ -144,6 +166,28 @@ void CAvmRenderDataBase::SetLeftRightViewRegion(Region* pLeftRightViewReg, unsig
 	else if(viewIndex == right_camera_index)
 	{
 		m_rightViewRegion = *pLeftRightViewReg; 
+	}
+}
+void CAvmRenderDataBase::GetSideBySideSingleViewRegion(Region** pLeftRightViewReg, unsigned char viewIndex)
+{
+	if(viewIndex == left_camera_index)
+	{
+		*pLeftRightViewReg = &m_leftSingleViewRegion; 
+	}
+	else if(viewIndex == right_camera_index)
+	{
+		*pLeftRightViewReg = &m_rightSingleViewRegion; 
+	}	
+}
+void CAvmRenderDataBase::SetSideBySideSingleViewRegion(Region* pLeftRightViewReg, unsigned char viewIndex)
+{
+	if(viewIndex == left_camera_index)
+	{
+		m_leftSingleViewRegion = *pLeftRightViewReg; 
+	}
+	else if(viewIndex == right_camera_index)
+	{
+		m_rightSingleViewRegion = *pLeftRightViewReg; 
 	}
 }
 
@@ -196,6 +240,17 @@ void CAvmRenderDataBase::GetLeftRightViewVisibility(VisibilityIndexT pFuncId, un
 {
 	pFlag = m_avmLeftRightViewVisibility[pFuncId];
 }
+
+void CAvmRenderDataBase::SetSideBySideSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char pFlag)
+{
+	m_avmSideBySideSingleViewVisibility[pFuncId] = pFlag;
+}
+
+void CAvmRenderDataBase::GetSideBySideSingleViewVisibility(VisibilityIndexT pFuncId, unsigned char& pFlag)
+{
+	pFlag = m_avmSideBySideSingleViewVisibility[pFuncId];
+}
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

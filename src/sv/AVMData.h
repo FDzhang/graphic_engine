@@ -126,7 +126,7 @@ public:
 	void GetBevConfig(BEV_CONFIG_T* pConfig);
 	void SetBevConfig(BEV_CONFIG_T pConfig);
 
-
+    void GetSmc(Smc_Cal_T **pSmc);
 	
 	void SetStitchAngle(unsigned char pSeamChangedFlag, unsigned char* pSeamChangeFlag,GLfloat* pVertex);
 	void GetStitchAngle(unsigned char& pSeamChangedFlag, unsigned char** pSeamChangeFlag,GLfloat** pVertex);
@@ -181,6 +181,7 @@ private:
 	float*					m_3dParamPos;
 
     Veh_Param_T             m_vehParam;
+    Smc_Cal_T*              m_smc;
 };
 /*===========================================================================*\
  * Exported Function Prototypes

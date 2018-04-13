@@ -35,7 +35,10 @@
 #include "CAvmLinearViewNode.h"
 #include "CAvmLeftRightView.h"
 #include "CAvmLarge3dView.h"
+#include "CAvmTimeStitcherNodeNew.h"
 
+
+#include "CAvmSideBySideSingleView.h"
 #include "../GlSV2D.h"
 #include "gpu_log.h"
 
@@ -75,7 +78,7 @@ int CAvmViewControlModel::InitViewNode()
 	unsigned char initSingleViewNode = 0;
 	unsigned char initObjViewNode = 0;
 
-	unsigned char carTransparentStatus = 1;
+	unsigned char carTransparentStatus = 2;
 	CAvmRenderDataBase::GetInstance()->SetCarTransparentStatus(&carTransparentStatus);
 
 	//CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&carTransparentStatus);
@@ -84,17 +87,22 @@ int CAvmViewControlModel::InitViewNode()
 	{
 		m_avmStitchViewNode = new CAvmStitchViewNode;
 	}
-	else
+	else if(carTransparentStatus == 1)
 	{
-		m_avmTimeStitcherNode = new CAvmTimeStitcherNode;
+	    m_avmTimeStitcherNode = new CAvmTimeStitcherNode;
 	}
-
-	m_avmSingleViewNode= new CAvmSingleViewNode;
+    else if(carTransparentStatus == 2)
+    {
+        m_avmTimeStitcherNode = new CAvmTimeStitcherNodeNew;
+    }
+    
+    m_avmSingleViewNode= new CAvmSingleViewNode;
 	m_avm3dViewNode= new CAvm3dViewNode;
 	m_avmObjViewNode= new CAvmObjectViewNode;
 	m_avm180DegreeView = new CAvmLinearViewNode;
 	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
 	m_avmLarge3dView = new CAvmLarge3dView;
+	m_avmSideBySideSingleView = NULL;
 
 	
 	m_xrCore = GetXrCoreInterface();
@@ -109,18 +117,20 @@ int CAvmViewControlModel::InitViewNode()
 
 	CAvmRenderDataBase::GetInstance()->SetAnimationManager(m_am);
 
-	Region Stich2DReg,SingleViewReg, SceneViewReg, crossVieRegion, linear180DegreeViewRegion, leftViewReg, rightViewReg;
+	Region Stich2DReg,SingleViewReg, SceneViewReg, crossVieRegion, linear180DegreeViewRegion, leftViewReg, rightViewReg
+		,leftSingleViewReg, rightSingleViewReg;
 	float stich2D_region[4];
     float single2D_region[4];
     float scene3D_region[4];
 	float linear180DegreeRegion[4];
 	float leftViewRegion[4];
 	float rightViewRegion[4];
+	float leftSingleViewRegion[4];
+	float rightSingleViewRegion[4];
 
     float stich_region_width = 0.35 *  XrGetScreenWidth();
     unsigned char current_vehicle_type_id = 0;
     CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(current_vehicle_type_id);
-    //current_vehicle_type_id = CHANGAN_V302;
 
     float black_width = 80.0;
     float left_panel_width = 100.0;
@@ -151,6 +161,16 @@ int CAvmViewControlModel::InitViewNode()
 	linear180DegreeRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
 	linear180DegreeRegion[REGION_POS_TOP] = 0+black_width;
 	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
+
+	leftSingleViewRegion[REGION_POS_LEFT] = left_panel_width;
+	leftSingleViewRegion[REGION_POS_RIGHT] = (XrGetScreenWidth() - left_panel_width)/2.0 + leftSingleViewRegion[REGION_POS_LEFT];
+	leftSingleViewRegion[REGION_POS_TOP] = 0+black_width;
+	leftSingleViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
+
+	rightSingleViewRegion[REGION_POS_LEFT] = leftSingleViewRegion[REGION_POS_RIGHT];
+	rightSingleViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
+	rightSingleViewRegion[REGION_POS_TOP] = 0+black_width;
+	rightSingleViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
 	leftViewRegion[REGION_POS_LEFT] = stich_region_width + left_panel_width + delta;
 	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + left_panel_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2;
@@ -195,6 +215,8 @@ int CAvmViewControlModel::InitViewNode()
 	linear180DegreeViewRegion.Set(linear180DegreeRegion[REGION_POS_LEFT],linear180DegreeRegion[REGION_POS_RIGHT],linear180DegreeRegion[REGION_POS_TOP],linear180DegreeRegion[REGION_POS_BOTTOM]);
 	leftViewReg.Set(leftViewRegion[REGION_POS_LEFT],leftViewRegion[REGION_POS_RIGHT],leftViewRegion[REGION_POS_TOP],leftViewRegion[REGION_POS_BOTTOM]);
 	rightViewReg.Set(rightViewRegion[REGION_POS_LEFT],rightViewRegion[REGION_POS_RIGHT],rightViewRegion[REGION_POS_TOP],rightViewRegion[REGION_POS_BOTTOM]);
+	leftSingleViewReg.Set(leftSingleViewRegion[REGION_POS_LEFT],leftSingleViewRegion[REGION_POS_RIGHT],leftSingleViewRegion[REGION_POS_TOP],leftSingleViewRegion[REGION_POS_BOTTOM]);
+	rightSingleViewReg.Set(rightSingleViewRegion[REGION_POS_LEFT],rightSingleViewRegion[REGION_POS_RIGHT],rightSingleViewRegion[REGION_POS_TOP],rightSingleViewRegion[REGION_POS_BOTTOM]);
 
 
 	CAvmRenderDataBase::GetInstance()->SetStitchViewRegion(&Stich2DReg);
@@ -204,7 +226,9 @@ int CAvmViewControlModel::InitViewNode()
 	//AVMData::GetInstance()->SetFadeRegion(&SingleViewReg);
 	CAvmRenderDataBase::GetInstance()->SetLinearViewRegion(&linear180DegreeViewRegion);
 	CAvmRenderDataBase::GetInstance()->SetLeftRightViewRegion(&leftViewReg, left_camera_index);
-	CAvmRenderDataBase::GetInstance()->SetLeftRightViewRegion(&rightViewReg, right_camera_index);
+	CAvmRenderDataBase::GetInstance()->SetLeftRightViewRegion(&rightViewReg, right_camera_index);	
+	CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewRegion(&leftSingleViewReg, left_camera_index);
+	CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewRegion(&rightSingleViewReg, right_camera_index);
 
 	SurroundViewCameraParamsT m_stitchCameraParams;
 	SurroundViewCameraParamsT m_objectViewCameraParams;
@@ -251,7 +275,6 @@ int CAvmViewControlModel::InitViewNode()
 		}
 	}
 	
-	
 
 	if(m_avmSingleViewNode->InitNode(m_xrCore) == AVM_SINGLEVIEW_NORMAL)
 	{
@@ -273,6 +296,18 @@ int CAvmViewControlModel::InitViewNode()
 		initObjViewNode = 1;
 	}
 
+	if(SVW_GPU == current_vehicle_type_id)
+	{
+		if(m_avmSideBySideSingleView == NULL)
+		{
+			m_avmSideBySideSingleView = new CAvmSideBySideSingleView;
+			if(m_avmSideBySideSingleView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
+			{
+				m_avmSideBySideSingleView->SetClear(TRUE, TRUE);
+			}
+		}
+	}
+
 	CAvmRenderDataBase::GetInstance()->SetStitchViewNodeStatus(&initStitchViewNode);
 	CAvmRenderDataBase::GetInstance()->SetSingleViewNodeStatus(&initSingleViewNode);
 	CAvmRenderDataBase::GetInstance()->Set3dViewNodeStatus(&init3dViewNode);
@@ -291,11 +326,12 @@ int CAvmViewControlModel::InitViewNode()
 
 	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, right_camera_index);
 
-	camera_zone[REGION_POS_LEFT] = 1.0;
+	camera_zone[REGION_POS_LEFT] = 0.0;
     camera_zone[REGION_POS_TOP] = 0.0;
-    camera_zone[REGION_POS_RIGHT] = 0.0;
+    camera_zone[REGION_POS_RIGHT] = 1.0;
     camera_zone[REGION_POS_BOTTOM] = 1.0; 
-	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, rear_camera_index);
+	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, left_camera_index);
+	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, right_camera_index);
 
 	m_avmMattsView = new CAvmMattsView();
 	m_avmMattsView->Init();
@@ -553,7 +589,8 @@ int CAvmViewControlModel::SetCurrentView()
 	ProcessLargeSingleView();
 	Process180DegreeView();
 	ProcessLeftRightView();
-
+	ProcessSideBySideSingleView();
+	
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
 }
@@ -605,6 +642,13 @@ int CAvmViewControlModel::SetViewNodeVisibility(VisibilityIndexT pFuncId)
 	{
 		m_avmLeftRightView->SetVisibility(viewVisibilityFlag);
 	}
+
+	CAvmRenderDataBase::GetInstance()->GetSideBySideSingleViewVisibility(pFuncId, viewVisibilityFlag);
+	if(m_avmSideBySideSingleView)
+	{
+		m_avmSideBySideSingleView->SetVisibility(viewVisibilityFlag);
+	}
+	
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
 }
@@ -639,6 +683,7 @@ int CAvmViewControlModel::Process180DegreeView()
 			CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 			CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
 			CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+			CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 
 			m_avm180DegreeView->UpdateNode();
 		}
@@ -679,6 +724,7 @@ int CAvmViewControlModel::ProcessSingleViewDisplay()
 		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 	}
 	if(m_avmSingleViewNode)
 	{
@@ -708,6 +754,7 @@ int CAvmViewControlModel::Process3dViewDisplay()
 		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);	
 		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		lastAvm3dViewCmd = avm3dViewCmd;
 
 	}
@@ -746,6 +793,7 @@ int CAvmViewControlModel::ProcessTourView()
 		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
 		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 
 		m_bevSecTour[0]->Start();
 		m_bevSecTour[1]->Start();
@@ -776,6 +824,7 @@ int CAvmViewControlModel::ProcessMattsView()
 		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_MATTS_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_MATTS_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_MATTS_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_MATTS_FUNC, 0);
 	}
 	if(m_avmMattsView)
 	{
@@ -830,6 +879,7 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_LARGE_SINGLVIEW_FUNC, 0);
 
 		if(m_avmSingleViewNode)
 		{
@@ -840,6 +890,32 @@ int CAvmViewControlModel::ProcessLargeSingleView()
 	{
 		m_avmLargeSingleView->Update();
 	}	
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+int CAvmViewControlModel::ProcessSideBySideSingleView()
+{
+	if(m_avmSideBySideSingleView == NULL)
+	{
+		return AVM_VIEWCONTROLMODEL_NORMAL;
+	}
+	unsigned char leftRightViewCmd = 0;
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(leftRightViewCmd);
+
+	if(leftRightViewCmd == SIDE_BY_SIDE_SINGLE_VIEW)
+	{
+
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
+		CAvmRenderDataBase::GetInstance()->SetSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->Set3dViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetStitchViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
+
+
+	}
+
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
 
@@ -864,6 +940,7 @@ int CAvmViewControlModel::ProcessLeftRightView()
 		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 
 	}
 	
@@ -887,7 +964,8 @@ int CAvmViewControlModel::ProcessLarge3dView()
 		CAvmRenderDataBase::GetInstance()->SetObjectViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 1);
 		CAvmRenderDataBase::GetInstance()->Set180DegreeViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 0);	
 		CAvmRenderDataBase::GetInstance()->SetLeftRightViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 0);
-	
+		CAvmRenderDataBase::GetInstance()->SetSideBySideSingleViewVisibility(PROCESS_LARGE_3DVIEW_FUNC, 0);
+		
 		lastLarge3dViewCmd = large3dViewCmd;
 
 	}

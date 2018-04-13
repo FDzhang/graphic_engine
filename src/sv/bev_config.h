@@ -12,7 +12,7 @@ typedef double	float64_t;
 
 // SMC
 typedef struct {
-    int SMC_MAJOR_VERSION;
+    int SMC_MAJOR_VERSION_A;
 	int SMC_MINOR_VERSION;
 	int DISTORTION_MODEL;
 	float FRONT_CAMERA_SENSOR_WIDTH;			
@@ -78,7 +78,7 @@ typedef struct {
 
 // SMC
 typedef struct {
-    int SMC_MAJOR_VERSION;
+    int SMC_MAJOR_VERSION_A;
 	int SMC_MINOR_VERSION;
 	float SPACE_MODEL_SCALE_SIZE;
 	float SPACE_MODEL_Y_MIN;

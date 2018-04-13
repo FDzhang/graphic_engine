@@ -549,7 +549,10 @@ void XRSV::SingleTouchDown(int x, int y)
 	touchData.touchAction = TouchEvent_Down;
 	CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
 
-	
+	if(m_avmLogicManager)
+	{
+		m_avmLogicManager->ProcessTouchEvent();
+	}	
 	//svscn->OnMouseDown(x,y);
 	if(m_customHmi != NULL)
 	{
@@ -583,6 +586,10 @@ void XRSV::SingleTouchMove(int x, int y)
 	touchData.touchAction = TouchEvent_Move;
 	CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
 	
+	if(m_avmLogicManager)
+	{
+		m_avmLogicManager->ProcessTouchEvent();
+	}
 	//svscn->OnMouseMove(x,y);
 }
 
@@ -595,7 +602,11 @@ void XRSV::SingleTouchUp(int x, int y)
 	touchData.y = y;
 	touchData.touchAction = TouchEvent_Up;
 	CAvmRenderDataBase::GetInstance()->SetTouchData(&touchData);
-	
+
+	if(m_avmLogicManager)
+	{
+		m_avmLogicManager->ProcessTouchEvent();
+	}	
 	//svscn->OnMouseUp(x,y);
 }
 

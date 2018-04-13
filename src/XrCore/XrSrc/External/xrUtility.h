@@ -114,6 +114,14 @@ inline Int32 XR_VERTEX_SIZE(XRVertexLayout layout)
 	if (layout & XR_VERTEX_LAYOUT_I) size += 1*4;
 	if (layout & XR_VERTEX_LAYOUT_A) size += 1*4;
 	if (layout & XR_VERTEX_LAYOUT_K) size += 1*4;
+    if (layout & XR_VERTEX_LAYOUT_C) size += 2 * 4;
+	if (layout & XR_VERTEX_LAYOUT_D) size += 1 * 4;
+	if (layout & XR_VERTEX_LAYOUT_E) size += 2 * 4;
+	if (layout & XR_VERTEX_LAYOUT_F) size += 1 * 4;
+	if (layout & XR_VERTEX_LAYOUT_G) size += 2 * 4;
+	if (layout & XR_VERTEX_LAYOUT_H) size += 1 * 4;
+	if (layout & XR_VERTEX_LAYOUT_J) size += 2 * 4;
+	if (layout & XR_VERTEX_LAYOUT_L) size += 1 * 4;
 	
 	return size;
 }

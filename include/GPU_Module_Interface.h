@@ -39,6 +39,7 @@ extern "C" {
 #include "avm/smc.h"
 #include "commondef.h"
 #include "gpu_public_data_struct.h"
+#include "TS_config.h"
 /*------------------------------------------------------------------------------------------
  * Exported Preprocessor #define Constants
  *------------------------------------------------------------------------------------------*/
@@ -141,6 +142,7 @@ typedef enum AvmViewTypeTag
     LINEAR_FRONT_180_DEGREE_VIEW,
     LINEAR_REAR_180_DEGREE_VIEW,
     LEFT_RIGHT_LINEAR_VIEW,
+    SIDE_BY_SIDE_SINGLE_VIEW,
     TOUR_LARGE_3D_VIEW,
     CAMERA_DEBUG_FRONT_SINGLE_VIEW,  
     CAMERA_DEBUG_REAR_SINGLE_VIEW,

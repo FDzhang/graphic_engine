@@ -183,7 +183,10 @@ xr_state CMaterial::GetEmissionColor(Float32* r, Float32* g, Float32* b, Float32
 
 xr_state CMaterial::SetDiffuseMap(ConstString filename, UInt32 type)
 {
-	Int32 tid = XRDM->CreateTextureFromFile(filename, type);
+    if(filename == NULL)
+	{
+		return 0;
+	}	Int32 tid = XRDM->CreateTextureFromFile(filename, type);
 	//if (tid<0) return XR_FAILED;
 	return SetDiffuseMap(tid);
 }

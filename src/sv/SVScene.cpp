@@ -143,6 +143,9 @@ char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx";
 char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
 char c_SV2DFragCarImageShaderSrcFile[]   = XR_RES"OVFragShaderSV2DCar.frg";
 
+char c_SVGroundVertShaderSrcFileLUT[] = XR_RES"OVVertShaderSVGround.vtx";
+char c_SVGroundFragShaderSrcFile[] = XR_RES"OVFragShaderSVGround.frg";
+
 
 char BMWCARMODEL[] = XR_RES"bmw.mqo";
 char BMWCARTEX[] = XR_RES"texture.dds";
@@ -1234,61 +1237,105 @@ void SVScene::Init2DStichAVMNode()
 	int SV2DMTL;
 
 	m_stich_node = new SVNode2DStich;
-
 	m_stich_node->Init();
 	sv2Ddelegate = new RenderDelegateSV2D;
-
 
 	// Interleaved vertex data
 	m_2DAVMNodeId = g_pIXrCore->CreateRenderNodeScene(0, &m_2DAVMNode);
 	m_2DAVMNode->SetRenderROI(&Stich2DReg);
 
-
-
-
-
-
-//render stich aera and ground aera.
+	//render stitch area and ground area.
 	tempmaterialid = m_2DAVMNode->CreateMaterial(Material_Rigid_Texture, &m_pstich_Mtl);
     m_pstich_Mtl->SetDiffuseMap(m_stich_node->GetStichFrameTextureId());
 
     int lisenceMeshId = m_2DAVMNode->CreateMesh(ModelType_Plane_Dynamic,2,	2,0, "Stich", &pMesh);
-
-
+		
 	int  groundId = m_2DAVMNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default,0,0,0, 1.0, &pNode);
+		
+	pMesh->LockData(&pVertexData,&data_format,&icount);
 
-    pMesh->LockData(&pVertexData,&data_format,&icount);
-    pVertexData[0]=-1.0;
-    pVertexData[1]=-1.0;
-    pVertexData[2]=0.0;
-    pVertexData[6]=0.0;
-    pVertexData[7]=0.0;
-    pVertexData[8]=1.0;
-    pVertexData[9]=-1.0;
-    pVertexData[10]=0.0;
-    pVertexData[14]=1.0;
-    pVertexData[15]=0.0;
-    pVertexData[16]=-1.0;
-    pVertexData[17]=1.0;
-    pVertexData[18]=0.0;
-    pVertexData[22]=0.0;
-    pVertexData[23]=1.0;		
-    pVertexData[24]=1.0;
-    pVertexData[25]=1.0;
-    pVertexData[26]=0.0;
-    pVertexData[30]=1.0;
-    pVertexData[31]=1.0;		
+	//float scaleH = (3 * 2 + CAR_LENGTH) / (VIEW_RANGE * 2 + CAR_LENGTH);
+	//float scaleW = (2 * 2 + CAR_WIDTH) / (VIEW_RANGE * 2 + CAR_WIDTH);
+	float scaleH = 1.0;
+	float scaleW = 1.0;
 
-    pMesh->UnLockData();
+	pVertexData[0] = -1.0;
+	pVertexData[1] = -1.0;
+	pVertexData[2] = -1.0;
+	pVertexData[6] = (1 - scaleW) / 2;
+	pVertexData[7] = (1 - scaleH) / 2;
+	
+	pVertexData[8] = 1.0;
+	pVertexData[9] = -1.0;
+	pVertexData[10] = -1.0;	
+	pVertexData[14] = (1 + scaleW) / 2;
+	pVertexData[15] = (1 - scaleH) / 2;
+	
+	pVertexData[16] = -1.0;
+	pVertexData[17] = 1.0;
+	pVertexData[18] = -1.0;
+	pVertexData[22] = (1 - scaleW) / 2;
+	pVertexData[23] = (1 + scaleH) / 2;
+	
+	pVertexData[24] = 1.0;
+	pVertexData[25] = 1.0;
+	pVertexData[26] = -1.0;
+	pVertexData[30] = (1 + scaleW) / 2;
+	pVertexData[31] = (1 + scaleH) / 2;
 
-    pNode->SetMesh(lisenceMeshId);
+	pMesh->UnLockData();
+	
+	pNode->SetMesh(lisenceMeshId);
 
-//render overlay;
-    pos[0] = 0;
-    pos[1] = 0;
-    pos[2] = 0;
+	
+	//render ground area
+	int groundMtlId = m_2DAVMNode->CreateMaterial(Material_Rigid_Texture, &m_pGroundMtl);
+	m_pGroundMtl->SetDiffuseMap(m_stich_node->GetGroundTextureId());
+	IMesh *pGroundMesh;
+	int groundMeshId = m_2DAVMNode->CreateMesh(ModelType_Plane_Dynamic, 2, 2, 0, "Ground", &pGroundMesh);
+	INode *pGroundNode;
+	int groundMdlId = m_2DAVMNode->CreateModel(0, groundMtlId, -1, InsertFlag_Default, 0, 0, 0, 1.0, &pGroundNode);
+	float *pGndVertexData;
+	XRVertexLayout gndDataFormat;
+	Int32 iGroundCount;
+	float car_rect[4];
+	for (int i = 0; i < 4; i++)
+	{
+		AVMData::GetInstance()->m_2D_lut->GetCarRect(&car_rect[i], i);
+	}
+	pGroundMesh->LockData(&pGndVertexData, &gndDataFormat, &iGroundCount);
+	pGndVertexData[0] = car_rect[0];
+	pGndVertexData[1] = car_rect[3];
+	pGndVertexData[2] = 1.0;
+	pGndVertexData[6] = 0.0;
+	pGndVertexData[7] = 0.0;
 
-    InitOverlay(m_bev_config,m_2DAVMNode,&m_overlaymesh_2d,&m_overlay_2d,&m_overlay_data_2d,calib_2D_STICH,pos);
+	pGndVertexData[8] = car_rect[2];
+	pGndVertexData[9] = car_rect[3];
+	pGndVertexData[10] = 1.0;
+	pGndVertexData[14] = 1.0;
+	pGndVertexData[15] = 0.0;
+
+	pGndVertexData[16] = car_rect[0];
+	pGndVertexData[17] = car_rect[1];
+	pGndVertexData[18] = 1.0;
+	pGndVertexData[22] = 0.0;
+	pGndVertexData[23] = 1.0;
+
+	pGndVertexData[24] = car_rect[2];
+	pGndVertexData[25] = car_rect[1];
+	pGndVertexData[26] = 1.0;
+	pGndVertexData[30] = 1.0;
+	pGndVertexData[31] = 1.0;
+	pGroundMesh->UnLockData();
+	pGroundNode->SetMesh(groundMeshId);
+
+	//render overlay;
+	pos[0] = 0;
+	pos[1] = 0;
+	pos[2] = 0;
+	  
+	InitOverlay(m_bev_config,m_2DAVMNode,&m_overlaymesh_2d,&m_overlay_2d,&m_overlay_data_2d,calib_2D_STICH,pos); 
 
     //render car image
     m_pNodeSonar = new SVNodeSonar;
@@ -2220,9 +2267,9 @@ void SVScene::InitViewNode()
 
 }
 
-//dota2_black: lock_data方法修改mesh后， GetVertexBuffer的值也变化了，为了保证dvr hmi不影响mesh
-//使用临时数组保存lock_data修改前的值
-//GetVertexBuffer 不使用
+//dota2_black: lock_data方法修改mesh后， GetVertexBuffer的�?�也变化了，为了保证dvr hmi不影响mesh
+//使用临时数组保存lock_data修改前的�?
+//GetVertexBuffer 不使�?
 
 static GLfloat fVerticesSnapshot[4][28 * sizeof(GLfloat)];
 void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
@@ -4721,11 +4768,11 @@ int SVScene::SwitchCrossView()
     Region roi(XrGetScreenWidth()/4, 3 * XrGetScreenWidth()/4,
                XrGetScreenHeight()/4, 3 * XrGetScreenHeight()/4);
     m_2DSingleViewNode->SetRenderROI(&roi);
-    m_last_view = 0x02; //保证切换到SVScene::Update时 ， 一定执行更新
+    m_last_view = 0x02; //保证切换到SVScene::Update�? �? �?定执行更�?
     m_SwitchViewLogicAgain = false;
 }
 
-//dota2_black: 单视图全屏回放模式
+//dota2_black: 单视图全屏回放模�?
 static GLfloat fVerticesOriginFront[]={
 	-1,  1, -1.0, 0, 0, 0,0.0,
      1,  1, -1.0, 1.0, 0, 0,0.0,
@@ -4765,7 +4812,7 @@ int SVScene::SwitchSingleView(int view_control_flag)
     {
         return 0;
     }
-    //第一步: 初始化所有node
+    //第一�?: 初始化所有node
     m_2DAVMNode->SetEnable(0);
     m_pAdasHmi->SetEnable(0);
     m_sceneNode->SetEnable(0);
@@ -4779,10 +4826,10 @@ int SVScene::SwitchSingleView(int view_control_flag)
     for(int index = 0; index < 8; index++)
         m_RadarAlarm_Node_single[index]->SetEnable(0);
 
-    m_last_view = view_control_flag; //保证切换到SVScene::Update时 ， 一定执行更新
+    m_last_view = view_control_flag; //保证切换到SVScene::Update�? �? �?定执行更�?
     Region fullscreenROI(0 + left_plane, XrGetScreenWidth(), 0 + black_plane, XrGetScreenHeight() - black_plane);
 
-    //第二步: 更改 fVerticesSingleView , 修改纹理mesh区域(不进行处理)
+    //第二�?: 更改 fVerticesSingleView , 修改纹理mesh区域(不进行处�?)
     Int32 offset = 0; float* viewmatrix = NULL;
     switch(view_control_flag)
     {
@@ -4790,28 +4837,28 @@ int SVScene::SwitchSingleView(int view_control_flag)
             sv2Ddelegate->SetChannel(front_camera_index);
             SetSingleViewCamPos(FRONT_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-            //修改前视图
+            //修改前视�?
             offset = 0; viewmatrix = fVerticesOriginFront;
             break;
         case 0xf1:
             sv2Ddelegate->SetChannel(rear_camera_index);
             SetSingleViewCamPos(REAR_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-            //修改后视图
+            //修改后视�?
             offset = 1; viewmatrix = fVerticesOriginRear;
             break;
         case 0xf2:
             sv2Ddelegate->SetChannel(left_camera_index);
             SetSingleViewCamPos(LEFT_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-            //修改左视图
+            //修改左视�?
             offset = 2; viewmatrix = fVerticesOriginLeft;
             break;
         case 0xf3:
             sv2Ddelegate->SetChannel(right_camera_index);
             SetSingleViewCamPos(RIGHT_SINGLE_VIEW);
             m_2DSingleViewNode->SetRenderROI(&fullscreenROI);
-            //修改右视图
+            //修改右视�?
             offset = 3; viewmatrix = fVerticesOriginRight;
             break;
         default:
@@ -5378,6 +5425,10 @@ void SVScene::UpdateExternCalib2DReslt(GLfloat *pData,int data_size,GLushort *pI
 
 	}
 #endif
+}
+
+void SVScene::updateCarLut(LUT_Car *gpu_lut)
+{
 
 }
 void SVScene::UpdateStich2DReslt(unsigned char Seam_Update_Flag[],GLfloat *pData)

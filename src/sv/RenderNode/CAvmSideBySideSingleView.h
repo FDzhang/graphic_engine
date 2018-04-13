@@ -1,5 +1,5 @@
 /*===========================================================================*\
- * FILE: CAvmTimeStitcherNode.h
+ * FILE: CAvmSideBySideSingleView.h
  *===========================================================================
  * Copyright 2003 O-Film Technologies, Inc., All Rights Reserved.
  * O-Film Confidential
@@ -24,57 +24,54 @@
  *
 \*===========================================================================*/
 
-#ifndef _CAVM_TIMESTITCHER_NODE_H_
-#define _CAVM_TIMESTITCHER_NODE_H_
+#ifndef _CAVM_SIDEBYSIDE_SINGLEVIEW_H_
+#define _CAVM_SIDEBYSIDE_SINGLEVIEW_H_
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 #include "../DataStruct.h"
 
-typedef enum AvmTimeStitcherErrorCodeTag
-{
-	TIME_STITCHER_NORMAL = 0,
-	TIME_STITCHER_XRCORE_NULL,
-};
-
-class CAvmTimeStitcherNode
+class CAvmSideBySideSingleView
 {
 public:
-	CAvmTimeStitcherNode();
-	~CAvmTimeStitcherNode();
+	CAvmSideBySideSingleView();
+	~CAvmSideBySideSingleView();
+	
 	virtual int InitNode(class IXrCore* pXrcore);
 	virtual int UpdateNode();
 	virtual int SetVisibility(unsigned char pVisibilityFlag);
-	int UpdateStich2DReslt();	
-	int UpdateExternCalib2DReslt();
+
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
+
 private:
-	int AddOverlay(class IAvmOverlay * pOverlay);
-	
-protected:
-	class IXrCore*       m_xrCore;
-	class ISceneNode*   m_stitchViewNode;
-	class IMaterial*    m_stitchViewMtl;
-	class IMaterial*	m_SV2DMtl;
+	class ISceneNode* m_leftRightViewNode[2];	
+	int 		m_leftRightViewNodeId[2];
+	class ISceneNode* m_rightViewNode;	
+	int 		m_rightViewNodeId;
 
-	class IMesh*		m_planeMesh;
-	int					m_stitchViewNodeId;
+	class IMaterial* m_leftRightViewMtl;
+	int 		m_leftRightViewMtlId;
+	class IMesh*	 m_leftRightViewMesh[2];
+	int 		m_leftRightViewMeshId[2];
+		
+	class IMesh*	 m_leftViewMesh;
+	int 		m_leftViewMeshId;
 
+	class INode*	  m_leftRightViewPlane[2];
+
+	class IXrCore*	m_xrCore;
+
+	class ICamera*	m_leftRightViewCamera[2];
+	int 		m_leftRightViewCameraId[2];
+
+	class RenderDelegateSV2D*		m_renderDelegate;
 	class GlSV2D*				m_SV2DData;
-
-	class RenderDelegateSV2D*		m_renderDelegate; 
 	
-	class SVNode2DStich*			m_timeStitchNode;
+	SurroundViewCameraParamsT*	 m_leftRightViewCameraParams;
 
-	SurroundViewCameraParamsT*   m_stitchViewCameraParams;
-	class ICamera*	m_stitchViewCamera;
-	int			m_stitchViewCameraId;
-
-	unsigned char m_visibilityFlag;
-
-	class IAvmOverlay*			m_overlay;
-	class SVNodeSonar*			m_sonarNode;
+	float*			 m_leftRightviewVertex[4];
 };
-#endif // _CAVM_TIMESTITCHER_NODE_H_
+
+#endif // _CAVM_SIDEBYSIDE_SINGLEVIEW_H_
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
@@ -82,5 +79,5 @@ protected:
  *
  *   Date        userid       Description
  * ----------- ----------    -----------
- *  11/01/17   Jensen Wang   Create the CAvmTimeStitcherNode class.
+ *  11/24/17   Jensen Wang   Create the CAvmSideBySideSingleView class.
 \*===========================================================================*/

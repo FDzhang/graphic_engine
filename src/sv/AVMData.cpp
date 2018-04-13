@@ -197,7 +197,8 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 
 	m_pAVMData->m_Veh_Data = config.vehicle_para;
     m_pAVMData->m_vehParam = config.pSmc->veh_param;
-
+    m_pAVMData->m_smc = config.pSmc;
+   
 }
 void AVMData::CalcUVTextureSV(float *pWorld,float *texture,int chann)
 {
@@ -445,6 +446,10 @@ void AVMData::Get3DParam(unsigned char& pUpdateFlag, float **pos)
 {
 	pUpdateFlag = m_3dParamUpdateFlag;
 	*pos  = m_3dParamPos;
+}
+void AVMData::GetSmc(Smc_Cal_T **pSmc)
+{
+	*pSmc = m_pAVMData->m_smc;
 }
 
 /*===========================================================================*\

@@ -406,6 +406,21 @@ XR_VERTEX_LAYOUT Vertex_layout_PTAK[] = {
 	{(String)"LUMINANCECOF", 0, XR_R32F, 24},
 };
 
+XR_VERTEX_LAYOUT Vertex_layout_PTACDEFGHJL[] = {
+		{ (String)"POSITION", 0, XR_R32G32B32F, 0 },
+		{ (String)"TEXCOORD", 0, XR_R32G32F, 12 },
+		{ (String)"ALPHAWEIGHT", 0, XR_R32F, 20 },
+		{ (String)"TEXCOORD2", 0, XR_R32G32F, 24 },
+		{ (String)"WEIGHT2", 0, XR_R32F, 32 },
+		{ (String)"TEXCOORD3", 0, XR_R32G32F, 36 },
+		{ (String)"WEIGHT3", 0, XR_R32F, 44 },
+		{ (String)"TEXCOORD4", 0, XR_R32G32F, 48 },
+		{ (String)"WEIGHT4", 0, XR_R32F, 56 },
+		{ (String)"TEXCOORD5", 0, XR_R32G32F, 60 },
+		{ (String)"WEIGHT5", 0, XR_R32F, 68 },
+};
+
+
 void CDeviceManager::Init()
 {
 	device()->CreateVertexLayout(Vertex_layout_P, 1, &m_layout[0], VS_P_dummy_fx);
@@ -415,6 +430,7 @@ void CDeviceManager::Init()
 	device()->CreateVertexLayout(Vertex_layout_PNBT, 4, &m_layout[4], VS_PNBT_dummy_fx);
 	device()->CreateVertexLayout(Vertex_layout_PNBTWI, 6, &m_layout[5], VS_PNBTWI_dummy_fx);
 	device()->CreateVertexLayout(Vertex_layout_PTAK, 4, &m_layout[6], VS_PNBTWI_dummy_fx);
+	device()->CreateVertexLayout(Vertex_layout_PTACDEFGHJL, 11, &m_layout[7], VS_PTACDEFGHJL_dummy_fx);
 
 	device()->CreateSampler(XR_SAMPLER_WRAP | XR_SAMPLER_COLOR | XR_SAMPLER_LINEAR, &m_samplers[XR_SAMPLER_WRAP]);
 	device()->CreateSampler(XR_SAMPLER_MIRROR | XR_SAMPLER_COLOR | XR_SAMPLER_LINEAR, &m_samplers[XR_SAMPLER_MIRROR]);
@@ -447,7 +463,10 @@ CVertexLayout*  CDeviceManager::GetVertexLayout(XRVertexLayout layout)
 			break;
 		case XR_VERTEX_LAYOUT_PTAK:
 			index=6;
-			break;			
+			break;	
+		case XR_VERTEX_LAYOUT_PTACDEFGHJL:
+			index = 7;
+			break;
 	}
 	return &m_layout[index];
 }
