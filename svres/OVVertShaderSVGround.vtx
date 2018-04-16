@@ -1,0 +1,36 @@
+attribute highp vec4 myVertex;
+attribute mediump vec2 myUV1;
+attribute mediump float myWeight1;
+attribute mediump vec2 myUV2;
+attribute mediump float myWeight2;
+attribute mediump vec2 myUV3;
+attribute mediump float myWeight3;
+attribute mediump vec2 myUV4;
+attribute mediump float myWeight4;
+attribute mediump vec2 myUV5;
+attribute mediump float myWeight5;
+uniform mediump mat4 myPMVMatrix;
+varying mediump vec2 varCoord1;
+varying mediump float varWeight1;
+varying mediump vec2 varCoord2;
+varying mediump float varWeight2;
+varying mediump vec2 varCoord3;
+varying mediump float varWeight3;
+varying mediump vec2 varCoord4;
+varying mediump float varWeight4;
+varying mediump vec2 varCoord5;
+varying mediump float varWeight5;
+void main(void)
+{
+    gl_Position = myVertex;
+    varCoord1= myUV1;
+    varWeight1 = myWeight1;
+	varCoord2= myUV2;
+    varWeight2 = myWeight2;
+	varCoord3= myUV3;
+    varWeight3 = myWeight3;
+	varCoord4= myUV4;
+    varWeight4 = myWeight4;
+	varCoord5 = myUV5;
+    varWeight5 = myWeight5;
+}
