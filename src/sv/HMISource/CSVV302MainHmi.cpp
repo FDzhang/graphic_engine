@@ -64,7 +64,7 @@ int CSVV302MainHmi::Update(Hmi_Message_T& hmiMsg)
         {
             FreeSubHmi(V302_FILE_VIEW_HMI);
         }
-        SetElementsVisibility(1);
+        SetElementsVisibility(0);
     }
     if(m_subHmi[V302_FILE_VIEW_HMI])
     {
@@ -134,19 +134,3 @@ int CSVV302MainHmi::DestroyHmiElems()
 {
     return V302_MAIN_HMI_NORMAL;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

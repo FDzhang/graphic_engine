@@ -193,7 +193,7 @@ int CAvmViewControlModel::InitViewNode()
         
     	stich2D_region[REGION_POS_LEFT] = 480.0 * screenXscal;
     	stich2D_region[REGION_POS_RIGHT] = 960.0 * screenXscal;
-    	stich2D_region[REGION_POS_TOP] = 100.0 * screenYscal;
+    	stich2D_region[REGION_POS_TOP] = 0.0 * screenYscal;
     	stich2D_region[REGION_POS_BOTTOM] = 590.0 * screenYscal;   
         
     	single2D_region[REGION_POS_LEFT] = 0.0 * screenXscal;
