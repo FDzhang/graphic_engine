@@ -64,14 +64,21 @@ int CAvmLargeSingleView::Init()
 	m_camDebugViewRegion.Set(0.0, XrGetScreenWidth(), 0, XrGetScreenHeight());
 	float radio = 227.0/1280.0;
 	m_dvrViewRegion.Set(radio * XrGetScreenWidth(), XrGetScreenWidth(), black_width, XrGetScreenHeight() - black_width);
-
 	if(CHANGAN_S302 == current_vehicle_type_id)
 	{
 	    black_width = 0.0;
 		m_largeViewRegion.Set(0.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
 		m_dvrViewRegion.Set(240.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
 	}
-
+    else if(CHANGAN_V302 == current_vehicle_type_id)
+    {
+        black_width = 0.0;
+        m_largeViewRegion.Set(0.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
+        float tmp_width = XrGetScreenWidth();
+        float tmp_height = XrGetScreenHeight();
+        tmp_width = tmp_height / 1130.0 * 960.0;
+        m_dvrViewRegion.Set(0.0, tmp_width, 342.0 / 1130.0 * tmp_height, 885.0 / 1130.0 * tmp_height);
+    }
 	return LARGE_SINGLE_VIEW_NORMAL;
 }
 int CAvmLargeSingleView::Update()
