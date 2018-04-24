@@ -1013,7 +1013,7 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 		{RIGHT_HIGHT_SPEED_TURN_3D_VIEW,    -400.0,     0.0,    3500.0,     -400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Front_Light},
 		{TOUR_VIEW,                         0.0,        0.0,    2600.0,     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
 		{BOSH_FRONT_VIEW,                   0.0,        -500.0, -20.0,      0.0, -500.0, -40.0, 0.0, 0.0, 0.0, CameraPosition_BOSCH_Front},
-		{BOSH_FRONT_VIEW_TOP,               0.0,        800.0,  -520.0,     0.0, 800.0, -1040.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Front_Top},
+		{BOSH_FRONT_VIEW_TOP,               0.0,        1700.0, 200.0,      0.0, 1700.0, -1200.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Front_Top},
 		{BOSH_REAR_VIEW_TOP,                0.0,        400.0,  560.0,  0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
 		{LEFT_MIRROR_VIEW,                  0.0,        400.0,  560.0,  0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
 		{RIGHT_MIRROR_VIEW,                 0.0,        400.0,  560.0,      0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
@@ -1037,7 +1037,14 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 	m_avmObjViewNode->GetAvmObjViewCamera()->LookAt(cameraParams[pViewIndex - FRONT_3D_VIEW].look_x,cameraParams[pViewIndex - FRONT_3D_VIEW].look_y,cameraParams[pViewIndex - FRONT_3D_VIEW].look_z);
 
 	m_scrollX->DockToValue(0);
-	m_scrollY->DockToValue(25);
+	if(BOSH_FRONT_VIEW_TOP == pViewIndex)
+	{
+		m_scrollY->DockToValue(cameraParams[pViewIndex - FRONT_3D_VIEW].scrollY);
+	}
+	else
+	{
+		m_scrollY->DockToValue(25);
+	}
 
 
 	 return AVM_VIEWCONTROLMODEL_NORMAL;
