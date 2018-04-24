@@ -40,6 +40,7 @@ extern "C" {
 #include "commondef.h"
 #include "gpu_public_data_struct.h"
 #include "TS_config.h"
+#include "Gpu_Dvr_Interface.h"
 /*------------------------------------------------------------------------------------------
  * Exported Preprocessor #define Constants
  *------------------------------------------------------------------------------------------*/
@@ -337,7 +338,7 @@ typedef enum RenderDataTypeTag
 {
 	RENDER_DATA_CAN = 1,
 	RENDER_DATA_MAIN_MENU,
-	//RENDER_DATA_S302_MAIN_MENU,
+	RENDER_DATA_DVR, //Data struct: DVR_GUI_LAYOUT_INST_EXT
 	RENDER_DATA_VIEW_CMD,
 	RENDER_DATA_CALIB_RESULT,
 	RENDER_DATA_LUMB_RESULT,

@@ -202,6 +202,7 @@ public:
 
 	PropertyBuilderByName(LkaLcResultT, LkaLcResult, private)
 	PropertyBuilderByName(MainMenuDataT, MainMenuStatus, private)
+	PropertyBuilderByName(DVR_GUI_LAYOUT_INST_EXT, DvrData, private)
 	PropertyBuilderByName(S302MainMenuDataT, S302MainMenuStatus, private)
 	PropertyBuilderByName(EolResultT, EolResult, private)
 	PropertyBuilderByName(Tp_Result, TpResult, private)

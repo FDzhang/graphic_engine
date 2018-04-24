@@ -29,6 +29,7 @@
 \*===========================================================================*/
 #include "CSVS302MainHmi.h"
 #include "CSVDemoEolHmi.h"
+#include "CSVDvrFileListHmi.h"
 #include "CSVChangAnSwitchViewHmi.h"
 
 static unsigned char s302HmiElementShowImage[S302_MAIN_ELEMENT_NUM];
@@ -857,24 +858,12 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         InitSubHmi(S302_DEMO_EOL_HMI);
         if(m_subHmi[S302_DEMO_EOL_HMI])
         {
-            //debug code, need delete;
-            /*CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(MATTS_VIEW);
-            S302MainMenuDataT tmpS302MainMenuData;
-            memset(&tmpS302MainMenuData, 0, sizeof(S302MainMenuDataT));
-            tmpS302MainMenuData.iconStatus[S302_MAIN_MENU_EOL] = 1;
-            tmpS302MainMenuData.menuVisibility = 0;
-            CAvmRenderDataBase::GetInstance()->SetS302MainMenuStatus(&tmpS302MainMenuData);*/
 
             m_subHmiVisibility[S302_DEMO_EOL_HMI] = 1;
             m_subHmi[S302_DEMO_EOL_HMI]->Update(hmiMsg);
-//Log_Error("m_subHmi[S302_DEMO_EOL_HMI]->Update");			
+		
         }
     }
-    //else
-    //{
-    //    m_subHmiVisibility[S302_DEMO_EOL_HMI] = 0;
-    //    FreeSubHmi(S302_DEMO_EOL_HMI);
-    //}
 
     InitSubHmi(S302_DEMO_SWITCH_VIEW_HMI);
     if(m_subHmi[S302_DEMO_SWITCH_VIEW_HMI])
@@ -883,23 +872,61 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_subHmi[S302_DEMO_SWITCH_VIEW_HMI]->Update(hmiMsg);
     }
 
-    if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE
-		&& hmiMsg.dvrTabMsg.playbackMode != 1)
+	#if 0
+	if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
     {
-        //InitSubHmi(S302_DEMO_DVR_HMI);
-        //if(m_subHmi[S302_DEMO_DVR_HMI])
-        //{
-        //    m_subHmiVisibility[S302_DEMO_EOL_HMI] = 1;
-        //    m_subHmi[S302_DEMO_EOL_HMI]->Update(hmiMsg);
-        //}
-        char* hmiName = "CSVDvrBaseHmi";
-        CSVHmiIntent::GetInstance()->Intent(hmiName);
+   	 	/*unsigned char m_tmpRGB[192 * 112 * 3];
+		memset(&m_tmpRGB, 0, 192 * 112 * 3);
+
+		GUI_OBJ_THUMB_ITEM_EXT tmp = {"1234213424", m_tmpRGB, 192, 112, 1, 1};
+		GUI_OBJ_THUMB_FRAME_INST_EXT tmpInst;
+		tmpInst.item[0] = tmp;
+		tmpInst.item[1] = tmp;
+		tmpInst.item[2] = tmp;
+		tmpInst.item[3] = tmp;
+		tmpInst.item[4] = tmp;
+		tmpInst.item[5] = tmp;
+
+		
+      	DVR_GRAPHIC_UIOBJ_EXT table[] = {
+			{GUI_OBJ_ID_THUMB_FRAME_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
+			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
+			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
+			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
+			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
+			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
+      		};
+
+    	DVR_GUI_LAYOUT_INST_EXT dvrData;
+		dvrData.curLayout = GUI_LAYOUT_THUMB_EXT;
+		dvrData.ObjNum = 6;
+		for(int i = 0; i < dvrData.ObjNum; i++)
+		{
+			dvrData.pTable = table;
+		}
+		
+		CAvmRenderDataBase::GetInstance()->SetDvrData(&dvrData);
+		*/
+        InitSubHmi(S302_DEMO_DVR_FILELIST_HMI);
+        if(m_subHmi[S302_DEMO_DVR_FILELIST_HMI])
+        {
+            m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 1;
+            m_subHmi[S302_DEMO_DVR_FILELIST_HMI]->Update(hmiMsg);
+        }		
     }
     else
     {
-        //m_subHmiVisibility[S302_DEMO_DVR_HMI] = 0;
-        //FreeSubHmi(S302_DEMO_DVR_HMI);
+        m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 0;
+        FreeSubHmi(S302_DEMO_DVR_FILELIST_HMI);
     }
+	#endif
+
+    /*if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE
+		&& hmiMsg.dvrTabMsg.playbackMode != 1)
+    {
+        char* hmiName = "CSVDvrBaseHmi";
+        CSVHmiIntent::GetInstance()->Intent(hmiName);
+    }*/
 
 
     if(s302MainMenuData.menuVisibility == 0)
@@ -915,39 +942,7 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 
 int CSVS302MainHmi::RefreshHmi()
 {
-    /*for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
-    {
-        m_baseButton[i]->SetShowIconNum(m_buttonImage[i]);
-    }
-
-    for(int i = S302_MAIN_MENU_BKG; i <= S302_MAIN_MENU_SETTING_ICON; i++)
-    {
-        if(s302ShowSettingMenu == 1)
-        {
-            m_baseButton[i]->SetVisibility(0);
-        }
-        else if(s302ShowSettingMenu == 0)
-        {
-            m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
-        }
-    }
-
-    for(int i = S302_SETTING_MENU_ITEMS; i <= S302_SETTING_MENU_CALIBRATION_STATUS; i++)
-    {
-        if(s302ShowSettingMenu == 0)
-        {
-            m_baseButton[i]->SetVisibility(0);
-        }
-        else if(s302ShowSettingMenu == 1)
-        {
-            m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
-        }
-    }
-
-    for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
-    {
-        m_baseButton[i]->Update();
-    }*/
+    
     for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
         m_baseButton[i]->SetShowIconNum(m_buttonShowImage[i]);
@@ -990,9 +985,9 @@ void CSVS302MainHmi::InitSubHmi(unsigned char pHmiIndex)
             case S302_DEMO_SWITCH_VIEW_HMI:
                 m_subHmi[pHmiIndex] = new CSVChangAnSwitchViewHmi(m_uiNode, m_uiNodeId);
             break;
-            //case S302_DEMO_DVR_HMI:
-            //    m_subHmi[pHmiIndex] = new CSVDvrBaseHmi(m_uiNode, m_uiNodeId);
-            //    break;
+            case S302_DEMO_DVR_FILELIST_HMI:
+                m_subHmi[pHmiIndex] = new CSVDvrFileListHmi(m_uiNode, m_uiNodeId);
+            break;
             default:
             break;
         }
