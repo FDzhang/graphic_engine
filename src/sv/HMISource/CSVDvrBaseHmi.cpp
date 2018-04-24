@@ -524,7 +524,22 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
     if(mainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_OFF_IMAGE)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_avmViewLastStatus);
-        char* hmiName = "CSVDemoMainHmi";
+        char* hmiName;
+		unsigned char currentVehicleTypeId;
+		CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(currentVehicleTypeId);
+
+		switch(currentVehicleTypeId)
+		{
+		case CHANGAN_S302:
+			hmiName = "CSVS302MainHmi";
+			break;
+		case CHANGAN_V302:
+		    hmiName = "CSVV302MainHmi";
+		    break;
+		default:
+			hmiName = "CSVDemoMainHmi";
+		}
+		
         CSVHmiIntent::GetInstance()->Intent(hmiName);                       
     }
 

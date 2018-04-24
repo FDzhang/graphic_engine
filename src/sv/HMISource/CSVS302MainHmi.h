@@ -91,7 +91,7 @@ class CSVS302MainHmi : public ISVHmi
 {
 public:
 
-    CSVS302MainHmi();
+    CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1);
     ~CSVS302MainHmi();
     HMI_BASE_INHERITANCE_FUNC()
 

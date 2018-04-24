@@ -460,7 +460,7 @@ public:
 private:
 };
 
-CSVS302MainHmi::CSVS302MainHmi()
+CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
     memset(m_subHmiInitFlag, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char)); 
     memset(m_subHmiVisibility, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char));
@@ -476,7 +476,12 @@ CSVS302MainHmi::~CSVS302MainHmi()
     for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
         SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
-        SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
+		if(i != S302_REMIND_TXT
+			&& i != S302_MAIN_MENU_BKG
+			&& i != S302_SETTING_MENU_ITEMS)
+        {
+        	SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
+		}
         if(i == S302_VIEW_STATUS_ICON)
         {
             for(int j = 0; j < 8; j++)
@@ -878,7 +883,8 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_subHmi[S302_DEMO_SWITCH_VIEW_HMI]->Update(hmiMsg);
     }
 
-    if(m_buttonShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
+    if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE
+		&& hmiMsg.dvrTabMsg.playbackMode != 1)
     {
         //InitSubHmi(S302_DEMO_DVR_HMI);
         //if(m_subHmi[S302_DEMO_DVR_HMI])
@@ -895,19 +901,6 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         //FreeSubHmi(S302_DEMO_DVR_HMI);
     }
 
-    //debug code;need delete;
-    /*EolResultT eolResult;
-    memset(&eolResult, 0, sizeof(EolResultT));
-    CAvmRenderDataBase::GetInstance()->GetEolResult(&eolResult);
-    if(eolResult.eolStatus == EOL_CALIBRATION_FAILED || eolResult.eolStatus == EOL_CALIBRATION_SUCCEEDED)
-    {
-        S302MainMenuDataT tmpS302MainMenuData;
-        memset(&tmpS302MainMenuData, 0, sizeof(S302MainMenuDataT));
-        tmpS302MainMenuData.iconStatus[S302_MAIN_MENU_EOL] = 0;
-        tmpS302MainMenuData.menuVisibility = 1;
-        CAvmRenderDataBase::GetInstance()->SetS302MainMenuStatus(&tmpS302MainMenuData);
-        s302HmiElementShowImage[S302_SETTING_MENU_CALIBRATION_STATUS] = 0;
-    }*/
 
     if(s302MainMenuData.menuVisibility == 0)
     {

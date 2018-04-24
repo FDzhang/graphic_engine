@@ -186,7 +186,7 @@ int CAvmLogicManager::SetMainHmiName()
 	unsigned char currentVehicleTypeId;
 	CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(currentVehicleTypeId);
 
-//    currentVehicleTypeId = CHANGAN_V302;
+    //currentVehicleTypeId = CHANGAN_S302;
 
 	switch(currentVehicleTypeId)
 	{

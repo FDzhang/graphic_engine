@@ -1,5 +1,6 @@
 #include "CSVDvrPlaybackTab.h"
 #include "CSVDvrBaseHmi.h"
+#include "CSVS302MainHmi.h"
 #include "CSVDemoMainHmi.h"
 #include "DVR_GUI_OBJ.h"
 
@@ -1484,8 +1485,20 @@ int CSVDvrPlaybackTab::ProcessPlaybackMode(unsigned char pDvrPlaybackMode)
 		Hmi_Message_T hmiMsg;
 		hmiMsg.dvrTabMsg.playbackMode = ALGO_PLAYBACK_MODE;
 		if(m_dvrAlgoPlaybackMenu == NULL)
-		{		
-			m_dvrAlgoPlaybackMenu = new CSVDemoMainHmi(m_uiNode, m_uiNodeId);
+		{
+			char* hmiName;
+			unsigned char currentVehicleTypeId;
+			CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(currentVehicleTypeId);
+
+			switch(currentVehicleTypeId)
+			{
+			case CHANGAN_S302:
+				m_dvrAlgoPlaybackMenu = new CSVS302MainHmi(m_uiNode, m_uiNodeId);
+				break;			
+			default:
+				m_dvrAlgoPlaybackMenu = new CSVDemoMainHmi(m_uiNode, m_uiNodeId);
+			}
+			
 			m_dvrAlgoPlaybackMenu->Init(m_windowWidth, m_windowHeight);
 		}
 		if(m_dvrAlgoPlaybackMenu)
