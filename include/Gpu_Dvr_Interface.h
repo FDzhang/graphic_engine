@@ -24,6 +24,7 @@
 #ifndef _GPU_DVR_INTERFACE_H_
 #define _GPU_DVR_INTERFACE_H_
 
+
 #define NUM_THUMBNAIL_PER_PAGE_EXT	6
 
 typedef struct
@@ -122,5 +123,14 @@ typedef struct
 	DVR_GRAPHIC_UIOBJ_EXT *pTable;
 	int ObjNum;
 }DVR_GUI_LAYOUT_INST_EXT;
+
+
+/*
+* DVR Example: UpdateRenderDvrData((DVR_GUI_LAYOUT_INST_EXT*)RenderData, sizeof(DVR_GUI_LAYOUT_INST_EXT));
+*
+*/
+
+__attribute__ ((visibility ("default"))) int UpdateRenderDvrData(void* renderData, unsigned int dataLength);
+
 
 #endif // _GPU_DVR_INTERFACE_H_
