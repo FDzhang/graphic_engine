@@ -209,9 +209,7 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 	}
 	else
 	{
-		m_imageGridVisibility = 0;
-		
-		
+		m_imageGridVisibility = 0;	
 	}
 
 	RefreshHmi();

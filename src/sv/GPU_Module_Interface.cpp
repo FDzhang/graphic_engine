@@ -502,7 +502,7 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 		break;
 		case RENDER_DATA_MAIN_MENU:
 			
-            CAvmRenderDataBase::GetInstance()->SetMainMenuStatus((MainMenuDataT*)renderData);
+            UpdateRenderDvrData(renderData, dataLength);
 
 		break;
 		case RENDER_DATA_DVR:
