@@ -872,7 +872,7 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_subHmi[S302_DEMO_SWITCH_VIEW_HMI]->Update(hmiMsg);
     }
 
-	#if 0
+	#if 1
 	if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
     {
    	 	/*unsigned char m_tmpRGB[192 * 112 * 3];
@@ -905,8 +905,8 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 			dvrData.pTable = table;
 		}
 		
-		CAvmRenderDataBase::GetInstance()->SetDvrData(&dvrData);
-		*/
+		CAvmRenderDataBase::GetInstance()->SetDvrData(&dvrData);*/
+		
         InitSubHmi(S302_DEMO_DVR_FILELIST_HMI);
         if(m_subHmi[S302_DEMO_DVR_FILELIST_HMI])
         {

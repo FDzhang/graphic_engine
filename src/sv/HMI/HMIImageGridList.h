@@ -85,7 +85,7 @@ typedef struct HMIImageGridListDataTag
 	float	   gridListHeight;
 	float      verticalSpacing;
 	float      horizontalSpacing;  
-	char	   gridListBkgImg;
+	char*	   gridListBkgImg;
 	unsigned char withTextFlag;
 	//char*     editModeSelectedTexture[50];
 	//char*     editModeNormalTexture[50];

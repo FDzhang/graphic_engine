@@ -35,8 +35,6 @@
 extern IXrCore* g_pIXrCore;
 extern IDeviceManager* rm;
 
-static char CUSTOMOVL[]  = XR_RES"Car/guide_line_green.dds";
-
 HMIImageGridList::HMIImageGridList(HMIImageGridListDataT* pImageGridListData):m_objectCnt(0),m_currentImageFileNum(0)
 {
 	if(pImageGridListData == NULL
@@ -50,7 +48,7 @@ HMIImageGridList::HMIImageGridList(HMIImageGridListDataT* pImageGridListData):m_
 	if(m_imageGridListData->gridListMode == GRIDLIST_BKG_MODE)
 	{
 		m_gridListMtlId = m_imageGridListData->renderUiNode->CreateMaterial(Material_UI_Spirit, &m_gridListMtl);
-		m_gridListMtl->SetDiffuseMap(CUSTOMOVL);
+		m_gridListMtl->SetDiffuseMap(m_imageGridListData->gridListBkgImg);
 		m_gridListSpiritId = m_imageGridListData->renderUiNode->CreateSpirit(-1, InsertFlag_Default, m_gridListMtlId, 1.0, m_imageGridListData->posX, m_imageGridListData->posY, 0, m_imageGridListData->gridListWidth, m_imageGridListData->gridListHeight);
 	}
 	else if(m_imageGridListData->gridListMode == GRIDLIST_NORMAL_MODE)

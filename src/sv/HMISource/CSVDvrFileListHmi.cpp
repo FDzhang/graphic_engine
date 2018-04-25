@@ -33,6 +33,7 @@ int CSVDvrFileListHmi::SetHmiParams()
 
 	return HMI_SUCCESS;
 }
+
 int CSVDvrFileListHmi::Init(int window_width, int window_height)
 {
 	float radio = 227.0/1280.0;
@@ -40,20 +41,48 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	float titleSelInterval = 10.0;
 	float selBoxToImageInterval = 10.0;
 
+	unsigned char currentVehicleTypeId;
+	CAvmRenderDataBase::GetInstance()->GetVehicleTypeId(currentVehicleTypeId);
+
 	m_imageGridListData.renderUiNode = m_uiNode;
-	m_imageGridListData.columnNums = 3;
-	m_imageGridListData.rowNums = 2;
-	m_imageGridListData.horizontalSpacing = 60.0;
-	m_imageGridListData.verticalSpacing = 100.0;
-	m_imageGridListData.posX = 0.0;
-	m_imageGridListData.posY = 0.0;
-	m_imageGridListData.gridListWidth = 1000.0;
-	m_imageGridListData.gridListHeight = 1000.0;
-	m_imageGridListData.itemWidth = 192.0;
-	m_imageGridListData.itemHeight = 112.0;
 	m_imageGridListData.withTextFlag = 1;
 
-	m_imageGridListData.gridListMode = GRIDLIST_NORMAL_MODE;
+	switch(currentVehicleTypeId)
+	{
+		case CHANGAN_S302:
+			m_imageGridListData.columnNums = 3;
+			m_imageGridListData.rowNums = 2;
+			m_imageGridListData.horizontalSpacing = 60.0;
+			m_imageGridListData.verticalSpacing = 100.0;
+			m_imageGridListData.posX = 0.0;
+			m_imageGridListData.posY = 0.0;
+			m_imageGridListData.gridListWidth = 1280.0;
+			m_imageGridListData.gridListHeight = 720.0;
+			m_imageGridListData.itemWidth = 192.0;
+			m_imageGridListData.itemHeight = 112.0;	
+			m_imageGridListData.gridListBkgImg = "default";			
+			m_imageGridListData.gridListMode = GRIDLIST_BKG_MODE;
+		break;
+        case CHANGAN_V302:
+			
+        break;
+		default:
+			m_imageGridListData.columnNums = 3;
+			m_imageGridListData.rowNums = 2;
+			m_imageGridListData.horizontalSpacing = 60.0;
+			m_imageGridListData.verticalSpacing = 100.0;
+			m_imageGridListData.posX = 0.0;
+			m_imageGridListData.posY = 0.0;
+			m_imageGridListData.gridListWidth = 1280.0;
+			m_imageGridListData.gridListHeight = 720.0;
+			m_imageGridListData.itemWidth = 192.0;
+			m_imageGridListData.itemHeight = 112.0;	
+			m_imageGridListData.gridListBkgImg = "default";			
+			m_imageGridListData.gridListMode = GRIDLIST_BKG_MODE;		
+		break;
+	}
+
+	
 
 	for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
 	{

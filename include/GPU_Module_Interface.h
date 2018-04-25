@@ -375,6 +375,11 @@ RenderDataT;
 
 
 DLL_PUBLIC int SetRenderData(RenderDataT* pRenderData);	
+/*
+* DVR interface head file: Gpu_Dvr_Interface.h
+* DVR Example: UpdateRenderData(RENDER_DATA_DVR, (DVR_GUI_LAYOUT_INST_EXT*)RenderData, sizeof(DVR_GUI_LAYOUT_INST_EXT));
+*
+*/
 DLL_PUBLIC int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int dataLength);
 
 DLL_PUBLIC void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
