@@ -2,7 +2,7 @@
 #define __VEHICLE_MOTION_NEW_H__
 
 #include "reuse.h"
-#include "bev_data_type.h"
+
 
 #include <math.h>
 

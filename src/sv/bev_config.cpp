@@ -37,7 +37,7 @@ BEV_CONFIG_T load_config_data;
 static Options smc_list[] = 
 {
 	
-	BEV_OPT_INT32( SMC_MAJOR_VERSION_A , &load_config_data.smc ),
+	BEV_OPT_INT32( SMC_MAJOR_VERSION , &load_config_data.smc ),
     
 	BEV_OPT_INT32( SMC_MINOR_VERSION, &load_config_data.smc ),
 
@@ -124,7 +124,7 @@ static Options smc_list[] =
 static Options smc_hmi_list[] = 
 {
 	
-	BEV_OPT_INT32( SMC_MAJOR_VERSION_A , &load_config_data.smc_hmi ),
+	BEV_OPT_INT32( SMC_MAJOR_VERSION , &load_config_data.smc_hmi ),
 	BEV_OPT_INT32( SMC_MINOR_VERSION , &load_config_data.smc_hmi ),
 
 

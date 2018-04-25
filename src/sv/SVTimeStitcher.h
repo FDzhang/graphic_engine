@@ -40,7 +40,7 @@ public:
     SVTimeStitcher(){}
     ~SVTimeStitcher(){}
 
-    bool init(Smc_Cal_T *avm_mc_input);
+    bool init();
     
     void update();
     
@@ -101,7 +101,7 @@ private:
     Vehicle_Motion_New vhcl_motion;
 
 	bool m_bEnabled;
-	Smc_Cal_T *m_avm_mc;
+	
 	float32_t threshold_ts_x_front;
 	float32_t threshold_ts_x_rear;
 	float32_t threshold_ts_y;

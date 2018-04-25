@@ -2,6 +2,7 @@
 #include "vehicle_motion_new.h"
 #include "AVMData.h"
 #include "gpu_log.h"
+#include "bev_data_type.h"
 
 
 int8_t Vehicle_Motion_New::init(

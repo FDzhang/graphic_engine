@@ -629,11 +629,8 @@ int SVNode2DStichNew::Init()
 	m_SV2DData = new GlSV2D;
     m_SV2DData->Init();
     
-    Smc_Cal_T* pSmctmp;
-    AVMData::GetInstance()->GetSmc(&pSmctmp);
-
     m_svTimeStitcher = new SVTimeStitcher;
-    m_svTimeStitcher->init(pSmctmp);  
+    m_svTimeStitcher->init();  
 
 	InitStichAreaRT();
 	Init2DGroundNodeRT(0);

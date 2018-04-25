@@ -8,8 +8,11 @@
 
 using namespace std;
 
-bool SVTimeStitcher::init(Smc_Cal_T *_avm_mc)
+bool SVTimeStitcher::init()
 {
+	Smc_Cal_T *_avm_mc;
+	AVMData::GetInstance()->GetSmc(&_avm_mc);
+
     float32_t bevW =(float32_t)( _avm_mc->bev_stitch_param.view_param[2].view_range
         + _avm_mc->bev_stitch_param.view_param[3].view_range
         + _avm_mc->veh_param.veh_width);
@@ -71,7 +74,7 @@ bool SVTimeStitcher::init(Smc_Cal_T *_avm_mc)
 
     vhcl_motion.init(H, W, a, b);
 
-    m_avm_mc = _avm_mc;
+    
     threshold_ts_x_front = THRESHOLD_TS_X_FRONT;
     threshold_ts_x_rear = THRESHOLD_TS_X_REAR;
     threshold_ts_y = THRESHOLD_TS_Y;
@@ -695,6 +698,8 @@ void SVTimeStitcher::update()
     float vehicle_speed;
     AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Speed(&vehicle_speed);
 
+	Smc_Cal_T *m_avm_mc;
+	AVMData::GetInstance()->GetSmc(&m_avm_mc);
  //   Log_Error("=================vehicle_speed = %f", vehicle_speed);
     if (Driving == m_last_shift_pos)
     {
