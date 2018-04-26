@@ -105,8 +105,8 @@ enum
 //#define RIGHT_SIDE_VIEW_ROI_END_Y   483
 
 #endif
-#define RIGHT_SIDE_VIEW_MESH_WIDTH  21     //actual width +1
-#define RIGHT_SIDE_VIEW_MESH_HEIGHT 21     //actual height +1
+#define RIGHT_SIDE_VIEW_MESH_WIDTH  11     //actual width +1
+#define RIGHT_SIDE_VIEW_MESH_HEIGHT 11     //actual height +1
 
 
 
