@@ -138,11 +138,11 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 	
 	GUI_OBJ_THUMB_FRAME_INST_EXT* frameInst = NULL;
 
+	fileListTabMsg = dvrData.pTable;
+
 	if(dvrData.curLayout == GUI_LAYOUT_THUMB_EXT)
 	{
 		m_imageGridVisibility = 1;
-		
-		fileListTabMsg = dvrData.pTable;
 		
 		for(int i = 0; i < dvrData.ObjNum; i++)
 		{				
@@ -209,12 +209,54 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 	}
 	else
 	{
-		m_imageGridVisibility = 0;	
+		m_imageGridVisibility = 0;
+		
+		if((dvrData.curLayout == GUI_LAYOUT_RECORD_EXT
+			|| dvrData.curLayout == GUI_LAYOUT_PLAYBACK_VIDEO_EXT
+			|| dvrData.curLayout == GUI_LAYOUT_PLAYBACK_IMAGE_EXT)
+			&& fileListTabMsg)
+		{
+			for(int i = 0; i < dvrData.ObjNum; i++)
+			{
+				if(fileListTabMsg[i].Id == GUI_OBJ_ID_REC_VIEW_INDEX_EXT
+					|| fileListTabMsg[i].Id == GUI_OBJ_ID_PB_VIEW_INDEX_EXT)
+				{
+					SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
+				}
+			}
+		}
 	}
 
 	RefreshHmi();
 	return HMI_SUCCESS;
 }
+
+int CSVDvrFileListHmi::SetDvrView(unsigned char pViewCmd)
+{
+	if(pViewCmd == GUI_VIEW_INDEX_FRONT_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_FRONT_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_REAR_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_REAR_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_LEFT_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_LEFT_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_RIGHT_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_RIGHT_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_MATTS_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(MATTS_VIEW);
+	}
+
+	return HMI_SUCCESS;
+}
+
 int CSVDvrFileListHmi::RefreshHmi()
 {
 	m_imageGridList->SetVisibility(m_imageGridVisibility);

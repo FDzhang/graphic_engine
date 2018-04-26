@@ -16,6 +16,7 @@ public:
 private:
 	int RefreshHmi();
 	int SetHmiParams();
+	int SetDvrView(unsigned char pViewCmd);
 
 private:		
 
