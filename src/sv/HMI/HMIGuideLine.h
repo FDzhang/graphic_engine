@@ -45,6 +45,7 @@ typedef enum GuideLineTypeTag
     GUIDELINE_SINGLEVIEW_DYNAMIC,
     GUIDELINE_SINGLEVIEW_DYNAMIC_NEW,
     GUIDELINE_SINGLEVIEW_STATIC,
+    //GUIDELINE_SINGLEVIEW_STATIC_RECT,
 	GUIDELINE_DX3_LEFT_SINGLEVIEW_STATIC,
 	GUIDELINE_DX3_RIGHT_SINGLEVIEW_STATIC,
 	GUIDELINE_3D_DYNAMIC,
@@ -179,6 +180,7 @@ public:
 	int SetVisibility(unsigned char pFlag);
 
 private:
+    int SetStaticGuideLinePoints(int pDriveDirection);
     int CalSteeringWheel2Radius(float *pRadius,float pSteerAngle,int pGearState);
     int CaculateCenter(float* pCenterX, float* pCenterY, 
 						float pRadius[], float* pTheta, float pSteeringWheel, int pDirect);

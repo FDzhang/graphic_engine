@@ -31,6 +31,7 @@
 #include "CSVDemoEolHmi.h"
 #include "CSVDvrFileListHmi.h"
 #include "CSVChangAnSwitchViewHmi.h"
+#include "CSVS302GuidelineHmi.h"
 
 static unsigned char s302HmiElementShowImage[S302_MAIN_ELEMENT_NUM];
 static unsigned char s302ShowSettingMenu = 0;
@@ -918,14 +919,21 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         {
             m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 1;
             m_subHmi[S302_DEMO_DVR_FILELIST_HMI]->Update(hmiMsg);
-        }		
+        }
     }
     else
     {
         m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 0;
         FreeSubHmi(S302_DEMO_DVR_FILELIST_HMI);
     }
-	#endif
+    #endif
+
+    /*InitSubHmi(S302_DEMO_GUIDELINE_HMI);
+    if(m_subHmi[S302_DEMO_GUIDELINE_HMI])
+    {
+        m_subHmiVisibility[S302_DEMO_GUIDELINE_HMI] = 1;
+        m_subHmi[S302_DEMO_GUIDELINE_HMI]->Update(hmiMsg);
+    }*/
 
     /*if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE
 		&& hmiMsg.dvrTabMsg.playbackMode != 1)
@@ -994,6 +1002,12 @@ void CSVS302MainHmi::InitSubHmi(unsigned char pHmiIndex)
             case S302_DEMO_DVR_FILELIST_HMI:
                 m_subHmi[pHmiIndex] = new CSVDvrFileListHmi(m_uiNode, m_uiNodeId);
             break;
+            case S302_DEMO_GUIDELINE_HMI:
+                m_subHmi[pHmiIndex] = new CSVS302GuidelineHmi(m_uiNode, m_uiNodeId);
+            break;
+            //case S302_DEMO_DVR_HMI:
+            //    m_subHmi[pHmiIndex] = new CSVDvrBaseHmi(m_uiNode, m_uiNodeId);
+            //    break;
             default:
             break;
         }
