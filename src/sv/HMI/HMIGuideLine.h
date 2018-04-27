@@ -37,22 +37,70 @@ typedef enum
 {
     GUIDELINE_NORMAL,
 };
+	
+typedef enum Demo_Guideline_Type_Tag
+{
+    DEMO_GUIDELINE_BEV_DYNAMIC_POS_L = 0,
+	DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1,
+	DEMO_GUIDELINE_BEV_DYNAMIC_POS_L2,
+	DEMO_GUIDELINE_BEV_DYNAMIC_POS_L3,
+    DEMO_GUIDELINE_BEV_DYNAMIC_POS_R,
+    DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1,
+    DEMO_GUIDELINE_BEV_DYNAMIC_POS_R2,
+    DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3,
+
+	DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L,
+	DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R,
+	DEMO_GUIDELINE_SINGLEVIEW_SAVE_DIST,
+	DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST,
+
+	DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L1,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L2,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L3,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R1,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R2,
+    DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R3,
+   
+	DEMO_GUIDELINE_LEFT_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_RIGHT_SINGLEVIEW_STATIC,
+
+    DEMO_GUIDELINE_REAR_1mL_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_1mR_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mL_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mR_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mL_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mR_SINGLEVIEW_STATIC,
+
+    DEMO_GUIDELINE_REAR_1mL_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_1mR_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mL_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_2mR_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mL_HORIZON_SINGLEVIEW_STATIC,
+    DEMO_GUIDELINE_REAR_3mR_HORIZON_SINGLEVIEW_STATIC,
+
+    DEMO_GUIDELINE_NUM,
+}
+Demo_Guideline_Type_T;
 
 typedef enum GuideLineTypeTag
 {
     GUIDELINE_BEV_DYNAMIC = 0,
     GUIDELINE_BEV_STATIC,
     GUIDELINE_SINGLEVIEW_DYNAMIC,
+    GUIDELINE_SINGLEVIEW_SAVE_DYNAMIC,
     GUIDELINE_SINGLEVIEW_DYNAMIC_NEW,
     GUIDELINE_SINGLEVIEW_STATIC,
-    //GUIDELINE_SINGLEVIEW_STATIC_RECT,
 	GUIDELINE_DX3_LEFT_SINGLEVIEW_STATIC,
 	GUIDELINE_DX3_RIGHT_SINGLEVIEW_STATIC,
 	GUIDELINE_3D_DYNAMIC,
     GUIDELINE_3D_STATIC,
     GUIDELINE_BEV_ASSIST_DYNAMIC,
     GUIDELINE_BEV_ASSIST_STATIC,
-    GUIDELINE_BEV_WHEEL_DYNAMIC,
+    GUIDELINE_SINGLEVIEW_WHEEL_DYNAMIC,
+	GUIDELINE_BEV_SAVE_DYNAMIC,
+	GUIDELINE_3D_SAVE_DYNAMIC,
     GUIDELINE_TYPE_NUM,
 }
 GuideLineTypeT;
@@ -62,6 +110,13 @@ typedef enum GuideLineAlignModeTag
     GUIDELINE_ALIGH_MODE_NUM,
 }
 GuideLineAlignModeT;
+
+typedef enum GuideLineCustomProptTag
+{
+	GUIDELINE_SECTIONAL_TYPE = 2,
+    GUIDELINE_CUSTOM_PROPT_NUM,
+}
+GuideLineCustomProptT;
 
 typedef enum GuideLinePosTag
 {
@@ -104,14 +159,19 @@ typedef struct HMIGuideLineDataTag
 	char*		   guideLineName;
     GuideLineTypeT guideLineType;
     GuideLinePosT  guideLinePos;
+	GuideLineCustomProptT customPropt;
     
 	//��λ��mm
     float guideLineWidth;
-    float guideLineLength;
     float guideLineSideDistanceFromVehicle;
     float guideLineStartDistanceFromVehicle;
-
+	float guideLineStartPos;
+	float guideLineEndPos;
+	
     int   guideLinePointNum;
+	int   groupId;
+	int   groupNum;
+	int   groupMemId;
 
 	char* guideLineTexture[GUIDELINE_TEXTURE_NUM];
 	MaterialType    guideLineTextureType;
@@ -180,18 +240,19 @@ public:
 	int SetVisibility(unsigned char pFlag);
 
 private:
-    int SetStaticGuideLinePoints(int pDriveDirection);
     int CalSteeringWheel2Radius(float *pRadius,float pSteerAngle,int pGearState);
     int CaculateCenter(float* pCenterX, float* pCenterY, 
 						float pRadius[], float* pTheta, float pSteeringWheel, int pDirect);
     int GenerateDynamicGuideLine(float pCenterX, float pCenterY,float pRadius[],
 							float pStartAngle[],float*pVertex);
 	int GenerateStaticGuideLine(float* pVertex);
-    int CalWorld2ModelCoordinate(float *out_Model_Coord,float *in_world_coord,float *out_texture);
-
+    int CalWorld2ModelCoordinate(float *out_Model_Coord,float *in_world_coord,float *out_texture = NULL);
+	int CaculateHorizontalDynamicLine(float* pVertex , float pSteeringWheel, int pDirect);
+	int CvtWorld2Display(float* pVertex, float pWorldPoint[], int pIndex);
 private:
     HMIGuideLineDataT* m_guideLineData;
 	unsigned char      m_currentCamPos;
+	unsigned char      m_currentDirection;
 	float			   m_frontCamZone[4];
 	float			   m_rearCamZone[4];
 	float			   m_leftCamZone[4];
@@ -225,7 +286,8 @@ private:
 
 	unsigned char		m_guideLineVisibility;
 
-    float m_guideLineLength;
+    float m_guideLineEndPos;
+	float m_guideLineStartPos;
     float m_guideLineStartDistanceFromVehicle;
 };
 

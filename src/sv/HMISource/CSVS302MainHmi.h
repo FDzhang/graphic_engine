@@ -87,6 +87,7 @@ typedef enum S302MenuAlgoHmiTag
 }
 S302MenuAlgoHmiT;
 
+
 class CSVS302MainHmi : public ISVHmi
 {
 public:
@@ -102,6 +103,9 @@ private:
     int RefreshHmi();
     void InitSubHmi(unsigned char pHmiIndex);
     void FreeSubHmi(unsigned char pHmiIndex);
+	void SetHmiGuideline();
+	void RefreshHmiGuideline();
+	
 
 private:
     Hmi_Button_Data_T m_baseButtonData[S302_MAIN_ELEMENT_NUM];
@@ -123,6 +127,15 @@ private:
 
     int m_screenWidth;
     int m_screenHeight;
+
+	HMIGuideLineDataT   m_guideLineData[DEMO_GUIDELINE_NUM];
+    HMIGuideLine*       m_guideLine[DEMO_GUIDELINE_NUM];
+
+	unsigned char       m_singleViewDynGuideLineVisibility;
+    unsigned char       m_bevDynGuideLineVisibility;
+	unsigned char       m_bevAsitLDynGuideLineVisibility;
+	unsigned char       m_bevAsitRDynGuideLineVisibility;
+	
 public:
 
 };
