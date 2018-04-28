@@ -129,7 +129,7 @@ public:
         
         SAFE_FREE(tmp_payload);
         
-        Log_Message("-----------CS302EnterDvrActionTrigger");
+        //Log_Error("-----------CS302EnterDvrActionTrigger");
     }
     virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
     {
@@ -731,18 +731,8 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 
 int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 {
-//Log_Error("CSVS302MainHmi::Update");
     MainMenuDataT s302MainMenuData;
     memset(&s302MainMenuData, 0, sizeof(S302MainMenuDataT));
-
-    //debug code,need delete;
-    /*static unsigned char initflag = 0;
-    if(initflag == 0)
-    {
-        s302MainMenuData.menuVisibility = 1;
-        CAvmRenderDataBase::GetInstance()->SetS302MainMenuStatus(&s302MainMenuData);
-        initflag=1;
-    }*/
 
     CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&s302MainMenuData);
 
@@ -909,9 +899,8 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 		CAvmRenderDataBase::GetInstance()->SetDvrData(&dvrData);
 	}*/
 
-	s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] = BUTTON_ON_IMAGE;
-
 	#if 1
+	s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] = BUTTON_ON_IMAGE;
 	if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
     {
 		
@@ -1007,9 +996,6 @@ void CSVS302MainHmi::InitSubHmi(unsigned char pHmiIndex)
             case S302_DEMO_GUIDELINE_HMI:
                 //m_subHmi[pHmiIndex] = new CSVS302GuidelineHmi(m_uiNode, m_uiNodeId);
             break;
-            //case S302_DEMO_DVR_HMI:
-            //    m_subHmi[pHmiIndex] = new CSVDvrBaseHmi(m_uiNode, m_uiNodeId);
-            //    break;
             default:
             break;
         }
