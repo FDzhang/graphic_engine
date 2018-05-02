@@ -409,21 +409,22 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
     
     if(m_currentDirection == GUIDELINE_DIR_BACKWARD)
     {       
-        if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC)
+        if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC
+			|| m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC)
         {
-            startDistance += m_vehParam->veh_rwheel2tail;
-        }
-        else if(m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC)
-        {
-            if(m_guideLineData->customPropt == GUIDELINE_SECTIONAL_TYPE)
-            {
-                startDistance += (m_vehParam->veh_rwheel2tail + guideLineStartPos);
-            }
+            if(IsFloatEqual(startDistance, 0.0, 0.0001))
+			{
+				
+			}
+			else
+			{
+				startDistance += m_vehParam->veh_rwheel2tail;
+			}
 
         }
 		else if(m_guideLineData->guideLineType == GUIDELINE_BEV_ASSIST_DYNAMIC)
 		{
-			startDistance += m_vehParam->veh_rwheel2tail;
+			startDistance -= fAxisLength;
 		}
         guideLineEndPos += m_vehParam->veh_rwheel2tail;
     
@@ -432,16 +433,17 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
     }
     else if(m_currentDirection == GUIDELINE_DIR_FORWARD)
     {
-        if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC)
+        if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC
+			|| m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC)
         {
-            startDistance -= (m_vehParam->veh_fwheel2head +  fAxisLength);
-        }
-        else if(m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC)
-        {
-            if(m_guideLineData->customPropt == GUIDELINE_SECTIONAL_TYPE)
-            {
-                startDistance -= (m_vehParam->veh_fwheel2head - guideLineStartPos);
-            }
+            if(IsFloatEqual(startDistance, 0.0, 0.0001))
+			{
+				startDistance -= fAxisLength;
+			}
+			else
+			{
+				startDistance -= (m_vehParam->veh_fwheel2head +  fAxisLength);
+			}
         }
 		else if(m_guideLineData->guideLineType == GUIDELINE_BEV_ASSIST_DYNAMIC)
 		{
@@ -460,50 +462,33 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
         if(pCenterX < 0)
         {
 
-            if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC)
-            {
-                if(m_guideLineData->customPropt == GUIDELINE_SECTIONAL_TYPE)
-                {
-                    AngleStart[pos] = - (guideLineStartPos / pRadius[pos] - pStartAngle[pos]);
-                }
-                else
-                {           
-                    AngleStart[pos] = asin((-startDistance)/ pRadius[pos]);
-                }
-                        
-                step[pos] = -(totalAngle + AngleStart[pos] - pStartAngle[pos]) / m_guideLineData->guideLinePointNum;
-            
-            }
-            else
-            {
-                guideLineStartAngleFromVehicle[pos] = -startDistance / pRadius[pos];
-                step[pos] = -(totalAngle + guideLineStartAngleFromVehicle[pos]) / m_guideLineData->guideLinePointNum;
-                AngleStart[pos] = pStartAngle[pos]  + guideLineStartAngleFromVehicle[pos];
-            }
+			if(m_guideLineData->customPropt == GUIDELINE_SECTIONAL_TYPE)
+			{
+				AngleStart[pos] = - (guideLineStartPos / pRadius[pos] - pStartAngle[pos]);
+			}
+			else
+			{			
+				AngleStart[pos] = asin((-startDistance)/ pRadius[pos]);
+
+			}
+						
+			step[pos] = -(totalAngle + AngleStart[pos] - pStartAngle[pos]) / m_guideLineData->guideLinePointNum; 
+
         }
         else
         {
         
-            if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC)
+            if(m_guideLineData->customPropt == GUIDELINE_SECTIONAL_TYPE)
             {
-                if(m_guideLineData->customPropt == GUIDELINE_SECTIONAL_TYPE)
-                {
-                    AngleStart[pos] =  -GUIDELINE_PI + guideLineStartPos / pRadius[pos] + pStartAngle[pos];
-                    step[pos] = (totalAngle - guideLineStartPos / pRadius[pos]) / m_guideLineData->guideLinePointNum;
-                }
-                else
-                {
-                    AngleStart[pos] = asin((-startDistance)/ pRadius[pos]);
-                    step[pos] = (totalAngle + AngleStart[pos] + pStartAngle[pos]) / m_guideLineData->guideLinePointNum;
-                    AngleStart[pos] = -GUIDELINE_PI - AngleStart[pos];
-                }           
+                AngleStart[pos] =  -GUIDELINE_PI + guideLineStartPos / pRadius[pos] + pStartAngle[pos];
+                step[pos] = (totalAngle - guideLineStartPos / pRadius[pos]) / m_guideLineData->guideLinePointNum;
             }
             else
             {
-                guideLineStartAngleFromVehicle[pos] = startDistance / pRadius[pos];
-                step[pos] = (totalAngle - guideLineStartAngleFromVehicle[pos]) / m_guideLineData->guideLinePointNum;
-                AngleStart[pos] = -GUIDELINE_PI + pStartAngle[pos] + guideLineStartAngleFromVehicle[pos];
-            }
+                AngleStart[pos] = asin((-startDistance)/ pRadius[pos]);
+                step[pos] = (totalAngle + AngleStart[pos] + pStartAngle[pos]) / m_guideLineData->guideLinePointNum;
+                AngleStart[pos] = -GUIDELINE_PI - AngleStart[pos];
+            }   
 
         }
     }

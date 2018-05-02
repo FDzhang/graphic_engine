@@ -1205,7 +1205,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(0);
 
     i = DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
+    m_guideLineData[i].guideLineEndPos = 3000.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L";
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
@@ -1220,7 +1220,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(1);
 	
 	i = DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
+    m_guideLineData[i].guideLineEndPos = 3000.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L";
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
@@ -1251,13 +1251,8 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 
     steer_angle = 0.0 - steer_angle;
 
-/*AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);    
-    AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
-    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_displayViewCmd);
-*/
-    steer_angle = 0.0 - steer_angle;
-//    steer_angle = 320;
-//    gear_state = GEAR_R;
+//   steer_angle = -120;
+//   gear_state = GEAR_R;
 //    m_displayViewCmd = REAR_SINGLE_VIEW;
 //    
 //    steer_angle = m_cnt *4.8;
