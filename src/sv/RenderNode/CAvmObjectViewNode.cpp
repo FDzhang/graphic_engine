@@ -175,8 +175,11 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 		m_ground->SetEnable(1);
 	}
 
+	float opacity = 1.0;
+	
 	IMaterial* carInternalMtl;
     m_carInternalId = m_objViewNode->CreateMaterial(Material_RigidColor_Texture, &carInternalMtl);
+	carInternalMtl->SetOpacity(opacity);
 	carInternalMtl->SetDiffuseMap(CARINTTEX);
 	carInternalMtl->SetEnvironmentMap(CARENV);
 	carInternalMtl->SetAmbientMap(CARTEXMASK);
@@ -187,7 +190,8 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	
 	m_CarInternal->RotateDY(0);
 
-	m_carmtlId = m_objViewNode->CreateMaterial(Material_Glossy, &carmtl);
+	m_carmtlId = m_objViewNode->CreateMaterial(Material_Glossy_Alpha, &carmtl);
+	carmtl->SetOpacity(opacity);
 	carmtl->SetDiffuseMap(CARTEX);
 	carmtl->SetEnvironmentMap(CARENV);
 	carmtl->SetAmbientMap(CARAMBIENTTEXTMASK);
@@ -226,9 +230,9 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_CarDoor[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[3]->SetEnable(1);	
 
-	iCarLightMtlId = m_objViewNode->CreateMaterial(Material_RigidColor_Texture, &m_carLightMtl);
+	iCarLightMtlId = m_objViewNode->CreateMaterial(Material_Glossy_Alpha, &m_carLightMtl);
 	m_carLightMtl->SetDiffuseMap(CARLIGHTTEX);
-	
+	m_carLightMtl->SetOpacity(opacity);
 	//carlightmtl->SetDiffuseMap(CARTEX);
 	
 	m_carLightMtl->SetEnvironmentMap(CARLIGHTON);

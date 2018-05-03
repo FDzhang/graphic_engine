@@ -203,6 +203,17 @@ public:
 	/* [in] */ class CLight* pLight,
 	/* [in] */ class IObject* pIObject);
 };
+class RenderDelegate_FrGlossyAlpha : public IRenderDelegate
+{ 
+public:
+	virtual Int32 OnRender(
+	/* [in] */ class IMaterial* pMtl,
+	/* [in] */ const XRMat4* pModelMatrix,
+	/* [in] */ const XRMat4* pViewMatrix,
+	/* [in] */ const XRMat4* pProjMatrix,
+	/* [in] */ class CLight* pLight,
+	/* [in] */ class IObject* pIObject);
+};
 
 class RenderDelegate_FrGlass : public IRenderDelegate
 { 

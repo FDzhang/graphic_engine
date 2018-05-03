@@ -71,7 +71,14 @@ CXrRenderEffect* CRenderManager::CreateEffect(MaterialType mtlType)
 			if (!renderDelegate) return 0;
 			pEffect->InitShaderFromMemory(ShaderSource2Param(FR_GlossyColor));
 			pEffect->SetRenderDelegate(renderDelegate);
-			break;			
+			break;	
+		case Material_Glossy_Alpha:
+			pEffect->SetOpaque(TRUE);
+			renderDelegate = new RenderDelegate_FrGlossyAlpha();
+			if (!renderDelegate) return 0;
+			pEffect->InitShaderFromMemory(ShaderSource2Param(FR_GlossyAlpha));
+			pEffect->SetRenderDelegate(renderDelegate);
+			break;
 		case Material_Glass:
 			pEffect->SetOpaque(TRUE);
 			renderDelegate = new RenderDelegate_FrGlass();

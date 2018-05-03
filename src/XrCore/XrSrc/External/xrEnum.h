@@ -114,6 +114,7 @@ enum MaterialType {
 	Material_Glossy							= 0x00000017,
 	Material_Glossy_Color					= 0x00000018,
 	Material_Glass_Alpha    				= 0x00000019,	
+	Material_Glossy_Alpha					= 0x00000021,
 	Material_Shadow_Skinned		            = 0x00110000,
 	Material_Shadow				            = 0x00100000,
 	Material_Simple_Video					= 0x01000013,

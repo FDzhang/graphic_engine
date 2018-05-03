@@ -123,6 +123,7 @@ DeclareShaderParam(Pre_Shadow)
 DeclareShaderParam(Pre_Shadow_Skinned)
 DeclareShaderParam(FR_Glossy)
 DeclareShaderParam(FR_GlossyColor)
+DeclareShaderParam(FR_GlossyAlpha)
 DeclareShaderParam(FR_Glass)
 DeclareShaderParam(FR_Glass_Alpha)
 DeclareShaderParam(FR_RigidBlend)
@@ -161,6 +162,17 @@ struct FR_GlossyColor_CB
 	XRVec3 DiffuseColor;
 	XRVec3 SpecularColor;
 	XRVec3 MaterialColor;
+	Float32 AlphaRate;
+};
+
+struct FR_GlossyAlpha_CB
+{
+	XRMat4 MVPMatrix;
+	XRMat4 MVMatrix;
+	XRMat3 MVITMatrix;
+	XRVec3 AmbientColor;
+	XRVec3 DiffuseColor;
+	XRVec3 SpecularColor;
 	Float32 AlphaRate;
 };
 

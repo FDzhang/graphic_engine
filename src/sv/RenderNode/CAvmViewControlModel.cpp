@@ -326,12 +326,12 @@ int CAvmViewControlModel::InitViewNode()
 
 	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, right_camera_index);
 
-	camera_zone[REGION_POS_LEFT] = 0.0;
+	camera_zone[REGION_POS_LEFT] = 1.0;
     camera_zone[REGION_POS_TOP] = 0.0;
-    camera_zone[REGION_POS_RIGHT] = 1.0;
+    camera_zone[REGION_POS_RIGHT] = 0.0;
     camera_zone[REGION_POS_BOTTOM] = 1.0; 
-	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, left_camera_index);
-	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, right_camera_index);
+	CAvmRenderDataBase::GetInstance()->SetLargeSingleViewRoi(camera_zone, rear_camera_index);
+
 
 	m_avmMattsView = new CAvmMattsView();
 	m_avmMattsView->Init();

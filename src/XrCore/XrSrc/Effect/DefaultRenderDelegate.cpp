@@ -636,7 +636,38 @@ Int32 RenderDelegate_FrGlossyColor::OnRender(
 	XRDM->context()->VSSetUniformBlock(0, pUB);
 	XRDM->context()->PSSetUniformBlock(0, pUB);
 	return 0;
-}	
+}
+Int32 RenderDelegate_FrGlossyAlpha::OnRender(
+	/* [in] */ class IMaterial* pMtl,
+	/* [in] */ const XRMat4* pModelMatrix,
+	/* [in] */ const XRMat4* pViewMatrix,
+	/* [in] */ const XRMat4* pProjMatrix,
+	/* [in] */ class CLight* pLight,
+	/* [in] */ class IObject* pIObject)
+{
+	CShaderObject* pShader;
+	CUniformBlock* pUB;
+	CRenderState* pRS;
+	CVertexLayout* pLayout;
+	pMtl->GetEffect()->GetEffectParam(&pShader, &pUB, &pRS, &pLayout);
+
+	XRDM->context()->PSSetTexture(0, pMtl->GetDiffuseMap(), XRDM->GetDefaultSampler()); 
+	XRDM->context()->PSSetTexture(1, pMtl->GetEnvironmentMap(), XRDM->GetDefaultSampler()); 
+
+	FR_GlossyAlpha_CB cb;
+
+	cb.MVMatrix = (*pViewMatrix)*(*pModelMatrix);
+	cb.MVITMatrix =  XRMat3(cb.MVMatrix).inverse().transpose();
+	cb.MVPMatrix = (*pProjMatrix)*cb.MVMatrix;
+	cb.AmbientColor.Set(g_AmbientColor);
+	cb.DiffuseColor.Set(g_DiffuseColor);
+	cb.SpecularColor.Set(g_SpecularColor);
+	cb.AlphaRate = pMtl->GetOpacity();
+	XRDM->context()->UpdateUniformBlock(pUB, &cb);
+	XRDM->context()->VSSetUniformBlock(0, pUB);
+	XRDM->context()->PSSetUniformBlock(0, pUB);
+	return 0;
+}
 Int32 RenderDelegate_FrGlass::OnRender(
 	/* [in] */ class IMaterial* pMtl,
 	/* [in] */ const XRMat4* pModelMatrix,

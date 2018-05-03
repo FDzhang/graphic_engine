@@ -325,6 +325,72 @@ UInt32 FR_GlossyColor_render_state = XR_CULLMODE_FRONT | XR_FRONTFACE_CCW | XR_D
 //lowp  vec3 texColor  = vec3(texture2D(sBaseTex, TexCoord)) *fmask +(1.0-fmask)*MaterialColor;\
 //lowp  vec3 texColor  = vec3(texture2D(sBaseTex, TexCoord)) * DiffuseLight;\
 //lowp  vec3 reflection = vec3(texture2D(sReflectTex, ReflectCoord));\| XR_BLEND_DEFAULT
+/////////////////// 009  Shader_Effect_Glossy_Alpha /////////////////////
+const char* FR_GlossyAlpha = "FR_GlossyAlpha";
+const char* FR_GlossyAlpha_vs = "\
+attribute highp vec3 myVertex;\
+attribute highp vec3 myNormal;\
+attribute highp vec2 myUV;\
+uniform highp mat4 MVPMatrix;\
+uniform highp mat4 MVMatrix;\
+uniform highp mat3 MVITMatrix;\
+varying mediump vec3 normal;\
+varying mediump vec3 halfVector;\
+varying lowp float ReflectRatio;\
+varying mediump vec2 ReflectCoord;\
+varying mediump vec2 TexCoord;\
+lowp float RIRSquare = 2.5;\
+void main()\
+{\
+	gl_Position = MVPMatrix * vec4(myVertex, 1.0);\
+	normal = normalize(MVITMatrix * myNormal);\
+	highp vec3 ecPosition = vec3(MVMatrix * vec4(myVertex,1.0));\
+	highp vec3 eyeDirection = -normalize(ecPosition);\
+	halfVector = vec3(0.0, 1.0, 0.0) + eyeDirection;\
+	highp float c = abs(dot(eyeDirection, normal));\
+	highp float g = sqrt(RIRSquare + c * c - 1.0);\
+	highp float f1 = (g - c) / (g + c);\
+	highp float f2 = (c * (g + c) - 1.0) / (c * (g - c) + 1.0);\
+	ReflectRatio = 0.5 * f1 * f1 * (1.0 + f2 * f2);\
+	ReflectCoord = normalize(reflect(eyeDirection, normal)).xy * 0.5;\
+	TexCoord = myUV;\
+    gl_PointSize = 10.0;\
+}";
+
+const char* FR_GlossyAlpha_fs = "\
+uniform sampler2D sBaseTex;\
+uniform sampler2D sReflectTex;\
+varying mediump vec3 normal;\
+varying mediump vec3 halfVector;\
+varying mediump vec2 ReflectCoord;\
+varying mediump vec2 TexCoord;\
+varying lowp float ReflectRatio;\
+uniform lowp vec3 AmbientColor;\
+uniform lowp vec3 DiffuseColor;\
+uniform lowp vec3 SpecularColor;\
+uniform lowp float AlphaRate;\
+lowp float cShininess = 36.0;\
+void main()\
+{\
+	mediump vec3 nor = normalize(normal);\
+	mediump float NdotL = max(dot(nor, vec3(0.0, 1.0, 0.0)), 0.0);\
+	lowp vec3 DiffuseLight = vec3(0.8,0.8,0.8) + NdotL * DiffuseColor;\
+	lowp  vec3 texColor  = vec3(texture2D(sBaseTex, TexCoord)) * DiffuseLight;\
+	lowp  vec3 reflection = vec3(texture2D(sReflectTex, ReflectCoord));\
+	lowp  vec3  color = texColor;\
+	mediump float NdotH = max(dot(nor, normalize(halfVector)), 0.0);\
+	mediump float specular = pow(NdotH, cShininess);\
+	lowp vec3 SpecularLight = specular * SpecularColor;\
+	lowp vec3 fcolor = color + SpecularLight;\
+	gl_FragColor = vec4(fcolor, AlphaRate);\
+	if(AlphaRate > 0.95)\
+	{\
+		gl_FragColor.a = texture2D(sBaseTex,TexCoord).a;\
+	}\	
+}";
+XRVertexLayout FR_GlossyAlpha_layout_index = XR_VERTEX_LAYOUT_PNT;
+UInt32 FR_GlossyAlpha_render_state = XR_CULLMODE_FRONT | XR_FRONTFACE_CCW | XR_DEPTHTEST_ENABLE | XR_DEPTHWRITE_ENABLE | XR_DEPTHTEST_LT| XR_BLEND_DEFAULT;
+
 /////////////////// 010  Shader_Effect_Glass_Alpha /////////////////////
 const char* FR_Glass_Alpha = "FR_Glass_Alpha";
 const char* FR_Glass_Alpha_vs = "\
