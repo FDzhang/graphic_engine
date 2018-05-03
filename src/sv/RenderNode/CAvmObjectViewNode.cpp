@@ -178,8 +178,8 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	float opacity = 1.0;
 	
 	IMaterial* carInternalMtl;
-    m_carInternalId = m_objViewNode->CreateMaterial(Material_RigidColor_Texture, &carInternalMtl);
-	carInternalMtl->SetOpacity(opacity);
+    m_carInternalId = m_objViewNode->CreateMaterial(Material_Glossy_Alpha, &carInternalMtl);
+	carInternalMtl->SetOpacity(((opacity - 0.1) > 0.001) ? (opacity - 0.1) : 0.001);
 	carInternalMtl->SetDiffuseMap(CARINTTEX);
 	carInternalMtl->SetEnvironmentMap(CARENV);
 	carInternalMtl->SetAmbientMap(CARTEXMASK);
