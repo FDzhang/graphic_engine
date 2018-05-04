@@ -1,4 +1,5 @@
 #include "CSVV302FileListTab.h"
+#include "DVR_GUI_OBJ.h"
 #include "gpu_log.h"
 
 
@@ -113,10 +114,8 @@ int CSVV302FileListTab::Init(int window_width, int window_height)
 
 int CSVV302FileListTab::Update(Hmi_Message_T& hmiMsg)
 {
-    /*
  	static int currentFileNum = 0;
 	int 	   fileNumCnt = 0;
-    static int waitCnt = 0;
     static int currentThumbTab = 0;
 	
 	DVR_GRAPHIC_UIOBJ* fileListTabMsg = NULL;
@@ -207,7 +206,7 @@ int CSVV302FileListTab::Update(Hmi_Message_T& hmiMsg)
 		}
 
 	}
-    */
+
     for(int i = 0; i < V302_GRID_LIST_ITEM_NUM; i++)
     {
         memcpy(m_imageGridListItem[i].imageData, m_tmpRGB, sizeof(char) * PREVIEW_HIGH * PREVIEW_WIDTH * 3);

@@ -35,6 +35,8 @@
 #include <memory>
 #include "ISVHmi.h"
 
+static const int IMAGE_GRID_LIST_ITEM_NUM = 6;
+
 typedef enum V302FileListStatusTag
 {
     V302_FILE_TAB_SELECT_STATUS,
@@ -59,8 +61,8 @@ static const int V302_GRID_LIST_ITEM_NUM = 12;
 static const int V302_GRID_LIST_ITEM_ROW = 4;
 static const int V302_GRID_LIST_ITEM_COLUMN = 3;
 
-#define PREVIEW_WIDTH 192
-#define PREVIEW_HIGH 112
+#define PREVIEW_WIDTH 304
+#define PREVIEW_HIGH 176
 
 class CSVV302FileListTab : public ISVHmi
 {

@@ -62,6 +62,14 @@ typedef enum V302PlaybackTabButtonIndexTag {
     V302_PB_INDEX_NUM,
 } V302PlaybackTabButtonIndexT;
 
+enum
+{
+    V302_PB_FILENAME_TITLE,
+    V302_PB_FILE_CURRENT_TIME,
+    V302_PB_FILE_DURATION_TIME,
+    V302_PB_TEXT_DISPLAY_NUM,
+};
+
 class CSVV302PlaybackTab : public ISVHmi
 {
   public:
@@ -74,6 +82,7 @@ class CSVV302PlaybackTab : public ISVHmi
   private:
     int SetHmiParams();
     int RefreshHmi();
+    int ToString(int pTime, char** pOutString);
 
   private:
     unsigned char m_iconStatus[V302_PB_STATUS_NUM];
@@ -82,12 +91,13 @@ class CSVV302PlaybackTab : public ISVHmi
     HMIButton *m_baseButton[V302_PB_INDEX_NUM];
 
     int HmiInitSTBar();
+    int HmiInitPlayBar();
     int HmiInitLayer();
     int HmiInitSvresList();
 
-    unsigned char *HmiGetSvresFile(int index);
+    char *HmiGetSvresFile(int index);
 
-    unsigned char *m_hmiSvresFileName[MAX_SVRES_NUM];
+    char *m_hmiSvresFileName[MAX_SVRES_NUM];
     unsigned char m_currentSvresNum;
 
     int m_screenWidth;
@@ -96,6 +106,15 @@ class CSVV302PlaybackTab : public ISVHmi
     HmiTextEdit *m_speed_value_text;
     HmiTextEditDataT m_speed_value_text_data;
 
+    HmiProcessBarDataT  m_processBarData;
+    HmiProcessBar*      m_processBar;
+    unsigned char       m_processBarVisibility;
+    float               m_processBarForwardScale;
+
+    HmiTextEditDataT    m_textEditData[V302_PB_TEXT_DISPLAY_NUM];
+    HmiTextEdit*        m_textEdit[V302_PB_TEXT_DISPLAY_NUM];
+    unsigned char       m_textEditVisibility[V302_PB_TEXT_DISPLAY_NUM];
+    char*               m_textEditContent[V302_PB_TEXT_DISPLAY_NUM];
   public:
 };
 

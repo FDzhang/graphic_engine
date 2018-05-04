@@ -8,6 +8,8 @@
 
 #include "gpu_log.h"
 
+static CGpuAvmEventDelegate m_eventDel(ALGOHMI_EVENT_NAME);
+
 REGISTER_HMI_CLASS(CSVV302MainHmi)
 
 CSVV302MainHmi::CSVV302MainHmi()
