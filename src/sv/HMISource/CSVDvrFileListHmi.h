@@ -5,12 +5,13 @@
 
 enum
 {
-	V302_FILE_SCROLL_BACK = 0,
+    V302_FILE_BKG = 0,
+	V302_FILE_SCROLL_BACK = 1,
     V302_FILE_SCROLL_BLOCK,
     V302_FILE_BUTTON_NUM,
 };
 
-static const int IMAGE_GRID_LIST_ITEM_NUM = 6;
+static const int IMAGE_GRID_LIST_ITEM_NUM = 8;
 
 class CSVDvrFileListHmi : public ISVHmi
 {

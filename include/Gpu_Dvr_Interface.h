@@ -24,7 +24,7 @@
 #ifndef _GPU_DVR_INTERFACE_H_
 #define _GPU_DVR_INTERFACE_H_
 
-#define NUM_THUMBNAIL_PER_PAGE_EXT	6
+#define NUM_THUMBNAIL_PER_PAGE_EXT	8
 
 typedef struct
 {

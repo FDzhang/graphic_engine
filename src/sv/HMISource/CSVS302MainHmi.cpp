@@ -31,6 +31,7 @@
 #include "CSVDemoEolHmi.h"
 #include "CSVDvrFileListHmi.h"
 #include "CSVChangAnSwitchViewHmi.h"
+#include "CSVS302DvrBase.h"
 //#include "CSVS302GuidelineHmi.h"
 REGISTER_HMI_CLASS(CSVS302MainHmi)
 
@@ -915,17 +916,19 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
  
     if(s302MainMenuData.iconStatus[MAIN_MENU_DVR] == 1)
     {
-        InitSubHmi(S302_DEMO_DVR_FILELIST_HMI);
-        if(m_subHmi[S302_DEMO_DVR_FILELIST_HMI])
-        {
-            m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 1;
-            m_subHmi[S302_DEMO_DVR_FILELIST_HMI]->Update(hmiMsg);
-        }
+//        InitSubHmi(S302_DEMO_DVR_FILELIST_HMI);
+//        if(m_subHmi[S302_DEMO_DVR_FILELIST_HMI])
+//        {
+//            m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 1;
+//            m_subHmi[S302_DEMO_DVR_FILELIST_HMI]->Update(hmiMsg);
+//        }
+        char* hmiName = "CSVS302DvrBase";
+	    CSVHmiIntent::GetInstance()->Intent(hmiName);
     }
 	else
     {
-        m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 0;
-        FreeSubHmi(S302_DEMO_DVR_FILELIST_HMI);
+//        m_subHmiVisibility[S302_DEMO_DVR_FILELIST_HMI] = 0;
+//        FreeSubHmi(S302_DEMO_DVR_FILELIST_HMI);
     }
 
 

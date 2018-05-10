@@ -68,7 +68,8 @@ int CAvmLargeSingleView::Init()
 	{
 	    black_width = 0.0;
 		m_largeViewRegion.Set(0.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
-		m_dvrViewRegion.Set(0.0, XrGetScreenWidth() - 240, 0.0, XrGetScreenHeight());
+		//m_dvrViewRegion.Set(0.0, XrGetScreenWidth() - 240, 0.0, XrGetScreenHeight());
+		m_dvrViewRegion.Set(0.0 + 200, XrGetScreenWidth() - 40, 60.0, XrGetScreenHeight() - 60);
 	}
     else if(CHANGAN_V302 == current_vehicle_type_id)
     {
