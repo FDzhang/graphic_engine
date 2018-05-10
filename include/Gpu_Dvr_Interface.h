@@ -41,6 +41,12 @@ typedef struct
 	GUI_OBJ_THUMB_ITEM_EXT item[NUM_THUMBNAIL_PER_PAGE_EXT];
 }GUI_OBJ_THUMB_FRAME_INST_EXT;
 
+typedef struct
+{
+    unsigned char nCurPage;
+    unsigned char nTotalPage;
+}GUI_OBJ_THUMB_PAGENUM_INST_EXT;
+
 typedef enum
 {
 	GUI_VIEW_INDEX_FRONT_EXT,

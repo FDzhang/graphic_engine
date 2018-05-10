@@ -1,4 +1,5 @@
 #include "CSVDvrFileListHmi.h"
+//#include "DVR_GUI_OBJ.h"
 
 CSVDvrFileListHmi::CSVDvrFileListHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
@@ -30,7 +31,14 @@ int CSVDvrFileListHmi::SetHmiParams()
 	}
 	m_imageGridList->SetVisibility(0);
 
+    m_pageNum = new HmiTextEdit(&m_pageNumData,m_uiNode);
+    m_pageNum->SetVisibility(0);
 
+    for(int i = V302_FILE_SCROLL_BACK; i < V302_FILE_BUTTON_NUM; i++)
+    {
+        m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+        m_baseButton[i]->SetVisibility(0);
+    }
 	return HMI_SUCCESS;
 }
 
@@ -47,19 +55,20 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	m_imageGridListData.renderUiNode = m_uiNode;
 	m_imageGridListData.withTextFlag = 1;
 
+    float offset = 200;
 	switch(currentVehicleTypeId)
 	{
 		case CHANGAN_S302:
 			m_imageGridListData.columnNums = 3;
 			m_imageGridListData.rowNums = 2;
-			m_imageGridListData.horizontalSpacing = 60.0;
-			m_imageGridListData.verticalSpacing = 100.0;
-			m_imageGridListData.posX = 0.0;
-			m_imageGridListData.posY = 0.0;
-			m_imageGridListData.gridListWidth = 1280.0;
-			m_imageGridListData.gridListHeight = 720.0;
+			m_imageGridListData.horizontalSpacing = 100.0;
+			m_imageGridListData.verticalSpacing = 159.0;
 			m_imageGridListData.itemWidth = 192.0;
-			m_imageGridListData.itemHeight = 112.0;	
+			m_imageGridListData.itemHeight = 112.0;
+            m_imageGridListData.posX = offset + 0.0;
+			m_imageGridListData.posY = 0.0;
+			m_imageGridListData.gridListWidth = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * m_imageGridListData.columnNums + m_imageGridListData.horizontalSpacing ;
+			m_imageGridListData.gridListHeight = 720.0;
 			m_imageGridListData.gridListBkgImg = "default";			
 			m_imageGridListData.gridListMode = GRIDLIST_BKG_MODE;
 		break;
@@ -97,7 +106,7 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 		m_imageGridListItem[i].trigger = NULL;
 
 		m_textEditData[i].pos[0] = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing - 25;
-		m_textEditData[i].pos[1] = (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 5.0;
+		m_textEditData[i].pos[1] = (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 32.0;
 		m_textEditData[i].width = 20;
 		m_textEditData[i].font_size = 4.0;
 		m_textEditData[i].line_num = 1;
@@ -119,6 +128,53 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 
 	}
 
+    m_pageNumData.pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 12;
+    m_pageNumData.pos[1] = 120;
+    m_pageNumData.width = 25;
+	m_pageNumData.font_size = 5.0;
+	m_pageNumData.line_num = 1;
+	m_pageNumData.visibilityStatus = 1;
+	m_pageNumData.targetIndex = -1;
+	m_pageNumData.insertFlag = InsertFlag_Default;
+	m_pageNumData.fontTypeMtlName = XR_RES"text_box.ttf";
+	m_pageNumData.trigger = NULL;
+	m_pageNumData.textColor[0] = 0.625;
+	m_pageNumData.textColor[1] = 0.625;
+	m_pageNumData.textColor[2] = 0.625;
+	m_pageNumData.textContent[0] = new char[100];
+	char* ptext0 = "1234";
+	sprintf(m_pageNumData.textContent[0],"%s", ptext0);    
+
+    int i = 0;
+    
+    i = V302_FILE_SCROLL_BACK;
+    m_baseButtonData[i].pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth - 20;
+    m_baseButtonData[i].pos[1] = 110;
+    m_baseButtonData[i].width = 10;
+    m_baseButtonData[i].height = 500;
+    m_baseButtonData[i].delegate_func = NULL;
+    m_baseButtonData[i].trigger = NULL;
+	m_baseButtonData[i].icon_type = STATIC_ICON;
+	m_baseButtonData[i].show_flag = 0;
+	m_baseButtonData[i].show_icon_num = 0;
+	m_baseButtonData[i].icon_file_name[0] = new char[50];
+	sprintf(m_baseButtonData[i].icon_file_name[0],"%sCar/DVR/edit_scroll_bkg.dds",XR_RES); 
+    m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
+
+    i = V302_FILE_SCROLL_BLOCK;
+    m_baseButtonData[i].pos[0] = m_baseButtonData[V302_FILE_SCROLL_BACK].pos[0];
+    m_baseButtonData[i].pos[1] = 300;
+    m_baseButtonData[i].width = 10;
+    m_baseButtonData[i].height = 50;
+    m_baseButtonData[i].delegate_func = NULL;
+    m_baseButtonData[i].trigger = NULL;
+    m_baseButtonData[i].icon_type = DYNAMIC_ICON;
+	m_baseButtonData[i].show_flag = 0;
+	m_baseButtonData[i].show_icon_num = 0;
+	m_baseButtonData[i].icon_file_name[0] = new char[50];
+	sprintf(m_baseButtonData[i].icon_file_name[0],"%sS302/s302_scroll_block.dds",XR_RES); 
+    m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
+
 	SetHmiParams();
 	
 	return HMI_SUCCESS;
@@ -137,13 +193,17 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 	DVR_GRAPHIC_UIOBJ_EXT* fileListTabMsg = NULL;
 	
 	GUI_OBJ_THUMB_FRAME_INST_EXT* frameInst = NULL;
+    
+    GUI_OBJ_THUMB_PAGENUM_INST_EXT* thumbPagenumInst = NULL;
 
 	fileListTabMsg = dvrData.pTable;
+//    Log_Error("=================dvrData.curLayout:%d",dvrData.curLayout);
+//    dvrData.curLayout = GUI_LAYOUT_THUMB_EXT;
 
 	if(dvrData.curLayout == GUI_LAYOUT_THUMB_EXT)
 	{
 		m_imageGridVisibility = 1;
-		
+		SetElementsVisibility(1);
 		for(int i = 0; i < dvrData.ObjNum; i++)
 		{				
 			switch(fileListTabMsg[i].Id)
@@ -200,7 +260,39 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 					//m_imageGridList->Update();
 				}
 				break;
-			
+			case GUI_OBJ_ID_THUMB_PAGE_NUM_EXT:
+
+                if(GUI_OBJ_STATUS_TYPE_POINTER_EXT == fileListTabMsg[i].status_type && fileListTabMsg[i].uStatus.ptr)
+                {
+                    thumbPagenumInst = (GUI_OBJ_THUMB_PAGENUM_INST_EXT*)fileListTabMsg[i].uStatus.ptr;
+                    unsigned char curPage = thumbPagenumInst->nCurPage;
+                    unsigned char totalPage = thumbPagenumInst->nTotalPage;
+                    //Log_Error("curPage: %d, totalPage: %d", curPage, totalPage);
+                    if(totalPage > 0)
+                    {
+                        sprintf(m_pageNumData.textContent[0],"%u / %u", curPage, totalPage);
+                        m_pageNum->SetVisibility(1);
+                        waitCnt = 0;
+                        if(totalPage > 1)
+                        {
+                            float blockheight = m_baseButtonData[V302_FILE_SCROLL_BACK].height / totalPage;
+                            if(curPage == 0) curPage = 1;
+                            float blocklocation = m_baseButtonData[V302_FILE_SCROLL_BACK].pos[1] + (curPage - 1) * blockheight;
+                            m_baseButton[V302_FILE_SCROLL_BLOCK]->SetVisibility(1);
+                            m_baseButton[V302_FILE_SCROLL_BLOCK]->SetHeight(blockheight);
+                            m_baseButton[V302_FILE_SCROLL_BLOCK]->SetY(blocklocation);
+                        }
+                        else 
+                        {
+                            m_baseButton[V302_FILE_SCROLL_BLOCK]->SetVisibility(0);
+                        }
+                    }
+                    else
+                    {
+                        m_pageNum->SetVisibility(0);
+                    }
+                }
+                break;
 			default:
 				break;
 			}	
@@ -260,13 +352,27 @@ int CSVDvrFileListHmi::SetDvrView(unsigned char pViewCmd)
 int CSVDvrFileListHmi::RefreshHmi()
 {
 	m_imageGridList->SetVisibility(m_imageGridVisibility);
+    m_pageNum->Update(m_pageNumData.textContent[0]);
 
+    for(int i = V302_FILE_SCROLL_BACK; i < V302_FILE_BUTTON_NUM; i++)
+    {
+        m_baseButton[i]->Update();
+    }
+    
 	return HMI_SUCCESS;
 }
 int CSVDvrFileListHmi::SetElementsVisibility(unsigned char pFlag)
 {
 	m_imageGridList->SetVisibility(pFlag);
-
+    if(pFlag == 0)
+    {
+        m_pageNum->SetVisibility(pFlag);
+        
+    }
+    for(int i = V302_FILE_SCROLL_BACK; i < V302_FILE_BUTTON_NUM; i++)
+    {
+        m_baseButton[i]->SetVisibility(pFlag);
+    }    
 	return HMI_SUCCESS;
 }
 int CSVDvrFileListHmi::ReturnHmiMsg(Hmi_Message_T* hmi_msg)

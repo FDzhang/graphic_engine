@@ -3,6 +3,12 @@
 
 #include "ISVHmi.h"
 
+enum
+{
+	V302_FILE_SCROLL_BACK = 0,
+    V302_FILE_SCROLL_BLOCK,
+    V302_FILE_BUTTON_NUM,
+};
 
 static const int IMAGE_GRID_LIST_ITEM_NUM = 6;
 
@@ -18,7 +24,10 @@ private:
 	int SetHmiParams();
 	int SetDvrView(unsigned char pViewCmd);
 
-private:		
+private:	
+    
+	Hmi_Button_Data_T m_baseButtonData[V302_FILE_BUTTON_NUM];
+    HMIButton* m_baseButton[V302_FILE_BUTTON_NUM];
 
 	HMIImageGridListDataT m_imageGridListData;
 	HMIImageGridList* m_imageGridList;
@@ -30,6 +39,9 @@ private:
 	unsigned char m_imageGridVisibility;
 
 	IActionTrigger* m_gridListTrigger[IMAGE_GRID_LIST_ITEM_NUM];
+    
+    HmiTextEdit*     m_pageNum;
+    HmiTextEditDataT m_pageNumData;   
 
 };
 
