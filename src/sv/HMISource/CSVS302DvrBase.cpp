@@ -287,7 +287,7 @@ int CSVS302DvrBase::Update(Hmi_Message_T& hmiMsg)
     m_buttonStatus[S302_DVR_BASE_PLAYBACK_TAB] = BUTTON_OFF_IMAGE;
     m_buttonStatus[S302_DVR_BASE_REC_TAB] = BUTTON_OFF_IMAGE;
 
-    Log_Error("=====================curLayout = %d",dvrGuiLayout.curLayout);
+//    Log_Error("=====================curLayout = %d",dvrGuiLayout.curLayout);
     switch(dvrGuiLayout.curLayout)
     {
       case GUI_LAYOUT_SETUP_EXT:

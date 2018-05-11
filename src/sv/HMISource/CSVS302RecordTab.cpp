@@ -226,7 +226,7 @@ unsigned char *CSVS302RecordTab::HmiGetSvresFile(int index)
 
 int CSVS302RecordTab::SetDvrView(unsigned char pViewCmd)
 {
-    Log_Error("====================SetDvrView = %d",pViewCmd);
+//    Log_Error("====================SetDvrView = %d",pViewCmd);
 	if(pViewCmd == GUI_VIEW_INDEX_FRONT_EXT)
 	{
 		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_FRONT_SINGLE_VIEW);
