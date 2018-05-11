@@ -276,86 +276,85 @@ int CSVS302DvrBase::Init(int window_width, int window_height)
 }
 int CSVS302DvrBase::Update(Hmi_Message_T& hmiMsg)
 {
-    static DVR_GUI_LAYOUT_INST dvrGuiLayout;
-    static unsigned char preLayout = GUI_LAYOUT_NUM;
-    if(0 == Dvr_App_Get_GuiLayOut(&dvrGuiLayout))
+ //   static DVR_GUI_LAYOUT_INST dvrGuiLayout;
+    
+	DVR_GUI_LAYOUT_INST_EXT dvrGuiLayout;
+	CAvmRenderDataBase::GetInstance()->GetDvrData(&dvrGuiLayout);
+    
+    m_buttonStatus[S302_DVR_BASE_BKG] = BUTTON_OFF_IMAGE;
+    m_buttonStatus[S302_DVR_BASE_RET] = BUTTON_OFF_IMAGE;
+    m_buttonStatus[S302_DVR_BASE_THUMB_TAB] = BUTTON_OFF_IMAGE;
+    m_buttonStatus[S302_DVR_BASE_PLAYBACK_TAB] = BUTTON_OFF_IMAGE;
+    m_buttonStatus[S302_DVR_BASE_REC_TAB] = BUTTON_OFF_IMAGE;        
+    switch(dvrGuiLayout.curLayout)
     {
-        m_buttonStatus[S302_DVR_BASE_BKG] = BUTTON_OFF_IMAGE;
-        m_buttonStatus[S302_DVR_BASE_RET] = BUTTON_OFF_IMAGE;
-        m_buttonStatus[S302_DVR_BASE_THUMB_TAB] = BUTTON_OFF_IMAGE;
-        m_buttonStatus[S302_DVR_BASE_PLAYBACK_TAB] = BUTTON_OFF_IMAGE;
-        m_buttonStatus[S302_DVR_BASE_REC_TAB] = BUTTON_OFF_IMAGE;        
-        switch(dvrGuiLayout.curLayout)
-        {
-        case GUI_LAYOUT_SETUP:
-            break;
-        case GUI_LAYOUT_RECORD:
-            m_buttonStatus[S302_DVR_BASE_REC_TAB] = BUTTON_ON_IMAGE;
-            if(dvrGuiLayout.pTable)
-            {				
-                m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
-                m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
-                if(m_dvrRecordTab)
-                {
-                    m_dvrRecordTab->Update(m_hmiMsg);
-                }
+      case GUI_LAYOUT_SETUP_EXT:
+        break;
+      case GUI_LAYOUT_RECORD_EXT:
+        m_buttonStatus[S302_DVR_BASE_REC_TAB] = BUTTON_ON_IMAGE;
+        if(dvrGuiLayout.pTable)
+        {				
+//            m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
+//            m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
+            if(m_dvrRecordTab)
+            {
+                m_dvrRecordTab->Update(m_hmiMsg);
             }
-            m_dvrRecordTabVisibility = 1;
-            m_dvrPlaybackTabVisibility = 0;
-            m_dvrFileListVisibility = 0;
-            m_dvrPlayImageTabVisibility = 0;
-
-            break;
-        case GUI_LAYOUT_THUMB:
-            SetDvrStatus();
-            m_buttonStatus[S302_DVR_BASE_THUMB_TAB] = BUTTON_ON_IMAGE;
-            if(dvrGuiLayout.pTable)
-            {				
-                m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
-                m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
-
-                if(m_dvrFileListTab)
-                {
-                    m_dvrFileListTab->Update(m_hmiMsg);
-                }
-            }
-            m_dvrRecordTabVisibility = 0;
-            m_dvrPlaybackTabVisibility = 0;
-            m_dvrFileListVisibility = 1;
-            m_dvrPlayImageTabVisibility = 0;
-            
-            break;
-        case GUI_LAYOUT_PLAYBACK_VIDEO:
-            m_buttonStatus[S302_DVR_BASE_PLAYBACK_TAB] = BUTTON_ON_IMAGE;
-            if(dvrGuiLayout.pTable)
-            {				
-                m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
-                m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
-
-                if(m_dvrPlaybackTab)
-                {
-                    m_dvrPlaybackTab->Update(m_hmiMsg);
-                }
-            }
-            m_dvrRecordTabVisibility = 0;
-            m_dvrPlaybackTabVisibility = 1;
-            m_dvrFileListVisibility = 0;
-            m_dvrPlayImageTabVisibility = 0;
-            
-            break;
-        case GUI_LAYOUT_PLAYBACK_IMAGE:
-            break;
-        default:
-            m_dvrRecordTabVisibility = 0;
-            m_dvrPlaybackTabVisibility = 0;
-            m_dvrFileListVisibility = 0;
-            m_dvrPlayImageTabVisibility = 0;
-
-            break;
         }
-        preLayout = dvrGuiLayout.curLayout;
+        m_dvrRecordTabVisibility = 1;
+        m_dvrPlaybackTabVisibility = 0;
+        m_dvrFileListVisibility = 0;
+        m_dvrPlayImageTabVisibility = 0;
+
+        break;
+      case GUI_LAYOUT_THUMB_EXT:
+        //SetDvrStatus();
+        m_buttonStatus[S302_DVR_BASE_THUMB_TAB] = BUTTON_ON_IMAGE;
+        if(dvrGuiLayout.pTable)
+        {				
+//            m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
+//            m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
+
+            if(m_dvrFileListTab)
+            {
+                m_dvrFileListTab->Update(m_hmiMsg);
+            }
+        }
+        m_dvrRecordTabVisibility = 0;
+        m_dvrPlaybackTabVisibility = 0;
+        m_dvrFileListVisibility = 1;
+        m_dvrPlayImageTabVisibility = 0;
+        
+        break;
+      case GUI_LAYOUT_PLAYBACK_VIDEO_EXT:
+        m_buttonStatus[S302_DVR_BASE_PLAYBACK_TAB] = BUTTON_ON_IMAGE;
+        if(dvrGuiLayout.pTable)
+        {				
+//            m_hmiMsg.dvrTabMsg.tabMsgTable = (void *)dvrGuiLayout.pTable;
+//            m_hmiMsg.dvrTabMsg.objNum = dvrGuiLayout.ObjNum;
+
+            if(m_dvrPlaybackTab)
+            {
+                m_dvrPlaybackTab->Update(m_hmiMsg);
+            }
+        }
+        m_dvrRecordTabVisibility = 0;
+        m_dvrPlaybackTabVisibility = 1;
+        m_dvrFileListVisibility = 0;
+        m_dvrPlayImageTabVisibility = 0;
+        
+        break;
+      case GUI_LAYOUT_PLAYBACK_IMAGE_EXT:
+        break;
+      default:
+        m_dvrRecordTabVisibility = 0;
+        m_dvrPlaybackTabVisibility = 0;
+        m_dvrFileListVisibility = 0;
+        m_dvrPlayImageTabVisibility = 0;
+
+        break;
     }
-	
+  
     RefreshHmi();
     
     MainMenuDataT mainMenuData;

@@ -66,7 +66,7 @@ int CSVS302RecordTab::Init(int window_width, int window_height)
 
 int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
 {
-    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_LEFT_SINGLE_VIEW);
+//    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_LEFT_SINGLE_VIEW);
     
     RefreshHmi();
     return S302_MAIN_HMI_NORMAL;
