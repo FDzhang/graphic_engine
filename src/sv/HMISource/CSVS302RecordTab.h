@@ -61,6 +61,16 @@ typedef enum S302RecordTabButtonIndexTag {
     S302_RECORD_INDEX_NUM,
 } S302RecordTabButtonIndexT;
 
+enum
+{
+    S302_TIME_TEXT = 0,
+    S302_GPS_TEXT,
+    S302_SPEED_TEXT,
+    S302_TEXT_NUM,
+};
+
+
+
 class CSVS302RecordTab : public ISVHmi
 {
   public:
@@ -75,7 +85,7 @@ class CSVS302RecordTab : public ISVHmi
     int RefreshHmi();
 	int SetDvrView(unsigned char pViewCmd);
     int SetStateBarVal(void *ptr);
-
+    int InitText();
   private:
     unsigned char m_iconStatus[S302_RECORD_STATUS_NUM];
 
@@ -96,9 +106,9 @@ class CSVS302RecordTab : public ISVHmi
 
     int m_screenWidth;
     int m_screenHeight;
-
-    HmiTextEdit *m_speed_value_text;
-    HmiTextEditDataT m_speed_value_text_data;
+    
+	HmiTextEditDataT m_textEditData[S302_TEXT_NUM];
+	HmiTextEdit*     m_textEdit[S302_TEXT_NUM];
 
   public:
 };

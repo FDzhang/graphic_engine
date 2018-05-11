@@ -23,11 +23,11 @@ CSVS302RecordTab::~CSVS302RecordTab()
 
 int CSVS302RecordTab::SetHmiParams()
 {
-    int offset = 80;
+    int offset = 0;
     int index = S302_RECORD_INDEX_BG_IMAGE;
     m_baseButtonData[index].pos[0] = offset;
     m_baseButtonData[index].pos[1] = 0;
-    m_baseButtonData[index].width = m_screenWidth - offset;
+    m_baseButtonData[index].width = m_screenWidth;
     m_baseButtonData[index].height = 60;
     m_baseButtonData[index].delegate_func = NULL;
     m_baseButtonData[index].trigger = NULL;
@@ -38,8 +38,8 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
 
     index = S302_RECORD_INDEX_RECPOINT;
-    m_baseButtonData[index].pos[0] = offset + 60;
-    m_baseButtonData[index].pos[1] = 20;
+    m_baseButtonData[index].pos[0] = offset + 34;
+    m_baseButtonData[index].pos[1] = 26;
     m_baseButtonData[index].width = 108;
     m_baseButtonData[index].height = 26;
     m_baseButtonData[index].delegate_func = NULL;
@@ -51,6 +51,7 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
     
     HmiInitSTBar();
+    InitText();
     return S302_MAIN_HMI_NORMAL;
 }
 
@@ -88,6 +89,7 @@ int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
                 {
                     SetStateBarVal(fileListTabMsg[i].uStatus.ptr);
                 }
+                break;
               default:
                 break;
             }
@@ -105,6 +107,10 @@ int CSVS302RecordTab::RefreshHmi()
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 		m_baseButton[i]->Update();
 	}
+    for(int i = S302_TIME_TEXT; i < S302_TEXT_NUM; i++)
+    {
+        m_textEdit[i]->Update(m_textEditData[i].textContent[0]);
+    }
     return S302_MAIN_HMI_NORMAL;
 }
 
@@ -115,6 +121,12 @@ int CSVS302RecordTab::SetElementsVisibility(unsigned char pFlag)
         m_buttonVisibility[i] = pFlag;
         m_baseButton[i]->SetVisibility(pFlag);
     }
+
+    for (int i = S302_TIME_TEXT; i < S302_TEXT_NUM; i++)
+    {
+        m_textEdit[i]->SetVisibility(pFlag);
+    }
+    
     return S302_MAIN_HMI_NORMAL;
 }
 
@@ -132,8 +144,8 @@ int CSVS302RecordTab::HmiInitSTBar()
 {
     int svresIndex = 2;
     int index = S302_RECORD_INDEX_STBAR_BK;
-    m_baseButtonData[index].pos[0] = 750;
-    m_baseButtonData[index].pos[1] = 20.0;
+    m_baseButtonData[index].pos[0] = 550;
+    m_baseButtonData[index].pos[1] = 22.0;
     m_baseButtonData[index].width = 300.0;
     m_baseButtonData[index].height = 40.0;
     m_baseButtonData[index].delegate_func = NULL;
@@ -145,7 +157,7 @@ int CSVS302RecordTab::HmiInitSTBar()
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
 
     index = S302_RECORD_INDEX_STABR_SPEED;
-    m_baseButtonData[index].pos[0] = 880.0;
+    m_baseButtonData[index].pos[0] = 680.0;
     m_baseButtonData[index].pos[1] = 22.0;
     m_baseButtonData[index].width = 108;
     m_baseButtonData[index].height = 36;
@@ -160,7 +172,7 @@ int CSVS302RecordTab::HmiInitSTBar()
     
     for (int index = S302_RECORD_INDEX_STABR_GEAR; index <= S302_RECORD_INDEX_STABR_ENGINE; index++)
     {
-        m_baseButtonData[index].pos[0] = 990.0 + (index - S302_RECORD_INDEX_STABR_GEAR) * 40.0;
+        m_baseButtonData[index].pos[0] = 790.0 + (index - S302_RECORD_INDEX_STABR_GEAR) * 40.0;
         m_baseButtonData[index].pos[1] = 22.0;
         m_baseButtonData[index].width = 36;
         m_baseButtonData[index].height = 36;
@@ -173,6 +185,7 @@ int CSVS302RecordTab::HmiInitSTBar()
         m_baseButtonData[index].icon_file_name[1] = m_hmiSvresFileName[svresIndex++];
         m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
     }
+    
 }
 
 int CSVS302RecordTab::HmiInitLayer()
@@ -181,6 +194,12 @@ int CSVS302RecordTab::HmiInitLayer()
     {
         m_baseButton[index] = new HMIButton(&(m_baseButtonData[index]), m_uiNode);
         m_baseButton[index]->SetVisibility(0);
+    }
+    
+    for (int index = S302_TIME_TEXT; index < S302_TEXT_NUM; index++)
+    {
+        m_textEdit[index] = new HmiTextEdit(&(m_textEditData[index]), m_uiNode);
+        m_textEdit[index]->SetVisibility(0);
     }
 }
 
@@ -198,29 +217,29 @@ int CSVS302RecordTab::HmiInitSvresList()
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_speed_g.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_gear_r.dds", XR_RES);
-    m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_gear_w.dds", XR_RES);
+    m_hmiSvresFileName[index] = new char[50];
+    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_gear_r.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_brake_w.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_brake_g.dds", XR_RES);
+    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_brake_r.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_buckle_w.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_buckle_g.dds", XR_RES);
+    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_buckle_r.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_turnleft_w.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_turnleft_g.dds", XR_RES);
+    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_turnleft_r.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_turnright_w.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_turnright_g.dds", XR_RES);
+    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_turnright_r.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_engine_w.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_engine_g.dds", XR_RES);
+    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_engine_r.dds", XR_RES);
     m_currentSvresNum = index;
 }
 
@@ -261,6 +280,80 @@ int CSVS302RecordTab::SetStateBarVal(void *ptr)
     GUI_OBJ_REC_CAN_MSG_EXT *recCanMsg = NULL;
     recCanMsg = (GUI_OBJ_REC_CAN_MSG_EXT*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
+
+    
+    m_buttonStatus[S302_RECORD_INDEX_STABR_GEAR] = recCanMsg->Gear;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_BRAKE] = recCanMsg->Brake;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_TURNLEFT] = recCanMsg->TurnLeft;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_TURNRIGHT] = recCanMsg->TurnRight;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_ENGINE] = recCanMsg->Engine;
+
+    sprintf(m_textEditData[S302_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
+
+    sprintf(m_textEditData[S302_GPS_TEXT].textContent[0],"N %03d.%02d'%02d\"  E %03d.%02d'%02d\"",recCanMsg->GpsLng / 10000,(recCanMsg->GpsLng % 10000) / 100,recCanMsg->GpsLng % 100,recCanMsg->GpsLat / 10000,(recCanMsg->GpsLat % 10000) / 100,recCanMsg->GpsLat % 100);
+    
+    sprintf(m_textEditData[S302_SPEED_TEXT].textContent[0],"%03d",recCanMsg->Speed);
+    return HMI_SUCCESS;
+}
+
+int CSVS302RecordTab::InitText()
+{
+    int i = 0;
+
+    i = S302_TIME_TEXT;
+    m_textEditData[i].pos[0] = 170;
+    m_textEditData[i].pos[1] = 26;
+    m_textEditData[i].width = 25;
+	m_textEditData[i].font_size = 5.0;
+	m_textEditData[i].line_num = 1;
+	m_textEditData[i].visibilityStatus = 1;
+	m_textEditData[i].targetIndex = -1;
+	m_textEditData[i].insertFlag = InsertFlag_Default;
+	m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
+	m_textEditData[i].trigger = NULL;
+	m_textEditData[i].textColor[0] = 0.9;
+	m_textEditData[i].textColor[1] = 0.9;
+	m_textEditData[i].textColor[2] = 0.9;
+	m_textEditData[i].textContent[0] = new char[100];
+	char* ptext0 = "2018-05-11  18:00:00";
+	sprintf(m_textEditData[i].textContent[0],"%s", ptext0);
+
+    i = S302_GPS_TEXT;
+    m_textEditData[i].pos[0] = 430;
+    m_textEditData[i].pos[1] = 26;
+    m_textEditData[i].width = 25;
+	m_textEditData[i].font_size = 5.0;
+	m_textEditData[i].line_num = 1;
+	m_textEditData[i].visibilityStatus = 1;
+	m_textEditData[i].targetIndex = -1;
+	m_textEditData[i].insertFlag = InsertFlag_Default;
+	m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
+	m_textEditData[i].trigger = NULL;
+	m_textEditData[i].textColor[0] = 0.9;
+	m_textEditData[i].textColor[1] = 0.9;
+	m_textEditData[i].textColor[2] = 0.9;
+	m_textEditData[i].textContent[0] = new char[100];
+	char* ptext1 = "N 00.00'00\"  E 00.00'00\"";
+	sprintf(m_textEditData[i].textContent[0],"%s", ptext1);
+
+    i = S302_SPEED_TEXT;
+    m_textEditData[i].pos[0] = 690;
+    m_textEditData[i].pos[1] = 26;
+    m_textEditData[i].width = 25;
+	m_textEditData[i].font_size = 5.0;
+	m_textEditData[i].line_num = 1;
+	m_textEditData[i].visibilityStatus = 1;
+	m_textEditData[i].targetIndex = -1;
+	m_textEditData[i].insertFlag = InsertFlag_Default;
+	m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
+	m_textEditData[i].trigger = NULL;
+	m_textEditData[i].textColor[0] = 0.9;
+	m_textEditData[i].textColor[1] = 0.9;
+	m_textEditData[i].textColor[2] = 0.9;
+	m_textEditData[i].textContent[0] = new char[100];
+	char* ptext2 = "025";
+	sprintf(m_textEditData[i].textContent[0],"%s", ptext2);
     return HMI_SUCCESS;
 }
 

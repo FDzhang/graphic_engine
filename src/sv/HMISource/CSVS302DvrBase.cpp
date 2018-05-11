@@ -210,6 +210,13 @@ int CSVS302DvrBase::SetHmiParams()
 		m_baseButton[i]->SetVisibility(0);
 	}
 
+	return HMI_SUCCESS;
+}
+int CSVS302DvrBase::Init(int window_width, int window_height)
+{
+	m_windowWidth = window_width;
+	m_windowHeight = window_height;
+
 	if(m_dvrRecordTab)
 	{
 		m_dvrRecordTab->Init(m_windowWidth, m_windowHeight);
@@ -226,22 +233,16 @@ int CSVS302DvrBase::SetHmiParams()
 	{
 		m_dvrPlayImageTab->Init(m_windowWidth, m_windowHeight);
 	}
-	return HMI_SUCCESS;
-}
-int CSVS302DvrBase::Init(int window_width, int window_height)
-{
-	m_windowWidth = window_width;
-	m_windowHeight = window_height;
-
+    
 	float radio = 227.0/1280.0;
     
     int i = 0;
 
     i = S302_DVR_BASE_BKG;
 	m_buttonPos[i][BUTTON_POS_X] = 0.0;
-	m_buttonPos[i][BUTTON_POS_Y] = 0.0;
+	m_buttonPos[i][BUTTON_POS_Y] = 80.0;
 	m_buttonSize[i][BUTTON_SIZE_WIDTH] = 80;
-	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = m_windowHeight;
+	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = 300;
 
     i = S302_DVR_BASE_RET;
 	m_buttonPos[i][BUTTON_POS_X] = 23.0;
@@ -276,17 +277,24 @@ int CSVS302DvrBase::Init(int window_width, int window_height)
 }
 int CSVS302DvrBase::Update(Hmi_Message_T& hmiMsg)
 {
- //   static DVR_GUI_LAYOUT_INST dvrGuiLayout;
+    //模拟DVRdata
+    //SetDvrStatus();
     
 	DVR_GUI_LAYOUT_INST_EXT dvrGuiLayout;
 	CAvmRenderDataBase::GetInstance()->GetDvrData(&dvrGuiLayout);
-    
+
+#if 0    
+    DVR_GUI_LAYOUT_INST dvrGuiLayout0;
+    if(0 == Dvr_App_Get_GuiLayOut(&dvrGuiLayout0)) dvrGuiLayout.curLayout = (DVR_GUI_LAYOUT_TYPE_EXT)dvrGuiLayout0.curLayout;
+    CAvmRenderDataBase::GetInstance()->SetDvrData(&dvrGuiLayout);
+#endif
+
     m_buttonStatus[S302_DVR_BASE_BKG] = BUTTON_OFF_IMAGE;
     m_buttonStatus[S302_DVR_BASE_RET] = BUTTON_OFF_IMAGE;
     m_buttonStatus[S302_DVR_BASE_THUMB_TAB] = BUTTON_OFF_IMAGE;
     m_buttonStatus[S302_DVR_BASE_PLAYBACK_TAB] = BUTTON_OFF_IMAGE;
     m_buttonStatus[S302_DVR_BASE_REC_TAB] = BUTTON_OFF_IMAGE;
-
+    
 //    Log_Error("=====================curLayout = %d",dvrGuiLayout.curLayout);
     switch(dvrGuiLayout.curLayout)
     {
@@ -310,7 +318,7 @@ int CSVS302DvrBase::Update(Hmi_Message_T& hmiMsg)
 
         break;
       case GUI_LAYOUT_THUMB_EXT:
-        //SetDvrStatus();
+        
         m_buttonStatus[S302_DVR_BASE_THUMB_TAB] = BUTTON_ON_IMAGE;
         if(dvrGuiLayout.pTable)
         {				
@@ -449,9 +457,26 @@ int CSVS302DvrBase::SetDvrStatus()
     tmpInst.item[7] = tmp;
 
     GUI_OBJ_THUMB_PAGENUM_INST_EXT tmpPageInst;
-
     tmpPageInst.nCurPage = 3;
     tmpPageInst.nTotalPage = 5;
+
+    GUI_OBJ_REC_CAN_MSG_EXT    tmpCanMsg;
+    tmpCanMsg.Brake = 1;
+    tmpCanMsg.Buckle = 0;
+    tmpCanMsg.Engine = 1;
+    tmpCanMsg.Gear = 1;
+    tmpCanMsg.TurnLeft = 1;
+    tmpCanMsg.TurnRight = 0;
+
+    tmpCanMsg.GpsLat = 1290445;
+    tmpCanMsg.GpsLng = 691204;    
+    
+    tmpCanMsg.TimeYear = 2018;
+    tmpCanMsg.TimeMon = 5;
+    tmpCanMsg.TimeDay = 11;
+    tmpCanMsg.TimeHour = 21;
+    tmpCanMsg.TimeMin = 5;
+    tmpCanMsg.TimeSec = 30;
 
     DVR_GRAPHIC_UIOBJ_EXT table[] = {
         {GUI_OBJ_ID_THUMB_FRAME_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
@@ -461,11 +486,13 @@ int CSVS302DvrBase::SetDvrStatus()
         {GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
         {GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
         {GUI_OBJ_ID_THUMB_PAGE_NUM_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpPageInst},
+        {GUI_OBJ_ID_REC_VIEW_INDEX_EXT,"asdfasdg",1,1,GUI_OBJ_STATUS_TYPE_U32_EXT,GUI_VIEW_INDEX_LEFT_EXT},
+        {GUI_OBJ_ID_REC_CAN_MSG_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpCanMsg},
     };
 
     DVR_GUI_LAYOUT_INST_EXT dvrData;
     dvrData.curLayout = GUI_LAYOUT_THUMB_EXT;
-    dvrData.ObjNum = 7;
+    dvrData.ObjNum = 9;
     for(int i = 0; i < dvrData.ObjNum; i++)
     {
     dvrData.pTable = table;

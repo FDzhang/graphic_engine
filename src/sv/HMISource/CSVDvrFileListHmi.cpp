@@ -58,18 +58,18 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	m_imageGridListData.renderUiNode = m_uiNode;
 	m_imageGridListData.withTextFlag = 1;
 
-    float offset = 80;
+    float offset = 0;
 	switch(currentVehicleTypeId)
 	{
 		case CHANGAN_S302:
 			m_imageGridListData.columnNums = 4;
 			m_imageGridListData.rowNums = 2;
-			m_imageGridListData.horizontalSpacing = 50.0;  //100
+			m_imageGridListData.horizontalSpacing = 75.0;  //100
 			m_imageGridListData.verticalSpacing = 136.0;  //159
 			m_imageGridListData.itemWidth = 192.0;
 			m_imageGridListData.itemHeight = 112.0;
             m_imageGridListData.posX = offset + 0.0;
-			m_imageGridListData.posY = 40.0;
+			m_imageGridListData.posY = 0.0;
 			m_imageGridListData.gridListWidth = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * m_imageGridListData.columnNums + m_imageGridListData.horizontalSpacing ;
 			m_imageGridListData.gridListHeight = 700.0;
 			m_imageGridListData.gridListBkgImg = "default";			
@@ -132,7 +132,7 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	}
 
     m_pageNumData.pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 12;
-    m_pageNumData.pos[1] = 120;
+    m_pageNumData.pos[1] = 48;
     m_pageNumData.width = 25;
 	m_pageNumData.font_size = 5.0;
 	m_pageNumData.line_num = 1;
@@ -146,7 +146,7 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	m_pageNumData.textColor[2] = 0.625;
 	m_pageNumData.textContent[0] = new char[100];
 	char* ptext0 = "1234";
-	sprintf(m_pageNumData.textContent[0],"%s", ptext0);    
+	sprintf(m_pageNumData.textContent[0],"%s", ptext0);
 
     int i = 0;
 
