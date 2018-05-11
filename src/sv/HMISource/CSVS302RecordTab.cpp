@@ -83,6 +83,11 @@ int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
               case  GUI_OBJ_ID_REC_VIEW_INDEX_EXT:
                 SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
                 break;
+              case  GUI_OBJ_ID_REC_CAN_MSG_EXT:
+                if(fileListTabMsg[i].status_type == GUI_OBJ_STATUS_TYPE_POINTER_EXT && fileListTabMsg[i].uStatus.ptr)
+                {
+                    SetStateBarVal(fileListTabMsg[i].uStatus.ptr);
+                }
               default:
                 break;
             }
@@ -249,5 +254,13 @@ int CSVS302RecordTab::SetDvrView(unsigned char pViewCmd)
 	}
 
 	return HMI_SUCCESS;
+}
+
+int CSVS302RecordTab::SetStateBarVal(void *ptr)
+{
+    GUI_OBJ_REC_CAN_MSG_EXT *recCanMsg = NULL;
+    recCanMsg = (GUI_OBJ_REC_CAN_MSG_EXT*)ptr;
+    if(recCanMsg == NULL) return HMI_SUCCESS;
+    return HMI_SUCCESS;
 }
 

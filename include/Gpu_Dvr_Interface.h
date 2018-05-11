@@ -47,6 +47,26 @@ typedef struct
     unsigned char nTotalPage;
 }GUI_OBJ_THUMB_PAGENUM_INST_EXT;
 
+typedef struct
+{
+    unsigned int TimeYear;
+    unsigned int TimeMon;
+    unsigned int TimeDay;
+    unsigned int TimeHour;
+    unsigned int TimeMin;
+    unsigned int TimeSec;
+    unsigned int GpsLng;
+    unsigned int GpsLat;
+    unsigned int Speed;
+    unsigned int Gear;
+    unsigned int Brake;  
+    unsigned int Buckle;
+    unsigned int TurnLeft;
+    unsigned int TurnRight;
+    unsigned int Engine;
+}GUI_OBJ_REC_CAN_MSG_EXT;
+
+
 typedef enum
 {
 	GUI_VIEW_INDEX_FRONT_EXT,
@@ -69,6 +89,7 @@ typedef enum
 	GUI_OBJ_ID_REC_STATE_EXT,
 	GUI_OBJ_ID_REC_EVENT_RECORD_STATE_EXT,
 	GUI_OBJ_ID_REC_VIEW_INDEX_EXT,
+	GUI_OBJ_ID_REC_CAN_MSG_EXT,
 
 	/*thumbnail mode*/
 	GUI_OBJ_ID_THUMB_TAB_EXT,
@@ -86,6 +107,7 @@ typedef enum
 	GUI_OBJ_ID_PB_VIEW_INDEX_EXT,
 	GUI_OBJ_ID_PB_DC_SWITCH_EXT,
     GUI_OBJ_ID_PB_MODE_EXT,
+    GUI_OBJ_ID_PB_CAN_MSG_EXT,
 
 	/*setup*/
 	GUI_OBJ_ID_SETUP_SPLIT_TIME_EXT,
