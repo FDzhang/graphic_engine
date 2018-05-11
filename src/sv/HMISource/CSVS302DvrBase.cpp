@@ -240,7 +240,7 @@ int CSVS302DvrBase::Init(int window_width, int window_height)
     i = S302_DVR_BASE_BKG;
 	m_buttonPos[i][BUTTON_POS_X] = 0.0;
 	m_buttonPos[i][BUTTON_POS_Y] = 0.0;
-	m_buttonSize[i][BUTTON_SIZE_WIDTH] = 200;
+	m_buttonSize[i][BUTTON_SIZE_WIDTH] = 80;
 	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = m_windowHeight;
 
     i = S302_DVR_BASE_RET;

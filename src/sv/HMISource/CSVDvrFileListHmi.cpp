@@ -58,7 +58,7 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	m_imageGridListData.renderUiNode = m_uiNode;
 	m_imageGridListData.withTextFlag = 1;
 
-    float offset = 200;
+    float offset = 80;
 	switch(currentVehicleTypeId)
 	{
 		case CHANGAN_S302:
@@ -330,39 +330,13 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 				if(fileListTabMsg[i].Id == GUI_OBJ_ID_REC_VIEW_INDEX_EXT
 					|| fileListTabMsg[i].Id == GUI_OBJ_ID_PB_VIEW_INDEX_EXT)
 				{
-					SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
+//					SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
 				}
 			}
 		}
 	}
 
 	RefreshHmi();
-	return HMI_SUCCESS;
-}
-
-int CSVDvrFileListHmi::SetDvrView(unsigned char pViewCmd)
-{
-	if(pViewCmd == GUI_VIEW_INDEX_FRONT_EXT)
-	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_FRONT_SINGLE_VIEW);
-	}
-	else if(pViewCmd == GUI_VIEW_INDEX_REAR_EXT)
-	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_REAR_SINGLE_VIEW);
-	}
-	else if(pViewCmd == GUI_VIEW_INDEX_LEFT_EXT)
-	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_LEFT_SINGLE_VIEW);
-	}
-	else if(pViewCmd == GUI_VIEW_INDEX_RIGHT_EXT)
-	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_RIGHT_SINGLE_VIEW);
-	}
-	else if(pViewCmd == GUI_VIEW_INDEX_MATTS_EXT)
-	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(MATTS_VIEW);
-	}
-
 	return HMI_SUCCESS;
 }
 

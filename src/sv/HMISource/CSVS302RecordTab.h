@@ -73,6 +73,7 @@ class CSVS302RecordTab : public ISVHmi
   private:
     int SetHmiParams();
     int RefreshHmi();
+	int SetDvrView(unsigned char pViewCmd);
 
   private:
     unsigned char m_iconStatus[S302_RECORD_STATUS_NUM];
