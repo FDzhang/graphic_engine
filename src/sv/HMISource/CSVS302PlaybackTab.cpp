@@ -1,30 +1,30 @@
-#include "CSVS302RecordTab.h"
+#include "CSVS302PlaybackTab.h"
 #include "gpu_log.h"
 
-CSVS302RecordTab::CSVS302RecordTab(IUINode* pUiNode, int pUiNodeId)
+CSVS302PlaybackTab::CSVS302PlaybackTab(IUINode* pUiNode, int pUiNodeId)
 {
     m_currentSvresNum = 0;
-	memset(m_buttonStatus, 0, S302_RECORD_INDEX_NUM * sizeof(unsigned char));
-	memset(m_buttonVisibility, 0, S302_RECORD_INDEX_NUM * sizeof(unsigned char));   
+	memset(m_buttonStatus, 0, S302_PLAYBACK_INDEX_NUM * sizeof(unsigned char));
+	memset(m_buttonVisibility, 0, S302_PLAYBACK_INDEX_NUM * sizeof(unsigned char));   
 }
 
-CSVS302RecordTab::~CSVS302RecordTab()
+CSVS302PlaybackTab::~CSVS302PlaybackTab()
 {
     for (int i = 0; i < m_currentSvresNum; i++)
     {
         SAFE_DELETE(m_hmiSvresFileName[i]);
     }
-    SAFE_DELETE(m_baseButton[S302_RECORD_INDEX_BG_IMAGE]);
-    for (int i = S302_RECORD_INDEX_STBAR_BK; i <= S302_RECORD_INDEX_STABR_ENGINE; i++)
+    SAFE_DELETE(m_baseButton[S302_PLAYBACK_INDEX_BG_IMAGE]);
+    for (int i = S302_PLAYBACK_INDEX_STBAR_BK; i <= S302_PLAYBACK_INDEX_STABR_ENGINE; i++)
     {
         SAFE_DELETE(m_baseButton[i]);
     }
 }
 
-int CSVS302RecordTab::SetHmiParams()
+int CSVS302PlaybackTab::SetHmiParams()
 {
     int offset = 0;
-    int index = S302_RECORD_INDEX_BG_IMAGE;
+    int index = S302_PLAYBACK_INDEX_BG_IMAGE;
     m_baseButtonData[index].pos[0] = offset;
     m_baseButtonData[index].pos[1] = 0;
     m_baseButtonData[index].width = m_screenWidth;
@@ -37,7 +37,7 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[0];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
 
-    index = S302_RECORD_INDEX_RECPOINT;
+    index = S302_PLAYBACK_INDEX_RECPOINT;
     m_baseButtonData[index].pos[0] = offset + 34;
     m_baseButtonData[index].pos[1] = 26;
     m_baseButtonData[index].width = 108;
@@ -55,7 +55,7 @@ int CSVS302RecordTab::SetHmiParams()
     return S302_MAIN_HMI_NORMAL;
 }
 
-int CSVS302RecordTab::Init(int window_width, int window_height)
+int CSVS302PlaybackTab::Init(int window_width, int window_height)
 {
     m_screenWidth = window_width;
     m_screenHeight = window_height;
@@ -65,7 +65,7 @@ int CSVS302RecordTab::Init(int window_width, int window_height)
     return S302_MAIN_HMI_NORMAL;
 }
 
-int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
+int CSVS302PlaybackTab::Update(Hmi_Message_T &hmiMsg)
 {
 //    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_LEFT_SINGLE_VIEW);
     DVR_GUI_LAYOUT_INST_EXT dvrData;
@@ -75,16 +75,16 @@ int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
 
 	fileListTabMsg = dvrData.pTable;
     
-    if(dvrData.curLayout == GUI_LAYOUT_RECORD_EXT)
+    if(dvrData.curLayout == GUI_LAYOUT_PLAYBACK_VIDEO_EXT)
     {
         for(int i = 0; i < dvrData.ObjNum; i++)
         {
             switch(fileListTabMsg[i].Id)
             {
-              case  GUI_OBJ_ID_REC_VIEW_INDEX_EXT:
+              case  GUI_OBJ_ID_PB_VIEW_INDEX_EXT:
                 SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
                 break;
-              case  GUI_OBJ_ID_REC_CAN_MSG_EXT:
+              case  GUI_OBJ_ID_PB_CAN_MSG_EXT:
                 if(fileListTabMsg[i].status_type == GUI_OBJ_STATUS_TYPE_POINTER_EXT && fileListTabMsg[i].uStatus.ptr)
                 {
                     SetStateBarVal(fileListTabMsg[i].uStatus.ptr);
@@ -99,30 +99,30 @@ int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
     return S302_MAIN_HMI_NORMAL;
 }
 
-int CSVS302RecordTab::RefreshHmi()
+int CSVS302PlaybackTab::RefreshHmi()
 {
-	for(int i = S302_RECORD_INDEX_BG_IMAGE; i < S302_RECORD_INDEX_NUM; i++)
+	for(int i = S302_PLAYBACK_INDEX_BG_IMAGE; i < S302_PLAYBACK_INDEX_NUM; i++)
 	{
 		m_baseButton[i]->SetShowIconNum(m_buttonStatus[i]);
 		m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 		m_baseButton[i]->Update();
 	}
-    for(int i = S302_REC_TIME_TEXT; i < S302_REC_TEXT_NUM; i++)
+    for(int i = S302_TIME_TEXT; i < S302_TEXT_NUM; i++)
     {
         m_textEdit[i]->Update(m_textEditData[i].textContent[0]);
     }
     return S302_MAIN_HMI_NORMAL;
 }
 
-int CSVS302RecordTab::SetElementsVisibility(unsigned char pFlag)
+int CSVS302PlaybackTab::SetElementsVisibility(unsigned char pFlag)
 {
-    for (int i = S302_RECORD_INDEX_BG_IMAGE; i <= S302_RECORD_INDEX_STABR_ENGINE; i++)
+    for (int i = S302_PLAYBACK_INDEX_BG_IMAGE; i <= S302_PLAYBACK_INDEX_STABR_ENGINE; i++)
     {
         m_buttonVisibility[i] = pFlag;
         m_baseButton[i]->SetVisibility(pFlag);
     }
 
-    for (int i = S302_REC_TIME_TEXT; i < S302_REC_TEXT_NUM; i++)
+    for (int i = S302_TIME_TEXT; i < S302_TEXT_NUM; i++)
     {
         m_textEdit[i]->SetVisibility(pFlag);
     }
@@ -130,20 +130,20 @@ int CSVS302RecordTab::SetElementsVisibility(unsigned char pFlag)
     return S302_MAIN_HMI_NORMAL;
 }
 
-int CSVS302RecordTab::ReturnHmiMsg(Hmi_Message_T *hmi_msg)
+int CSVS302PlaybackTab::ReturnHmiMsg(Hmi_Message_T *hmi_msg)
 {
     return S302_MAIN_HMI_NORMAL;
 }
 
-int CSVS302RecordTab::DestroyHmiElems()
+int CSVS302PlaybackTab::DestroyHmiElems()
 {
     return S302_MAIN_HMI_NORMAL;
 }
 
-int CSVS302RecordTab::HmiInitSTBar()
+int CSVS302PlaybackTab::HmiInitSTBar()
 {
     int svresIndex = 2;
-    int index = S302_RECORD_INDEX_STBAR_BK;
+    int index = S302_PLAYBACK_INDEX_STBAR_BK;
     m_baseButtonData[index].pos[0] = 550;
     m_baseButtonData[index].pos[1] = 22.0;
     m_baseButtonData[index].width = 300.0;
@@ -156,7 +156,7 @@ int CSVS302RecordTab::HmiInitSTBar()
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[svresIndex++];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
 
-    index = S302_RECORD_INDEX_STABR_SPEED;
+    index = S302_PLAYBACK_INDEX_STABR_SPEED;
     m_baseButtonData[index].pos[0] = 680.0;
     m_baseButtonData[index].pos[1] = 22.0;
     m_baseButtonData[index].width = 108;
@@ -170,9 +170,9 @@ int CSVS302RecordTab::HmiInitSTBar()
     m_baseButtonData[index].icon_file_name[1] = m_hmiSvresFileName[svresIndex++];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;    
     
-    for (int index = S302_RECORD_INDEX_STABR_GEAR; index <= S302_RECORD_INDEX_STABR_ENGINE; index++)
+    for (int index = S302_PLAYBACK_INDEX_STABR_GEAR; index <= S302_PLAYBACK_INDEX_STABR_ENGINE; index++)
     {
-        m_baseButtonData[index].pos[0] = 790.0 + (index - S302_RECORD_INDEX_STABR_GEAR) * 40.0;
+        m_baseButtonData[index].pos[0] = 790.0 + (index - S302_PLAYBACK_INDEX_STABR_GEAR) * 40.0;
         m_baseButtonData[index].pos[1] = 22.0;
         m_baseButtonData[index].width = 36;
         m_baseButtonData[index].height = 36;
@@ -188,22 +188,22 @@ int CSVS302RecordTab::HmiInitSTBar()
     
 }
 
-int CSVS302RecordTab::HmiInitLayer()
+int CSVS302PlaybackTab::HmiInitLayer()
 {  
-    for (int index = S302_RECORD_INDEX_BG_IMAGE; index <= S302_RECORD_INDEX_STABR_ENGINE; index++)
+    for (int index = S302_PLAYBACK_INDEX_BG_IMAGE; index <= S302_PLAYBACK_INDEX_STABR_ENGINE; index++)
     {
         m_baseButton[index] = new HMIButton(&(m_baseButtonData[index]), m_uiNode);
         m_baseButton[index]->SetVisibility(0);
     }
     
-    for (int index = S302_REC_TIME_TEXT; index < S302_REC_TEXT_NUM; index++)
+    for (int index = S302_TIME_TEXT; index < S302_TEXT_NUM; index++)
     {
         m_textEdit[index] = new HmiTextEdit(&(m_textEditData[index]), m_uiNode);
         m_textEdit[index]->SetVisibility(0);
     }
 }
 
-int CSVS302RecordTab::HmiInitSvresList()
+int CSVS302PlaybackTab::HmiInitSvresList()
 {
     int index = 0;
     m_hmiSvresFileName[index] = new char[50];
@@ -243,12 +243,12 @@ int CSVS302RecordTab::HmiInitSvresList()
     m_currentSvresNum = index;
 }
 
-unsigned char *CSVS302RecordTab::HmiGetSvresFile(int index)
+unsigned char *CSVS302PlaybackTab::HmiGetSvresFile(int index)
 {
     return m_hmiSvresFileName[index];
 }
 
-int CSVS302RecordTab::SetDvrView(unsigned char pViewCmd)
+int CSVS302PlaybackTab::SetDvrView(unsigned char pViewCmd)
 {
 //    Log_Error("====================SetDvrView = %d",pViewCmd);
 	if(pViewCmd == GUI_VIEW_INDEX_FRONT_EXT)
@@ -275,33 +275,33 @@ int CSVS302RecordTab::SetDvrView(unsigned char pViewCmd)
 	return HMI_SUCCESS;
 }
 
-int CSVS302RecordTab::SetStateBarVal(void *ptr)
+int CSVS302PlaybackTab::SetStateBarVal(void *ptr)
 {
     GUI_OBJ_REC_CAN_MSG_EXT *recCanMsg = NULL;
     recCanMsg = (GUI_OBJ_REC_CAN_MSG_EXT*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
 
     
-    m_buttonStatus[S302_RECORD_INDEX_STABR_GEAR] = recCanMsg->Gear;
-    m_buttonStatus[S302_RECORD_INDEX_STABR_BRAKE] = recCanMsg->Brake;
-    m_buttonStatus[S302_RECORD_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
-    m_buttonStatus[S302_RECORD_INDEX_STABR_TURNLEFT] = recCanMsg->TurnLeft;
-    m_buttonStatus[S302_RECORD_INDEX_STABR_TURNRIGHT] = recCanMsg->TurnRight;
-    m_buttonStatus[S302_RECORD_INDEX_STABR_ENGINE] = recCanMsg->Engine;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_GEAR] = recCanMsg->Gear;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BRAKE] = recCanMsg->Brake;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNLEFT] = recCanMsg->TurnLeft;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNRIGHT] = recCanMsg->TurnRight;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_ENGINE] = recCanMsg->Engine;
 
-    sprintf(m_textEditData[S302_REC_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
+    sprintf(m_textEditData[S302_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
 
-    sprintf(m_textEditData[S302_REC_GPS_TEXT].textContent[0],"N %03d.%02d'%02d\"  E %03d.%02d'%02d\"",recCanMsg->GpsLng / 10000,(recCanMsg->GpsLng % 10000) / 100,recCanMsg->GpsLng % 100,recCanMsg->GpsLat / 10000,(recCanMsg->GpsLat % 10000) / 100,recCanMsg->GpsLat % 100);
+    sprintf(m_textEditData[S302_GPS_TEXT].textContent[0],"N %03d.%02d'%02d\"  E %03d.%02d'%02d\"",recCanMsg->GpsLng / 10000,(recCanMsg->GpsLng % 10000) / 100,recCanMsg->GpsLng % 100,recCanMsg->GpsLat / 10000,(recCanMsg->GpsLat % 10000) / 100,recCanMsg->GpsLat % 100);
     
-    sprintf(m_textEditData[S302_REC_SPEED_TEXT].textContent[0],"%03d",recCanMsg->Speed);
+    sprintf(m_textEditData[S302_SPEED_TEXT].textContent[0],"%03d",recCanMsg->Speed);
     return HMI_SUCCESS;
 }
 
-int CSVS302RecordTab::InitText()
+int CSVS302PlaybackTab::InitText()
 {
     int i = 0;
 
-    i = S302_REC_TIME_TEXT;
+    i = S302_TIME_TEXT;
     m_textEditData[i].pos[0] = 170;
     m_textEditData[i].pos[1] = 26;
     m_textEditData[i].width = 25;
@@ -319,7 +319,7 @@ int CSVS302RecordTab::InitText()
 	char* ptext0 = "2018-05-11  18:00:00";
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext0);
 
-    i = S302_REC_GPS_TEXT;
+    i = S302_GPS_TEXT;
     m_textEditData[i].pos[0] = 430;
     m_textEditData[i].pos[1] = 26;
     m_textEditData[i].width = 25;
@@ -337,7 +337,7 @@ int CSVS302RecordTab::InitText()
 	char* ptext1 = "N 00.00'00\"  E 00.00'00\"";
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext1);
 
-    i = S302_REC_SPEED_TEXT;
+    i = S302_SPEED_TEXT;
     m_textEditData[i].pos[0] = 690;
     m_textEditData[i].pos[1] = 26;
     m_textEditData[i].width = 25;

@@ -1,5 +1,39 @@
 #include "CSVDvrFileListHmi.h"
-//#include "DVR_GUI_OBJ.h"
+#include "DVR_GUI_OBJ.h"
+
+static int imageItemId[IMAGE_GRID_LIST_ITEM_NUM];
+
+class CFileSelActionTrigger:public IActionTrigger
+{
+public:
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_THUMB_SEL_TO_PLAY;
+		for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+		{
+			if(id == imageItemId[i])
+			{			
+				m_dvrCmd.parameter[1] = i;
+			}
+		}        
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CFileSelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
+	{
+
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
+};    
 
 CSVDvrFileListHmi::CSVDvrFileListHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
@@ -31,6 +65,7 @@ int CSVDvrFileListHmi::SetHmiParams()
 	{
 		m_imageGridListItem[i].objectId = 0;
 		m_imageGridList->AddGridItem(&m_imageGridListItem[i]);
+        imageItemId[i] = m_imageGridList->GetItemLayerId(m_imageGridListItem[i].objectId);
 	}
 	m_imageGridList->SetVisibility(0);
 
@@ -106,7 +141,7 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 		m_imageGridListItem[i].refreshStatus = 0;
 		m_imageGridListItem[i].imageData = new char[m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight * 3];
 		memset(m_imageGridListItem[i].imageData, 200, sizeof(char)*m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight*3);
-		m_imageGridListItem[i].trigger = NULL;
+		m_imageGridListItem[i].trigger = new CFileSelActionTrigger;
 
 		m_textEditData[i].pos[0] = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing - 25;
 		m_textEditData[i].pos[1] = (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 32.0;
