@@ -514,7 +514,8 @@ int CSVS302DvrBase::SetDvrStatus()
     unsigned char m_tmpRGB[192 * 112 * 3];
     memset(&m_tmpRGB, 180, 192 * 112 * 3);
     GUI_OBJ_THUMB_FRAME_INST_EXT tmpInst;
-    GUI_OBJ_THUMB_ITEM_EXT tmp = {"1234213424", m_tmpRGB, 192, 112, 1, 1};
+    //GUI_OBJ_THUMB_ITEM_EXT tmp = {"1234213424", m_tmpRGB, 192, 112, 1, 0};
+    GUI_OBJ_THUMB_ITEM_EXT tmp = {0, 0, 0, 0, 0, 0};
     tmpInst.item[0] = tmp;
     tmpInst.item[1] = tmp;
     tmpInst.item[2] = tmp;
@@ -525,8 +526,8 @@ int CSVS302DvrBase::SetDvrStatus()
     tmpInst.item[7] = tmp;
 
     GUI_OBJ_THUMB_PAGENUM_INST_EXT tmpPageInst;
-    tmpPageInst.nCurPage = 3;
-    tmpPageInst.nTotalPage = 5;
+    tmpPageInst.nCurPage = 0;
+    tmpPageInst.nTotalPage = 0;
 
     GUI_OBJ_REC_CAN_MSG_EXT    tmpCanMsg;
     tmpCanMsg.Brake = 1;

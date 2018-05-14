@@ -274,12 +274,13 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 					{
 						Log_Error("------The size of the file list isn't equal to the real nums of thumb!");
 					}
-					
+					Log_Error("====================GUI_OBJ_ID_THUMB_FRAME_EXT:1");
 					currentFileNum = 0;
 					for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
 					{
 						if(frameInst->item[i].bValid)
 						{
+						    Log_Error("====================GUI_OBJ_ID_THUMB_FRAME_EXT:2 - %d",currentFileNum);
 							currentFileNum ++;
 							
 							memcpy(m_imageGridListItem[i].imageData, frameInst->item[i].pPreviewBuf, sizeof(unsigned char)*m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight*3);
@@ -307,19 +308,21 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
 						}
 						
 					}
-										
+					Log_Error("====================GUI_OBJ_ID_THUMB_FRAME_EXT:3 - %d",currentFileNum);					
 					m_imageGridList->Update(1,1,currentFileNum);
+                    Log_Error("====================GUI_OBJ_ID_THUMB_FRAME_EXT:4");	
 					//m_imageGridList->Update();
 				}
 				break;
 			case GUI_OBJ_ID_THUMB_PAGE_NUM_EXT:
-
+                
                 if(GUI_OBJ_STATUS_TYPE_POINTER_EXT == fileListTabMsg[i].status_type && fileListTabMsg[i].uStatus.ptr)
                 {
+                    Log_Error("====================GUI_OBJ_ID_THUMB_PAGE_NUM_EXT:1");	
                     thumbPagenumInst = (GUI_OBJ_THUMB_PAGENUM_INST_EXT*)fileListTabMsg[i].uStatus.ptr;
                     unsigned char curPage = thumbPagenumInst->nCurPage;
                     unsigned char totalPage = thumbPagenumInst->nTotalPage;
-                    //Log_Error("curPage: %d, totalPage: %d", curPage, totalPage);
+                    Log_Error("curPage: %d, totalPage: %d", curPage, totalPage);
                     if(totalPage > 0)
                     {
                         sprintf(m_pageNumData.textContent[0],"%u / %u", curPage, totalPage);

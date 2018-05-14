@@ -44,18 +44,19 @@ int CSVV302MainHmi::Init(int window_width, int window_height)
     m_screenWidth = window_width;
     m_screenHeight = window_height;
 
-    window_width = window_height / 1130.0 * 960.0;
+//    window_width = window_height / 1130.0 * 960.0;
 
-    float screenXscal = window_width / 960.0;
-    float screenYscal = window_height / 1130.0;
+    
+    float screenYscal = window_height / 1128.0;
+    float screenXscal = screenYscal;
 
     int index = 0;
 
     index = V302_MAIN_BUTTON_INDEX_BG_IMAGE;
     m_baseButtonData[index].pos[0] = 0;
     m_baseButtonData[index].pos[1] = 0;
-    m_baseButtonData[index].width = window_width;
-    m_baseButtonData[index].height = window_height;
+    m_baseButtonData[index].width = 960.0 * screenXscal;
+    m_baseButtonData[index].height = 1128.0 * screenYscal;
     m_baseButtonData[index].delegate_func = NULL;
     m_baseButtonData[index].trigger = NULL;
     m_baseButtonData[index].icon_type = STATIC_ICON;
