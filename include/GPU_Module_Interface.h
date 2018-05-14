@@ -224,6 +224,40 @@ typedef struct LkaLcResultTag
 }
 LkaLcResultT;
 
+/********************************/
+/*S302 pd algo gui interface    */
+/********************************/
+typedef enum PdWarningRegTag
+{
+	PD_WARNING_REG_FRONT = 0,
+	PD_WARNING_REG_REAR,
+	PD_WARNING_REG_LEFT,
+	PD_WARNING_REG_RIGHT,
+	PD_WARNING_REG_MAX_NUMS,
+}
+PdWarningRegT;
+
+typedef struct PdObjInfoTag
+{
+    int32_t l32ObjID; //目标ID
+    int32_t al32VertexLeftTop[2]; //鱼眼图像上检测目标框左上角点坐标 x,y
+    int32_t al32VertexRightTop[2]; //鱼眼图像上检测目标框右上角点坐标 x,y
+    int32_t al32VertexRightBtm[2]; //鱼眼图像上检测目标框右下角点坐标 x,y
+    int32_t al32VertexLeftBtm[2]; //鱼眼图像上检测目标框左下角点坐标 x,y
+} 
+PdObjInfoT;
+
+typedef struct PdResultTag
+{
+	unsigned char pdStatus; //0: stanby, 1:detecting
+
+	unsigned char warningStatus[PD_WARNING_REG_MAX_NUMS]; //0: No objects, 1: warning
+
+	int32_t       objNum;
+	PdObjInfoT    objInfo;
+}
+PdResultT;
+
 typedef enum EolStatusTag
 {
     EOL_CALIBRATION_STANDBY = 0,
@@ -348,6 +382,7 @@ typedef enum RenderDataTypeTag
 	RENDER_DATA_LKA_LC_RESULT,
 	RENDER_DATA_TP_RESULT,
 	RENDER_DATA_SEA_RESULT,
+	RENDER_DATA_PD_RESULT,
 	RENDER_DATA_MOD_RESULT,
 	RENDER_DATA_EOL_RESULT,
 	RENDER_DATA_ALGO_STATUS,
