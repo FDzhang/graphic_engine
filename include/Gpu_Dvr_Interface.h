@@ -49,6 +49,17 @@ typedef struct
 
 typedef struct
 {
+	char filename[128];
+}GUI_OBJ_PLAY_FILENAME_INST_EXT;
+
+typedef struct
+{
+	unsigned int duration; //in ms
+	unsigned int position;
+}GUI_OBJ_PLAY_TIME_INST_EXT;
+
+typedef struct
+{
     unsigned int TimeYear;
     unsigned int TimeMon;
     unsigned int TimeDay;

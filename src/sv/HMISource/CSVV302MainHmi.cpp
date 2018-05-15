@@ -226,10 +226,11 @@ int CSVV302MainHmi::Update(Hmi_Message_T &hmiMsg)
     CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
 
     m_iconStatus[V302_DVR_STATUS] = mainMenuData.iconStatus[MAIN_MENU_DVR];
-//    m_iconStatus[V302_RECORD_VIEW_HMI] = 1;
-    
-//    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_FRONT_SINGLE_VIEW);
+    m_iconStatus[V302_DVR_STATUS] = 1;
 
+    
+    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
+#if 0
     if (m_iconStatus[V302_DVR_STATUS] == 1)
     {
         InitSubHmi(V302_FILE_VIEW_HMI);
@@ -291,15 +292,24 @@ int CSVV302MainHmi::Update(Hmi_Message_T &hmiMsg)
     {
         m_subHmiVisibility[V302_IMAGE_VIEW_HMI] = 1;
         m_subHmi[V302_IMAGE_VIEW_HMI]->SetElementsVisibility(m_subHmiVisibility[V302_IMAGE_VIEW_HMI]);
-        m_subHmi[V302_IMAGE_VIEW_HMI]->Update(hmiMsg);        
+        m_subHmi[V302_IMAGE_VIEW_HMI]->Update(hmiMsg);
     }
     if (m_subHmi[V302_RECORD_VIEW_HMI])
     {
         m_subHmiVisibility[V302_RECORD_VIEW_HMI] = 1;
         m_subHmi[V302_RECORD_VIEW_HMI]->SetElementsVisibility(m_subHmiVisibility[V302_RECORD_VIEW_HMI]);
-        m_subHmi[V302_RECORD_VIEW_HMI]->Update(hmiMsg);        
+        m_subHmi[V302_RECORD_VIEW_HMI]->Update(hmiMsg);
     }
+#endif
+    
     RefreshHmi();
+    
+    if(m_iconStatus[V302_DVR_STATUS] == 1)
+    {
+        char* hmiName = "CSVV302DvrBase";
+	    CSVHmiIntent::GetInstance()->Intent(hmiName);
+    }
+    
     return V302_MAIN_HMI_NORMAL;
 }
 

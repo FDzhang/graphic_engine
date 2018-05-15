@@ -49,7 +49,6 @@ typedef enum V302RecordStatusVideoTag {
 
 typedef enum V302RecordTabButtonIndexTag {
     V302_RECORD_INDEX_BG_IMAGE = 0,
-    V302_RECORD_INDEX_RECPOINT,
     V302_RECORD_INDEX_STBAR_BK,
     V302_RECORD_INDEX_STABR_SPEED,
     V302_RECORD_INDEX_STABR_GEAR,
@@ -58,8 +57,19 @@ typedef enum V302RecordTabButtonIndexTag {
     V302_RECORD_INDEX_STABR_TURNLEFT,
     V302_RECORD_INDEX_STABR_TURNRIGHT,
     V302_RECORD_INDEX_STABR_ENGINE,
+    V302_RECORD_INDEX_RECPOINT,   
     V302_RECORD_INDEX_NUM,
 } V302RecordTabButtonIndexT;
+
+enum
+{
+    V302_REC_TIME_TEXT = 0,
+    V302_REC_GPS_TEXT,
+    V302_REC_SPEED_TEXT,
+    V302_REC_TEXT_NUM,
+};
+
+
 
 class CSVV302RecordTab : public ISVHmi
 {
@@ -73,12 +83,17 @@ class CSVV302RecordTab : public ISVHmi
   private:
     int SetHmiParams();
     int RefreshHmi();
-
+	int SetDvrView(unsigned char pViewCmd);
+    int SetStateBarVal(void *ptr);
+    int InitText();
   private:
     unsigned char m_iconStatus[V302_RECORD_STATUS_NUM];
 
     Hmi_Button_Data_T m_baseButtonData[V302_RECORD_INDEX_NUM];
     HMIButton *m_baseButton[V302_RECORD_INDEX_NUM];
+    
+	unsigned char m_buttonStatus[V302_RECORD_INDEX_NUM];
+	unsigned char m_buttonVisibility[V302_RECORD_INDEX_NUM];
 
     int HmiInitSTBar();
     int HmiInitLayer();
@@ -91,9 +106,9 @@ class CSVV302RecordTab : public ISVHmi
 
     int m_screenWidth;
     int m_screenHeight;
-
-    HmiTextEdit *m_speed_value_text;
-    HmiTextEditDataT m_speed_value_text_data;
+    
+	HmiTextEditDataT m_textEditData[V302_REC_TEXT_NUM];
+	HmiTextEdit*     m_textEdit[V302_REC_TEXT_NUM];
 
   public:
 };

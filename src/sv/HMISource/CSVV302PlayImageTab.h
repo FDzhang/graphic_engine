@@ -65,6 +65,7 @@ class CSVV302PlayImageTab : public ISVHmi
   private:
     int SetHmiParams();
     int RefreshHmi();
+    int SetDvrView(unsigned char pViewCmd);
 
   private:
     unsigned char m_iconStatus[V302_IMAGE_STATUS_NUM];

@@ -37,6 +37,7 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[0];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
 
+#if 0
     index = S302_RECORD_INDEX_RECPOINT;
     m_baseButtonData[index].pos[0] = offset + 34;
     m_baseButtonData[index].pos[1] = 26;
@@ -49,7 +50,8 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].show_icon_num = 0;
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[1];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
-    
+#endif
+
     HmiInitSTBar();
     InitText();
     return S302_MAIN_HMI_NORMAL;

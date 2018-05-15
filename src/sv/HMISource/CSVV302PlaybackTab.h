@@ -49,8 +49,8 @@ typedef enum V302PlayBackStatusVideoTag {
 
 typedef enum V302PlaybackTabButtonIndexTag {
     V302_PB_INDEX_BG_IMAGE = 0,
-    V302_PB_INDEX_PLAYNAME_BK,
-    V302_PB_INDEX_PLAYPOINT,
+//    V302_PB_INDEX_PLAYNAME_BK,
+//    V302_PB_INDEX_PLAYPOINT,
     V302_PB_INDEX_STBAR_BK,
     V302_PB_INDEX_STABR_SPEED,
     V302_PB_INDEX_STABR_GEAR,
@@ -64,10 +64,14 @@ typedef enum V302PlaybackTabButtonIndexTag {
 
 enum
 {
+    V302_PB_TIME_TEXT = 0,
+    V302_PB_GPS_TEXT,
+    V302_PB_SPEED_TEXT,
+
     V302_PB_FILENAME_TITLE,
-    V302_PB_FILE_CURRENT_TIME,
-    V302_PB_FILE_DURATION_TIME,
-    V302_PB_TEXT_DISPLAY_NUM,
+    V302_PB_CURRENT_TIME,
+    V302_PB_DURATION_TIME,
+    V302_PB_TEXT_NUM,
 };
 
 class CSVV302PlaybackTab : public ISVHmi
@@ -83,12 +87,17 @@ class CSVV302PlaybackTab : public ISVHmi
     int SetHmiParams();
     int RefreshHmi();
     int ToString(int pTime, char** pOutString);
-
+    int SetDvrView(unsigned char pViewCmd);
+    int SetStateBarVal(void *ptr);
+    int InitTimeGps();
   private:
     unsigned char m_iconStatus[V302_PB_STATUS_NUM];
 
     Hmi_Button_Data_T m_baseButtonData[V302_PB_INDEX_NUM];
     HMIButton *m_baseButton[V302_PB_INDEX_NUM];
+    
+	unsigned char m_buttonStatus[V302_PB_INDEX_NUM];
+	unsigned char m_buttonVisibility[V302_PB_INDEX_NUM];
 
     int HmiInitSTBar();
     int HmiInitPlayBar();
@@ -111,10 +120,10 @@ class CSVV302PlaybackTab : public ISVHmi
     unsigned char       m_processBarVisibility;
     float               m_processBarForwardScale;
 
-    HmiTextEditDataT    m_textEditData[V302_PB_TEXT_DISPLAY_NUM];
-    HmiTextEdit*        m_textEdit[V302_PB_TEXT_DISPLAY_NUM];
-    unsigned char       m_textEditVisibility[V302_PB_TEXT_DISPLAY_NUM];
-    char*               m_textEditContent[V302_PB_TEXT_DISPLAY_NUM];
+    HmiTextEditDataT    m_textEditData[V302_PB_TEXT_NUM];
+    HmiTextEdit*        m_textEdit[V302_PB_TEXT_NUM];
+    unsigned char       m_textEditVisibility[V302_PB_TEXT_NUM];
+    char*               m_textEditContent[V302_PB_TEXT_NUM];
   public:
 };
 

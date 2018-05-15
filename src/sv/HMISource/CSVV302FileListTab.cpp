@@ -2,6 +2,39 @@
 #include "DVR_GUI_OBJ.h"
 #include "gpu_log.h"
 
+static int imageItemId[IMAGE_GRID_LIST_ITEM_NUM];
+
+class CV302FileSelActionTrigger:public IActionTrigger
+{
+public:
+	virtual Void OnPress(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		CGpuAvmEventDelegate m_eventDel(INPUT_EVENT_CTRL_CMD);
+		Ctrl_Cmd_T m_dvrCmd;
+		
+		m_dvrCmd.MsgHead.MsgType = IPC_MSG_TYPE_M4_A15_DVR_CMD;
+		m_dvrCmd.MsgHead.MsgSize = sizeof(Ctrl_Cmd_T);
+		m_dvrCmd.parameter[0] = DVR_USER_CLICK_THUMB_SEL_TO_PLAY;
+		for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+		{
+			if(id == imageItemId[i])
+			{			
+				m_dvrCmd.parameter[1] = i;
+			}
+		}        
+		m_eventDel.PostEventPayload((void*)&m_dvrCmd, sizeof(Ctrl_Cmd_T));
+		
+		Log_Message("-----------CV302FileSelActionTrigger: %d", sizeof(Ctrl_Cmd_T));
+	}
+	virtual Void OnRelease(Int32 id, Boolean isIn, Int32 x = 0, Int32 y = 0)
+	{
+
+	}
+	virtual Void OnMove(Int32 id, Int32 x = 0, Int32 y = 0)
+	{
+		
+	}
+};    
 
 CSVV302FileListTab::CSVV302FileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1)
 {}
@@ -26,7 +59,8 @@ int CSVV302FileListTab::SetHmiParams()
 	{
 		m_imageGridListItem[i].objectId = 0;
 		m_imageGridList->AddGridItem(&m_imageGridListItem[i]);
-		m_imageItemId[i] = m_imageGridList->GetItemLayerId(m_imageGridListItem[i].objectId);
+		//m_imageItemId[i] = m_imageGridList->GetItemLayerId(m_imageGridListItem[i].objectId);
+        imageItemId[i] = m_imageGridList->GetItemLayerId(m_imageGridListItem[i].objectId);
 	}
 	m_imageGridList->SetVisibility(0);
 
@@ -82,12 +116,12 @@ int CSVV302FileListTab::Init(int window_width, int window_height)
 		m_imageGridListItem[i].refreshStatus = 0;
 		m_imageGridListItem[i].imageData = new char[PREVIEW_WIDTH * PREVIEW_HIGH * 3];
 		memset(m_imageGridListItem[i].imageData, 200, sizeof(char) * PREVIEW_WIDTH * PREVIEW_HIGH * 3);
-		m_imageGridListItem[i].trigger = NULL;
+        m_imageGridListItem[i].trigger = new CV302FileSelActionTrigger;
         
-		m_textEditData[i].pos[0] = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing - 25;
+		m_textEditData[i].pos[0] = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing;
 		m_textEditData[i].pos[1] = (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 5.0;
-		m_textEditData[i].width = 20;
-		m_textEditData[i].font_size = 4.0;
+		m_textEditData[i].width = 16;
+		m_textEditData[i].font_size = 3.0;
 		m_textEditData[i].line_num = 1;
 		m_textEditData[i].visibilityStatus = 1;
 		m_textEditData[i].targetIndex = -1;
@@ -114,56 +148,54 @@ int CSVV302FileListTab::Init(int window_width, int window_height)
 
 int CSVV302FileListTab::Update(Hmi_Message_T& hmiMsg)
 {
- 	static int currentFileNum = 0;
-	int 	   fileNumCnt = 0;
+    DVR_GUI_LAYOUT_INST_EXT dvrData;
+    CAvmRenderDataBase::GetInstance()->GetDvrData(&dvrData);
+
+    static int currentFileNum = 0;
+    int        fileNumCnt = 0;
+    static int waitCnt = 0;
     static int currentThumbTab = 0;
-	
-	DVR_GRAPHIC_UIOBJ* fileListTabMsg = NULL;
-	
-	GUI_OBJ_THUMB_EDIT_INST* editInst = NULL;
-	
-	GUI_OBJ_THUMB_FRAME_INST* frameInst = NULL;
 
-	GUI_OBJ_DIALOG_INST*	  dialogInst = NULL;
+    DVR_GRAPHIC_UIOBJ_EXT* fileListTabMsg = NULL;
 
-    GUI_OBJ_THUMB_PAGENUM_INST* thumbPagenumInst = NULL;
+    GUI_OBJ_THUMB_FRAME_INST_EXT* frameInst = NULL;
 
-	if((DVR_GRAPHIC_UIOBJ*) hmiMsg.dvrTabMsg.tabMsgTable)
-	{
-		fileListTabMsg = (DVR_GRAPHIC_UIOBJ*) hmiMsg.dvrTabMsg.tabMsgTable;
-		
-		for(int i = 0; i < hmiMsg.dvrTabMsg.objNum; i++)
-		{			
-			switch(fileListTabMsg[i].Id)
-			{
-			case GUI_OBJ_ID_THUMB_TAB:
-				break;
-			case GUI_OBJ_ID_THUMB_EDIT:
-				break;
-			case GUI_OBJ_ID_THUMB_EDIT_SEL_CHECKBOX:
-				break;
-			case  GUI_OBJ_ID_THUMB_FRAME:
-				if(GUI_OBJ_STATUS_TYPE_POINTER == fileListTabMsg[i].status_type
-					&& fileListTabMsg[i].uStatus.ptr)
-				{
-					frameInst = (GUI_OBJ_THUMB_FRAME_INST*)fileListTabMsg[i].uStatus.ptr;
-					
-					if(frameInst == NULL)
-						break;
+    GUI_OBJ_THUMB_PAGENUM_INST_EXT* thumbPagenumInst = NULL;
 
-					if(IMAGE_GRID_LIST_ITEM_NUM != NUM_THUMBNAIL_PER_PAGE)
-					{
-						Log_Error("------The size of the file list isn't equal to the real nums of thumb!");
-					}
-					
-					currentFileNum = 0;
-					for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
-					{
-						if(frameInst->item[i].bValid)
-						{
-							currentFileNum ++;
-							
-							memcpy(m_imageGridListItem[i].imageData, frameInst->item[i].pPreviewBuf, sizeof(char) * PREVIEW_HIGH * PREVIEW_WIDTH * 3);
+    fileListTabMsg = dvrData.pTable;
+    //    Log_Error("=================dvrData.curLayout:%d",dvrData.curLayout);
+    //    dvrData.curLayout = GUI_LAYOUT_THUMB_EXT;
+
+    if(dvrData.curLayout == GUI_LAYOUT_THUMB_EXT)
+    {
+        m_imageGridVisibility = 1;
+        SetElementsVisibility(1);
+        for(int i = 0; i < dvrData.ObjNum; i++)
+        {               
+            switch(fileListTabMsg[i].Id)
+            {
+            case  GUI_OBJ_ID_THUMB_FRAME_EXT:
+                
+                if(GUI_OBJ_STATUS_TYPE_POINTER_EXT == fileListTabMsg[i].status_type
+                    && fileListTabMsg[i].uStatus.ptr)
+                {
+                    frameInst = (GUI_OBJ_THUMB_FRAME_INST_EXT*)fileListTabMsg[i].uStatus.ptr;
+                    
+                    if(frameInst == NULL)
+                        break;
+
+                    if(IMAGE_GRID_LIST_ITEM_NUM != NUM_THUMBNAIL_PER_PAGE_EXT)
+                    {
+                        Log_Error("------The size of the file list isn't equal to the real nums of thumb!");
+                    }
+                    currentFileNum = 0;
+                    for(int i = 0; i < IMAGE_GRID_LIST_ITEM_NUM; i++)
+                    {
+                        if(frameInst->item[i].bValid)
+                        {
+                            currentFileNum ++;
+                            
+                            memcpy(m_imageGridListItem[i].imageData, frameInst->item[i].pPreviewBuf, sizeof(unsigned char)*m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight*3);
 
                             unsigned char namelen = strlen(frameInst->item[i].filename);
                             if(namelen < 28)
@@ -185,33 +217,37 @@ int CSVV302FileListTab::Update(Hmi_Message_T& hmiMsg)
                             {
                                 sprintf(m_imageGridListItem[i].textInfo.textContent[0],"%s", frameInst->item[i].filename);
                             }
-						}
-						
-					}
-										
-					m_imageGridList->Update(1,1,currentFileNum);
-				}
-				break;
-			case GUI_OBJ_ID_THUMB_CAPACITY:	
-				break;
-			case GUI_OBJ_ID_DIALOG:
-				break;
-			case GUI_OBJ_ID_WARNING:
-				break;
-            case GUI_OBJ_ID_THUMB_PAGE_NUM:
+                        }
+                        
+                    }                
+                    m_imageGridList->Update(1,1,currentFileNum);
+                }
                 break;
-			default:
-				break;
-			}	
-		}
+            case GUI_OBJ_ID_THUMB_PAGE_NUM_EXT:
+                
+                if(GUI_OBJ_STATUS_TYPE_POINTER_EXT == fileListTabMsg[i].status_type && fileListTabMsg[i].uStatus.ptr)
+                {
+                    //Log_Error("====================GUI_OBJ_ID_THUMB_PAGE_NUM_EXT:1"); 
+                    thumbPagenumInst = (GUI_OBJ_THUMB_PAGENUM_INST_EXT*)fileListTabMsg[i].uStatus.ptr;
+                    unsigned char curPage = thumbPagenumInst->nCurPage;
+                    unsigned char totalPage = thumbPagenumInst->nTotalPage;
+                    //Log_Error("curPage: %d, totalPage: %d", curPage, totalPage);
+                }
+                break;
+            default:
+                break;
+            }   
+        }
 
-	}
-
+    }
+    
+#if 0
     for(int i = 0; i < V302_GRID_LIST_ITEM_NUM; i++)
     {
         memcpy(m_imageGridListItem[i].imageData, m_tmpRGB, sizeof(char) * PREVIEW_HIGH * PREVIEW_WIDTH * 3);
     }
     m_imageGridList->Update(1,1,12);
+#endif
 
 	RefreshHmi();   
     return V302_MAIN_HMI_NORMAL;

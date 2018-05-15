@@ -35,7 +35,7 @@
 #include <memory>
 #include "ISVHmi.h"
 
-static const int IMAGE_GRID_LIST_ITEM_NUM = 6;
+static const int IMAGE_GRID_LIST_ITEM_NUM = 12;
 
 typedef enum V302FileListStatusTag
 {

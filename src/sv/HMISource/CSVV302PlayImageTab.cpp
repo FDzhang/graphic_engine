@@ -45,6 +45,27 @@ int CSVV302PlayImageTab::Init(int window_width, int window_height)
 
 int CSVV302PlayImageTab::Update(Hmi_Message_T &hmiMsg)
 {
+    DVR_GUI_LAYOUT_INST_EXT dvrData;
+	CAvmRenderDataBase::GetInstance()->GetDvrData(&dvrData);
+
+	DVR_GRAPHIC_UIOBJ_EXT* fileListTabMsg = NULL;
+
+	fileListTabMsg = dvrData.pTable;
+    
+    if(dvrData.curLayout == GUI_LAYOUT_PLAYBACK_IMAGE_EXT)
+    {
+        for(int i = 0; i < dvrData.ObjNum; i++)
+        {
+            switch(fileListTabMsg[i].Id)
+            {
+              case  GUI_OBJ_ID_PB_VIEW_INDEX_EXT:
+                SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
+                break;
+              default:
+                break;
+            }
+        }
+    }
     RefreshHmi();
     return V302_MAIN_HMI_NORMAL;
 }
@@ -87,4 +108,31 @@ int CSVV302PlayImageTab::HmiInitSvresList()
 unsigned char *CSVV302PlayImageTab::HmiGetSvresFile(int index)
 {
     return m_hmiSvresFileName[index];
+}
+
+int CSVV302PlayImageTab::SetDvrView(unsigned char pViewCmd)
+{
+//    Log_Error("====================SetDvrView = %d",pViewCmd);
+	if(pViewCmd == GUI_VIEW_INDEX_FRONT_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_FRONT_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_REAR_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_REAR_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_LEFT_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_LEFT_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_RIGHT_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_RIGHT_SINGLE_VIEW);
+	}
+	else if(pViewCmd == GUI_VIEW_INDEX_MATTS_EXT)
+	{
+		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(MATTS_VIEW);
+	}
+
+	return HMI_SUCCESS;
 }
