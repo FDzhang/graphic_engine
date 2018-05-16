@@ -77,6 +77,11 @@ int CSVDvrFileListHmi::SetHmiParams()
         m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
         m_baseButton[i]->SetVisibility(0);
     }
+    
+    i = V302_FILE_NOTHUMB;
+    m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+    m_baseButton[i]->SetVisibility(0);
+    
 	return HMI_SUCCESS;
 }
 
@@ -227,6 +232,20 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	sprintf(m_baseButtonData[i].icon_file_name[0],"%sS302/s302_scroll_block.dds",XR_RES); 
     m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
 
+    i = V302_FILE_NOTHUMB;
+    m_baseButtonData[i].pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 60;
+    m_baseButtonData[i].pos[1] = 300;
+    m_baseButtonData[i].width = 115;
+    m_baseButtonData[i].height = 55;
+    m_baseButtonData[i].delegate_func = NULL;
+    m_baseButtonData[i].trigger = NULL;
+	m_baseButtonData[i].icon_type = STATIC_ICON;
+	m_baseButtonData[i].show_flag = 0;
+	m_baseButtonData[i].show_icon_num = 0;
+	m_baseButtonData[i].icon_file_name[0] = new char[50];
+	sprintf(m_baseButtonData[i].icon_file_name[0],"%sS302/s302_nofile.dds",XR_RES); 
+    m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
+    
 	SetHmiParams();
 	
 	return HMI_SUCCESS;
@@ -325,6 +344,7 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
                     //Log_Error("curPage: %d, totalPage: %d", curPage, totalPage);
                     if(totalPage > 0)
                     {
+                        m_baseButton[V302_FILE_NOTHUMB]->SetVisibility(0);
                         sprintf(m_pageNumData.textContent[0],"%u / %u", curPage, totalPage);
                         m_pageNum->SetVisibility(1);
                         waitCnt = 0;
@@ -345,6 +365,7 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
                     else
                     {
                         m_pageNum->SetVisibility(0);
+                        m_baseButton[V302_FILE_NOTHUMB]->SetVisibility(1);
                     }
                 }
                 break;
@@ -396,9 +417,9 @@ int CSVDvrFileListHmi::SetElementsVisibility(unsigned char pFlag)
     if(pFlag == 0)
     {
         m_pageNum->SetVisibility(pFlag);
-        
+        m_baseButton[V302_FILE_NOTHUMB]->SetVisibility(pFlag);
     }
-    for(int i = V302_FILE_BKG; i < V302_FILE_BUTTON_NUM; i++)
+    for(int i = V302_FILE_BKG; i <= V302_FILE_SCROLL_BLOCK; i++)
     {
         m_baseButton[i]->SetVisibility(pFlag);
     }    

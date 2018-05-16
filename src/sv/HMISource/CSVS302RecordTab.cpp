@@ -28,7 +28,7 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].pos[0] = offset;
     m_baseButtonData[index].pos[1] = 0;
     m_baseButtonData[index].width = m_screenWidth;
-    m_baseButtonData[index].height = 60;
+    m_baseButtonData[index].height = 0;
     m_baseButtonData[index].delegate_func = NULL;
     m_baseButtonData[index].trigger = NULL;
     m_baseButtonData[index].icon_type = STATIC_ICON;
@@ -146,10 +146,10 @@ int CSVS302RecordTab::HmiInitSTBar()
 {
     int svresIndex = 2;
     int index = S302_RECORD_INDEX_STBAR_BK;
-    m_baseButtonData[index].pos[0] = 550;
-    m_baseButtonData[index].pos[1] = 22.0;
-    m_baseButtonData[index].width = 300.0;
-    m_baseButtonData[index].height = 40.0;
+    m_baseButtonData[index].pos[0] = 0;  //550
+    m_baseButtonData[index].pos[1] = 0.0;  //22
+    m_baseButtonData[index].width = m_screenWidth;
+    m_baseButtonData[index].height = 60.0;  //40
     m_baseButtonData[index].delegate_func = NULL;
     m_baseButtonData[index].trigger = NULL;
     m_baseButtonData[index].icon_type = STATIC_ICON;
@@ -358,4 +358,5 @@ int CSVS302RecordTab::InitText()
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext2);
     return HMI_SUCCESS;
 }
+
 

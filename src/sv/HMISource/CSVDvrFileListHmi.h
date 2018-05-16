@@ -8,6 +8,7 @@ enum
     V302_FILE_BKG = 0,
 	V302_FILE_SCROLL_BACK = 1,
     V302_FILE_SCROLL_BLOCK,
+    V302_FILE_NOTHUMB,
     V302_FILE_BUTTON_NUM,
 };
 
@@ -43,6 +44,9 @@ private:
     
     HmiTextEdit*     m_pageNum;
     HmiTextEditDataT m_pageNumData;   
+    
+    HmiTextEdit*     m_noFileText;
+    HmiTextEditDataT m_noFileTextData;    
 
 };
 

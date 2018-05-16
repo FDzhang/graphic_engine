@@ -521,8 +521,8 @@ int CSVS302DvrBase::SetDvrStatus()
     unsigned char m_tmpRGB[192 * 112 * 3];
     memset(&m_tmpRGB, 180, 192 * 112 * 3);
     GUI_OBJ_THUMB_FRAME_INST_EXT tmpInst;
-    //GUI_OBJ_THUMB_ITEM_EXT tmp = {"1234213424", m_tmpRGB, 192, 112, 1, 0};
-    GUI_OBJ_THUMB_ITEM_EXT tmp = {0, 0, 0, 0, 0, 0};
+    GUI_OBJ_THUMB_ITEM_EXT tmp = {"1234213424", m_tmpRGB, 192, 112, 1, 0};
+    //GUI_OBJ_THUMB_ITEM_EXT tmp = {0, 0, 0, 0, 0, 0};
     tmpInst.item[0] = tmp;
     tmpInst.item[1] = tmp;
     tmpInst.item[2] = tmp;
