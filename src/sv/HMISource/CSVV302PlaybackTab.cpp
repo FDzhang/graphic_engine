@@ -107,7 +107,7 @@ int CSVV302PlaybackTab::Update(Hmi_Message_T &hmiMsg)
                 SetDvrView(playbackTabMsg[i].uStatus.ObjVal);
                 break;
               
-              case  GUI_OBJ_ID_PB_CAN_MSG_EXT:
+              case  GUI_OBJ_ID_PB_VEHICLE_DATA_EXT:
                 if(playbackTabMsg[i].status_type == GUI_OBJ_STATUS_TYPE_POINTER_EXT && playbackTabMsg[i].uStatus.ptr)
                 {
                     SetStateBarVal(playbackTabMsg[i].uStatus.ptr);
@@ -442,7 +442,7 @@ int CSVV302PlaybackTab::SetStateBarVal(void *ptr)
     recCanMsg = (GUI_OBJ_REC_CAN_MSG_EXT*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
 
-#if 1    
+#if 0    
     m_buttonStatus[V302_PB_INDEX_STABR_GEAR] = recCanMsg->Gear;
     m_buttonStatus[V302_PB_INDEX_STABR_BRAKE] = recCanMsg->Brake;
     m_buttonStatus[V302_PB_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;

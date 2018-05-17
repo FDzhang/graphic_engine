@@ -531,9 +531,9 @@ int CSVV302DvrBase::SetDvrStatus()
         {GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
         {GUI_OBJ_ID_THUMB_PAGE_NUM_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpPageInst},
         {GUI_OBJ_ID_REC_VIEW_INDEX_EXT,"asdfasdg",1,1,GUI_OBJ_STATUS_TYPE_U32_EXT,GUI_VIEW_INDEX_LEFT_EXT},
-        {GUI_OBJ_ID_REC_CAN_MSG_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpCanMsg},
+        {GUI_OBJ_ID_REC_VEHICLE_DATA_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpCanMsg},
         {GUI_OBJ_ID_PB_VIEW_INDEX_EXT,"asdfasdg",1,1,GUI_OBJ_STATUS_TYPE_U32_EXT,GUI_VIEW_INDEX_FRONT_EXT},
-        {GUI_OBJ_ID_PB_CAN_MSG_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpCanMsg},
+        {GUI_OBJ_ID_PB_VEHICLE_DATA_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpCanMsg},
         {GUI_OBJ_ID_PB_PLAY_TIMER_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)pbPlayTimeInst0},
         {GUI_OBJ_ID_PB_FILENAME_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)pbFilenameInst0},
     };

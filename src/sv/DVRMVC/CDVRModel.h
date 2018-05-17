@@ -3,7 +3,6 @@
 
 #include "Gpu_Dvr_Interface.h"
 
-
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
@@ -30,10 +29,13 @@ typedef struct
     unsigned char dot_status;
     unsigned char enable_status;
     unsigned char shoot_status;
+    unsigned char event_status;
+    unsigned char view_index;
 }DVR_MODEL_REC;
 
 typedef struct
 {
+    unsigned char view_index;
     unsigned char dot_status;
     unsigned char play_status;
     unsigned char pre_status;
@@ -47,12 +49,17 @@ typedef struct
 
 typedef struct
 {
+    unsigned char current_tab;
+    unsigned char edit_status;
     unsigned char selecet_status[MAX_THUMB_NUM];
     unsigned char list_line;
     unsigned char list_row;
     unsigned char image_enable[MAX_THUMB_NUM];
     void* imagebuff[MAX_THUMB_NUM];
     char* filename[MAX_THUMB_NUM];
+    unsigned char current_page;
+    unsigned char total_page;
+    char* page_char;
 }DVR_MODEL_THUMB;
 
 typedef struct

@@ -86,7 +86,7 @@ int CSVV302RecordTab::Update(Hmi_Message_T &hmiMsg)
               case  GUI_OBJ_ID_REC_VIEW_INDEX_EXT:
                 SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
                 break;
-              case  GUI_OBJ_ID_REC_CAN_MSG_EXT:
+              case  GUI_OBJ_ID_REC_VEHICLE_DATA_EXT:
                 if(fileListTabMsg[i].status_type == GUI_OBJ_STATUS_TYPE_POINTER_EXT && fileListTabMsg[i].uStatus.ptr)
                 {
                     SetStateBarVal(fileListTabMsg[i].uStatus.ptr);
@@ -285,7 +285,7 @@ int CSVV302RecordTab::SetStateBarVal(void *ptr)
     recCanMsg = (GUI_OBJ_REC_CAN_MSG_EXT*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
 
-    
+#if 0    
     m_buttonStatus[V302_RECORD_INDEX_STABR_GEAR] = recCanMsg->Gear;
     m_buttonStatus[V302_RECORD_INDEX_STABR_BRAKE] = recCanMsg->Brake;
     m_buttonStatus[V302_RECORD_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
@@ -298,6 +298,8 @@ int CSVV302RecordTab::SetStateBarVal(void *ptr)
     sprintf(m_textEditData[V302_REC_GPS_TEXT].textContent[0],"N %03d.%02d'%02d\"  E %03d.%02d'%02d\"",recCanMsg->GpsLng / 10000,(recCanMsg->GpsLng % 10000) / 100,recCanMsg->GpsLng % 100,recCanMsg->GpsLat / 10000,(recCanMsg->GpsLat % 10000) / 100,recCanMsg->GpsLat % 100);
     
     sprintf(m_textEditData[V302_REC_SPEED_TEXT].textContent[0],"%03d",recCanMsg->Speed);
+    
+#endif    
     return HMI_SUCCESS;
 }
 

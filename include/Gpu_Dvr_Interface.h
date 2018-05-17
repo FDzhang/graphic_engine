@@ -49,6 +49,12 @@ typedef struct
 
 typedef struct
 {
+	unsigned char check_box[NUM_THUMBNAIL_PER_PAGE_EXT]; //1:select, 0:not select
+}GUI_OBJ_THUMB_EDIT_INST_EXT;
+
+
+typedef struct
+{
 	char filename[128];
 }GUI_OBJ_PLAY_FILENAME_INST_EXT;
 
@@ -60,15 +66,15 @@ typedef struct
 
 typedef struct
 {
-    unsigned int TimeYear;
-    unsigned int TimeMon;
-    unsigned int TimeDay;
-    unsigned int TimeHour;
-    unsigned int TimeMin;
-    unsigned int TimeSec;
+	unsigned short 	TimeYear;
+	unsigned short 	TimeMon;
+	unsigned short 	TimeDay;
+	unsigned short 	TimeHour;	
+	unsigned short 	TimeMin;
+	unsigned short 	TimeSec;	
     unsigned int GpsLng;
     unsigned int GpsLat;
-    unsigned int Speed;
+    unsigned short Speed;
     unsigned int Gear;
     unsigned int Brake;  
     unsigned int Buckle;
@@ -76,6 +82,26 @@ typedef struct
     unsigned int TurnRight;
     unsigned int Engine;
 }GUI_OBJ_REC_CAN_MSG_EXT;
+
+typedef struct
+{
+    unsigned short 	TimeYear;
+    unsigned short 	TimeMon;
+    unsigned short 	TimeDay;
+    unsigned short 	TimeHour;	
+    unsigned short 	TimeMin;
+    unsigned short 	TimeSec;	
+    unsigned int 	GpsLongitude;
+    unsigned int 	GpsLatitude;
+    unsigned short 	VehicleSpeed;
+    unsigned char 	GearShiftPositon;
+    unsigned char 	BrakePedalStatus;
+    unsigned char 	DriverBuckleSwitchStatus;
+    unsigned char 	LeftTurnLampStatus;
+    unsigned char 	RightTurnLampStatus;
+    unsigned char   AccePedalPosition;
+    unsigned char   EngineThrottlePosition;
+}GUI_OBJ_VEHICLE_DATA_INST;
 
 
 typedef enum
@@ -100,7 +126,7 @@ typedef enum
 	GUI_OBJ_ID_REC_STATE_EXT,
 	GUI_OBJ_ID_REC_EVENT_RECORD_STATE_EXT,
 	GUI_OBJ_ID_REC_VIEW_INDEX_EXT,
-	GUI_OBJ_ID_REC_CAN_MSG_EXT,
+    GUI_OBJ_ID_REC_VEHICLE_DATA_EXT,
 
 	/*thumbnail mode*/
 	GUI_OBJ_ID_THUMB_TAB_EXT,
@@ -118,7 +144,7 @@ typedef enum
 	GUI_OBJ_ID_PB_VIEW_INDEX_EXT,
 	GUI_OBJ_ID_PB_DC_SWITCH_EXT,
     GUI_OBJ_ID_PB_MODE_EXT,
-    GUI_OBJ_ID_PB_CAN_MSG_EXT,
+    GUI_OBJ_ID_PB_VEHICLE_DATA_EXT,
 
 	/*setup*/
 	GUI_OBJ_ID_SETUP_SPLIT_TIME_EXT,
