@@ -503,7 +503,7 @@ int CSVV302DvrBase::SetDvrStatus()
     tmpPageInst.nCurPage = 0;
     tmpPageInst.nTotalPage = 0;
 
-    GUI_OBJ_VEHICLE_DATA_INST    tmpCanMsg;
+    GUI_OBJ_VEHICLE_DATA_INST_EXT    tmpCanMsg;
     tmpCanMsg.BrakePedalStatus = 1;
     tmpCanMsg.DriverBuckleSwitchStatus = 0;
     tmpCanMsg.EngineThrottlePosition = 1;

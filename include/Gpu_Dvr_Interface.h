@@ -82,7 +82,7 @@ typedef struct
     unsigned char 	RightTurnLampStatus;
     unsigned char   AccePedalPosition;
     unsigned char   EngineThrottlePosition;
-}GUI_OBJ_VEHICLE_DATA_INST;
+}GUI_OBJ_VEHICLE_DATA_INST_EXT;
 
 
 typedef enum

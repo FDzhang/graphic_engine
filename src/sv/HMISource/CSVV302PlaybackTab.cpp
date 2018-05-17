@@ -438,8 +438,8 @@ int CSVV302PlaybackTab::SetDvrView(unsigned char pViewCmd)
 
 int CSVV302PlaybackTab::SetStateBarVal(void *ptr)
 {
-    GUI_OBJ_VEHICLE_DATA_INST *recCanMsg = NULL;
-    recCanMsg = (GUI_OBJ_VEHICLE_DATA_INST*)ptr;
+    GUI_OBJ_VEHICLE_DATA_INST_EXT *recCanMsg = NULL;
+    recCanMsg = (GUI_OBJ_VEHICLE_DATA_INST_EXT*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
 
 #if 0    
