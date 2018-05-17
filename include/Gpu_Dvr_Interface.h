@@ -66,25 +66,6 @@ typedef struct
 
 typedef struct
 {
-	unsigned short 	TimeYear;
-	unsigned short 	TimeMon;
-	unsigned short 	TimeDay;
-	unsigned short 	TimeHour;	
-	unsigned short 	TimeMin;
-	unsigned short 	TimeSec;	
-    unsigned int GpsLng;
-    unsigned int GpsLat;
-    unsigned short Speed;
-    unsigned int Gear;
-    unsigned int Brake;  
-    unsigned int Buckle;
-    unsigned int TurnLeft;
-    unsigned int TurnRight;
-    unsigned int Engine;
-}GUI_OBJ_REC_CAN_MSG_EXT;
-
-typedef struct
-{
     unsigned short 	TimeYear;
     unsigned short 	TimeMon;
     unsigned short 	TimeDay;

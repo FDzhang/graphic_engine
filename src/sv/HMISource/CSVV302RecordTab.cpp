@@ -281,26 +281,26 @@ int CSVV302RecordTab::SetDvrView(unsigned char pViewCmd)
 
 int CSVV302RecordTab::SetStateBarVal(void *ptr)
 {
-    GUI_OBJ_REC_CAN_MSG_EXT *recCanMsg = NULL;
-    recCanMsg = (GUI_OBJ_REC_CAN_MSG_EXT*)ptr;
+    GUI_OBJ_VEHICLE_DATA_INST *recCanMsg = NULL;
+    recCanMsg = (GUI_OBJ_VEHICLE_DATA_INST*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
 
 #if 0    
-    m_buttonStatus[V302_RECORD_INDEX_STABR_GEAR] = recCanMsg->Gear;
-    m_buttonStatus[V302_RECORD_INDEX_STABR_BRAKE] = recCanMsg->Brake;
-    m_buttonStatus[V302_RECORD_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
-    m_buttonStatus[V302_RECORD_INDEX_STABR_TURNLEFT] = recCanMsg->TurnLeft;
-    m_buttonStatus[V302_RECORD_INDEX_STABR_TURNRIGHT] = recCanMsg->TurnRight;
-    m_buttonStatus[V302_RECORD_INDEX_STABR_ENGINE] = recCanMsg->Engine;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_GEAR] = recCanMsg->Gear;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BRAKE] = recCanMsg->Brake;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNLEFT] = recCanMsg->TurnLeft;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNRIGHT] = recCanMsg->TurnRight;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_ENGINE] = recCanMsg->Engine;
+#endif
 
     sprintf(m_textEditData[V302_REC_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
 
-    sprintf(m_textEditData[V302_REC_GPS_TEXT].textContent[0],"N %03d.%02d'%02d\"  E %03d.%02d'%02d\"",recCanMsg->GpsLng / 10000,(recCanMsg->GpsLng % 10000) / 100,recCanMsg->GpsLng % 100,recCanMsg->GpsLat / 10000,(recCanMsg->GpsLat % 10000) / 100,recCanMsg->GpsLat % 100);
-    
-    sprintf(m_textEditData[V302_REC_SPEED_TEXT].textContent[0],"%03d",recCanMsg->Speed);
-    
-#endif    
+    sprintf(m_textEditData[V302_REC_GPS_TEXT].textContent[0],"N %03d.%02d'%02d\"  E %03d.%02d'%02d\"",recCanMsg->GpsLongitude / 10000,(recCanMsg->GpsLongitude % 10000) / 100,recCanMsg->GpsLongitude % 100,recCanMsg->GpsLatitude / 10000,(recCanMsg->GpsLatitude % 10000) / 100,recCanMsg->GpsLatitude % 100);
+
+    sprintf(m_textEditData[V302_REC_SPEED_TEXT].textContent[0],"%03d",recCanMsg->VehicleSpeed);
     return HMI_SUCCESS;
+
 }
 
 int CSVV302RecordTab::InitText()

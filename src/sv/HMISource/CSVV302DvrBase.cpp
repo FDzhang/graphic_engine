@@ -503,16 +503,16 @@ int CSVV302DvrBase::SetDvrStatus()
     tmpPageInst.nCurPage = 0;
     tmpPageInst.nTotalPage = 0;
 
-    GUI_OBJ_REC_CAN_MSG_EXT    tmpCanMsg;
-    tmpCanMsg.Brake = 1;
-    tmpCanMsg.Buckle = 0;
-    tmpCanMsg.Engine = 1;
-    tmpCanMsg.Gear = 1;
-    tmpCanMsg.TurnLeft = 1;
-    tmpCanMsg.TurnRight = 0;
+    GUI_OBJ_VEHICLE_DATA_INST    tmpCanMsg;
+    tmpCanMsg.BrakePedalStatus = 1;
+    tmpCanMsg.DriverBuckleSwitchStatus = 0;
+    tmpCanMsg.EngineThrottlePosition = 1;
+    tmpCanMsg.GearShiftPositon = 1;
+    tmpCanMsg.LeftTurnLampStatus = 1;
+    tmpCanMsg.RightTurnLampStatus = 0;
 
-    tmpCanMsg.GpsLat = 1290445;
-    tmpCanMsg.GpsLng = 691204;    
+    tmpCanMsg.GpsLatitude = 1290445;
+    tmpCanMsg.GpsLongitude = 691204;    
     
     tmpCanMsg.TimeYear = 2018;
     tmpCanMsg.TimeMon = 5;
@@ -520,7 +520,8 @@ int CSVV302DvrBase::SetDvrStatus()
     tmpCanMsg.TimeHour = 21;
     tmpCanMsg.TimeMin = 5;
     tmpCanMsg.TimeSec = 30;
-    tmpCanMsg.Speed = 26;
+    tmpCanMsg.VehicleSpeed = 26;
+
 
     DVR_GRAPHIC_UIOBJ_EXT table[] = {
         {GUI_OBJ_ID_THUMB_FRAME_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
