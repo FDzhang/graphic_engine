@@ -203,13 +203,15 @@ public:
 	PropertyBuilderByName(LkaLcResultT, LkaLcResult, private)
 	PropertyBuilderByName(MainMenuDataT, MainMenuStatus, private)
 	PropertyBuilderByName(DVR_GUI_LAYOUT_INST_EXT, DvrData, private)
-	PropertyBuilderByName(S302MainMenuDataT, S302MainMenuStatus, private)
 	PropertyBuilderByName(EolResultT, EolResult, private)
 	PropertyBuilderByName(Tp_Result, TpResult, private)
 	PropertyBuilderByName(PLDRadarResult, SonarResult, private)
 	PropertyBuilderByName(Sea_Result_T, SeaResult, private)
+	PropertyBuilderByName(PdResultT, PdResult, private)
 	PropertyBuilderByName(Mod_Result_T, ModResult, private)
 	PropertyBuilderByName(APAOverlayStruct, ApaResult, private)
+	PropertyBuilderByName(VehInfoT, VehInfo, private)
+	PropertyBuilderByName(CarTransparentResultT, CarTransptResult, private)
 
 	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
 	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);

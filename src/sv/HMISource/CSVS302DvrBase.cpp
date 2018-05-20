@@ -123,8 +123,9 @@ public:
 
 };
 
-CSVS302DvrBase::CSVS302DvrBase():m_avmViewLastStatus(0)
+CSVS302DvrBase::CSVS302DvrBase(IUINode* pUiNode = NULL, int pUiNodeId = -1):ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
+    m_avmViewLastStatus = 0;
 	memset(m_trigger, 0, S302_DVR_BASE_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, S302_DVR_BASE_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 1, S302_DVR_BASE_ELEMEMT_NUM * sizeof(unsigned char));
@@ -134,10 +135,13 @@ CSVS302DvrBase::CSVS302DvrBase():m_avmViewLastStatus(0)
 	m_dvrFileListTab = NULL;
     m_dvrPlayImageTab = NULL;
 
-	m_dvrRecordTab = new CSVS302RecordTab(m_uiNode, m_uiNodeId);
-	m_dvrPlaybackTab = new CSVS302PlaybackTab(m_uiNode, m_uiNodeId);
-	m_dvrFileListTab = new CSVDvrFileListHmi(m_uiNode, m_uiNodeId);
-//    m_dvrPlayImageTab = new CSVDvrPlayImageTab(m_uiNode, m_uiNodeId);
+	if(m_uiNode)
+	{
+		m_dvrRecordTab = new CSVS302RecordTab(m_uiNode, m_uiNodeId);
+		m_dvrPlaybackTab = new CSVS302PlaybackTab(m_uiNode, m_uiNodeId);
+		m_dvrFileListTab = new CSVDvrFileListHmi(m_uiNode, m_uiNodeId);
+	//	m_dvrPlayImageTab = new CSVDvrPlayImageTab(m_uiNode, m_uiNodeId);	
+	}
 
 	m_dvrRecordTabVisibility = 0;
 	m_dvrPlaybackTabVisibility = 0;
@@ -460,7 +464,32 @@ int CSVS302DvrBase::RefreshHmi()
 
     return HMI_SUCCESS;
 }
+int CSVS302DvrBase::SetElementsVisibility(unsigned char pFlag)
+{
+    if(pFlag == 0)
+    {   
+		if(m_dvrRecordTab)
+		{
+			m_dvrRecordTab->SetElementsVisibility(pFlag);
+		}
+		
+		if(m_dvrPlaybackTab)
+		{
+			m_dvrPlaybackTab->SetElementsVisibility(pFlag);
+		}
 
+		if(m_dvrFileListTab)
+		{	
+			m_dvrFileListTab->SetElementsVisibility(pFlag);
+		}
+
+	    if (m_dvrPlayImageTab)
+	    {
+	        m_dvrPlayImageTab->SetElementsVisibility(pFlag);
+	    }        
+    }
+	return HMI_SUCCESS;
+}
 int CSVS302DvrBase::ReturnHmiMsg(Hmi_Message_T* hmi_msg)
 {
 	return HMI_SUCCESS;

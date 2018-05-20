@@ -19,10 +19,10 @@ class CSVS302DvrBase : public ISVHmi
 {
 public:
 
-	CSVS302DvrBase();
+	CSVS302DvrBase(IUINode* pUiNode = NULL, int pUiNodeId = -1);
 	~CSVS302DvrBase();
 	HMI_BASE_INHERITANCE_FUNC()
-
+	int SetElementsVisibility(unsigned char pFlag);
 private:
 	int SetHmiParams();
 	int RefreshHmi();

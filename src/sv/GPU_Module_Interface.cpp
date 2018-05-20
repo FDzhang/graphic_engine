@@ -516,6 +516,15 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 			ProcCanData((CAN_DATA*)renderData);
 
 		break;
+		
+		case RENDER_DATA_VEHICAL_INFO:
+			CAvmRenderDataBase::GetInstance()->SetVehInfo((VehInfoT*)renderData);
+		break;
+		
+		case RENDER_DATA_CAR_TRANSPARENT_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetCarTransptResult((CarTransparentResultT*)renderData);
+		break;
+		
 		case RENDER_DATA_CALIB_RESULT:
 
 			ProcCalibRslt((GpuCalibResultT*)renderData);
@@ -571,6 +580,9 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 		break;
 		case RENDER_DATA_MOD_RESULT:
 			CAvmRenderDataBase::GetInstance()->SetModResult((Mod_Result_T*)renderData);
+		break;
+		case RENDER_DATA_PD_RESULT:
+			CAvmRenderDataBase::GetInstance()->SetPdResult((PdResultT*)renderData);
 		break;
 		case RENDER_DATA_EOL_RESULT:
 			CAvmRenderDataBase::GetInstance()->SetEolResult((EolResultT*)renderData);

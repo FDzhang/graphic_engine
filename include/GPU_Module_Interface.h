@@ -337,29 +337,10 @@ IconStatusT;
 
 typedef struct MainMenuDataTag
 {
-	unsigned char iconStatus[MAIN_MENU_ELEM_NUM];
+	IconStatusT iconStatus[MAIN_MENU_ELEM_NUM]; 
 	unsigned char menuVisibility;
 }
 MainMenuDataT;
-
-typedef enum S302MainMenuElementIdTag
-{
-	S302_MAIN_MENU_EOL,
-	S302_MAIN_MENU_GUIDELINE,
-	S302_MAIN_MENU_PD,
-	S302_MAIN_MENU_DVR,
-	S302_MAIN_MENU_RADAR_CTRL_AVM,
-	S302_MAIN_MENU_TURNLIGHT_CTRL_AVM,
-	S302_MAIN_MENU_ELEM_NUM,
-}
-S302MainMenuElementIdT;
-
-typedef struct S302MainMenuDataTag
-{
-	unsigned char iconStatus[S302_MAIN_MENU_ELEM_NUM];
-	unsigned char menuVisibility;
-}
-S302MainMenuDataT;
 
 typedef struct CtaResultTag
 {
@@ -368,12 +349,108 @@ typedef struct CtaResultTag
 }
 CtaResultT;	
 
+typedef enum VehWheelHubStyleTag
+{
+	WHEEL_HUB_STYEL_NORMAL = 0,
+	WHEEL_HUB_STYEL_MAX_NUMS,
+}
+VehWheelHubTypeStyleT;
+
+typedef enum VehBodyStyleTag
+{
+	BODY_STYLE_NORMAL = 0,
+	BODY_STYLE_MAX_NUMS,
+}
+VehWheelHubBodyStyleT;
+
+static const unsigned char VEH_LICENSENUM_MAX_NUMS = 9;
+typedef enum VehLicenseNumTag
+{
+	LICENSE_NUM_INVALID = 0x0,
+	LICENSE_NUM_A = 0x1,
+	LICENSE_NUM_B = 0x2,
+	LICENSE_NUM_C = 0x3,
+	LICENSE_NUM_D = 0x4,
+	LICENSE_NUM_E = 0x5,
+	LICENSE_NUM_F = 0x6,
+	LICENSE_NUM_G = 0x7,
+	LICENSE_NUM_H = 0x8,
+	LICENSE_NUM_I = 0x9,
+	LICENSE_NUM_J = 0xA,
+	LICENSE_NUM_K = 0xB,
+	LICENSE_NUM_L = 0xC,
+	LICENSE_NUM_M = 0xD,
+	LICENSE_NUM_N = 0xE,
+	LICENSE_NUM_O = 0xF,
+	LICENSE_NUM_P = 0x10,
+	LICENSE_NUM_Q = 0x11,
+	LICENSE_NUM_R = 0x12,
+	LICENSE_NUM_S = 0x13,
+	LICENSE_NUM_T = 0x14,
+	LICENSE_NUM_U = 0x15,
+	LICENSE_NUM_V = 0x16,
+	LICENSE_NUM_W = 0x17,
+	LICENSE_NUM_X = 0x18,
+	LICENSE_NUM_Y = 0x19,
+	LICENSE_NUM_Z = 0x1A,
+	LICENSE_NUM_POINT = 0x1B,
+	LICENSE_NUM_LINE = 0x1C,
+	LICENSE_NUM_0 = 0x1D,
+	LICENSE_NUM_1 = 0x1E,
+	LICENSE_NUM_2 = 0x1F,
+	LICENSE_NUM_3 = 0x20,
+	LICENSE_NUM_4 = 0x21,
+	LICENSE_NUM_5 = 0x22,
+	LICENSE_NUM_6 = 0x23,
+	LICENSE_NUM_7 = 0x24,
+	LICENSE_NUM_8 = 0x25,
+	LICENSE_NUM_9 = 0x26,
+	LICENSE_NUM_BJ = 0x27,
+	LICENSE_NUM_TJ = 0x28,
+	LICENSE_NUM_HEBEI = 0x29,
+	LICENSE_NUM_SHANXI = 0x2A,
+	LICENSE_NUM_NEIMENG = 0x2B,
+	LICENSE_NUM_LIAONING = 0x2C,
+	LICENSE_NUM_JILIN = 0x2D,
+	LICENSE_NUM_HEILONGJIANG = 0x2E,
+	LICENSE_NUM_SHANGHAI = 0x2F,
+	LICENSE_NUM_SUZHOU = 0x30,
+	LICENSE_NUM_ZHEJIANG = 0x31,
+	LICENSE_NUM_ANHUI = 0x32,
+	LICENSE_NUM_FUJIAN = 0x33,
+	LICENSE_NUM_JIANGXI = 0x34,
+	LICENSE_NUM_SHANDONG = 0x35,
+	LICENSE_NUM_HENAN = 0x36,
+	LICENSE_NUM_XUE = 0x4C,
+	LICENSE_NUM_MAX,
+
+}
+VehLicenseNumT;
+
+
+typedef struct VehInfoTag
+{
+	VehWheelHubBodyStyleT bodyStyle;
+	VehWheelHubTypeStyleT wheelHubStyle;
+	VehLicenseNumT        licenseNum[VEH_LICENSENUM_MAX_NUMS];
+}
+VehInfoT;
+
+typedef struct CarTransparentResultTag
+{
+	unsigned char carTransptStatus;
+	void* reverse;
+}
+CarTransparentResultT;
+
 typedef enum RenderDataTypeTag
 {
 	RENDER_DATA_CAN = 1,
 	RENDER_DATA_MAIN_MENU,
 	RENDER_DATA_DVR, //Data struct: DVR_GUI_LAYOUT_INST_EXT
 	RENDER_DATA_VIEW_CMD,
+	RENDER_DATA_VEHICAL_INFO,
+	RENDER_DATA_CAR_TRANSPARENT_RESULT,
 	RENDER_DATA_CALIB_RESULT,
 	RENDER_DATA_LUMB_RESULT,
 	RENDER_DATA_STITCH_ANGLE,
