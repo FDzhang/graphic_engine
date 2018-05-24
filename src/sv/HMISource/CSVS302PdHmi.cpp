@@ -121,13 +121,22 @@ int CSVS302PdHmi::Update(Hmi_Message_T& hmiMsg)
     PdResultT pdResult;
     memset(&pdResult, 0, sizeof(PdResultT));
     CAvmRenderDataBase::GetInstance()->GetPdResult(&pdResult);
+        
+    //Log_Error("GPU:---%d, ---%d, ---%d, ---%d", pdResult.warningStatus[0], pdResult.warningStatus[1], pdResult.warningStatus[2], pdResult.warningStatus[3]);
 
-    if(1 == pdResult.pdStatus)
+    if(2 == pdResult.pdStatus)
     {
         m_buttonVisibility[S302_PD_FRONT_WARNING] = pdResult.warningStatus[PD_WARNING_REG_FRONT];
         m_buttonVisibility[S302_PD_REAR_WARNING] = pdResult.warningStatus[PD_WARNING_REG_REAR];
         m_buttonVisibility[S302_PD_LEFT_WARNING] = pdResult.warningStatus[PD_WARNING_REG_LEFT];
         m_buttonVisibility[S302_PD_RIGHT_WARNING] = pdResult.warningStatus[PD_WARNING_REG_RIGHT];
+    }
+    else
+    {
+        m_buttonVisibility[S302_PD_FRONT_WARNING] = 0;
+        m_buttonVisibility[S302_PD_REAR_WARNING] = 0;
+        m_buttonVisibility[S302_PD_LEFT_WARNING] = 0;
+        m_buttonVisibility[S302_PD_RIGHT_WARNING] = 0;      
     }
 
     RefreshHmi();
