@@ -34,6 +34,9 @@
 extern IXrCore* g_pIXrCore;
 extern IDeviceManager* rm;
 
+static const float SCALE_3D_TO_2D_X = 0.34447;
+
+
 HMIPolygonBox::HMIPolygonBox(HMIPolygonBoxDataT* pPolygonBoxData):m_modelNode(NULL),
 																		m_mtl(NULL),
 																		m_mesh(NULL),
@@ -88,6 +91,16 @@ HMIPolygonBox::HMIPolygonBox(HMIPolygonBoxDataT* pPolygonBoxData):m_modelNode(NU
 	m_calibCenterY = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
 	m_calibMmppX = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
 	m_calibMmppY = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
+
+	if(m_polygonBoxData->renderRegion == REGION_3D)
+	{
+		Bev_3D_Param_T*  bev_3d_param;
+		AVMData::GetInstance()->m_usc_data->GetBev3DParam(&bev_3d_param);
+		m_modelScale = SCALE_3D_TO_2D_X;
+		m_modelBottom = -bev_3d_param->model_param.model_bottom * bev_3d_param->model_param.model_scale;
+		m_vehParam = NULL;
+		AVMData::GetInstance()->GetVehicleParam(&m_vehParam);
+	}
 
 }
 HMIPolygonBox::~HMIPolygonBox()
@@ -144,6 +157,28 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 	switch(m_polygonBoxData->renderRegion)
 	{
 	case REGION_3D:
+
+		if(!m_vehParam)
+			break;
+
+		for(int i = 0; i < m_polygonBoxData->polygonVertexNum; i++)
+		{    
+			imageCoord[0] = pInVertex[3*i];
+			imageCoord[1] = pInVertex[3*i+1];	
+			imageCoord[2] = pInVertex[3*i+2];
+        
+			gpuModelCoord[2] = -m_modelScale*(imageCoord[2] - ((m_vehParam->veh_length/2.0) - m_vehParam->veh_rwheel2tail));
+			gpuModelCoord[0] = m_modelScale*(imageCoord[0]);
+			gpuModelCoord[1] = m_modelScale*(imageCoord[1]);
+
+			m_polygonVertex[slotid+0]= gpuModelCoord[0];
+			m_polygonVertex[slotid+1]= m_modelBottom + gpuModelCoord[1];//m_modelBottom;
+			m_polygonVertex[slotid+2]= gpuModelCoord[2];
+
+			slotid+=8;
+
+		}
+		
 		break;
 	case REGION_BEV:
 		
@@ -332,6 +367,12 @@ int HMIPolygonBox::CvtCoordinate(float* pInVertex, unsigned char pCameraIndex)
 	}
 	return POLYGON_BOX_NORMAL;
 }
+int HMIPolygonBox::SetBoxImageEx(int pTextureId)
+{
+	m_mtl->SetDiffuseMap(pTextureId);
+	return POLYGON_BOX_NORMAL;
+}
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

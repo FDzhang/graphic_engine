@@ -56,6 +56,7 @@ private:
 	int DoorAction(int pDoorIndex,int pDoorState, float pRotateAngle = 40.0);
 	int Calc3DGroundTexture();
 	int Calc3DGroundPos(float *pPose,float *pWidth,float*pHeight);
+	void MockRefreshCarBodyTexture();
 private:
 	class ISceneNode* m_objViewNode;	
 	int         m_objViewNodeId;
@@ -91,6 +92,7 @@ private:
 	class INode*				m_TRUCK;
 	class IMaterial*			m_3dGroundMtl;
 	class IMaterial*			m_carLightMtl;
+	class IMaterial* 			m_carMtl;
 
 	class IAnimationManager*	m_am;
 	class IKeyAnimation*		m_wheelRot;

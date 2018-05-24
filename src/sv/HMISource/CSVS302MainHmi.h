@@ -105,7 +105,7 @@ private:
     void FreeSubHmi(unsigned char pHmiIndex);
 	void SetHmiGuideline();
 	void RefreshHmiGuideline();
-	
+	void MockRefreshLicense();
 
 private:
     Hmi_Button_Data_T m_baseButtonData[S302_MAIN_ELEMENT_NUM];
@@ -131,6 +131,9 @@ private:
 	HMIGuideLineDataT   m_guideLineData[DEMO_GUIDELINE_NUM];
     HMIGuideLine*       m_guideLine[DEMO_GUIDELINE_NUM];
 
+	HMILicenseDataT     m_licenseData;
+	HMILicense* 		m_licenese;
+    
 	unsigned char       m_singleViewDynGuideLineVisibility;
     unsigned char       m_bevDynGuideLineVisibility;
 	unsigned char       m_bevAsitLDynGuideLineVisibility;

@@ -85,7 +85,8 @@ static char CARLIGHTTEX[]=XR_RES"envision_light.tga";
 static char CARINTTEX[]=XR_RES"envision_int_tex.bmp";
 static char *CARDOORMODEL[4] = {XR_RES"envision_driver_door.mqo",XR_RES"envision_driver_assist_door.mqo",XR_RES"envision_left_rear.mqo",XR_RES"envision_right_rear.mqo"};
 static char *CARDOORWINDOWMODEL[4] = {XR_RES"envision_driver_door_w.mqo",XR_RES"envision_driver_assist_door_w.mqo",XR_RES"envision_left_rear_w.mqo",XR_RES"envision_right_rear_w.mqo"};
-static char CARTEX[] = XR_RES"envision_white.tga";
+static char CARTEX[] = XR_RES"envision_black.tga";
+static char CARTEX1[] = XR_RES"envision_white.tga";
 static char CARAMBIENTTEXTMASK[] = XR_RES"envision_mask.bmp";
 static char CARLIGHTON[]=XR_RES"envision_light_on.tga";
 static char CARTEXMASK[] = XR_RES"mask1.bmp";
@@ -190,11 +191,11 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	
 	m_CarInternal->RotateDY(0);
 
-	m_carmtlId = m_objViewNode->CreateMaterial(Material_Glossy_Alpha, &carmtl);
-	carmtl->SetOpacity(opacity);
-	carmtl->SetDiffuseMap(CARTEX);
-	carmtl->SetEnvironmentMap(CARENV);
-	carmtl->SetAmbientMap(CARAMBIENTTEXTMASK);
+	m_carmtlId = m_objViewNode->CreateMaterial(Material_Glossy_Alpha, &m_carMtl);
+	m_carMtl->SetOpacity(opacity);
+	m_carMtl->SetDiffuseMap(CARTEX);
+	m_carMtl->SetEnvironmentMap(CARENV);
+	m_carMtl->SetAmbientMap(CARAMBIENTTEXTMASK);
 	m_carId = m_objViewNode->LoadModelFromFile(CARMODEL, m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_Car); //envision
 
 	m_Car->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
@@ -647,6 +648,31 @@ int CAvmObjectViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthF
 	m_objViewNode->SetClear(pColorFlag, pDepthFlag);
 	return AVM_OBJVIEW_NORMAL;
 }
+void CAvmObjectViewNode::MockRefreshCarBodyTexture()
+{
+	static int cnt = 0;
+	static int frameCnt = 0;
+	char CARTEXW[] = XR_RES"envision_white.tga";
+
+	char avd, avd2;
+
+	if(frameCnt%25 == 0)
+	{
+		if(cnt % 3 == 0)
+		{
+			m_carMtl->SetDiffuseMap(CARTEXW);
+		}
+		else
+		{
+			m_carMtl->SetDiffuseMap(CARTEX);
+		}
+		
+		cnt ++;
+	}
+	frameCnt ++;
+
+}
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================

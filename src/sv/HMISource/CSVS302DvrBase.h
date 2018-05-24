@@ -3,7 +3,7 @@
 
 #include "ISVHmi.h"
 
-enum
+typedef enum S302DvrHmiElemTag
 {
     S302_DVR_BASE_BKG = 0,
     S302_DVR_BASE_RET = 1,    
@@ -13,7 +13,8 @@ enum
 
     S302_DVR_BASE_THUMB_TAB,
 	S302_DVR_BASE_ELEMEMT_NUM,
-};
+}
+S302DvrHmiElemT;
 
 class CSVS302DvrBase : public ISVHmi
 {

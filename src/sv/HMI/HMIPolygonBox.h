@@ -76,6 +76,7 @@ public:
 	int Update(float* pVertex, unsigned char pCameraIndex = 0);
 	int SetVisibility(unsigned char flag);
 	int SetPolygonBoxImage(unsigned char flag);
+	int SetBoxImageEx(int pTextureId);
 
 private:
 	int Init();
@@ -99,6 +100,10 @@ private:
 	float		m_calibCenterY;
 	float       m_calibMmppX;
 	float		m_calibMmppY;
+
+	float			   m_modelBottom;
+	float			   m_modelScale;
+	Veh_Param_T*	   m_vehParam;
 
 	unsigned char m_polygonBoxVisibility;
 

@@ -28,7 +28,7 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].pos[0] = offset;
     m_baseButtonData[index].pos[1] = 0;
     m_baseButtonData[index].width = m_screenWidth;
-    m_baseButtonData[index].height = 0;
+    m_baseButtonData[index].height = 60;
     m_baseButtonData[index].delegate_func = NULL;
     m_baseButtonData[index].trigger = NULL;
     m_baseButtonData[index].icon_type = STATIC_ICON;
@@ -37,7 +37,6 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[0];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
 
-#if 0
     index = S302_RECORD_INDEX_RECPOINT;
     m_baseButtonData[index].pos[0] = offset + 34;
     m_baseButtonData[index].pos[1] = 26;
@@ -50,8 +49,7 @@ int CSVS302RecordTab::SetHmiParams()
     m_baseButtonData[index].show_icon_num = 0;
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[1];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
-#endif
-
+    
     HmiInitSTBar();
     InitText();
     return S302_MAIN_HMI_NORMAL;
@@ -83,6 +81,27 @@ int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
         {
             switch(fileListTabMsg[i].Id)
             {
+
+			case GUI_OBJ_ID_REC_STATE_EXT:
+				
+			  	//Log_Error("------------GUI_OBJ_ID_REC_STATE_EXT: %d, bShow: %d", fileListTabMsg[i].uStatus.ObjVal, fileListTabMsg[i].bShow);
+                if(fileListTabMsg[i].uStatus.ObjVal == 1)
+                {
+                    if(fileListTabMsg[i].bShow == 1)
+                    {
+                        m_buttonVisibility[S302_RECORD_INDEX_RECPOINT] = 1;
+                    }
+                    else if(fileListTabMsg[i].bShow == 0)
+                    {
+                        m_buttonVisibility[S302_RECORD_INDEX_RECPOINT] = 0;
+                    }
+                }
+                else if(fileListTabMsg[i].uStatus.ObjVal == 0)
+                {
+                    m_buttonVisibility[S302_RECORD_INDEX_RECPOINT] = 0;
+                }
+			break;
+				
               case  GUI_OBJ_ID_REC_VIEW_INDEX_EXT:
                 SetDvrView(fileListTabMsg[i].uStatus.ObjVal);
                 break;
@@ -119,9 +138,21 @@ int CSVS302RecordTab::RefreshHmi()
 int CSVS302RecordTab::SetElementsVisibility(unsigned char pFlag)
 {
     for (int i = S302_RECORD_INDEX_BG_IMAGE; i <= S302_RECORD_INDEX_STABR_ENGINE; i++)
-    {
-        m_buttonVisibility[i] = pFlag;
-        m_baseButton[i]->SetVisibility(pFlag);
+    {		
+    	if(i == S302_RECORD_INDEX_RECPOINT)
+        {
+        	if(pFlag == 0)
+        	{
+        		m_buttonVisibility[i] = pFlag;
+        		m_baseButton[i]->SetVisibility(pFlag);
+    		}
+		}
+		else
+		{
+			m_buttonVisibility[i] = pFlag;
+			m_baseButton[i]->SetVisibility(pFlag);
+		}
+
     }
 
     for (int i = S302_REC_TIME_TEXT; i < S302_REC_TEXT_NUM; i++)
@@ -146,10 +177,10 @@ int CSVS302RecordTab::HmiInitSTBar()
 {
     int svresIndex = 2;
     int index = S302_RECORD_INDEX_STBAR_BK;
-    m_baseButtonData[index].pos[0] = 0;  //550
-    m_baseButtonData[index].pos[1] = 0.0;  //22
-    m_baseButtonData[index].width = m_screenWidth;
-    m_baseButtonData[index].height = 60.0;  //40
+    m_baseButtonData[index].pos[0] = 550;
+    m_baseButtonData[index].pos[1] = 22.0;
+    m_baseButtonData[index].width = 300.0;
+    m_baseButtonData[index].height = 40.0;
     m_baseButtonData[index].delegate_func = NULL;
     m_baseButtonData[index].trigger = NULL;
     m_baseButtonData[index].icon_type = STATIC_ICON;
@@ -283,14 +314,13 @@ int CSVS302RecordTab::SetStateBarVal(void *ptr)
     recCanMsg = (GUI_OBJ_VEHICLE_DATA_INST_EXT*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
 
-#if 0    
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_GEAR] = recCanMsg->Gear;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BRAKE] = recCanMsg->Brake;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNLEFT] = recCanMsg->TurnLeft;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNRIGHT] = recCanMsg->TurnRight;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_ENGINE] = recCanMsg->Engine;
-#endif
+    
+    m_buttonStatus[S302_RECORD_INDEX_STABR_GEAR] = recCanMsg->GearShiftPositon;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_BRAKE] = recCanMsg->BrakePedalStatus;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_BUCKLE] = recCanMsg->DriverBuckleSwitchStatus;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_TURNLEFT] = recCanMsg->LeftTurnLampStatus;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_TURNRIGHT] = recCanMsg->RightTurnLampStatus;
+    m_buttonStatus[S302_RECORD_INDEX_STABR_ENGINE] = recCanMsg->EngineThrottlePosition;
 
     sprintf(m_textEditData[S302_REC_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
 

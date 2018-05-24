@@ -36,19 +36,6 @@ int CSVS302PlaybackTab::SetHmiParams()
     m_baseButtonData[index].show_icon_num = 0;
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[0];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
-
-    index = S302_PLAYBACK_INDEX_RECPOINT;
-    m_baseButtonData[index].pos[0] = offset + 34;
-    m_baseButtonData[index].pos[1] = 26;
-    m_baseButtonData[index].width = 108;
-    m_baseButtonData[index].height = 26;
-    m_baseButtonData[index].delegate_func = NULL;
-    m_baseButtonData[index].trigger = NULL;
-    m_baseButtonData[index].icon_type = STATIC_ICON;
-    m_baseButtonData[index].show_flag = 1;
-    m_baseButtonData[index].show_icon_num = 0;
-    m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[1];
-    m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
     
     HmiInitSTBar();
     InitText();
@@ -142,7 +129,7 @@ int CSVS302PlaybackTab::DestroyHmiElems()
 
 int CSVS302PlaybackTab::HmiInitSTBar()
 {
-    int svresIndex = 2;
+    int svresIndex = 1;
     int index = S302_PLAYBACK_INDEX_STBAR_BK;
     m_baseButtonData[index].pos[0] = 550;
     m_baseButtonData[index].pos[1] = 22.0;
@@ -208,8 +195,6 @@ int CSVS302PlaybackTab::HmiInitSvresList()
     int index = 0;
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/record_bk.dds", XR_RES);
-    m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sCar/DVR/record_red_dot_normal.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_bk.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
@@ -281,14 +266,13 @@ int CSVS302PlaybackTab::SetStateBarVal(void *ptr)
     recCanMsg = (GUI_OBJ_VEHICLE_DATA_INST_EXT*)ptr;
     if(recCanMsg == NULL) return HMI_SUCCESS;
 
-#if 0    
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_GEAR] = recCanMsg->Gear;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BRAKE] = recCanMsg->Brake;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BUCKLE] = recCanMsg->Buckle;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNLEFT] = recCanMsg->TurnLeft;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNRIGHT] = recCanMsg->TurnRight;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_ENGINE] = recCanMsg->Engine;
-#endif
+    
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_GEAR] = recCanMsg->GearShiftPositon;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BRAKE] = recCanMsg->BrakePedalStatus;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BUCKLE] = recCanMsg->DriverBuckleSwitchStatus;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNLEFT] = recCanMsg->LeftTurnLampStatus;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNRIGHT] = recCanMsg->RightTurnLampStatus;
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_ENGINE] = recCanMsg->EngineThrottlePosition;
 
     sprintf(m_textEditData[S302_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
 

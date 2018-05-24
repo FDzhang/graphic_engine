@@ -44,6 +44,7 @@ public:
 	int ResetMattsViewRegion();
 private:
 	int SetVertextValue(float* pVertex, int pViewIndex);
+	int SetLargeViewVertextValue(float* pVertex, int pViewIndex);
 private:
 	class ISceneNode* m_singleViewNode;
 	class INode*	  m_singleViewPlaneNode[4];
@@ -51,6 +52,8 @@ private:
 	float*			  m_singleViewVertex[4];
 
 	Region			  m_mattsViewRegion;
+	
+	float*			  m_singleViewRoi[4];
 };
 
 #endif _CAVM_MATTSVIEW_H_

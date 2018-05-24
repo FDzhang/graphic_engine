@@ -3,14 +3,12 @@
 
 #include "ISVHmi.h"
 
-enum
+typedef enum DvrFileListElemTag
 {
-    V302_FILE_BKG = 0,
-	V302_FILE_SCROLL_BACK = 1,
-    V302_FILE_SCROLL_BLOCK,
-    V302_FILE_NOTHUMB,
-    V302_FILE_BUTTON_NUM,
-};
+	FILE_LIST_BKG,
+	FILE_LIST_ELEM_NUM,
+}
+DvrFileListElemT;
 
 static const int IMAGE_GRID_LIST_ITEM_NUM = 8;
 
@@ -24,12 +22,15 @@ public:
 private:
 	int RefreshHmi();
 	int SetHmiParams();
+	int SetDvrView(unsigned char pViewCmd);
 
+private:		
 
-private:	
-    
-	Hmi_Button_Data_T m_baseButtonData[V302_FILE_BUTTON_NUM];
-    HMIButton* m_baseButton[V302_FILE_BUTTON_NUM];
+	Hmi_Button_Data_T m_baseButtonData[FILE_LIST_ELEM_NUM];
+    HMIButton* m_baseButton[FILE_LIST_ELEM_NUM];
+	unsigned char m_buttonVisibility[FILE_LIST_ELEM_NUM];
+    unsigned char m_buttonShowImage[FILE_LIST_ELEM_NUM];
+    IActionTrigger*	m_trigger[FILE_LIST_ELEM_NUM];
 
 	HMIImageGridListDataT m_imageGridListData;
 	HMIImageGridList* m_imageGridList;
@@ -44,9 +45,6 @@ private:
     
     HmiTextEdit*     m_pageNum;
     HmiTextEditDataT m_pageNumData;   
-    
-    HmiTextEdit*     m_noFileText;
-    HmiTextEditDataT m_noFileTextData;    
 
 };
 

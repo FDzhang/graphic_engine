@@ -30,8 +30,8 @@ void main (void)\n\
 
 XRVertexLayout FR_RigidTexture_layout_index = XR_VERTEX_LAYOUT_PNT;
 
-//UInt32 FR_RigidTexture_render_state = XR_CULLMODE_NONE | XR_FRONTFACE_CCW | XR_DEPTHTEST_ENABLE | XR_DEPTHWRITE_ENABLE | XR_DEPTHTEST_LT;
-UInt32 FR_RigidTexture_render_state = XR_CULLMODE_NONE | XR_FRONTFACE_CCW;
+UInt32 FR_RigidTexture_render_state = XR_CULLMODE_NONE | XR_FRONTFACE_CCW | XR_DEPTHTEST_ENABLE | XR_DEPTHWRITE_ENABLE | XR_DEPTHTEST_LT;
+//UInt32 FR_RigidTexture_render_state = XR_CULLMODE_NONE | XR_FRONTFACE_CCW;
 
 const char* FR_RigidColorTexture = "FR_RigidColorTexture";
 /////////////////// 00X Shader_GhostImage /////////////////////

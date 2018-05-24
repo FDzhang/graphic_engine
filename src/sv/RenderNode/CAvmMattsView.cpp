@@ -110,8 +110,8 @@ int CAvmMattsView::Update()
 		}
 		m_singleViewNode->SetRenderROI(&m_mattsViewRegion);
 	}
-	else if(mattsViewCmd >= FRONT_SINGLE_VIEW
-		&& mattsViewCmd <= RIGHT_SINGLE_VIEW)
+	else if((mattsViewCmd >= FRONT_SINGLE_VIEW
+		&& mattsViewCmd <= RIGHT_SINGLE_VIEW))
 	{
 		if(lastMattsViewCmd != mattsViewCmd)
 		{
@@ -124,6 +124,31 @@ int CAvmMattsView::Update()
 			Region* singleViewRegion = NULL;
 			CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&singleViewRegion);
 			m_singleViewNode->SetRenderROI(singleViewRegion);
+
+			lastMattsViewCmd = mattsViewCmd;
+		}
+	}
+	else if(mattsViewCmd >= DVR_FRONT_SINGLE_VIEW
+		&& mattsViewCmd <= DVR_RIGHT_SINGLE_VIEW)
+	{
+		float* vertexData;
+		if(lastMattsViewCmd != mattsViewCmd)
+		{
+			float* vertexData;
+			for(int i =eFrontSingle;i <= eRightSingle;i++)
+			{
+				CAvmRenderDataBase::GetInstance()->GetSingleViewRoi(&vertexData, i - eFrontSingle);
+				SetVertextValue(vertexData, i - eFrontSingle);
+			}
+			for(int i = DVR_FRONT_SINGLE_VIEW;i <= DVR_RIGHT_SINGLE_VIEW;i++)
+			{
+				CAvmRenderDataBase::GetInstance()->GetLargeSingleViewRoi(&vertexData, i - DVR_FRONT_SINGLE_VIEW);
+				SetLargeViewVertextValue(vertexData, i - DVR_FRONT_SINGLE_VIEW);
+			}
+			Region* singleViewRegion = NULL;
+			Region	dvrViewRegion;
+			dvrViewRegion.Set(0.0, XrGetScreenWidth(), 0.0, XrGetScreenHeight());
+			m_singleViewNode->SetRenderROI(&dvrViewRegion);
 
 			lastMattsViewCmd = mattsViewCmd;
 		}
@@ -151,6 +176,24 @@ int CAvmMattsView::SetVertextValue(float* pVertex, int pViewIndex)
 		{
 			m_singleViewVertex[pViewIndex][j] = pVertex[j];
 		}
+		m_singleViewMesh[pViewIndex]->UnLockData();
+	}
+
+	return MATTS_VIEW_NORMAL;
+}
+int CAvmMattsView::SetLargeViewVertextValue(float* pVertex, int pViewIndex)
+{
+	if(pViewIndex < four_camera_index)
+	{		
+		m_singleViewVertex[pViewIndex][3] = pVertex[REGION_POS_LEFT];
+		m_singleViewVertex[pViewIndex][4] = pVertex[REGION_POS_TOP];
+		m_singleViewVertex[pViewIndex][3 + 7] = pVertex[REGION_POS_RIGHT];
+		m_singleViewVertex[pViewIndex][4 + 7] = pVertex[REGION_POS_TOP];
+		m_singleViewVertex[pViewIndex][3 + 14] = pVertex[REGION_POS_LEFT];
+		m_singleViewVertex[pViewIndex][4 + 14] = pVertex[REGION_POS_BOTTOM];
+		m_singleViewVertex[pViewIndex][3 + 21] = pVertex[REGION_POS_RIGHT];
+		m_singleViewVertex[pViewIndex][4 + 21] = pVertex[REGION_POS_BOTTOM];
+		
 		m_singleViewMesh[pViewIndex]->UnLockData();
 	}
 
