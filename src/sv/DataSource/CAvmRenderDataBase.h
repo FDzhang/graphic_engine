@@ -161,6 +161,7 @@ public:
 
     PropertyBuilderExt3ByName(unsigned char, VehicleTypeId, private)
 	PropertyBuilderExt3ByName(unsigned char, DisplayViewCmd, private)
+	PropertyBuilderExt3ByName(unsigned char, GuideLineCmd, private)
 	PropertyBuilderByName(unsigned char, CanData, private)
 	PropertyBuilderByName(TouchDataT, TouchData, private)
 

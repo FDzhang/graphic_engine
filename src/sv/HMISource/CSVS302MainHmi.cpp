@@ -1491,6 +1491,39 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(m_bevAsitLDynGuideLineVisibility);
 	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(m_bevAsitRDynGuideLineVisibility);
 	
+	unsigned char guideLineVisibility = 0;
+	CAvmRenderDataBase::GetInstance()->GetGuideLineCmd(guideLineVisibility);
+
+	if(guideLineVisibility == GUIDE_LINE_CMD_NOT_ACTIVE
+		|| guideLineVisibility == GUIDE_LINE_CMD_CLOSE)
+	{
+	    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
+	    {
+	    	if(i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_L
+				|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1
+				|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R
+				|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1)
+	        {
+	       		m_guideLine[i]->SetVisibility(0);
+			}
+	    }
+		for(int i = DEMO_GUIDELINE_SINGLEVIEW_SAVE_DIST; i <= DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R3; i++)
+		{
+			if(i == DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L
+				|| i == DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L1
+				|| i == DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R
+				|| i == DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R1
+				|| i == DEMO_GUIDELINE_SINGLEVIEW_SAVE_DIST)		
+			{
+				m_guideLine[i]->SetVisibility(0);
+			}
+		}
+		m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST]->SetVisibility(0);
+
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(0);
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(0);	
+	}
+
 }
 void CSVS302MainHmi::MockRefreshLicense()
 {

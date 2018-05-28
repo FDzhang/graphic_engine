@@ -611,6 +611,8 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 				CAvmRenderDataBase::GetInstance()->SetMouseIconVisibility(mouseData->visibility);
 			}
 		break;
+		case RENDER_DATA_GUIDE_LINE_CMD:
+			CAvmRenderDataBase::GetInstance()->SetGuideLineCmd(*((unsigned char*)renderData));
 		default:
 		break;
 	}

@@ -443,6 +443,14 @@ typedef struct CarTransparentResultTag
 }
 CarTransparentResultT;
 
+typedef enum GuideLineCmdTag
+{
+	GUIDE_LINE_CMD_NOT_ACTIVE = 0x0,
+	GUIDE_LINE_CMD_OPEN = 0x1,
+	GUIDE_LINE_CMD_CLOSE = 0x2,
+	
+}GuideLineCmdT;
+
 typedef enum RenderDataTypeTag
 {
 	RENDER_DATA_CAN = 1,
@@ -467,6 +475,7 @@ typedef enum RenderDataTypeTag
 	RENDER_DATA_SONAR_RESULT,
 	RENDER_DATA_SHUT_DOWN_DISPLAY,
 	RENDER_DATA_MOUSE_ICON,
+	RENDER_DATA_GUIDE_LINE_CMD,
 	RENDER_DATA_TYPE_NUM,
 }
 RenderDataTypeT;
