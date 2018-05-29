@@ -583,7 +583,7 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 		break;
 		case RENDER_DATA_PD_RESULT:
 			CAvmRenderDataBase::GetInstance()->SetPdResult((PdResultT*)renderData);
-			PdResultT* tmpPdRet = (PdResultT*)renderData;
+			//PdResultT* tmpPdRet = (PdResultT*)renderData;
 			//Log_Error("GPU-Interface:---%d, ---%d, ---%d, ---%d", tmpPdRet->warningStatus[0], tmpPdRet->warningStatus[1], tmpPdRet->warningStatus[2], tmpPdRet->warningStatus[3]);
 
 		break;
