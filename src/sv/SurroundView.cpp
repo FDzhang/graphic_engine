@@ -378,51 +378,7 @@ bool XRSV::update(unsigned int view_control_flag)
 		start = XrGetTime();
 		//Set_Frame_TimeStamp(start-pre_time_start);
 		Set_Frame_TimeStamp(AVMData::GetInstance()->m_p_can_data->GetTimeStamp());
-        /*switch(view_control_flag)
-        {
-			case FULL_SCREEN_3D:
-				if(m_fullScreenMode == 0)
-				{
-					svscn->EnterFullScreenMode(FULL_SCREEN_3D);
-					m_fullScreenMode = 1;
-				}
-			break;
-			case 2:
-				if(m_customHmi != NULL)
-				{
-					m_customHmi->SetVisibility(0);
-				}
-				m_fullScreenMode = 0;
-                svscn->SwitchCrossView();
-                g_pIXrCore->ProcessEvent();
-                g_pIXrCore->Update();
-                g_pIXrCore->Render();
-                g_pXrSwapChain->Swap();
-                return 0;
-            case 0xf0:
-            case 0xf1:
-            case 0xf2:
-            case 0xf3:
-				if(m_customHmi != NULL)
-				{
-					m_customHmi->SetVisibility(0);
-				}
-				m_fullScreenMode = 0;
-                svscn->SwitchSingleView(view_control_flag);
-                g_pIXrCore->ProcessEvent();
-                g_pIXrCore->Update();
-                g_pIXrCore->Render();
-                g_pXrSwapChain->Swap();
-                return 0;
-            default:
-				if(m_customHmi != NULL)
-				{
-					m_customHmi->SetVisibility(1);
-				}
-				m_fullScreenMode = 0;
-                break;
-        }
-*/
+        
 		unsigned char displayCmd = DatabaseGetAvmViewType();
 		static unsigned char lastDisplayCmd = 255;
 		if(lastDisplayCmd != displayCmd)
@@ -441,7 +397,6 @@ bool XRSV::update(unsigned int view_control_flag)
 			m_avmLogicManager->Update();
 
 		}
-		//svui->Update(0,0);
 		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();
 
@@ -468,6 +423,14 @@ bool XRSV::update(unsigned int view_control_flag)
 
 		cnt++;
 	}
+
+	if(m_clearBufferFlag)
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.0, 0.0, 0.0, 1.0);	
+		m_clearBufferFlag = false;
+	}
+	
 	endl = XrGetTime();
 	pre_time_start = start;
 	g_pXrSwapChain->Swap();
@@ -951,6 +914,11 @@ void XRSV::EnableCar()
     {
     	svscn->SetCarEnable(1);
 	}
+}
+
+void XRSV::ClearRenderBuffer()
+{
+	m_clearBufferFlag = true;
 }
 
 

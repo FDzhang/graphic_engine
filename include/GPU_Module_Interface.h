@@ -476,6 +476,7 @@ typedef enum RenderDataTypeTag
 	RENDER_DATA_SHUT_DOWN_DISPLAY,
 	RENDER_DATA_MOUSE_ICON,
 	RENDER_DATA_GUIDE_LINE_CMD,
+	RENDER_DATA_CLEAR_BUFFER,
 	RENDER_DATA_TYPE_NUM,
 }
 RenderDataTypeT;
@@ -497,7 +498,7 @@ RenderDataT;
 
 DLL_PUBLIC int SetRenderData(RenderDataT* pRenderData);	
 
-DLL_PUBLIC int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int dataLength);
+DLL_PUBLIC int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData = 0, unsigned int dataLength = 0);
 
 DLL_PUBLIC void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 DLL_PUBLIC void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf);

@@ -613,6 +613,10 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 		break;
 		case RENDER_DATA_GUIDE_LINE_CMD:
 			CAvmRenderDataBase::GetInstance()->SetGuideLineCmd(*((unsigned char*)renderData));
+		break;
+		case RENDER_DATA_CLEAR_BUFFER:
+			app.ClearRenderBuffer();
+		break;
 		default:
 		break;
 	}

@@ -21,7 +21,7 @@ class XRSV
 {
 public:
 
-	XRSV():m_vehicleId(0x00),m_fullScreenMode(0)
+	XRSV():m_vehicleId(0x00),m_fullScreenMode(0),m_clearBufferFlag(false)
 	{
 	}
 
@@ -57,6 +57,8 @@ public:
 
     void DisableCar();
     void EnableCar();
+
+	void ClearRenderBuffer();
     
 	int m_useHDR;
 
@@ -95,6 +97,8 @@ private:
 	class CAvmLogicManager*           m_avmLogicManager;
 
 	class CGpuAvmEventDelegate* m_surroundViewClickEvent;
+
+	bool  m_clearBufferFlag;
 };
 
 #endif /* XR_SV_H_ */
