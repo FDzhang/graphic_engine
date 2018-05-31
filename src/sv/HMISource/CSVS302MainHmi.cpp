@@ -473,9 +473,6 @@ private:
 
 CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-	m_lastAvmViewIndex = 0;
-	m_lastDvrStatus = 0;
-
     memset(m_subHmiInitFlag, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char)); 
     memset(m_subHmiVisibility, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char));
     memset(m_subHmi, NULL, S302_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
@@ -926,58 +923,9 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_subHmiVisibility[S302_DEMO_MOD_HMI] = 0;
         FreeSubHmi(S302_DEMO_MOD_HMI);
     }
-    /*InitSubHmi(S302_DEMO_SWITCH_VIEW_HMI);
-    if(m_subHmi[S302_DEMO_SWITCH_VIEW_HMI])
-    {
-        m_subHmiVisibility[S302_DEMO_SWITCH_VIEW_HMI] = 1;
-        m_subHmi[S302_DEMO_SWITCH_VIEW_HMI]->Update(hmiMsg);
-    }*/
 
-	/*if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
-	{
-		unsigned char m_tmpRGB[192 * 112 * 3];
-		memset(&m_tmpRGB, 0, 192 * 112 * 3);
-
-		GUI_OBJ_THUMB_ITEM_EXT tmp = {"1234213424", m_tmpRGB, 192, 112, 1, 1};
-		GUI_OBJ_THUMB_FRAME_INST_EXT tmpInst;
-		tmpInst.item[0] = tmp;
-		tmpInst.item[1] = tmp;
-		tmpInst.item[2] = tmp;
-		tmpInst.item[3] = tmp;
-		tmpInst.item[4] = tmp;
-		tmpInst.item[5] = tmp;
-
-		
-      	DVR_GRAPHIC_UIOBJ_EXT table[] = {
-			{GUI_OBJ_ID_THUMB_FRAME_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
-			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
-			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
-			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
-			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
-			{GUI_OBJ_ID_THUMB_TAB_EXT, "asdsfsd", 1, 1, GUI_OBJ_STATUS_TYPE_POINTER_EXT, (void*)&tmpInst},
-      		};
-
-    	DVR_GUI_LAYOUT_INST_EXT dvrData;
-		dvrData.curLayout = GUI_LAYOUT_THUMB_EXT;
-		dvrData.ObjNum = 6;
-		for(int i = 0; i < dvrData.ObjNum; i++)
-		{
-			dvrData.pTable = table;
-		}
-		
-		CAvmRenderDataBase::GetInstance()->SetDvrData(&dvrData);
-	}*/
-
-	#if 1
-	//s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] = BUTTON_ON_IMAGE;
 	if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
     {
-		if(m_lastDvrStatus == 0)
-	    {
-	    	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_lastAvmViewIndex);
-			m_lastDvrStatus = 1;
-		}
-		
         InitSubHmi(S302_DEMO_DVR_HMI);
         if(m_subHmi[S302_DEMO_DVR_HMI])
         {
@@ -987,35 +935,11 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
     }
     else
     {
-    	if(m_lastDvrStatus == 1)
-		{
-			if(m_lastAvmViewIndex != TOUR_VIEW)
-			{
-	    		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_lastAvmViewIndex);
-			}
-			m_lastDvrStatus = 0;
-		}
         m_subHmiVisibility[S302_DEMO_DVR_HMI] = 0;
         //FreeSubHmi(S302_DEMO_DVR_HMI);
     }
 	
 	//Log_Error("-----------S302_MAIN_MENU_DVR_ENTER_ICON: %d, AvmViewIndex: %d", s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON], m_lastAvmViewIndex);
-    #endif
-
-    /*InitSubHmi(S302_DEMO_GUIDELINE_HMI);
-    if(m_subHmi[S302_DEMO_GUIDELINE_HMI])
-    {
-        m_subHmiVisibility[S302_DEMO_GUIDELINE_HMI] = 1;
-        m_subHmi[S302_DEMO_GUIDELINE_HMI]->Update(hmiMsg);
-    }*/
-
-    /*if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE
-		&& hmiMsg.dvrTabMsg.playbackMode != 1)
-    {
-        char* hmiName = "CSVDvrBaseHmi";
-        CSVHmiIntent::GetInstance()->Intent(hmiName);
-    }*/
-
 
     if(s302MainMenuData.menuVisibility == 0)
     {
@@ -1349,26 +1273,6 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_displayViewCmd);
 
     steer_angle = 0.0 - steer_angle;
-
-//   steer_angle = -120;
-//   gear_state = GEAR_R;
-//    m_displayViewCmd = REAR_SINGLE_VIEW;
-//    
-//    steer_angle = m_cnt *4.8;
-//
-//    if(m_cnt < 250) steer_angle = steer_angle - 600;
-//    else steer_angle = steer_angle - 1800;
-//    
-//    if(m_cnt < 250) gear_state = GEAR_P;
-//    else gear_state = GEAR_R;
-//
-//    if(m_cnt < 250) m_displayViewCmd = FRONT_SINGLE_VIEW;
-//    else if(m_cnt <= 500) m_displayViewCmd = REAR_SINGLE_VIEW;
-//
-//    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_displayViewCmd);
-//    
-//    m_cnt ++;
-//    if(m_cnt == 500) m_cnt = 0;
 
 	m_singleViewDynGuideLineVisibility = 1;
 	m_bevDynGuideLineVisibility = 1;

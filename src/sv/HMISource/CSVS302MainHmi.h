@@ -138,9 +138,6 @@ private:
     unsigned char       m_bevDynGuideLineVisibility;
 	unsigned char       m_bevAsitLDynGuideLineVisibility;
 	unsigned char       m_bevAsitRDynGuideLineVisibility;
-
-	unsigned char       m_lastAvmViewIndex;
-	unsigned char       m_lastDvrStatus;
 	
 public:
 

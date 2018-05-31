@@ -493,7 +493,9 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 			currentViewStatus = *((unsigned char*)renderData);
 		
 			//Log_Error("--------RENDER_DATA_VIEW_CMD: %d", currentViewStatus);
-			if(currentViewStatus != lastViewStatus)
+			if(currentViewStatus != lastViewStatus
+				|| (currentViewStatus >= FRONT_SINGLE_VIEW
+				&& currentViewStatus <= RIGHT_SINGLE_VIEW))
 			{
 				CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(currentViewStatus);
 				lastViewStatus = currentViewStatus;
