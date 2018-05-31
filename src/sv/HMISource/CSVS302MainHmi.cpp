@@ -989,7 +989,10 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
     {
     	if(m_lastDvrStatus == 1)
 		{
-	    	CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_lastAvmViewIndex);
+			if(m_lastAvmViewIndex != TOUR_VIEW)
+			{
+	    		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_lastAvmViewIndex);
+			}
 			m_lastDvrStatus = 0;
 		}
         m_subHmiVisibility[S302_DEMO_DVR_HMI] = 0;
