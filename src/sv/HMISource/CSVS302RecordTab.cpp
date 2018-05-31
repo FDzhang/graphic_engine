@@ -283,27 +283,31 @@ unsigned char *CSVS302RecordTab::HmiGetSvresFile(int index)
 
 int CSVS302RecordTab::SetDvrView(unsigned char pViewCmd)
 {
+	uint8_t displayCmd;
+
 //    Log_Error("====================SetDvrView = %d",pViewCmd);
 	if(pViewCmd == GUI_VIEW_INDEX_FRONT_EXT)
 	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_FRONT_SINGLE_VIEW);
+		displayCmd = DVR_FRONT_SINGLE_VIEW;
 	}
 	else if(pViewCmd == GUI_VIEW_INDEX_REAR_EXT)
 	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_REAR_SINGLE_VIEW);
+		displayCmd = DVR_REAR_SINGLE_VIEW;
 	}
 	else if(pViewCmd == GUI_VIEW_INDEX_LEFT_EXT)
 	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_LEFT_SINGLE_VIEW);
+		displayCmd = DVR_LEFT_SINGLE_VIEW;
 	}
 	else if(pViewCmd == GUI_VIEW_INDEX_RIGHT_EXT)
 	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(DVR_RIGHT_SINGLE_VIEW);
+		displayCmd = DVR_RIGHT_SINGLE_VIEW;
 	}
 	else if(pViewCmd == GUI_VIEW_INDEX_MATTS_EXT)
 	{
-		CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(MATTS_VIEW);
+		displayCmd = MATTS_VIEW;
 	}
+
+	UpdateRenderData(RENDER_DATA_VIEW_CMD, &displayCmd, sizeof(uint8_t));
 
 	return HMI_SUCCESS;
 }
