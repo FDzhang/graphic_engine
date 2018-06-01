@@ -648,8 +648,8 @@ int CAvmViewControlModel::SetViewNodeVisibility(VisibilityIndexT pFuncId)
 	if(m_avmLeftLinearView
 		&& m_avmRightLinearView)
 	{
-		m_avmLeftLinearView->SetVisibility(unsigned char viewVisibilityFlag);
-		m_avmRightLinearView->SetVisibility(unsigned char viewVisibilityFlag);
+		m_avmLeftLinearView->SetVisibility(viewVisibilityFlag);
+		m_avmRightLinearView->SetVisibility(viewVisibilityFlag);
 	}
 
 	CAvmRenderDataBase::GetInstance()->GetSideBySideSingleViewVisibility(pFuncId, viewVisibilityFlag);
