@@ -104,6 +104,8 @@ private:
 	class CAvmLargeSingleView* m_avmLargeSingleView;
 	class CAvmLinearViewNode*  m_avm180DegreeView;
 	class CAvmLeftRightView* m_avmLeftRightView;
+	class CAvmLeftLinearView* m_avmLeftLinearView;
+	class CAvmRightLinearView* m_avmRightLinearView;
 	class CAvmLarge3dView *  m_avmLarge3dView;
 	class CAvmSideBySideSingleView* m_avmSideBySideSingleView;
 

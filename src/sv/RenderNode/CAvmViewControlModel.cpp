@@ -36,7 +36,8 @@
 #include "CAvmLeftRightView.h"
 #include "CAvmLarge3dView.h"
 #include "CAvmTimeStitcherNodeNew.h"
-
+#include "CAvmLeftLinearView.h"
+#include "CAvmRightLinearView.h"
 
 #include "CAvmSideBySideSingleView.h"
 #include "../GlSV2D.h"
@@ -101,6 +102,8 @@ int CAvmViewControlModel::InitViewNode()
 	m_avmObjViewNode= new CAvmObjectViewNode;
 	m_avm180DegreeView = new CAvmLinearViewNode;
 	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
+	m_avmLeftLinearView = NULL;
+	m_avmRightLinearView = NULL;
 	m_avmLarge3dView = new CAvmLarge3dView;
 	m_avmSideBySideSingleView = NULL;
 
