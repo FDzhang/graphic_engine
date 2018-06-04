@@ -477,6 +477,7 @@ CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISV
     memset(m_subHmiVisibility, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char));
     memset(m_subHmi, NULL, S302_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
     memset(m_trigger, 0, S302_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
+	memset(m_baseButton, 0, S302_MAIN_ELEMENT_NUM * sizeof(HMIButton));
     memset(m_buttonVisibility, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
     memset(m_buttonShowImage, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
     memset(s302HmiElementShowImage, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
@@ -525,7 +526,7 @@ CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISV
 
 CSVS302MainHmi::~CSVS302MainHmi()
 {
-    for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
+    /*for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
         SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
 		if(i != S302_REMIND_TXT
@@ -541,7 +542,7 @@ CSVS302MainHmi::~CSVS302MainHmi()
         }
         SAFE_DELETE(m_trigger[i]);
         SAFE_DELETE(m_baseButton[i]);
-    }
+    }*/
 }
 
 int CSVS302MainHmi::SetHmiParams()
@@ -681,8 +682,8 @@ int CSVS302MainHmi::SetHmiParams()
         m_baseButtonData[i].delegate_func = NULL;
         m_baseButtonData[i].trigger = m_trigger[i];
 
-        m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
-        m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+        //m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+        //m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
     }
 
     return S302_MAIN_HMI_NORMAL;
@@ -773,7 +774,7 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
         m_buttonPos[i][BUTTON_POS_Y] = (window_height - hide_show_button_height) * 0.5;
     }
 
-    SetHmiParams();
+    //SetHmiParams();
 	SetHmiGuideline();
 
     return S302_MAIN_HMI_NORMAL;
@@ -959,19 +960,26 @@ int CSVS302MainHmi::RefreshHmi()
     
     for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
-        m_baseButton[i]->SetShowIconNum(m_buttonShowImage[i]);
-        m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+    	if(m_baseButton[i])
+        {
+        	m_baseButton[i]->SetShowIconNum(m_buttonShowImage[i]);
+        	m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+		}
     }
     for(int i = S302_MAIN_MENU_BKG; i <= S302_SETTING_MENU_CALIBRATION_STATUS; i++)
     {
-        if(s302ShowCtrlBtns == 0)
+        if(s302ShowCtrlBtns == 0
+			&& m_baseButton[i])
         {
             m_baseButton[i]->SetVisibility(0);
         }
     }
     for(int i = 0; i < S302_MAIN_ELEMENT_NUM; i++)
     {
-        m_baseButton[i]->Update();
+    	if(m_baseButton[i])
+        {
+        	m_baseButton[i]->Update();
+		}
     }
 
     if(m_subHmi[S302_DEMO_EOL_HMI])
@@ -1264,7 +1272,7 @@ void CSVS302MainHmi::RefreshHmiGuideline()
     float steer_angle = 100.0;
     unsigned char gear_state = GEAR_R;
     unsigned char m_displayViewCmd = FRONT_SINGLE_VIEW;
-	const unsigned char GEAR_SHIFT_R = 1;
+	//const unsigned char GEAR_SHIFT_R = 1;
     
     static int m_cnt = 0;
 
@@ -1273,6 +1281,17 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_displayViewCmd);
 
     steer_angle = 0.0 - steer_angle;
+
+	if(steer_angle > 500.0)
+	{
+		steer_angle = 500.0;
+	}
+	else if(steer_angle < -500.0)
+	{
+		steer_angle = -500.0;
+	}
+	
+	ResetGuideLineEndPos(steer_angle);
 
 	m_singleViewDynGuideLineVisibility = 1;
 	m_bevDynGuideLineVisibility = 1;
@@ -1286,7 +1305,7 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R
 			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1)
 		{
-	        if(gear_state == GEAR_SHIFT_R)
+	        if(gear_state == GEAR_R)
 	        {
 	            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
 	        }
@@ -1297,7 +1316,7 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 		}
 
     }
-    if(gear_state == GEAR_SHIFT_R)
+    if(gear_state == GEAR_R)
     {
         m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
 		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
@@ -1309,11 +1328,14 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 		{
 			m_bevAsitLDynGuideLineVisibility = 0;
 		}
-		else if(steer_angle == 0)
-		{
-			m_bevAsitLDynGuideLineVisibility = 0;
-			m_bevAsitRDynGuideLineVisibility = 0;
-		}
+
+		if(steer_angle < 15.0
+            && steer_angle > -15.0)
+        {
+            m_bevAsitLDynGuideLineVisibility = 0;
+            m_bevAsitRDynGuideLineVisibility = 0;
+        }
+
 
 	}
     else
@@ -1329,11 +1351,13 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 		{
 			m_bevAsitRDynGuideLineVisibility = 0;
 		}
-		else if(steer_angle == 0)
-		{
-			m_bevAsitLDynGuideLineVisibility = 0;
-			m_bevAsitRDynGuideLineVisibility = 0;
-		}
+
+		if(steer_angle < 15.0
+            && steer_angle > -15.0)
+        {
+            m_bevAsitLDynGuideLineVisibility = 0;
+            m_bevAsitRDynGuideLineVisibility = 0;
+        }
 
 	}   
 
@@ -1432,6 +1456,25 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 	}
 
 }
+void CSVS302MainHmi::ResetGuideLineEndPos(float pSteerAngle)
+{
+	float resetEndPos = 5000.0;
+	if(pSteerAngle > 300.0
+		|| pSteerAngle < -300.0)
+	{
+		resetEndPos = 5000.0;
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->ResetEndPos(resetEndPos);
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->ResetEndPos(resetEndPos);	
+	}
+	else
+	{
+		resetEndPos = 10000.0;
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->ResetEndPos(resetEndPos);
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->ResetEndPos(resetEndPos);	
+	
+	}
+}
+
 void CSVS302MainHmi::MockRefreshLicense()
 {
 	static int cnt = 0;

@@ -47,11 +47,12 @@ CAvmLogicManager::~CAvmLogicManager()
 }
 int CAvmLogicManager::Init()
 {
+	Log_Error("------------Init GPU!");
 	InitViewModel();
 	InitOverlayModel();
 	InitAlgoHmiModel();
 	InitHmi();
-	
+	Log_Error("------------Init GPU finished!");	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
 int CAvmLogicManager::ProcessTouchEvent()

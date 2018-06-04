@@ -238,7 +238,7 @@ public:
     int Update(float pSteeringWheel,int pDriveDirection);
 	int ResetCamZone(unsigned char pCamPos, float* pCamZone);
 	int SetVisibility(unsigned char pFlag);
-
+    int ResetEndPos(float pEndPos);
 private:
     int CalSteeringWheel2Radius(float *pRadius,float pSteerAngle,int pGearState);
     int CaculateCenter(float* pCenterX, float* pCenterY, 

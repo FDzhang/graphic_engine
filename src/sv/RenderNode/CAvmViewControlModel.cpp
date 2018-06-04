@@ -298,6 +298,15 @@ int CAvmViewControlModel::InitViewNode()
 		m_avmObjViewNode->SetClear(FALSE,TRUE);
 		initObjViewNode = 1;
 	}
+	
+	if(m_avmLeftRightView == NULL)
+	{
+		m_avmLeftRightView = new CAvmLeftRightView;
+		if(m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
+		{
+			m_avmLeftRightView->SetClear(FALSE, FALSE);
+		}
+	}
 
 	if(SVW_GPU == current_vehicle_type_id)
 	{
@@ -641,10 +650,10 @@ int CAvmViewControlModel::SetViewNodeVisibility(VisibilityIndexT pFuncId)
 	}
 		
 	CAvmRenderDataBase::GetInstance()->GetLeftRightViewVisibility(pFuncId, viewVisibilityFlag);
-	/*if(m_avmLeftRightView)
+	if(m_avmLeftRightView)
 	{
 		m_avmLeftRightView->SetVisibility(viewVisibilityFlag);
-	}*/
+	}
 	if(m_avmLeftLinearView
 		&& m_avmRightLinearView)
 	{
@@ -935,15 +944,8 @@ int CAvmViewControlModel::ProcessLeftRightView()
 
 	if(leftRightViewCmd == LEFT_RIGHT_LINEAR_VIEW)
 	{
-		/*if(m_avmLeftRightView == NULL)
-		{
-			m_avmLeftRightView = new CAvmLeftRightView;
-			if(m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
-			{
-				m_avmLeftRightView->SetClear(FALSE, FALSE);
-			}
-		}*/
-		if(m_avmLeftLinearView == NULL
+
+		/*if(m_avmLeftLinearView == NULL
 			&& m_avmRightLinearView == NULL)
 		{
 			m_avmLeftLinearView = new CAvmLeftLinearView;
@@ -956,7 +958,7 @@ int CAvmViewControlModel::ProcessLeftRightView()
 			{
 				m_avmRightLinearView->SetClear(FALSE, FALSE);
 			}
-		}
+		}*/
 		
 		CAvmRenderDataBase::GetInstance()->Set3dViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetStitchViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);

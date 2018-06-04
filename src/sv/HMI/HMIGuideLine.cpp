@@ -1084,6 +1084,12 @@ int HMIGuideLine::ResetCamZone(unsigned char pCamPos, float* pCamZone)
 
     return GUIDELINE_NORMAL;
 }
+int HMIGuideLine::ResetEndPos(float pEndPos)
+{
+	m_guideLineData->guideLineEndPos = pEndPos;
+	return GUIDELINE_NORMAL;
+}
+
 int HMIGuideLine::SetVisibility(unsigned char pFlag)
 {
     if(pFlag > 1)

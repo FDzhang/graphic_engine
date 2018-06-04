@@ -105,6 +105,7 @@ private:
     void FreeSubHmi(unsigned char pHmiIndex);
 	void SetHmiGuideline();
 	void RefreshHmiGuideline();
+	void ResetGuideLineEndPos(float pSteerAngle);
 	void MockRefreshLicense();
 
 private:
