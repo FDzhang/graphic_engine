@@ -774,6 +774,8 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
         m_buttonPos[i][BUTTON_POS_Y] = (window_height - hide_show_button_height) * 0.5;
     }
 
+	InitSubHmi(S302_DEMO_DVR_HMI);
+
     //SetHmiParams();
 	SetHmiGuideline();
 

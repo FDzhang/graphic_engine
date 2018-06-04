@@ -154,9 +154,39 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 	return LEFT_RIGHT_VIEW_NORMAL;
 }
 int CAvmLeftRightView::UpdateNode()
-{	
+{		
+	unsigned char leftRightViewCmd = 0;
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(leftRightViewCmd);
 
+	Region* viewRegion1 = NULL;
+	Region* viewRegionleft = NULL;
+	Region* viewRegionright = NULL;
+	Region  viewRegion2;
 
+	if(leftRightViewCmd == LEFT_SINGLE_VIEW)
+	{
+		CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&viewRegion1);
+		m_leftRightViewNode[0]->SetRenderROI(viewRegion1);
+		
+		viewRegion2.Set(0,0,0,0);
+		m_leftRightViewNode[1]->SetRenderROI(&viewRegion2);
+	}
+	else if(leftRightViewCmd == RIGHT_SINGLE_VIEW)
+	{
+		CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&viewRegion1);
+		m_leftRightViewNode[1]->SetRenderROI(viewRegion1);
+		
+		viewRegion2.Set(0,0,0,0);
+		m_leftRightViewNode[0]->SetRenderROI(&viewRegion2);	
+	}
+	else if(leftRightViewCmd == LEFT_RIGHT_LINEAR_VIEW)
+	{	
+		CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegionleft, left_camera_index);
+		m_leftRightViewNode[0]->SetRenderROI(viewRegionleft);	
+		CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegionright, right_camera_index);	
+		m_leftRightViewNode[1]->SetRenderROI(viewRegionright);
+	}
+	
 	return LEFT_RIGHT_VIEW_NORMAL;
 }
 

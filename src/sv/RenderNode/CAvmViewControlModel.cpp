@@ -715,7 +715,7 @@ int CAvmViewControlModel::ProcessSingleViewDisplay()
 	unsigned char singleViewCmd = 0;
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(singleViewCmd);
 
-	if(singleViewCmd <= RIGHT_SINGLE_VIEW)
+	if(singleViewCmd <= REAR_SINGLE_VIEW)
 	{
 		switch(singleViewCmd)
 		{
@@ -942,7 +942,9 @@ int CAvmViewControlModel::ProcessLeftRightView()
 	unsigned char leftRightViewCmd = 0;
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(leftRightViewCmd);
 
-	if(leftRightViewCmd == LEFT_RIGHT_LINEAR_VIEW)
+	if(leftRightViewCmd == LEFT_RIGHT_LINEAR_VIEW
+		|| leftRightViewCmd == LEFT_SINGLE_VIEW
+		|| leftRightViewCmd == RIGHT_SINGLE_VIEW)
 	{
 
 		/*if(m_avmLeftLinearView == NULL
@@ -959,6 +961,11 @@ int CAvmViewControlModel::ProcessLeftRightView()
 				m_avmRightLinearView->SetClear(FALSE, FALSE);
 			}
 		}*/
+
+		if(m_avmLeftRightView)
+		{
+			m_avmLeftRightView->UpdateNode();
+		}
 		
 		CAvmRenderDataBase::GetInstance()->Set3dViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 0);
 		CAvmRenderDataBase::GetInstance()->SetStitchViewVisibility(PROCESS_VIEW_DISPLAY_FUNC, 1);

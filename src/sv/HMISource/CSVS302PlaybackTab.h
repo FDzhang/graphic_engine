@@ -98,9 +98,9 @@ class CSVS302PlaybackTab : public ISVHmi
     int HmiInitLayer();
     int HmiInitSvresList();
 
-    unsigned char *HmiGetSvresFile(int index);
+    char *HmiGetSvresFile(int index);
 
-    unsigned char *m_hmiSvresFileName[MAX_SVRES_NUM];
+    char *m_hmiSvresFileName[MAX_SVRES_NUM];
     unsigned char m_currentSvresNum;
 
     int m_screenWidth;
