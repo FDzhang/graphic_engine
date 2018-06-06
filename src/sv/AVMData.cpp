@@ -119,7 +119,7 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	char calibfile[MAX_NAME_LENGTH];
 
 	CImageCameraSourceRender *pCamSource;
-    m_pAVMData->m_exParam = new DataExPosParam(config.bev_conig.smc_hmi.SPACE_MODEL_Y_MIN,config.bev_conig.smc_hmi.SPACE_MODEL_SCALE_SIZE);
+    m_pAVMData->m_exParam = new DataExPosParam(config.pSmc->bev_3d_param.model_param.model_bottom,config.pSmc->bev_3d_param.model_param.model_scale);
     m_pAVMData->m_camInstrinct=new AVMCameraInternal;
 	m_pAVMData->m_lumin_para = new AVMLuminanceData;
 	m_pAVMData->m_2D_lut = new AVM2DLUT;
@@ -152,12 +152,13 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 
 	}
 
-	m_pAVMData->m_calib_3d.model_bottom = config.bev_conig.smc_hmi.SPACE_MODEL_Y_MIN;
-	m_pAVMData->m_calib_3d.model_scale= SCALE_3D_TO_2D_X;
-
-	m_pAVMData->m_calib_3d.vehicle_length= config.bev_conig.smc_hmi.VEHICLE_LENGTH;
-
-	m_pAVMData->m_calib_3d.vehicle_rear_axis_2_bumper= config.bev_conig.smc_hmi.VEHICLE_REARWHEEL_TO_REAR_BUMPER;
+    m_pAVMData->m_calib_3d.model_bottom = config.pSmc->bev_3d_param.model_param.model_bottom;
+    m_pAVMData->m_calib_3d.model_scale = SCALE_3D_TO_2D_X;
+       
+    m_pAVMData->m_calib_3d.vehicle_length= config.pSmc->veh_param.veh_length;
+       
+    m_pAVMData->m_calib_3d.vehicle_rear_axis_2_bumper= config.pSmc->veh_param.veh_rwheel2tail;
+	
 	sprintf(exfilename,"%s%s",config.file_path,config.exparam_file_name);
 	sprintf(exAdjustfile,"%s%s",config.file_path,config.exparam_adjust_file_name);
 	sprintf(LuminParafile,"%s%s",config.file_path,config.lumin_pos_file_name);
@@ -174,7 +175,7 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	}
 	else if(config.config_file_source == CFG_FROM_SYS)
 	{
-	    m_pAVMData->m_exParam->Init(config.pPose,config.bev_conig.smc_hmi.VEHICLE_LENGTH,config.bev_conig.smc_hmi.VEHICLE_REARWHEEL_TO_REAR_BUMPER,exAdjustfile);
+		m_pAVMData->m_exParam->Init(config.pPose,config.pSmc->veh_param.veh_length,config.pSmc->veh_param.veh_rwheel2tail);
         //m_pAVMData->m_camInstrinct->Init(config.pSmc);
         m_pAVMData->m_camInstrinct->Init(config.pCamParam,config.pSmc);
 	}

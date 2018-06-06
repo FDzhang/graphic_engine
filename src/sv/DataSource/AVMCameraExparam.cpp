@@ -143,6 +143,26 @@ void DataExPosParam::Init(str_avm_pose_t *pPose,float vehicle_length,float vehic
 
 
 }
+void DataExPosParam::Init(str_avm_pose_t *pPose,float vehicle_length,float vehicle_rear_wheel_to_bumper)
+{
+
+    int i,j,k =0;
+    m_offsetIner2Global = XRVec4::XRVec4(0,m_space_scale*m_space_y_min,
+    	-(vehicle_length/2-vehicle_rear_wheel_to_bumper)*SCALE_3D_TO_2D_Y,0.0);
+    	m_scale[0]= SCALE_3D_TO_2D_X;
+    	m_scale[1]= SCALE_3D_TO_2D_Y;
+    	m_scale[2]= SCALE_3D_TO_2D_Z;
+    
+    if(pPose != NULL)
+    {
+        ImprotCalibResultFromConfigFile(pPose,m_pos_angle,m_pos_trans);
+    }
+      	
+    InitModleTransformMatrix(m_ModelTransform);
+    Calc3DAVMTransform(m_ModelTransform,m_pos_angle,m_pos_trans,m_offsetIner2Global,m_scale);	 
+
+
+}
 
 void DataExPosParam::GetCameraPos(float *pos,int camera_index)
 {
