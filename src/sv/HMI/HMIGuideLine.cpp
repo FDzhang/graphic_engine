@@ -559,7 +559,7 @@ int HMIGuideLine::CaculateHorizontalDynamicLine(float* pVertex , float pSteering
     unsigned int index=0,slotid=0;
 
     float backWheel2Tail = 0.0;//m_vehParam->veh_rwheel2tail;
-    float vehicleWidth = m_vehParam->veh_width;
+    float vehicleWidth = m_vehParam->veh_width - 200.0;
     float frontWheel2Bumper = 0.0;//m_vehParam->veh_fwheel2head;
     float axisLength = m_vehParam->veh_axis_length + frontWheel2Bumper;
 
@@ -753,7 +753,7 @@ int HMIGuideLine::CaculateCenter(float* pCenterX, float* pCenterY,
 {
     float fTurnRadius;
     float fBackWheel2Tail = m_vehParam->veh_rwheel2tail;//AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Rear_Wheel2Bumper_Length();
-    float fVehicleWidth = m_vehParam->veh_width;//AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Width();
+    float fVehicleWidth = m_vehParam->veh_width - 200.0;//AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Width();
     float fFrontWheel2Bumper = m_vehParam->veh_fwheel2head;//AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Front_Wheel2Bumper_Length();
     float fAxisLength = m_vehParam->veh_axis_length + fFrontWheel2Bumper;//AVMData::GetInstance()->m_p_can_data->Get_Vehicle_Axis_Length() + fFrontWheel2Bumper;
 
