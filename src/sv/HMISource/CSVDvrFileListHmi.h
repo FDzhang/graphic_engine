@@ -6,6 +6,7 @@
 typedef enum DvrFileListElemTag
 {
 	FILE_LIST_BKG,
+    FILE_LIST_NOTHUMB,
 	FILE_LIST_ELEM_NUM,
 }
 DvrFileListElemT;

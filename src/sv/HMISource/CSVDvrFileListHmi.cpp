@@ -20,6 +20,7 @@ CSVDvrFileListHmi::~CSVDvrFileListHmi()
         //SAFE_DELETE(m_textEditData[i].fontTypeMtlName);
 		//SAFE_DELETE(m_textEdit[i]);
 	}
+    SAFE_DELETE(m_baseButtonData[FILE_LIST_NOTHUMB].icon_file_name[0]);
 
 }
 int CSVDvrFileListHmi::SetHmiParams()
@@ -27,6 +28,9 @@ int CSVDvrFileListHmi::SetHmiParams()
 	
 	m_baseButton[FILE_LIST_BKG] = new HMIButton(&(m_baseButtonData[FILE_LIST_BKG]),m_uiNode);
 	m_baseButton[FILE_LIST_BKG]->SetVisibility(m_buttonVisibility[FILE_LIST_BKG]);
+
+    m_baseButton[FILE_LIST_NOTHUMB] = new HMIButton(&(m_baseButtonData[FILE_LIST_NOTHUMB]),m_uiNode);
+    m_baseButton[FILE_LIST_NOTHUMB]->SetVisibility(m_buttonVisibility[FILE_LIST_NOTHUMB]);
 
 	m_imageGridList = new HMIImageGridList(&m_imageGridListData);
 
@@ -160,7 +164,23 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	m_pageNumData.textColor[2] = 0.625;
 	m_pageNumData.textContent[0] = new char[100];
 	char* ptext0 = "1234";
-	sprintf(m_pageNumData.textContent[0],"%s", ptext0);    
+	sprintf(m_pageNumData.textContent[0],"%s", ptext0);
+
+
+    m_baseButtonData[FILE_LIST_NOTHUMB].pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 60;
+    m_baseButtonData[FILE_LIST_NOTHUMB].pos[1] = 300;
+    m_baseButtonData[FILE_LIST_NOTHUMB].width = 115;
+    m_baseButtonData[FILE_LIST_NOTHUMB].height = 55;
+    m_baseButtonData[FILE_LIST_NOTHUMB].delegate_func = NULL;
+    m_baseButtonData[FILE_LIST_NOTHUMB].trigger = NULL;
+    m_baseButtonData[FILE_LIST_NOTHUMB].icon_type = STATIC_ICON;
+    m_baseButtonData[FILE_LIST_NOTHUMB].show_flag = 0;
+    m_baseButtonData[FILE_LIST_NOTHUMB].show_icon_num = 0;
+    m_baseButtonData[FILE_LIST_NOTHUMB].icon_file_name[0] = new char[50];
+    sprintf(m_baseButtonData[FILE_LIST_NOTHUMB].icon_file_name[0],"%sS302/s302_nofile.dds",XR_RES); 
+    m_baseButtonData[FILE_LIST_NOTHUMB].animationStyle = BUTTON_NOMAL;
+    m_buttonVisibility[FILE_LIST_NOTHUMB] = 0;
+    
 	SetHmiParams();
 	
 	return HMI_SUCCESS;
@@ -270,10 +290,12 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
                         else 
                         {
                         }
+                        m_buttonVisibility[FILE_LIST_NOTHUMB] = 0;
                     }
                     else
                     {
                         m_pageNum->SetVisibility(0);
+                        m_buttonVisibility[FILE_LIST_NOTHUMB] = 1;
                     }
                 }
                 break;
@@ -317,6 +339,7 @@ int CSVDvrFileListHmi::SetDvrView(unsigned char pViewCmd)
 int CSVDvrFileListHmi::RefreshHmi()
 {
 	m_baseButton[FILE_LIST_BKG]->SetVisibility(m_buttonVisibility[FILE_LIST_BKG]);
+    m_baseButton[FILE_LIST_NOTHUMB]->SetVisibility(m_buttonVisibility[FILE_LIST_NOTHUMB]);
 	m_imageGridList->SetVisibility(m_imageGridVisibility);
     m_pageNum->Update(m_pageNumData.textContent[0]);
 
@@ -327,6 +350,7 @@ int CSVDvrFileListHmi::SetElementsVisibility(unsigned char pFlag)
     if(pFlag == 0)
     {   
     	m_baseButton[FILE_LIST_BKG]->SetVisibility(pFlag);
+        m_baseButton[FILE_LIST_NOTHUMB]->SetVisibility(pFlag);
 		m_imageGridList->SetVisibility(pFlag);
         m_pageNum->SetVisibility(pFlag);
         
