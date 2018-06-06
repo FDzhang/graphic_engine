@@ -430,7 +430,6 @@ bool XRSV::update(unsigned int view_control_flag)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0, 0.0, 0.0, 1.0);	
-		m_clearBufferFlag = false;
 	}
 	
 	endl = XrGetTime();
@@ -918,9 +917,9 @@ void XRSV::EnableCar()
 	}
 }
 
-void XRSV::ClearRenderBuffer()
+void XRSV::ClearRenderBuffer(bool pClearFlag)
 {
-	m_clearBufferFlag = true;
+	m_clearBufferFlag = pClearFlag;
 }
 
 

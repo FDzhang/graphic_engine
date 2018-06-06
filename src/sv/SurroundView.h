@@ -58,7 +58,7 @@ public:
     void DisableCar();
     void EnableCar();
 
-	void ClearRenderBuffer();
+	void ClearRenderBuffer(bool pClearFlag);
     
 	int m_useHDR;
 

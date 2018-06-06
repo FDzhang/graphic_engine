@@ -617,7 +617,7 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 			CAvmRenderDataBase::GetInstance()->SetGuideLineCmd(*((unsigned char*)renderData));
 		break;
 		case RENDER_DATA_CLEAR_BUFFER:
-			app.ClearRenderBuffer();
+			app.ClearRenderBuffer(*(bool*)renderData);
 		break;
 		case RENDER_DATA_TIME_STAMP:
 			CAvmRenderDataBase::GetInstance()->SetTimeStamp(*((int*)renderData));
