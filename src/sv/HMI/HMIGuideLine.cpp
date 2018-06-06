@@ -73,8 +73,8 @@ HMIGuideLine::HMIGuideLine(ISceneNode* pRootNode, HMIGuideLineDataT* pGuideLineD
     
     m_calibCenterX = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CY);
     m_calibCenterY = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_CX);
-    m_calibMmppX = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
-    m_calibMmppY = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+    m_calibMmppX = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMY);
+    m_calibMmppY = AVMData::GetInstance()->m_2D_lut->GetCalibReslt(POS_CALIB_PPMMX);
 
 //  m_calibCenterX = gf_pgs_para[POS_CALIB_CY];
 //  m_calibCenterY = gf_pgs_para[POS_CALIB_CX];
