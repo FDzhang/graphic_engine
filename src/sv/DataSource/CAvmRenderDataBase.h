@@ -162,6 +162,7 @@ public:
     PropertyBuilderExt3ByName(unsigned char, VehicleTypeId, private)
 	PropertyBuilderExt3ByName(unsigned char, DisplayViewCmd, private)
 	PropertyBuilderExt3ByName(unsigned char, GuideLineCmd, private)
+	PropertyBuilderExt3ByName(unsigned int, TimeStamp, private)
 	PropertyBuilderByName(unsigned char, CanData, private)
 	PropertyBuilderByName(TouchDataT, TouchData, private)
 

@@ -66,9 +66,9 @@ int CAvmLogicManager::ProcessTouchEvent()
 }
 int CAvmLogicManager::Update()
 {
-	UpdateViewModel();
-	UpdateOverlayModel();
-	UpdateAlgoHmiModel();
+	UpdateViewModel();	
+	UpdateOverlayModel();	
+	UpdateAlgoHmiModel();	
 	UpdateHmi();
 
 	return AVM_LOGIC_CONTROL_NORMAL;
@@ -219,7 +219,6 @@ int CAvmLogicManager::UpdateHmi()
 	Hmi_Message_T hmiMsg;
 
 	CSVHmiIntent::GetInstance()->StartHmi(&hmiMsg);
-
 
 	for(vector<ISVHmi*>::iterator hmiObj = m_avmHmi.begin(); hmiObj != m_avmHmi.end(); hmiObj++)
 	{

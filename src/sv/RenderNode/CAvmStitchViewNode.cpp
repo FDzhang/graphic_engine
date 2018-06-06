@@ -180,6 +180,9 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 	m_SV2Dplane[i]->SetMesh(meshid[i]);
 	m_SV2Dplane[i]->SetName(Model[i]);		
 	m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
+
+
+	CAvmRenderDataBase::GetInstance()->SetStitchViewNode(m_stitchViewNode);
 	
 	CAvmRenderDataBase::GetInstance()->GetStitchViewCameraParams(&m_stitchViewCameraParams);
 	
@@ -192,13 +195,13 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 	m_stitchViewCamera->RotateAround(0,45);
 	m_stitchViewNode->SetCamera(m_stitchViewCameraId);
 	
-	m_overlay = new CAvmApaBevOverlay;
+	//m_overlay = new CAvmApaBevOverlay;
 
 	return AVM_STITCHVIEW_NORMAL; 
 }
 int CAvmStitchViewNode::UpdateNode()
 {
-	AddOverlay(m_overlay);
+	//AddOverlay(m_overlay);
 
 	return AVM_STITCHVIEW_NORMAL;
 }

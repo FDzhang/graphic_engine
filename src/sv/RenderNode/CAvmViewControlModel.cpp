@@ -79,7 +79,7 @@ int CAvmViewControlModel::InitViewNode()
 	unsigned char initSingleViewNode = 0;
 	unsigned char initObjViewNode = 0;
 
-	unsigned char carTransparentStatus = 1;
+	unsigned char carTransparentStatus = 0;
 	CAvmRenderDataBase::GetInstance()->SetCarTransparentStatus(&carTransparentStatus);
 
 	//CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&carTransparentStatus);
@@ -284,7 +284,8 @@ int CAvmViewControlModel::InitViewNode()
 		m_avmSingleViewNode->SetClear(FALSE, FALSE);
 		initSingleViewNode = 1;
 	}
-	if(m_avm180DegreeView->InitNode(m_xrCore) == LINEAR_VIEW_NODE_NORMAL)
+	if(m_avm180DegreeView
+		&& m_avm180DegreeView->InitNode(m_xrCore) == LINEAR_VIEW_NODE_NORMAL)
 	{
 		m_avm180DegreeView->SetClear(FALSE, FALSE);
 	}

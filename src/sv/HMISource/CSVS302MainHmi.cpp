@@ -776,6 +776,28 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 
 	InitSubHmi(S302_DEMO_DVR_HMI);
 
+    /*m_textEditData.pos[0] = 200;
+    m_textEditData.pos[1] = 110;
+    m_textEditData.width = 85;
+	m_textEditData.font_size = 85.0;
+	m_textEditData.line_num = 1;
+	m_textEditData.visibilityStatus = 1;
+	m_textEditData.targetIndex = -1;
+	m_textEditData.insertFlag = InsertFlag_Default;
+	m_textEditData.fontTypeMtlName = XR_RES"text_box.ttf";
+	m_textEditData.trigger = NULL;
+	m_textEditData.textColor[0] = 1.0;
+	m_textEditData.textColor[1] = 0.0;
+	m_textEditData.textColor[2] = 0.0;
+	m_textEditData.textContent[0] = new char[100];
+	char* ptext0 = "1234";
+	sprintf(m_textEditData.textContent[0],"%s", ptext0);    
+    m_textEdit = new HmiTextEdit(&m_textEditData,m_uiNode);
+    m_textEdit->SetVisibility(0);*/
+	m_textEdit = NULL;
+
+
+
     //SetHmiParams();
 	SetHmiGuideline();
 
@@ -927,6 +949,7 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         FreeSubHmi(S302_DEMO_MOD_HMI);
     }
 
+	
 	if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
     {
         InitSubHmi(S302_DEMO_DVR_HMI);
@@ -1003,6 +1026,15 @@ int CSVS302MainHmi::RefreshHmi()
     {
         m_subHmi[S302_DEMO_DVR_HMI]->SetElementsVisibility(m_subHmiVisibility[S302_DEMO_DVR_HMI]);
     }
+
+	if(m_textEdit)
+	{
+		unsigned int timeStamp = 0;
+		CAvmRenderDataBase::GetInstance()->GetTimeStamp(timeStamp);
+		sprintf(m_textEditData.textContent[0],"%d", timeStamp);
+		m_textEdit->SetVisibility(1);
+		m_textEdit->Update(m_textEditData.textContent[0]);
+	}
 
     return S302_MAIN_HMI_NORMAL;
 }
@@ -1104,7 +1136,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLineData[i].guideLineWidth = 200.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 200;
+    m_guideLineData[i].guideLinePointNum = 100;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
     sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_line.dds",XR_RES);
     m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
@@ -1167,7 +1199,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLineData[i].guideLineWidth = 200.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 200.0;
-    m_guideLineData[i].guideLinePointNum = 200;
+    m_guideLineData[i].guideLinePointNum = 100;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
     sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_line.dds",XR_RES);
     m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
@@ -1199,7 +1231,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLineData[i].guideLineWidth = 200.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 200.0;
-    m_guideLineData[i].guideLinePointNum = 200;
+    m_guideLineData[i].guideLinePointNum = 100;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
     sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_line.dds",XR_RES);
     m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
@@ -1214,7 +1246,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLineData[i].guideLineWidth = 30.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 200.0;
-    m_guideLineData[i].guideLinePointNum = 100;
+    m_guideLineData[i].guideLinePointNum = 50;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
     sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/ep21_dyn_red_line.dds",XR_RES);
     m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
@@ -1229,7 +1261,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLineData[i].guideLineWidth = 230.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 200.0;
-    m_guideLineData[i].guideLinePointNum = 100;
+    m_guideLineData[i].guideLinePointNum = 50;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
     sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/ep21_dyn_line.dds",XR_RES);
     m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
@@ -1244,7 +1276,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLineData[i].guideLineWidth = 50.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLinePointNum = 50;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
     sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
     m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
@@ -1259,7 +1291,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLineData[i].guideLineWidth = 50.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLinePointNum = 50;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
     sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
     m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
@@ -1276,25 +1308,19 @@ void CSVS302MainHmi::RefreshHmiGuideline()
     unsigned char m_displayViewCmd = FRONT_SINGLE_VIEW;
 	//const unsigned char GEAR_SHIFT_R = 1;
     
-    static int m_cnt = 0;
+    static int m_cnt = -500;
 
 	AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);	
 	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_displayViewCmd);
 
-    steer_angle = 0.0 - steer_angle;
+	steer_angle = 0.0 - steer_angle;
 
-	if(steer_angle > 500.0)
+	if(gear_state != GEAR_R)
 	{
-		steer_angle = 500.0;
-	}
-	else if(steer_angle < -500.0)
-	{
-		steer_angle = -500.0;
+		ResetGuideLineEndPos(steer_angle);
 	}
 	
-	ResetGuideLineEndPos(steer_angle);
-
 	m_singleViewDynGuideLineVisibility = 1;
 	m_bevDynGuideLineVisibility = 1;
 	m_bevAsitLDynGuideLineVisibility = 1;

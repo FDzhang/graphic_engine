@@ -139,6 +139,9 @@ private:
     unsigned char       m_bevDynGuideLineVisibility;
 	unsigned char       m_bevAsitLDynGuideLineVisibility;
 	unsigned char       m_bevAsitRDynGuideLineVisibility;
+
+	HmiTextEditDataT 	m_textEditData;
+	HmiTextEdit*     	m_textEdit;
 	
 public:
 

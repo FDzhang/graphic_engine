@@ -400,10 +400,11 @@ bool XRSV::update(unsigned int view_control_flag)
 		g_pIXrCore->ProcessEvent();
 		timestamp1 = XrGetTime();
 
-
 		g_pIXrCore->Update();
 		timestamp2 = XrGetTime();
+		
 		g_pIXrCore->Render();
+		
 		end = XrGetTime();
 		g_TextureStep+=0.1;
 		temp++;
@@ -424,6 +425,7 @@ bool XRSV::update(unsigned int view_control_flag)
 		cnt++;
 	}
 
+	//Log_Error("-------------%d", m_clearBufferFlag);
 	if(m_clearBufferFlag)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
