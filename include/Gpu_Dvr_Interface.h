@@ -72,8 +72,17 @@ typedef struct
     unsigned short 	TimeHour;	
     unsigned short 	TimeMin;
     unsigned short 	TimeSec;	
-    unsigned int 	GpsLongitude;
-    unsigned int 	GpsLatitude;
+	
+	unsigned char	GpsLongitude_IsEast;
+	unsigned short	GpsLongitude_Deg;
+	unsigned short	GpsLongitude_Min;
+	unsigned short	GpsLongitude_Sec;
+
+	unsigned char	GpsLatitude_IsNorth;
+	unsigned short	GpsLatitude_Deg;
+	unsigned short	GpsLatitude_Min;
+	unsigned short	GpsLatitude_Sec;	
+
     unsigned short 	VehicleSpeed;
     unsigned char 	GearShiftPositon;
     unsigned char 	BrakePedalStatus;

@@ -490,9 +490,6 @@ int CSVS302DvrBase::SetDvrStatus()
     tmpCanMsg.GearShiftPositon = 1;
     tmpCanMsg.LeftTurnLampStatus = 1;
     tmpCanMsg.RightTurnLampStatus = 0;
-
-    tmpCanMsg.GpsLatitude = 1290445;
-    tmpCanMsg.GpsLongitude = 691204;    
     
     tmpCanMsg.TimeYear = 2018;
     tmpCanMsg.TimeMon = 5;

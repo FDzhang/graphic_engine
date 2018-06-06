@@ -296,7 +296,19 @@ int CSVV302RecordTab::SetStateBarVal(void *ptr)
 
     sprintf(m_textEditData[V302_REC_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
 
-    sprintf(m_textEditData[V302_REC_GPS_TEXT].textContent[0],"N %03d.%02d'%02d\"  E %03d.%02d'%02d\"",recCanMsg->GpsLongitude / 10000,(recCanMsg->GpsLongitude % 10000) / 100,recCanMsg->GpsLongitude % 100,recCanMsg->GpsLatitude / 10000,(recCanMsg->GpsLatitude % 10000) / 100,recCanMsg->GpsLatitude % 100);
+	char LatitudeTmpBuf[32] = {0};
+	if(recCanMsg->GpsLatitude_IsNorth)
+		sprintf(LatitudeTmpBuf, "N %03d.%02d'%02d\"", recCanMsg->GpsLatitude_Deg, recCanMsg->GpsLatitude_Min, recCanMsg->GpsLatitude_Sec);
+	else
+		sprintf(LatitudeTmpBuf, "S %03d.%02d'%02d\"", recCanMsg->GpsLatitude_Deg, recCanMsg->GpsLatitude_Min, recCanMsg->GpsLatitude_Sec);
+
+	char LongitudeTmpBuf[32] = {0};
+	if(recCanMsg->GpsLongitude_IsEast)
+		sprintf(LongitudeTmpBuf, "E %03d.%02d'%02d\"", recCanMsg->GpsLongitude_Deg, recCanMsg->GpsLongitude_Min, recCanMsg->GpsLongitude_Sec);
+	else
+		sprintf(LongitudeTmpBuf, "W %03d.%02d'%02d\"", recCanMsg->GpsLongitude_Deg, recCanMsg->GpsLongitude_Min, recCanMsg->GpsLongitude_Sec);	
+
+    sprintf(m_textEditData[V302_REC_GPS_TEXT].textContent[0],"%s  %s", LatitudeTmpBuf, LongitudeTmpBuf);
 
     sprintf(m_textEditData[V302_REC_SPEED_TEXT].textContent[0],"%03d",recCanMsg->VehicleSpeed);
     return HMI_SUCCESS;
