@@ -57,7 +57,8 @@ class DataExPosParam
 public:
 	
 	DataExPosParam(float space_y_min,float space_scale);
-	void Init(char *filename,float vehicle_length,float vehicle_rear_wheel_to_bumper,char *filenameAdjust=NULL);
+	void Init(char *filename,float vehicle_length,float vehicle_rear_wheel_to_bumper,char *filenameAdjust=NULL);	
+	void Init(str_avm_pose_t *pPose,float vehicle_length,float vehicle_rear_wheel_to_bumper);
 	void GetCameraPos(float *pos,int camera_index);
 	void GetCameraPos(float *pos);
 	void GetCameraAngle(float *pos,int camera_index);
