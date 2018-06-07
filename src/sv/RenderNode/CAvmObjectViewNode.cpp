@@ -381,6 +381,9 @@ int CAvmObjectViewNode::UpdateNode()
 		}
 		m_3dGroundMtl->SetDiffuseMap(timeStitchNode->GetGroundTextureId());
 	}
+	
+	MockRefreshCarBodyTexture();
+	
 	return AVM_OBJVIEW_NORMAL;
 }
 int CAvmObjectViewNode::ProcessWheelTurn()
@@ -650,27 +653,21 @@ int CAvmObjectViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthF
 }
 void CAvmObjectViewNode::MockRefreshCarBodyTexture()
 {
-	static int cnt = 0;
-	static int frameCnt = 0;
-	char CARTEXW[] = XR_RES"envision_white.tga";
+	char CARTEXW[] = XR_RES"envision_black.tga";
 
-	char avd, avd2;
+	VehInfoT vehInfo;
 
-	if(frameCnt%25 == 0)
+	CAvmRenderDataBase::GetInstance()->GetVehInfo(&vehInfo);
+
+	if(vehInfo.bodyStyle == 0)
 	{
-		if(cnt % 3 == 0)
-		{
-			m_carMtl->SetDiffuseMap(CARTEXW);
-		}
-		else
-		{
-			m_carMtl->SetDiffuseMap(CARTEX);
-		}
-		
-		cnt ++;
-	}
-	frameCnt ++;
+		m_carMtl->SetDiffuseMap(CARTEX);
 
+	}
+	else if(vehInfo.bodyStyle == 1)
+	{	
+		m_carMtl->SetDiffuseMap(CARTEXW);
+	}
 }
 
 /*===========================================================================*\
