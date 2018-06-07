@@ -350,7 +350,7 @@ int CSVS302RecordTab::InitText()
     int i = 0;
 
     i = S302_REC_TIME_TEXT;
-    m_textEditData[i].pos[0] = 170;
+    m_textEditData[i].pos[0] = 135;
     m_textEditData[i].pos[1] = 26;
     m_textEditData[i].width = 25;
 	m_textEditData[i].font_size = 5.0;
@@ -368,7 +368,7 @@ int CSVS302RecordTab::InitText()
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext0);
 
     i = S302_REC_GPS_TEXT;
-    m_textEditData[i].pos[0] = 430;
+    m_textEditData[i].pos[0] = 380;
     m_textEditData[i].pos[1] = 26;
     m_textEditData[i].width = 25;
 	m_textEditData[i].font_size = 5.0;

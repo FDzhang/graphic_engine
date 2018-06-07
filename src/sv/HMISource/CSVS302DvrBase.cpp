@@ -277,7 +277,7 @@ int CSVS302DvrBase::Init(int window_width, int window_height)
 	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = 54;
 
 
-	SetHmiParams();
+	//SetHmiParams();
 
 	return HMI_SUCCESS;
 }

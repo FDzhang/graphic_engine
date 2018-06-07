@@ -165,10 +165,10 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 
 	//m_overlay = new CAvmApaBevOverlay;
 
-	m_sonarNode = new SVNodeSonar;
-	BEV_CONFIG_T bevConfig;
-	AVMData::GetInstance()->GetBevConfig(&bevConfig);
-    m_sonarNode->Init(&bevConfig,m_stitchViewNode);
+	//m_sonarNode = new SVNodeSonar;
+	//BEV_CONFIG_T bevConfig;
+	//AVMData::GetInstance()->GetBevConfig(&bevConfig);
+    //m_sonarNode->Init(&bevConfig,m_stitchViewNode);
 
 	return TIME_STITCHER_NORMAL;
 }
@@ -216,10 +216,10 @@ int CAvmTimeStitcherNode::UpdateNode()
 
 	//AddOverlay(m_overlay);
 	
-	float *pdist =	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
-	m_sonarNode->Update(steer_angle, speed,
-						left_wheel_speed, right_wheel_speed,
-						gear_state,timeInterval, yawRate, pdist);
+	//float *pdist =	AVMData::GetInstance()->m_p_can_data->Get_Sonar_dist_list();
+	//m_sonarNode->Update(steer_angle, speed,
+	//					left_wheel_speed, right_wheel_speed,
+	//					gear_state,timeInterval, yawRate, pdist);
 
 	return TIME_STITCHER_NORMAL;
 }

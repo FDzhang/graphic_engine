@@ -50,7 +50,7 @@ int CAvmLogicManager::Init()
 	Log_Error("------------Init GPU!");
 	InitViewModel();
 	InitOverlayModel();
-	InitAlgoHmiModel();
+	//InitAlgoHmiModel();
 	InitHmi();
 	Log_Error("------------Init GPU finished!");	
 	return AVM_LOGIC_CONTROL_NORMAL;
@@ -68,7 +68,7 @@ int CAvmLogicManager::Update()
 {
 	UpdateViewModel();	
 	UpdateOverlayModel();	
-	UpdateAlgoHmiModel();	
+	//UpdateAlgoHmiModel();	
 	UpdateHmi();
 
 	return AVM_LOGIC_CONTROL_NORMAL;
@@ -137,46 +137,9 @@ int CAvmLogicManager::InitAlgoHmiModel()
 
 int CAvmLogicManager::InitHmi()
 {
-	//m_cameraHmi = new CSVChanganHmi();
 
-	//m_cameraHmi->Init(XrGetScreenWidth(), XrGetScreenHeight());
-
-	/*if(m_mainHmi == NULL)
-	{	
-		m_mainHmi = new CSVChangAnMainHmi();
-		AddHmi(m_mainHmi, &m_avmHmi);
-	}
-
-	if(m_dvrBaseHmi == NULL)
-	{
-		m_dvrBaseHmi = new CSVDvrBaseHmi();	
-		//AddHmi(m_dvrBaseHmi, &m_avmHmi);
-	}*/
-	m_systemHmi = new CSVSystemHmi();
-	AddHmi(m_systemHmi, &m_avmHmi);
-	
-    //注册事件
-    AvmEventType eventType =  AvmRegisterEvent(ALGOHMI_EVENT_NAME, sizeof(Layout_Event_Payload_T));
-    if(eventType == AvmEvent::Invalid_Event_Type)
-    {
-        Log_Error("%s:Attention: Invalid Event type, please check the exist", __func__);
-        return false;
-    }
-	eventType =  AvmRegisterEvent(TPHMI_EVENT_NAME, sizeof(Layout_Event_Payload_T));
-    if(eventType == AvmEvent::Invalid_Event_Type)
-    {
-        Log_Error("%s:Attention: Invalid Event type, please check the exist", __func__);
-        return false;
-    }
-
-	//char* hmiName = "CSVChangAnMainHmi";
-	//char* hmiName = "CSVDemoMainHmi";
-	//char* hmiName = "CSVDvrBaseHmi";
-	//char* hmiName = "CSVS302MainHmi";
 	SetMainHmiName();
 	CSVHmiIntent::GetInstance()->Intent(m_mainHmiName);
-	//char* hmiName = "CSVDvrBaseHmi";
-	//CSVHmiIntent::GetInstance()->Intent(hmiName);	
 
 	
 	return AVM_LOGIC_CONTROL_NORMAL;
@@ -236,58 +199,9 @@ int CAvmLogicManager::UpdateViewModel()
 		return AVM_LOGIC_VIEW_MODEL_INIT_FAILED;
 	}
 	unsigned char direction = FRONT_3D_VIEW;
-/*	static int cnt = 0;
-	static int init_flag = 0;
-	static const int START_UP_TURN_TIME = 120;
-	if(init_flag ==1)
-    {
-        if(cnt>= START_UP_TURN_TIME)
-        {       
-			direction = REAR_SINGLE_VIEW;
-			init_flag =2;
-                
-        }
-    }
-    if(init_flag==0)
-    {
-		direction = TOUR_VIEW;
-		init_flag = 1;
-    }
-	if(cnt > START_UP_TURN_TIME)
-	{
-	   AVMData::GetInstance()->GetDisplayViewCmd(direction);
-	   cnt++;
-	}
-	else 
-	{
-	    cnt++;
-	}
-*/
 
-//used for debuging
-#if 0
-    static int cnt = 0;
-    if(cnt == 800)
-    {
-        CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(FRONT_SINGLE_VIEW);
-    }
-	if(cnt == 2000)
-	{
-	    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_LEFT_VIEW);
-	}
-	if(cnt == 3400)
-	{
-	    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(BMW_RIGHT_FRONT_VIEW);
-	}
-
-    if(cnt == 8000)
-    {
-        cnt = 0; 
-    }
-	cnt++;
-#endif
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(direction);
-	//Log_Error("----------direction: %d", direction);
+	
 	m_avmViewControlModel->SetCurrentView();
 	if((direction >= FRONT_LARGE_SINGLE_VIEW
 		&& direction <= RIGHT_LARGE_SINGLE_VIEW)

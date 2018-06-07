@@ -59,7 +59,7 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	char VertexName[MAX_NAME_LENGTH];
 	char FragShaderName[MAX_NAME_LENGTH];
     AVMData::GetInstance()->m_cam_source->GetShaderName(VertexName,SV_2D_VERTEX_SHADER);	
-    AVMData::GetInstance()->m_cam_source->GetShaderName(FragShaderName,SV_2D_FRAGMENT_SHADER);
+    //AVMData::GetInstance()->m_cam_source->GetShaderName(FragShaderName,SV_2D_FRAGMENT_SHADER);
 	// Interleaved vertex data
 	m_singleViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_singleViewNode);
  
@@ -74,16 +74,6 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	//step 1. prepare for Material ,different camera input image 
 	IRenderEffect* pIEffect;
 	int SV2DMTL;
-
-/*	SV2DMTL = m_singleViewNode->CreateMaterial(Material_Custom, &m_SVSingleMtl);
-	m_SVSingleMtl->CreateMaterialEffect(&pIEffect);
-	
-	AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_SVSingleMtl,front_camera_index); 
-
-	pIEffect->InitShaderFromFile("Effect_SV2D", VertexName, FragShaderName,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
-	pIEffect->SetRenderDelegate(m_renderDelegate);
-	
-	*/ //Original Code
 
     for(int i = eFrontSingle;i<=eRightSingle;i++)
     {
@@ -111,7 +101,7 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 	
 		AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_SVSingleMtl,i - eFrontSingle); 
 
-		pIEffect->InitShaderFromFile("Effect_SV2D", VertexName, FragShaderName,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
+		pIEffect->InitShaderFromFile("Effect_SV2D", VertexName, c_SV2DFragStaticShaderSrcFile,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
 		pIEffect->SetRenderDelegate(m_renderDelegate);
 	   //--------------------- new code
 
