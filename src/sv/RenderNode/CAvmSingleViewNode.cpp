@@ -134,12 +134,14 @@ int CAvmSingleViewNode::InitNode(IXrCore* pXrcore)
 }
 int CAvmSingleViewNode::UpdateNode()
 {
+	unsigned char singleViewChannel = 0;
 	unsigned char singleViewCmd = 0;
-	CAvmRenderDataBase::GetInstance()->GetSingleViewChannel(&singleViewCmd);
-		
+	CAvmRenderDataBase::GetInstance()->GetSingleViewChannel(&singleViewChannel);	
+	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(singleViewCmd);
+	
     for(int i = eFrontSingle;i<=eRightSingle;i++)
     {
-        if(i == singleViewCmd + eFrontSingle)
+        if(i == singleViewChannel + eFrontSingle)
         {           
 			m_SV2Dplane[i]->SetEnable(1);
         }
@@ -149,7 +151,14 @@ int CAvmSingleViewNode::UpdateNode()
 		}
     }
 
-	m_renderDelegate->SetChannel(singleViewCmd);
+	if(singleViewCmd == MATTS_VIEW)
+	{
+		m_renderDelegate->SetChannel(four_camera_index);
+	}
+	else
+	{
+		m_renderDelegate->SetChannel(singleViewChannel);	
+	}
 
 	return AVM_SINGLEVIEW_NORMAL;
 }
