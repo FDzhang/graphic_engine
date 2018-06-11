@@ -72,6 +72,8 @@ typedef enum S302MainHmiElementTag
     S302_CONTROL_BUTTONS_HIDE,
     S302_CONTROL_BUTTONS_SHOW,
 
+    S302_BEV_CAR_ICON,
+
     S302_MAIN_ELEMENT_NUM,
 }
 S302MainHmiElementT;

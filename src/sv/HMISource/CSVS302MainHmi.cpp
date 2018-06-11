@@ -545,6 +545,9 @@ CSVS302MainHmi::~CSVS302MainHmi()
         SAFE_DELETE(m_trigger[i]);
         SAFE_DELETE(m_baseButton[i]);
     }*/
+    int i = S302_BEV_CAR_ICON;
+    SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
+    SAFE_DELETE(m_baseButton[i]);
 }
 
 int CSVS302MainHmi::SetHmiParams()
@@ -798,10 +801,45 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
     m_textEdit->SetVisibility(0);*/
 	m_textEdit = NULL;
 
-
-
-    //SetHmiParams();
 	SetHmiGuideline();
+    
+    float bevCarPos[4];
+    
+    AVMData::GetInstance()->m_2D_lut->GetCarRect(&bevCarPos[0],rect_left);
+    AVMData::GetInstance()->m_2D_lut->GetCarRect(&bevCarPos[1],rect_top);
+    AVMData::GetInstance()->m_2D_lut->GetCarRect(&bevCarPos[2],rect_right);
+    AVMData::GetInstance()->m_2D_lut->GetCarRect(&bevCarPos[3],rect_bottom);
+    
+    i = S302_BEV_CAR_ICON;
+    m_buttonSize[i][BUTTON_SIZE_WIDTH] = (bevCarPos[2] - bevCarPos[0]) * stitchRegionWidth * 0.5;
+    m_buttonSize[i][BUTTON_SIZE_HEIGHT] = (bevCarPos[1] - bevCarPos[3]) * stitchRegionHeight * 0.5;
+    m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 + bevCarPos[0]);
+    m_buttonPos[i][BUTTON_POS_Y] = currentStitchRegion.top + stitchRegionHeight * 0.5 * (1 - bevCarPos[1]);
+    
+    m_baseButtonData[i].icon_type = STATIC_ICON;
+    m_baseButtonData[i].show_flag = 1;
+    m_buttonVisibility[i] = 0;
+    m_baseButtonData[i].show_icon_num = 0;
+    m_buttonShowImage[i] = 0;
+
+    m_baseButtonData[i].icon_file_name[0] = new char [50];
+    m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
+    sprintf(m_baseButtonData[i].icon_file_name[0],"%scar_icon_rx5.dds.dds",XR_RES);
+    m_trigger[i] = NULL;
+    
+    m_baseButtonData[i].pos[0] = m_buttonPos[i][BUTTON_POS_X];
+    m_baseButtonData[i].pos[1] = m_buttonPos[i][BUTTON_POS_Y];
+    m_baseButtonData[i].width = m_buttonSize[i][BUTTON_SIZE_WIDTH];
+    m_baseButtonData[i].height = m_buttonSize[i][BUTTON_SIZE_HEIGHT];
+    m_baseButtonData[i].delegate_func = NULL;
+    m_baseButtonData[i].trigger = NULL;
+    
+    //SetHmiParams();
+
+    m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+    m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+
+    
 
     return S302_MAIN_HMI_NORMAL;
 }
@@ -913,6 +951,21 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
     }
 	
 	memset(m_buttonVisibility, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
+    
+    unsigned char currentViewStatus = 0;
+    
+    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(currentViewStatus);
+    
+    if((currentViewStatus >= FRONT_SINGLE_VIEW && currentViewStatus <= FRONT_3D_VIEW)||
+        (currentViewStatus >= BMW_LEFT_VIEW && currentViewStatus <= BMW_REAR_3D_VIEW)||
+        currentViewStatus == LEFT_RIGHT_LINEAR_VIEW)
+    {
+        m_buttonVisibility[S302_BEV_CAR_ICON] = 1;
+    }
+    else
+    {
+        m_buttonVisibility[S302_BEV_CAR_ICON] = 0;
+    }
 
     RefreshHmi();
     RefreshHmiGuideline();
