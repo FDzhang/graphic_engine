@@ -430,7 +430,7 @@ VehLicenseNumT;
 
 typedef struct VehInfoTag
 {
-	VehWheelHubBodyStyleT bodyStyle; //Demo: 0, white. 1, black
+	VehWheelHubBodyStyleT bodyStyle; //Demo: 0:White, 1:Black
 	VehWheelHubTypeStyleT wheelHubStyle;
 	VehLicenseNumT        licenseNum[VEH_LICENSENUM_MAX_NUMS];
 }

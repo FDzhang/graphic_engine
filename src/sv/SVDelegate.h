@@ -550,7 +550,7 @@ public:
         float pos_gate[2]={1.0,2.0};
 		float cof[3] = {1.0,1.0,1.0};
 #define TRANS_Z 11000
-#define TRANS_X 14000
+#define TRANS_X 14030
 #define SIDEMIRRORDEGREE -0.5
 		switch (id) {
 			case 'L':

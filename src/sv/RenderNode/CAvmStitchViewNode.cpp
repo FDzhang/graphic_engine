@@ -29,6 +29,8 @@
 #include "CAvmApaBevOverlay.h"
 
 static char CAR2DICONBMP[] = XR_RES"car_icon_rx5.dds";
+static char CAR2DICONBMPBLACK[] = XR_RES"car_icon_rx5_black.dds";
+
 static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
 static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 
@@ -116,6 +118,7 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 		else if(i ==4)
 		{
     	    m_SV2DMtl->SetDiffuseMap(CAR2DICONBMP);	
+			m_carBodyMtl = m_SV2DMtl;
 		}	
 		else
 		{	
@@ -202,6 +205,7 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 int CAvmStitchViewNode::UpdateNode()
 {
 	//AddOverlay(m_overlay);
+	//MockRefreshCarBodyTexture();
 
 	return AVM_STITCHVIEW_NORMAL;
 }
@@ -259,6 +263,22 @@ int CAvmStitchViewNode::AddOverlay(IAvmOverlay * pOverlay)
 	}
 	
 	return AVM_STITCHVIEW_NORMAL;
+}
+void CAvmStitchViewNode::MockRefreshCarBodyTexture()
+{
+	VehInfoT vehInfo;
+
+	CAvmRenderDataBase::GetInstance()->GetVehInfo(&vehInfo);
+
+	if(vehInfo.bodyStyle == 0)
+	{
+		m_carBodyMtl->SetDiffuseMap(CAR2DICONBMP);
+
+	}
+	else if(vehInfo.bodyStyle == 1)
+	{	
+		m_carBodyMtl->SetDiffuseMap(CAR2DICONBMPBLACK);
+	}
 }
 
 /*===========================================================================*\

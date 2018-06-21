@@ -66,10 +66,10 @@ int CAvmLogicManager::ProcessTouchEvent()
 }
 int CAvmLogicManager::Update()
 {
+	UpdateHmi();
 	UpdateViewModel();	
 	UpdateOverlayModel();	
 	//UpdateAlgoHmiModel();	
-	UpdateHmi();
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
@@ -201,7 +201,7 @@ int CAvmLogicManager::UpdateViewModel()
 	unsigned char direction = FRONT_3D_VIEW;
 
 	CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(direction);
-	
+	//Log_Error("----------direction: %d", direction);
 	m_avmViewControlModel->SetCurrentView();
 	if((direction >= FRONT_LARGE_SINGLE_VIEW
 		&& direction <= RIGHT_LARGE_SINGLE_VIEW)

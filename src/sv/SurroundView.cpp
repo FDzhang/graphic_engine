@@ -406,8 +406,6 @@ bool XRSV::update(unsigned int view_control_flag)
 		g_pIXrCore->Render();
 		
 		end = XrGetTime();
-		
-		//Log_Message("------------Render time cost: %d ms", end - timestamp2);
 		g_TextureStep+=0.1;
 		temp++;
 		if(temp%100==99)

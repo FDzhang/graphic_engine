@@ -16,9 +16,14 @@
 
 
 ----------------------------------------------*/
+#if 0
 FILE *fpFile = fopen("GPU_radar_log.txt", "wt+");
-#define LOGW(format,...)   //  (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
-#define LOGE(format,...)   //  (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
+#define LOGW(format,...)     (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
+#define LOGE(format,...)     (fprintf(fpFile,  "GPU: " format "\n",  ##__VA_ARGS__) ? -1 : -1)
+#else
+#define LOGW(format,...)
+#define LOGE(format,...)
+#endif
 
 extern char BLUETEX[];
 extern char OVERLAYTEX[];
@@ -517,7 +522,6 @@ void SVNodeSonar::SetRadarPLDReslt()
 	}
 	#endif
 	LOGW("m_track_park_lot_flag(%d)\n",m_track_park_lot_flag);
-	fflush(fpFile);
 }
 void SVNodeSonar::GenerateParkLotRect(sonar_parking_lot_t *park_lot_state,float *pVertex)
 {
@@ -573,14 +577,12 @@ int  SVNodeSonar::Init(BEV_CONFIG_T *pConfig,ISceneNode *pStichNode)
 	     fprintf(stdout,"\r\n file don't exist %d",m_debug_flag);		 
 		 LOGW("file don't exist(%d)\n",m_debug_flag);
 		 Log_Error("file don't exist(%d)",m_debug_flag);
-		 fflush(fpFile);
 	 }
 	 else
 	 {
 	     fprintf(stdout,"\r\n file exist %d",m_debug_flag);	
 		 LOGW("file don't exist(%d)\n",m_debug_flag);
 		 Log_Error("file  exist(%d)",m_debug_flag);
-		 fflush(fpFile);
 	 }
 
 	 for(int i = 0;i<max_sonar_num;i++)

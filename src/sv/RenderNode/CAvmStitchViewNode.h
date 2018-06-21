@@ -55,6 +55,8 @@ public:
 	int AddOverlay(class IAvmOverlay * pOverlay);
 
 private:
+	void MockRefreshCarBodyTexture();
+private:
 	class ISceneNode* m_stitchViewNode;	
 	int         m_stitchViewNodeId;
 	class IXrCore*	m_xrCore;
@@ -71,6 +73,7 @@ private:
 	class INode*	m_SV2Dplane[eMeshIndexMax];
 	class INode*	m_plane[8];
 	class IMaterial*			m_SV2DMtl;
+	class IMaterial*			m_carBodyMtl;
 	class IMesh*				m_planeMesh;
 	class GlSV2D*				m_SV2DData;
 	class IAvmOverlay*			m_overlay;

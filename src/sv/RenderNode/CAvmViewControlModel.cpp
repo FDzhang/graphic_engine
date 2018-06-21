@@ -160,10 +160,10 @@ int CAvmViewControlModel::InitViewNode()
 	scene3D_region[REGION_POS_TOP] = 0+black_width;
 	scene3D_region[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	linear180DegreeRegion[REGION_POS_LEFT] = left_panel_width;
-	linear180DegreeRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
+	linear180DegreeRegion[REGION_POS_LEFT] = left_panel_width - 80;
+	linear180DegreeRegion[REGION_POS_RIGHT] = XrGetScreenWidth() + 80;
 	linear180DegreeRegion[REGION_POS_TOP] = 0+black_width;
-	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
+	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width + 235;
 
 	leftSingleViewRegion[REGION_POS_LEFT] = left_panel_width;
 	leftSingleViewRegion[REGION_POS_RIGHT] = (XrGetScreenWidth() - left_panel_width)/2.0 + leftSingleViewRegion[REGION_POS_LEFT];
@@ -682,6 +682,10 @@ int CAvmViewControlModel::ProcessTimeStitcher()
 		{
 			m_avmTimeStitcherNode->UpdateNode();
 		}
+	}
+	if(m_avmStitchViewNode)
+	{
+		m_avmStitchViewNode->UpdateNode();
 	}
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }

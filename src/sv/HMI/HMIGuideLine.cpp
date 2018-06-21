@@ -155,8 +155,8 @@ HMIGuideLine::~HMIGuideLine()
 
 int HMIGuideLine::Update(float pSteeringWheel,int pDriveDirection)
 {
-    if(m_guideLineVisibility == 0)
-        return GUIDELINE_NORMAL;
+    //if(m_guideLineVisibility == 0)
+    //    return GUIDELINE_NORMAL;
 
     float center[2];
     float radius[2];

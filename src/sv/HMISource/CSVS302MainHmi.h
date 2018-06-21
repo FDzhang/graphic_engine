@@ -139,6 +139,8 @@ private:
     
 	unsigned char       m_singleViewDynGuideLineVisibility;
     unsigned char       m_bevDynGuideLineVisibility;
+	unsigned char       m_bevDynOutLGuideLineVisibility;
+	unsigned char       m_bevDynOutRGuideLineVisibility;
 	unsigned char       m_bevAsitLDynGuideLineVisibility;
 	unsigned char       m_bevAsitRDynGuideLineVisibility;
 

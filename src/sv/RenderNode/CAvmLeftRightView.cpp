@@ -29,9 +29,6 @@
 #include "../SVDelegate.h"
 #include "../GlSV2D.h"
 
-static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
-
-
 CAvmLeftRightView::CAvmLeftRightView():m_leftRightViewCameraParams(0)
 {
 	m_leftRightViewMesh[0] = NULL;
