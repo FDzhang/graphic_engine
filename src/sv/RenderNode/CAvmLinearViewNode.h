@@ -65,6 +65,12 @@ private:
 	
 	SurroundViewCameraParamsT*   m_180DegreerViewCameraParams;
 
+	GLfloat* m_front_afVertices[3];
+	GLfloat* m_rear_afVertices[3];
+
+	int m_meshWidth;
+	int m_meshHeight;
+
 	unsigned char m_visibilityFlag;
 
 	unsigned char m_depthClearFlag;
