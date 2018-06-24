@@ -58,6 +58,12 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 
     IAProperty* rotX=0, *rotY,*posZ,*rotZ=0;
     float Rot[3]={-1.57,0,0};
+
+    GLfloat* afVertices[3];
+    afVertices[0]= (GLfloat*)malloc(m_meshWidth*m_meshHeight*8*4);
+    afVertices[1] = (GLfloat*)malloc(m_meshWidth*m_meshHeight*8*4);
+    afVertices[2] = (GLfloat*)malloc(m_meshWidth*m_meshHeight*8*4);
+
     m_front_afVertices[0]= (GLfloat*)malloc(m_meshWidth*m_meshHeight*8*4);
     m_front_afVertices[1] = (GLfloat*)malloc(m_meshWidth*m_meshHeight*8*4);
     m_front_afVertices[2] = (GLfloat*)malloc(m_meshWidth*m_meshHeight*8*4);
@@ -104,6 +110,12 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
         for (y=0; y<m_meshHeight; y++) {
             for (x=0; x<m_meshWidth; x++) {
                 #if 0
+                afVertices[index][slotId*8] =   x_pos[0]+x*(x_pos[1]-x_pos[0])/(m_meshWidth-1);//(((float)x)/(m_meshWidth-1)-0.5)*2 * PlaneScaleX;
+                afVertices[index][slotId*8+1] = PlaneScaleY_NEG +(PlaneScaleY-PlaneScaleY_NEG)*y/m_meshHeight; //(((float)y)/(m_meshHeight-1)-0.5) *2 * PlaneScaleY;
+                afVertices[index][slotId*8+2] = z_pos[0]+x*(z_pos[1]-z_pos[0])/(m_meshWidth-1);
+                afVertices[index][slotId*8+3] = x_pos[0]+x*(x_pos[1]-x_pos[0])/(m_meshWidth-1);
+                afVertices[index][slotId*8+4] = PlaneScaleY_NEG +(PlaneScaleY-PlaneScaleY_NEG)*y/m_meshHeight;//(((float)y)/(m_meshHeight-1)-0.5)*2* PlaneScaleY;
+                afVertices[index][slotId*8+5] = z_pos[0]+x*(z_pos[1]-z_pos[0])/(m_meshWidth-1);
                 m_front_afVertices[index][slotId*8] = (((float)x)/(m_meshWidth-1)-0.5)*2 * PlaneScaleX;
                 m_front_afVertices[index][slotId*8+1] = (((float)y)/(m_meshHeight-1)-0.5) *2 * PlaneScaleY;
                 m_front_afVertices[index][slotId*8+2] = UIZ1;
@@ -114,6 +126,12 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
                 m_rear_afVertices[index][slotId*8+1] = m_front_afVertices[index][slotId*8+1];
                 m_rear_afVertices[index][slotId*8+2] = m_front_afVertices[index][slotId*8+2];
                 #else
+                afVertices[index][slotId*8] =   x_pos[0]+x*(x_pos[1]-x_pos[0])/(m_meshWidth-1);//(((float)x)/(m_meshWidth-1)-0.5)*2 * PlaneScaleX;
+                afVertices[index][slotId*8+1] = PlaneScaleY_NEG +(PlaneScaleY-PlaneScaleY_NEG)*y/m_meshHeight; //(((float)y)/(m_meshHeight-1)-0.5) *2 * PlaneScaleY;
+                afVertices[index][slotId*8+2] = z_pos[0]+x*(z_pos[1]-z_pos[0])/(m_meshWidth-1);
+                afVertices[index][slotId*8+3] = x_pos[0]+x*(x_pos[1]-x_pos[0])/(m_meshWidth-1);
+                afVertices[index][slotId*8+4] = PlaneScaleY_NEG +(PlaneScaleY-PlaneScaleY_NEG)*y/m_meshHeight;//(((float)y)/(m_meshHeight-1)-0.5)*2* PlaneScaleY;
+                afVertices[index][slotId*8+5] = z_pos[0]+x*(z_pos[1]-z_pos[0])/(m_meshWidth-1);
                 m_front_afVertices[index][slotId*8] =   x_pos[0]+x*(x_pos[1]-x_pos[0])/(m_meshWidth-1);//(((float)x)/(m_meshWidth-1)-0.5)*2 * PlaneScaleX;
                 m_front_afVertices[index][slotId*8+1] = PlaneScaleY_NEG +(PlaneScaleY-PlaneScaleY_NEG)*y/m_meshHeight; //(((float)y)/(m_meshHeight-1)-0.5) *2 * PlaneScaleY;
                 m_front_afVertices[index][slotId*8+2] = z_pos[0]+x*(z_pos[1]-z_pos[0])/(m_meshWidth-1);
@@ -124,13 +142,18 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
                 m_rear_afVertices[index][slotId*8+1] = m_front_afVertices[index][slotId*8+1];
                 m_rear_afVertices[index][slotId*8+2] = m_front_afVertices[index][slotId*8+2];
                 #endif
-                AVMData::GetInstance()->CalcUVTextureSV(&m_front_afVertices[index][slotId*8],&m_front_afVertices[index][slotId*8+3],0);
+                AVMData::GetInstance()->CalcUVTextureSV(&afVertices[index][slotId*8],&afVertices[index][slotId*8+3],0);
+                m_front_afVertices[index][slotId*8+3] =  afVertices[index][slotId*8+3];
+                m_front_afVertices[index][slotId*8+4] =  afVertices[index][slotId*8+4];
+                m_front_afVertices[index][slotId*8+5] =  afVertices[index][slotId*8+5];
                 m_rear_afVertices[index][slotId*8+3] =  1.0 - m_front_afVertices[index][slotId*8+3];
                 m_rear_afVertices[index][slotId*8+4] =  m_front_afVertices[index][slotId*8+4];
                 m_rear_afVertices[index][slotId*8+5] =  m_front_afVertices[index][slotId*8+5];
 
                 //CalcCrossViewUVTexture(&afVertices[index][slotId*8],&afVertices[index][slotId*8+3],2,Transfom,m_bev_config.smc.DISTORTION_MODEL);
 
+                afVertices[index][slotId*8+6] = ((float)x)/(m_meshWidth-1);
+                afVertices[index][slotId*8+7] = ((float)y)/(m_meshHeight-1);
                 m_front_afVertices[index][slotId*8+6] = ((float)x)/(m_meshWidth-1);
                 m_front_afVertices[index][slotId*8+7] = ((float)y)/(m_meshHeight-1);
                 m_rear_afVertices[index][slotId*8+6] = m_front_afVertices[index][slotId*8+6];
@@ -186,10 +209,14 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
     pIEffect->InitShaderFromFile("Effect_SV", VertexName, FragShaderName,  sizeof(SV_PARAM_CB), XR_VERTEX_LAYOUT_PNT, 0);
     pIEffect->SetRenderDelegate(m_renderDelegate);
 
+    Int32 iSize;
+    XRVertexLayout data_format;
+
     for(int i =0;i<3;i++)
     {
         m_180DegreeViewMeshId[i] = m_180DegreeViewNode->CreateMesh(ModelType_Null, 0,0,0, "plane", &m_180DegreeViewMesh[i]);
-        //m_180DegreeViewMesh[i]->LoadVertexFromArray(m_front_afVertices[i], XR_VERTEX_LAYOUT_PNT, m_meshWidth*m_meshHeight);
+        m_180DegreeViewMesh[i]->LoadVertexFromArray(afVertices[i], XR_VERTEX_LAYOUT_PNT, m_meshWidth*m_meshHeight);
+        m_180DegreeViewMesh[i]->LockData(&m_afVertices[i], &data_format, &iSize);
         m_180DegreeViewMesh[i]->LoadIndexFromArray(afIndices, (m_meshWidth-1)*(m_meshHeight-1)*6*2);
     }
 //#define VIEW_Z -4100
@@ -238,24 +265,35 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 int CAvmLinearViewNode::UpdateNode()
 {
 
+    static unsigned char lastLinear180DegreeViewCmd = 100;
     unsigned char linear180DegreeViewCmd = 0;
     CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(linear180DegreeViewCmd);
 
     if(linear180DegreeViewCmd == LINEAR_FRONT_180_DEGREE_VIEW)
     {
         m_renderDelegate->SetChannel(FRONT_SINGLE_VIEW);
-        for(int i =0;i<3;i++)
+        if(lastLinear180DegreeViewCmd != linear180DegreeViewCmd)
         {
-            m_180DegreeViewMesh[i]->LoadVertexFromArray(m_front_afVertices[i], XR_VERTEX_LAYOUT_PNT, m_meshWidth*m_meshHeight);
+            for(int i =0;i<3;i++)
+            {
+                //m_180DegreeViewMesh[i]->LoadVertexFromArray(m_front_afVertices[i], XR_VERTEX_LAYOUT_PNT, m_meshWidth*m_meshHeight);
+                memcpy(m_afVertices[i],m_front_afVertices[i],m_meshWidth*m_meshHeight*8*sizeof(GLfloat));
+                m_180DegreeViewMesh[i]->UnLockData();
+            }
         }
         m_180DegreeViewNode->SetClear(TRUE, TRUE);
     }
     else if(linear180DegreeViewCmd == LINEAR_REAR_180_DEGREE_VIEW)
     {
         m_renderDelegate->SetChannel(REAR_SINGLE_VIEW);
-        for(int i =0;i<3;i++)
+        if(lastLinear180DegreeViewCmd != linear180DegreeViewCmd)
         {
-            m_180DegreeViewMesh[i]->LoadVertexFromArray(m_rear_afVertices[i], XR_VERTEX_LAYOUT_PNT, m_meshWidth*m_meshHeight);
+            for(int i =0;i<3;i++)
+            {
+                //m_180DegreeViewMesh[i]->LoadVertexFromArray(m_rear_afVertices[i], XR_VERTEX_LAYOUT_PNT, m_meshWidth*m_meshHeight);
+                memcpy(m_afVertices[i],m_rear_afVertices[i],m_meshWidth*m_meshHeight*8*sizeof(GLfloat));
+                m_180DegreeViewMesh[i]->UnLockData();
+            }
         }
         m_180DegreeViewNode->SetClear(TRUE, TRUE);
     }
@@ -263,6 +301,7 @@ int CAvmLinearViewNode::UpdateNode()
     {
         m_180DegreeViewNode->SetClear(m_colorClearFlag, m_depthClearFlag);
     }
+    lastLinear180DegreeViewCmd = linear180DegreeViewCmd;
     return LINEAR_VIEW_NODE_NORMAL;
 }
 int CAvmLinearViewNode::SetVisibility(unsigned char pVisibilityFlag)
