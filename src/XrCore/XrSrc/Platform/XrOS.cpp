@@ -14,13 +14,9 @@ UInt32 XrGetTime()
 #endif
 
 #ifdef LINUX_J6
-      /* static struct timespec rt;
-	clock_gettime(CLOCK_REALTIME, &rt);
-	return (rt.tv_sec * 1000 + rt.tv_nsec/1000000);*/
-      static struct timeval tv;
-      gettimeofday(&tv,NULL);
-      return (tv.tv_sec * 1000 + tv.tv_usec/1000);
-#endif
+    static struct timespec rt;
+	clock_gettime(CLOCK_MONOTONIC, &rt);
+	return (rt.tv_sec * 1000 + rt.tv_nsec/1000000);#endif
 }
 
 void GetFileFullPath(char* in, char* out)
