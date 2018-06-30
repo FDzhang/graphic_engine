@@ -435,7 +435,7 @@ int GlSV2D::InitSideViewBuffer(int width,int height,GLfloat **pData,GLushort **p
 	int x, y;
 	//*pIndex = (GLushort*)malloc((width-1)*(height-1)*6*2);
 	*puiIndexSize = (width-1)*(height-1)*6;
-	*puiVertSize = width*height*7;
+	*puiVertSize = width*height;
 
 	if(index_flag == 1)
 	{

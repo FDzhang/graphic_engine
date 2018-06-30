@@ -123,8 +123,12 @@ int CSVS302PdHmi::Update(Hmi_Message_T& hmiMsg)
     CAvmRenderDataBase::GetInstance()->GetPdResult(&pdResult);
         
     //Log_Error("GPU:---%d, ---%d, ---%d, ---%d", pdResult.warningStatus[0], pdResult.warningStatus[1], pdResult.warningStatus[2], pdResult.warningStatus[3]);
-
-    if(2 == pdResult.pdStatus)
+     unsigned char currentViewStatus = 0;  
+    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(currentViewStatus);
+	
+    if(currentViewStatus != LINEAR_FRONT_180_DEGREE_VIEW
+        && currentViewStatus != LINEAR_REAR_180_DEGREE_VIEW
+        && 2 == pdResult.pdStatus)
     {
         m_buttonVisibility[S302_PD_FRONT_WARNING] = pdResult.warningStatus[PD_WARNING_REG_FRONT];
         m_buttonVisibility[S302_PD_REAR_WARNING] = pdResult.warningStatus[PD_WARNING_REG_REAR];
