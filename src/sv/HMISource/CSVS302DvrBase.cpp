@@ -337,6 +337,7 @@ int CSVS302DvrBase::Update(Hmi_Message_T& hmiMsg)
         
         break;
       case GUI_LAYOUT_PLAYBACK_VIDEO_EXT:
+	  case GUI_LAYOUT_PLAYBACK_IMAGE_EXT:
         m_buttonStatus[S302_DVR_BASE_PLAYBACK_TAB] = BUTTON_ON_IMAGE;
         if(dvrGuiLayout.pTable)
         {				
@@ -353,8 +354,6 @@ int CSVS302DvrBase::Update(Hmi_Message_T& hmiMsg)
         m_dvrFileListVisibility = 0;
         m_dvrPlayImageTabVisibility = 0;
         
-        break;
-      case GUI_LAYOUT_PLAYBACK_IMAGE_EXT:
         break;
       default:
         m_dvrRecordTabVisibility = 0;

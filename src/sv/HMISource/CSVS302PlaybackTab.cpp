@@ -62,7 +62,7 @@ int CSVS302PlaybackTab::Update(Hmi_Message_T &hmiMsg)
 
 	fileListTabMsg = dvrData.pTable;
     
-    if(dvrData.curLayout == GUI_LAYOUT_PLAYBACK_VIDEO_EXT)
+    if(dvrData.curLayout == GUI_LAYOUT_PLAYBACK_VIDEO_EXT || dvrData.curLayout == GUI_LAYOUT_PLAYBACK_IMAGE_EXT)
     {
         for(int i = 0; i < dvrData.ObjNum; i++)
         {
@@ -82,6 +82,7 @@ int CSVS302PlaybackTab::Update(Hmi_Message_T &hmiMsg)
             }
         }
     }
+	
     RefreshHmi();
     return S302_MAIN_HMI_NORMAL;
 }
