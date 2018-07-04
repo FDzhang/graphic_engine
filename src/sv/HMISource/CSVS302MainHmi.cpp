@@ -545,10 +545,13 @@ CSVS302MainHmi::~CSVS302MainHmi()
     }*/
     int i = S302_BEV_CAR_ICON;
     SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
+	SAFE_DELETE(m_baseButtonData[i].icon_file_name[1]);
     SAFE_DELETE(m_baseButton[i]);
-	i = S302_BEV_BK_ICON;
-	SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
-    SAFE_DELETE(m_baseButton[i]);
+	for(i = S302_BEV_BK_ICON;i<=S302_VIEW180_RIGHT_CUTLINE;i++)
+	{
+		SAFE_DELETE(m_baseButtonData[i].icon_file_name[0]);
+    	SAFE_DELETE(m_baseButton[i]);
+	}
 }
 
 int CSVS302MainHmi::SetHmiParams()
@@ -874,7 +877,62 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
     m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
     m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 
+	i = S302_VIEW180_LEFT_CUTLINE;
+	m_buttonSize[i][BUTTON_SIZE_WIDTH] = 2.0;
+	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = 720.0;
+	m_buttonPos[i][BUTTON_POS_X] = 340;
+	m_buttonPos[i][BUTTON_POS_Y] = 0;
+	
+	m_baseButtonData[i].icon_type = STATIC_ICON;
+	m_baseButtonData[i].show_flag = 0;
+	m_buttonVisibility[i] = 0;
+	m_baseButtonData[i].show_icon_num = 0;
+	m_buttonShowImage[i] = 0;
+
+	m_baseButtonData[i].icon_file_name[0] = new char [50];
+	m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
+	sprintf(m_baseButtonData[i].icon_file_name[0],"%scutline.dds",XR_RES);
+	
+	m_trigger[i] = NULL;
+	
+	m_baseButtonData[i].pos[0] = m_buttonPos[i][BUTTON_POS_X];
+	m_baseButtonData[i].pos[1] = m_buttonPos[i][BUTTON_POS_Y];
+	m_baseButtonData[i].width = m_buttonSize[i][BUTTON_SIZE_WIDTH];
+	m_baseButtonData[i].height = m_buttonSize[i][BUTTON_SIZE_HEIGHT];
+	m_baseButtonData[i].delegate_func = NULL;
+	m_baseButtonData[i].trigger = NULL;
+
+	m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+    m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
+
     
+	i = S302_VIEW180_RIGHT_CUTLINE;
+	m_buttonSize[i][BUTTON_SIZE_WIDTH] = 2.0;
+	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = 720.0;
+	m_buttonPos[i][BUTTON_POS_X] = 1280 - 340 -2;
+	m_buttonPos[i][BUTTON_POS_Y] = 0;
+	
+	m_baseButtonData[i].icon_type = STATIC_ICON;
+	m_baseButtonData[i].show_flag = 0;
+	m_buttonVisibility[i] = 0;
+	m_baseButtonData[i].show_icon_num = 0;
+	m_buttonShowImage[i] = 0;
+
+	m_baseButtonData[i].icon_file_name[0] = new char [50];
+	m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
+	sprintf(m_baseButtonData[i].icon_file_name[0],"%scutline.dds",XR_RES);
+	
+	m_trigger[i] = NULL;
+	
+	m_baseButtonData[i].pos[0] = m_buttonPos[i][BUTTON_POS_X];
+	m_baseButtonData[i].pos[1] = m_buttonPos[i][BUTTON_POS_Y];
+	m_baseButtonData[i].width = m_buttonSize[i][BUTTON_SIZE_WIDTH];
+	m_baseButtonData[i].height = m_buttonSize[i][BUTTON_SIZE_HEIGHT];
+	m_baseButtonData[i].delegate_func = NULL;
+	m_baseButtonData[i].trigger = NULL;
+
+	m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+	m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 
     return S302_MAIN_HMI_NORMAL;
 }
@@ -1018,6 +1076,18 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
     {
         m_buttonVisibility[S302_BEV_BK_ICON] = 0;
         m_buttonVisibility[S302_BEV_CAR_ICON] = 0;
+    }
+
+	if((currentViewStatus >= LINEAR_FRONT_180_DEGREE_VIEW && currentViewStatus <= LINEAR_REAR_180_DEGREE_VIEW) &&
+		(s302MainMenuData.iconStatus[MAIN_MENU_DVR] == 0))
+    {
+        m_buttonVisibility[S302_VIEW180_LEFT_CUTLINE] = 1;
+        m_buttonVisibility[S302_VIEW180_RIGHT_CUTLINE] = 1;
+    }
+    else
+    {
+        m_buttonVisibility[S302_VIEW180_LEFT_CUTLINE] = 0;
+        m_buttonVisibility[S302_VIEW180_RIGHT_CUTLINE] = 0;
     }
 
     RefreshHmi();
