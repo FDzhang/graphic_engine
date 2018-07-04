@@ -269,17 +269,17 @@ int GlSV2D::InitLinear()
 	m_SideViewIndexSize[right_camera_index] = m_SideViewIndexSize[left_camera_index];
 	
 	GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
-	/*InitFrontRearViewBuffer(FRONT_CLC_VIEW_MESH_WIDTH,FRONT_CLC_VIEW_MESH_HEIGHT,
+	InitFrontRearViewBuffer(FRONT_CLC_VIEW_MESH_WIDTH,FRONT_CLC_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eFrontSingle],&m_pucIndexBuff[eFrontSingle],
 		&m_SideViewVertSize[front_camera_index],&m_SideViewIndexSize[front_camera_index]);
     InitFrontRearViewBuffer(REAR_CLC_VIEW_MESH_WIDTH,REAR_CLC_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eRearSingle],&m_pucIndexBuff[eRearSingle],
 		&m_SideViewVertSize[rear_camera_index],&m_SideViewIndexSize[rear_camera_index]);
-*/
+
 	//GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
 	
-	//GenerateFrontRearSingleViewLUT(front_camera_index,m_pfVertexBuff[eFrontSingle]);
-	//GenerateFrontRearSingleViewLUT(rear_camera_index,m_pfVertexBuff[eRearSingle]);
+	GenerateFrontRearSingleViewLUT(front_camera_index,m_pfVertexBuff[eFrontSingle]);
+	GenerateFrontRearSingleViewLUT(rear_camera_index,m_pfVertexBuff[eRearSingle]);
 
 #else
 	int ret = 0;	
@@ -380,9 +380,6 @@ int GlSV2D::GetVertexBuffer(int Index,float **pVertexBuffer, unsigned int *BufSi
 		 }
 		 else
 		 {
-			 if(Index != eRightSingle&&Index != eLeftSingle)
-			 *BufSize = 4;
-			 else 
 			 *BufSize =m_SideViewVertSize[Index-eFrontSingle];
 		 }
 	 }
@@ -415,9 +412,6 @@ int GlSV2D::GetIndexBuffer(int Index,GLushort **pIndexBuffer, unsigned int *BufS
 		}
 		else
 		{
-			if(Index != eRightSingle&&Index!=eLeftSingle)
-				*BufSize = 6;
-			else
 				*BufSize = m_SideViewIndexSize[Index-eFrontSingle];
 		}
 	}
@@ -477,7 +471,7 @@ int GlSV2D::InitFrontRearViewBuffer(int width,int height,GLfloat **pData,GLushor
 	int x, y;
 	*pIndex = (GLushort*)malloc((width-1)*(height-1)*6*2);
 	*puiIndexSize = (width-1)*(height-1)*6;
-	*puiVertSize = width*height*7;
+	*puiVertSize = width*height;
 	
 	int slotId=0;
 	pIndexTemp = *pIndex;
@@ -506,6 +500,15 @@ int GlSV2D::InitFrontRearViewBuffer(int width,int height,GLfloat **pData,GLushor
 
 	
 }
+
+#define CAMERA_NUM 2
+#define IMAGE_WIDTH 1280    //?¨´¡Á¡ä¨ª??¨ª
+#define IMAGE_HEIGHT 720    //?¨´¡Á¡ä¨ª???
+#define LINE_WIDTH 4        //¡À|?¨ª???¨ª
+#define LINE_BRIGHTNESS 30       //¡À|?¨ª??¨¢¨¢?¨¨
+#define IMAGE_CENTER_RATIO_W 2     //3?¨º??¡¥?¨´¡Á¡ä¨ª??DD?????
+#define IMAGE_CENTER_RATIO_H 1.2   //3?¨º??¡¥?¨´¡Á¡ä¨ª??DD?????
+
 int GlSV2D::GenerateFrontRearSingleViewLUT(int camera_index,float *pVert)
 {
     Cam_Model *pRealCam;
@@ -521,21 +524,35 @@ int GlSV2D::GenerateFrontRearSingleViewLUT(int camera_index,float *pVert)
 	float roll = CLC_CAM_PITCH;
 	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
 	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+	
+	if (prsource[0] < 0)
+	{		
+		prsource[0] = -(prsource[0] / fabs(prsource[0]))*fabs(fabs(prsource[0]) - PI);
+		prsource[1] = (prsource[1] / fabs(prsource[1]))*fabs(fabs(prsource[1]) - PI);
+		prsource[2] = -(prsource[2] / fabs(prsource[2]))*fabs(fabs(prsource[2]) - PI);
+	}
+	
     pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
 
+	Cam_Model_Intrinsic* matrix = new Cam_Model_Intrinsic;
+	AVMData::GetInstance()->m_camInstrinct->GetCameraInstrinct(&matrix,camera_index);
+	
+	float cv = IMAGE_HEIGHT - (matrix->cv - matrix->fv * tan(PI / 2 - prsource[0]));
+	//IMAGE_HEIGHT/IMAGE_CENTER_RATIO_H
 	m_cam_clc[camera_index] = new Cam_Model_Cyli;
     if(camera_index == rear_camera_index)
 		roll = REAR_CLC_CAM_PITCH;
 	Cam_Init_Cyli(m_cam_clc[camera_index],
-		CLC_CAM_WIDTH,CLC_CAM_HEIGHT,
-		CLC_CAM_CX,CLC_CAM_CY,
-		roll*deg2rad,CLC_CAM_ROLL*deg2rad,CLC_CAM_YAW*deg2rad);
+		IMAGE_WIDTH,IMAGE_HEIGHT,
+		IMAGE_WIDTH/IMAGE_CENTER_RATIO_W,cv,
+		prsource[0],prsource[1],0);
+	
 	AVMData::GetInstance()->m_camInstrinct->SetUndistCyliCameraModel(camera_index,m_cam_clc[camera_index]);
     if(camera_index == rear_camera_index)
     {
-        config[0] = REAR_CLC_VIEW_ROI_START_X;
+        config[0] = REAR_CLC_VIEW_ROI_END_X;
 		config[1] = REAR_CLC_VIEW_ROI_START_Y;
-		config[2] = REAR_CLC_VIEW_ROI_END_X;
+		config[2] = REAR_CLC_VIEW_ROI_START_X;
 		config[3] = REAR_CLC_VIEW_ROI_END_Y;
 		config[6] =1 ;
 		

@@ -514,7 +514,7 @@ int SVNode2DStich::ProcessGroundCoord(float steering_wheel_angle,float vehicle_s
 	  // m_vehicle_motion->Motion2KframePredictVCS(vehicle_state,40000,m_track,m_t,m_Move_Matrix,update_key_frame_flag,0.3);
          
     }
-	sprintf(gpu_debug_texbox.text_content[2],"frame_time %d",Get_Frame_TimeStamp());
+	//sprintf(gpu_debug_texbox.text_content[2],"frame_time %d",Get_Frame_TimeStamp());
 
 	init_flag = 1;
 	pre_time = present_time;
@@ -708,7 +708,7 @@ int SVNode2DStich::Update(float steering_wheel_angle,float vehicle_speed,float l
 		}
 	}
 	
-	sprintf(gpu_debug_texbox.text_content[5],"point (%f,%f)",m_Car_rect[0].x,m_Car_rect[0].y);
+	//sprintf(gpu_debug_texbox.text_content[5],"point (%f,%f)",m_Car_rect[0].x,m_Car_rect[0].y);
 	update_time++;
 
     if(m_init_flag == 0)
