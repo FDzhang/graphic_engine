@@ -30,6 +30,7 @@
 #include "AVMCameraInternal.h"
 #include "../fileloader.h"
 #include "../DataStruct.h"
+#include "gpu_log.h"
 /*===========================================================================*\
  * Other Header Files
 \*===========================================================================*/
@@ -376,7 +377,109 @@ Cam_Model * AVMCameraInternal::GetFullCameraModel(int camera_index,float *pCamer
 	
 	mp_full_cam_model[camera_index] = new Cam_Model;
 
-	Cam_Init(mp_full_cam_model[camera_index], 
+	Log_Debug("------hch: camera_index=%d, W=%f, H=%f, CX=%f, CY=%f \n C=%f, D=%f, E=%f \n HFOV=%f, VFOV=%f, CUT=%d",
+		camera_index,
+		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
+		m_cam_cfg_fisheye[camera_index].CAM_INT_CY, 
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_C,
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_D, 
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_E,
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_HFOV,
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT);
+
+	/*Cam_Init(mp_full_cam_model[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
+		m_cam_cfg_fisheye[camera_index].CAM_INT_CY, 
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_C,
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_D, 
+		m_cam_cfg_fisheye[camera_index].CAM_SKEW_E, 
+		m_camera_lut[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_HFOV,
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
+		m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT, 
+		pCameraR, 
+		pCam_T
+		);*/
+	if(camera_index == 0)
+	{
+		Cam_Init(mp_full_cam_model[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
+		628.970642,//m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
+		357.105713,//m_cam_cfg_fisheye[camera_index].CAM_INT_CY, 
+		0.942104,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_C,
+		-0.011333,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_D, 
+		-0.000000,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_E, 
+		m_camera_lut[camera_index], 
+		1.744885,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_HFOV,
+		1.031919,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
+		1,//m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT, 
+		pCameraR, 
+		pCam_T
+		);
+	}
+	else if(camera_index == 1)
+	{
+		Cam_Init(mp_full_cam_model[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
+		632.594971,//m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
+		359.917206,//m_cam_cfg_fisheye[camera_index].CAM_INT_CY, 
+		1.194188,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_C,
+		-0.007747,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_D, 
+		-0.000000,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_E, 
+		m_camera_lut[camera_index], 
+		1.796784,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_HFOV,
+		1.200000,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
+		1,//m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT, 
+		pCameraR, 
+		pCam_T
+		);
+	}
+	else if(camera_index == 2)
+	{
+		Cam_Init(mp_full_cam_model[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
+		636.076477,//m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
+		364.222015,//m_cam_cfg_fisheye[camera_index].CAM_INT_CY, 
+		1.091911,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_C,
+		0.002608,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_D, 
+		-0.000000,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_E, 
+		m_camera_lut[camera_index], 
+		1.745168,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_HFOV,
+		1.100370,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
+		1,//m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT, 
+		pCameraR, 
+		pCam_T
+		);
+	}
+	else if(camera_index == 3)
+	{
+		Cam_Init(mp_full_cam_model[camera_index], 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
+		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
+		637.717957,//m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
+		364.576233,//m_cam_cfg_fisheye[camera_index].CAM_INT_CY, 
+		1.062918,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_C,
+		0.002224,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_D, 
+		0.012089,//m_cam_cfg_fisheye[camera_index].CAM_SKEW_E, 
+		m_camera_lut[camera_index], 
+		1.746444,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_HFOV,
+		1.075492,//m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
+		1,//m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT, 
+		pCameraR, 
+		pCam_T
+		);
+	}
+	else
+	{
+		Cam_Init(mp_full_cam_model[camera_index], 
 		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
 		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
 		m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
@@ -391,6 +494,7 @@ Cam_Model * AVMCameraInternal::GetFullCameraModel(int camera_index,float *pCamer
 		pCameraR, 
 		pCam_T
 		);
+	}
 
 	return mp_full_cam_model[camera_index];
 }

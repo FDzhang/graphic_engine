@@ -524,6 +524,26 @@ int GlSV2D::GenerateFrontRearSingleViewLUT(int camera_index,float *pVert)
 	float roll = CLC_CAM_PITCH;
 	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
 	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+	Log_Debug("------hch: FrontRear camera_index = %d,ptsource = %f, %f, %f",camera_index,ptsource[0],ptsource[1],ptsource[2]);
+	Log_Debug("------hch: FrontRear camera_index = %d,prsource = %f, %f, %f",camera_index,prsource[0],prsource[1],prsource[2]);
+	if(camera_index == 0)
+	{
+		ptsource[0] = 3754.837402;
+		ptsource[1] = 12.166937;
+		ptsource[2] = -780.820374;
+		prsource[0] = -2.022081;
+		prsource[1] = 3.138451;
+		prsource[2] = -1.594613;
+	}
+	else if(camera_index == 1)
+	{
+		ptsource[0] = -987.406677;
+		ptsource[1] = 35.075394;
+		ptsource[2] = -1080.743896;
+		prsource[0] = 0.845056;
+		prsource[1] = -0.027668;
+		prsource[2] = -1.580048;
+	}
 	
 	if (prsource[0] < 0)
 	{		
@@ -635,6 +655,26 @@ int GlSV2D::GenerateSideSingleViewLUT(int camera_index,float *pVert)
 		RIGHT_SIDE_VIEW_MESH_HEIGHT};
 	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
 	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+	Log_Debug("------hch: Side camera_index = %d,ptsource = %f, %f, %f",camera_index,ptsource[0],ptsource[1],ptsource[2]);
+	Log_Debug("------hch: Side camera_index = %d,prsource = %f, %f, %f",camera_index,prsource[0],prsource[1],prsource[2]);
+	if(camera_index == 2)
+	{
+		ptsource[0] = 1855.828491;
+		ptsource[1] = -1061.214722;
+		ptsource[2] = -1204.462158;
+		prsource[0] = 0.806223;
+		prsource[1] = -0.041962;
+		prsource[2] = 0.004450;
+	}
+	else if(camera_index == 3)
+	{
+		ptsource[0] = 1852.984131;
+		ptsource[1] = 1034.933716;
+		ptsource[2] = -1229.751099;
+		prsource[0] = -2.313069;
+		prsource[1] = -3.136924;
+		prsource[2] = -0.002362;
+	}
     pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
 	m_cam_linear[camera_index] = new Cam_Model;
 
