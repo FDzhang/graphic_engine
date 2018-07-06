@@ -1077,6 +1077,8 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_buttonVisibility[S302_BEV_BK_ICON] = 0;
         m_buttonVisibility[S302_BEV_CAR_ICON] = 0;
     }
+	m_buttonVisibility[S302_BEV_BK_ICON] = 0;
+    m_buttonVisibility[S302_BEV_CAR_ICON] = 0;
 
 	if((currentViewStatus >= LINEAR_FRONT_180_DEGREE_VIEW && currentViewStatus <= LINEAR_REAR_180_DEGREE_VIEW) &&
 		(s302MainMenuData.iconStatus[MAIN_MENU_DVR] == 0))
