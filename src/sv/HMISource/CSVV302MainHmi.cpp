@@ -226,10 +226,10 @@ int CSVV302MainHmi::Update(Hmi_Message_T &hmiMsg)
     CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
 
     m_iconStatus[V302_DVR_STATUS] = mainMenuData.iconStatus[MAIN_MENU_DVR];
-    m_iconStatus[V302_DVR_STATUS] = 1;
+    m_iconStatus[V302_DVR_STATUS] = 0;
 
     
-    CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
+    //CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(LEFT_SINGLE_VIEW);
 #if 0
     if (m_iconStatus[V302_DVR_STATUS] == 1)
     {

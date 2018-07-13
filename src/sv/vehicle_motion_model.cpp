@@ -178,7 +178,7 @@ void VehicleMotion::revMotion2KframePredictVCS(
 	float32_t radius = 0;
 	float32_t track_offset = 0;
 	float dist_temp=0;
-	SteerWheel2Radius(str_whl_angle, shft_pos, radius);
+	//SteerWheel2Radius(str_whl_angle, shft_pos, radius);
 	
     //fprintf(stdout,"\r\noldradius%f",radius);
 	steeringwheel_radius(str_whl_angle,shft_pos,radius);
@@ -375,69 +375,6 @@ void VehicleMotion::steeringwheel_radius(
 #define COEFF_CONST_RR  0.0
 #define COEFF_CONST_RL -0.0
 #endif
-	_a[0] = COEFF_LINEAR_FR;
-	_a[1] = COEFF_LINEAR_FL;
-	_a[2] = COEFF_LINEAR_RR;
-	_a[3] = COEFF_LINEAR_RL;
-
-	_b[0] = COEFF_CONST_FR;
-	_b[1] = COEFF_CONST_FL;
-	_b[2] = COEFF_CONST_RR;
-	_b[3] = COEFF_CONST_RL;
-	if (shft_pos == 2)
-	{
-		if (str_whl_angle < 0) // steering wheel turns clockwisely
-		{
-			radius = H / tan(ABS(_a[_Forward_R] * (-str_whl_angle) + FLT_MIN + _b[_Forward_R])*CV_PI / 180) - W / 2;
-		}
-		else
-		{
-			radius = H / tan(ABS(_a[_Forward_L] * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) - W / 2;
-		}
-	}
-	else
-	{
-		if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
-		{
-			radius = H / tan(ABS(_a[_Backward_R] * (-str_whl_angle) + FLT_MIN + _b[_Backward_R])*CV_PI / 180) - W / 2;
-		}
-		else
-		{
-			radius = H / tan(ABS(_a[_Backward_L] * str_whl_angle + FLT_MIN + _b[_Backward_L])*CV_PI / 180) - W / 2;
-		}
-	}
-#if 1
-_a[0] = COEFF_LINEAR_FR;
-_a[1] = COEFF_LINEAR_FL;
-_a[2] = COEFF_LINEAR_RR;
-_a[3] = COEFF_LINEAR_RL;
-
-_b[0] = COEFF_CONST_FR;
-_b[1] = COEFF_CONST_FL;
-_b[2] = COEFF_CONST_RR;
-_b[3] = COEFF_CONST_RL;
-if (shft_pos == 2)
-{
-	if (str_whl_angle < 0) // steering wheel turns clockwisely
-	{
-		radius = 3314 / tan(ABS(0.0643 * (-str_whl_angle) + FLT_MIN + _b[_Forward_R])*CV_PI / 180) - 365.5;
-	}
-	else
-	{
-		radius = 4967 / tan(ABS(_a[_Forward_L] * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) +855.8;
-	}
-}
-else
-{
-	if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
-	{
-		radius = 4048/ tan(ABS(_a[_Backward_R] * (-str_whl_angle) + FLT_MIN + _b[_Backward_R])*CV_PI / 180) +290.7;
-	}
-	else
-	{
-		radius = 4593 / tan(ABS(_a[_Backward_L] * str_whl_angle + FLT_MIN + _b[_Backward_L])*CV_PI / 180)+828.9;
-	}
-}
 
 
 #if 1
@@ -445,13 +382,13 @@ if (shft_pos == 2)
 {
 	if (str_whl_angle < 0) // steering wheel turns clockwisely
 	{
-		radius = 2750 / tan((3.269*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -2.488*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
-			+0.06131 * (-str_whl_angle) + 0.004912)*CV_PI / 180) - 919.5;
+		radius = 2700.0 / tan((1.413*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) - 1.814*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
+			+ 0.06045 * (-str_whl_angle) + 0.04398)*CV_PI / 180.0) - 1834.0 * 0.5;
 	}
 	else
 	{
-		radius = 2750 / tan((3.466*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) +2.798*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
-			+0.05994 * (str_whl_angle) + 0.0446)*CV_PI / 180) + 919.5;
+		radius = 2700.0 / tan((4.217*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) + 7.451*(1.0e-6)*(str_whl_angle) *(str_whl_angle)
+			+ 0.06319 * (str_whl_angle) + 0.04561)*CV_PI / 180.0) + 1834.0 * 0.5;
 
 		//radius = 2756 / tan(ABS(0.06501 * str_whl_angle + FLT_MIN + _b[_Forward_L])*CV_PI / 180) + 919.5;
 	}
@@ -460,18 +397,18 @@ else
 {
 	if (str_whl_angle < 0) // steering wheel turns anti-clockwisely
 	{
-		radius = 2750 / tan((6.667*(1.0e-8)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) -5.163*(1.0e-5)*(-str_whl_angle) *(-str_whl_angle)
-			+0.06626 * (-str_whl_angle) + 0.007778)*CV_PI / 180) - 919.5;
+		radius = 2700.0 / tan((-7.833*(1.0e-9)*(-str_whl_angle) *(-str_whl_angle) *(-str_whl_angle) - 7.976*(1.0e-6)*(-str_whl_angle) *(-str_whl_angle)
+			+ 0.06026 * (-str_whl_angle) + 0.05541)*CV_PI / 180.0) - 1834.0 * 0.5;
 	}
 	else
 	{
-		radius = 2750 / tan((8.628*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) -1.086*(1.0e-5)*(str_whl_angle) *(str_whl_angle)
-			+0.06691 * (str_whl_angle) + 0.005639)*CV_PI / 180) + 919.5;
+		radius = 2700.0 / tan((5.334*(1.0e-8)*(str_whl_angle) *(str_whl_angle) *(str_whl_angle) - 6.864*(1.0e-6)*(str_whl_angle) *(str_whl_angle)
+			+ 0.06726 * (str_whl_angle) + 0.00747)*CV_PI / 180.0) + 1834.0 * 0.5;
 	}
 }
 
 #endif
-#endif
+
 static float pre_steering_wheel=0;
    if(pre_steering_wheel != str_whl_angle)
    {
@@ -521,7 +458,7 @@ float VehicleMotion::get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data
     {
 	    if(pulse_curent[i]<pulse_pre[i])
 	    {
-	        pulse_delta[i] = -pulse_pre[i]+1024+pulse_curent[i];
+	        pulse_delta[i] = -pulse_pre[i]+255+pulse_curent[i];
 	    }
 		else
 		{
@@ -530,7 +467,7 @@ float VehicleMotion::get_distance_from_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data
 		}
     }
 
-    return((pulse_delta[0] +pulse_delta[1] )*0.022905);
+    return((pulse_delta[0] +pulse_delta[1] )*0.026601);
 	
 }
 float VehicleMotion::get_theta_from_multi_pulse(COMMON_VEHICLE_DATA_SIMPLE * v_data,float radius,int turn_sign)

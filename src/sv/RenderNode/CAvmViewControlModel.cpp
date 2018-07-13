@@ -81,7 +81,7 @@ int CAvmViewControlModel::InitViewNode()
 	unsigned char initSingleViewNode = 0;
 	unsigned char initObjViewNode = 0;
 
-	unsigned char carTransparentStatus = 0;
+	unsigned char carTransparentStatus = 1;
 	CAvmRenderDataBase::GetInstance()->SetCarTransparentStatus(&carTransparentStatus);
 
 	//CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&carTransparentStatus);
