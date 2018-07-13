@@ -1090,6 +1090,14 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_buttonVisibility[S302_VIEW180_RIGHT_CUTLINE] = 0;
     }
 
+	unsigned char carTransparentStatus = 0;
+	CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&carTransparentStatus);
+	if(carTransparentStatus)
+	{	
+		m_buttonVisibility[S302_BEV_BK_ICON] = 0;
+		m_buttonVisibility[S302_BEV_CAR_ICON] = 0;
+	}
+
     RefreshHmi();
 	RefreshHmiGuideline();
 
