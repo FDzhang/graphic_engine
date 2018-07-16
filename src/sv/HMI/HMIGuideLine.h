@@ -101,6 +101,8 @@ typedef enum GuideLineTypeTag
     GUIDELINE_SINGLEVIEW_WHEEL_DYNAMIC,
 	GUIDELINE_BEV_SAVE_DYNAMIC,
 	GUIDELINE_3D_SAVE_DYNAMIC,
+	GUIDELINE_SINGLE_DYNAMIC_EQUAL_PIXEL,
+	GUIDELINE_SINGLE_DYNAMIC_MINIMUM_PIXEL,
     GUIDELINE_TYPE_NUM,
 }
 GuideLineTypeT;
@@ -249,6 +251,9 @@ private:
     int CalWorld2ModelCoordinate(float *out_Model_Coord,float *in_world_coord,float *out_texture = NULL);
 	int CaculateHorizontalDynamicLine(float* pVertex , float pSteeringWheel, int pDirect);
 	int CvtWorld2Display(float* pVertex, float pWorldPoint[], int pIndex);
+    
+    float CalTriangleH(float pCenterX0, float pCenterY0,float pCenterX1, float pCenterY1,float pCenterX2, float pCenterY2);
+    
 private:
     HMIGuideLineDataT* m_guideLineData;
 	unsigned char      m_currentCamPos;

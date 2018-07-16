@@ -410,7 +410,9 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
     if(m_currentDirection == GUIDELINE_DIR_BACKWARD)
     {       
         if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC
-			|| m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC)
+			|| m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC
+			|| m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_EQUAL_PIXEL
+			|| m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_MINIMUM_PIXEL)
         {
             if(IsFloatEqual(startDistance, 0.0, 0.0001))
 			{
@@ -434,7 +436,9 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
     else if(m_currentDirection == GUIDELINE_DIR_FORWARD)
     {
         if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC
-			|| m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC)
+			|| m_guideLineData->guideLineType == GUIDELINE_BEV_DYNAMIC
+			|| m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_EQUAL_PIXEL
+			|| m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_MINIMUM_PIXEL)
         {
             if(IsFloatEqual(startDistance, 0.0, 0.0001))
 			{
@@ -494,7 +498,7 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
     }
 
     float texture[m_guideLineData->guideLinePointNum * 2][2];
-
+    
     for(Loop = 0; Loop < m_guideLineData->guideLinePointNum * 2; Loop++)
     {
         index = Loop%2;
@@ -515,7 +519,9 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
         pVertex[slotid+1] = m_modelBottom;
         pVertex[slotid+2] = model_coord[1];
 
-        if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC)
+        if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC
+           ||m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_EQUAL_PIXEL
+           || m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_MINIMUM_PIXEL)
         {
             pVertex[slotid+0] = model_coord[0];
             pVertex[slotid+1] = model_coord[1];
@@ -536,6 +542,152 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
     
     }
 
+    if(m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_EQUAL_PIXEL)
+    {
+        float dx0 = 0.0;
+        float dy0 = 0.0;
+        float theta = 0.0;
+        Region currentSingleRegion;
+        CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&currentSingleRegion);
+        float nodeScaleX = 2.0 / (currentSingleRegion.right - currentSingleRegion.left);
+        float nodeScaleY = 2.0 / (currentSingleRegion.bottom - currentSingleRegion.top);
+        
+        slotid = 0;
+        
+        for(Loop = 0; Loop < m_guideLineData->guideLinePointNum * 2; Loop++)
+        {
+            index = Loop % 2;
+            if(index == 1) 
+            {
+                if(Loop < m_guideLineData->guideLinePointNum * 2 - 1)
+                {
+                    dx0 = pVertex[slotid + 0 + 8] - pVertex[slotid + 0 - 8];
+                    dy0 = pVertex[slotid + 2 + 8] - pVertex[slotid + 2 - 8];
+                    dx0 = dx0 / nodeScaleX;
+                    dy0 = dy0 / nodeScaleY;
+                    theta = atan2(dy0, dx0);                    
+                }
+                pVertex[slotid + 0] = pVertex[slotid + 0 - 8] + m_guideLineData->guideLineWidth * cos(theta - GUIDELINE_PI * 0.5) * nodeScaleX;
+                pVertex[slotid + 2] = pVertex[slotid + 2 - 8] + m_guideLineData->guideLineWidth * sin(theta - GUIDELINE_PI * 0.5) * nodeScaleY;
+                pVertex[slotid + 1] = pVertex[slotid + 2];
+            }            
+            slotid+=8;
+        }       
+    }
+    else if(m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_MINIMUM_PIXEL)
+    {
+        float dx0 = 0.0;
+        float dy0 = 0.0;
+        float dx1 = 0.0;
+        float dy1 = 0.0;
+        float dx2 = 0.0;
+        float dy2 = 0.0;
+        float theta = 0.0;
+        Region currentSingleRegion;
+        CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&currentSingleRegion);
+        float nodeScaleX = 2.0 / (currentSingleRegion.right - currentSingleRegion.left);
+        float nodeScaleY = 2.0 / (currentSingleRegion.bottom - currentSingleRegion.top);
+        
+        slotid = 0;
+//        dx0 = pVertex[slotid + 0 + 8] - pVertex[slotid + 0];
+//        dy0 = pVertex[slotid + 2 + 8] - pVertex[slotid + 2];
+//        dx0 = dx0 / nodeScaleX;
+//        dy0 = dy0 / nodeScaleY;
+//        float linewidth = sqrt(dx0 * dx0 + dy0 * dy0);
+//        
+//        for(Loop = 0; Loop < m_guideLineData->guideLinePointNum * 2; Loop++)
+//        {
+//            index = Loop % 2;
+//            if(m_guideLineData->guideLinePos == GUIDELINE_POS_LEFT)
+//            {
+//                if(index == 1) 
+//                {
+//                    dx0 = pVertex[slotid + 0] - pVertex[slotid + 0 - 8];
+//                    dy0 = pVertex[slotid + 2] - pVertex[slotid + 2 - 8];
+//                    dx0 = dx0 / nodeScaleX;
+//                    dy0 = dy0 / nodeScaleY;
+//                    theta = atan2(dy0, dx0);
+//                    
+//                    pVertex[slotid + 0] = pVertex[slotid + 0 - 8] + linewidth * cos(theta) * nodeScaleX;
+//                    pVertex[slotid + 2] = pVertex[slotid + 2 - 8] + linewidth * sin(theta) * nodeScaleY;
+//                    pVertex[slotid + 1] = pVertex[slotid + 2];
+//                }
+//            }
+//            else if(m_guideLineData->guideLinePos == GUIDELINE_POS_RIGHT)
+//            {
+//                if(index == 0) 
+//                {
+//                    dx0 = pVertex[slotid + 0] - pVertex[slotid + 0 + 8];
+//                    dy0 = pVertex[slotid + 2] - pVertex[slotid + 2 + 8];
+//                    dx0 = dx0 / nodeScaleX;
+//                    dy0 = dy0 / nodeScaleY;
+//                    theta = atan2(dy0, dx0);
+//                    
+//                    pVertex[slotid + 0] = pVertex[slotid + 0 + 8] + linewidth * cos(theta) * nodeScaleX;
+//                    pVertex[slotid + 2] = pVertex[slotid + 2 + 8] + linewidth * sin(theta) * nodeScaleY;
+//                    pVertex[slotid + 1] = pVertex[slotid + 2];
+//                }                
+//            }
+//            slotid+=8;
+//        }       
+        if(m_guideLineData->guideLinePos == GUIDELINE_POS_LEFT)
+        {        
+//            dx0 = (pVertex[slotid + 0 + 8] - pVertex[slotid + 0 + 16]) / nodeScaleX;
+//            dy0 = (pVertex[slotid + 2 + 8] - pVertex[slotid + 2 + 16]) / nodeScaleY;
+//            dx1 = (pVertex[slotid + 0] - pVertex[slotid + 0 + 16]) / nodeScaleX;
+//            dy1 = (pVertex[slotid + 2] - pVertex[slotid + 2 + 16]) / nodeScaleY;
+
+            float linewidth0 = 0.0;
+            float linewidth1 = 0.0;            
+            //float linewidth0 = CalTriangleH(0,0,dx0,dy0,dx1,dy1);
+
+            for(Loop = 0; Loop < m_guideLineData->guideLinePointNum * 2; Loop++)
+            {
+                index = Loop % 2;
+                if(index == 1 && Loop > 1)
+                {
+                    dx0 = (pVertex[slotid + 0] - pVertex[slotid + 0 - 8]) / nodeScaleX;
+                    dy0 = (pVertex[slotid + 2] - pVertex[slotid + 2 - 8]) / nodeScaleY;
+                    dx1 = (pVertex[slotid + 0 - 24] - pVertex[slotid + 0 - 8]) / nodeScaleX;
+                    dy1 = (pVertex[slotid + 2 - 24] - pVertex[slotid + 2 - 8]) / nodeScaleY;
+                    linewidth1 = CalTriangleH(0,0,dx0,dy0,dx1,dy1);
+                    if(linewidth1 > 0.0 && linewidth1 < 9.0)
+                    {
+                        float scale = sqrt(9.0 / linewidth1);
+                        pVertex[slotid + 0] = pVertex[slotid + 0 - 8] + dx0 * nodeScaleX * scale;
+                        pVertex[slotid + 2] = pVertex[slotid + 2 - 8] + dy0 * nodeScaleY * scale;
+                        pVertex[slotid + 1] = pVertex[slotid + 2];
+                    }
+                }
+                slotid+=8;
+            }           
+        }
+        else if(m_guideLineData->guideLinePos == GUIDELINE_POS_RIGHT)
+        {        
+            float linewidth0 = 0.0;
+            float linewidth1 = 0.0;
+            for(Loop = 0; Loop < m_guideLineData->guideLinePointNum * 2; Loop++)
+            {
+                index = Loop % 2;
+                if(index == 0 && Loop > 1)
+                {
+                    dx0 = (pVertex[slotid + 0] - pVertex[slotid + 0 + 8]) / nodeScaleX;
+                    dy0 = (pVertex[slotid + 2] - pVertex[slotid + 2 + 8]) / nodeScaleY;
+                    dx1 = (pVertex[slotid + 0 - 8] - pVertex[slotid + 0 + 8]) / nodeScaleX;
+                    dy1 = (pVertex[slotid + 2 - 8] - pVertex[slotid + 2 + 8]) / nodeScaleY;
+                    linewidth1 = CalTriangleH(0,0,dx0,dy0,dx1,dy1);
+                    if(linewidth1 > 0.0 && linewidth1 < 9.0)
+                    {
+                        float scale = sqrt(9.0 / linewidth1);
+                        pVertex[slotid + 0] = pVertex[slotid + 0 + 8] + dx0 * nodeScaleX * scale;
+                        pVertex[slotid + 2] = pVertex[slotid + 2 + 8] + dy0 * nodeScaleY * scale;
+                        pVertex[slotid + 1] = pVertex[slotid + 2];
+                    }
+                }
+                slotid+=8;
+            }           
+        }
+    } 
 
     return GUIDELINE_NORMAL;
 }
@@ -989,7 +1141,9 @@ int HMIGuideLine::CalWorld2ModelCoordinate(float *out_Model_Coord,float *in_worl
             || m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_STATIC
             || m_guideLineData->guideLineType == GUIDELINE_DX3_LEFT_SINGLEVIEW_STATIC
             || m_guideLineData->guideLineType == GUIDELINE_DX3_RIGHT_SINGLEVIEW_STATIC
-            || m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_SAVE_DYNAMIC)
+            || m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_SAVE_DYNAMIC
+            || m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_EQUAL_PIXEL
+            || m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_MINIMUM_PIXEL)
     {
         float texture[2];
         float inWorldCoord[3];
@@ -1062,7 +1216,9 @@ int HMIGuideLine::ResetCamZone(unsigned char pCamPos, float* pCamZone)
         || m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_STATIC
         || m_guideLineData->guideLineType == GUIDELINE_DX3_LEFT_SINGLEVIEW_STATIC
         || m_guideLineData->guideLineType == GUIDELINE_DX3_RIGHT_SINGLEVIEW_STATIC
-        || m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_SAVE_DYNAMIC)
+        || m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_SAVE_DYNAMIC
+        || m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_EQUAL_PIXEL
+        || m_guideLineData->guideLineType == GUIDELINE_SINGLE_DYNAMIC_MINIMUM_PIXEL)
     {
         if(pCamPos == front_camera_index)
         {
@@ -1106,6 +1262,17 @@ int HMIGuideLine::SetVisibility(unsigned char pFlag)
     
     return GUIDELINE_NORMAL;
 }
+
+float HMIGuideLine::CalTriangleH(float pCenterX0, float pCenterY0,float pCenterX1, float pCenterY1,float pCenterX2, float pCenterY2)
+{
+    float resultHH = 0;
+    float aa = (pCenterX1 - pCenterX2) * (pCenterX1 - pCenterX2) + (pCenterY1 - pCenterY2) * (pCenterY1 - pCenterY2);
+    float bb = (pCenterX0 - pCenterX2) * (pCenterX0 - pCenterX2) + (pCenterY0 - pCenterY2) * (pCenterY0 - pCenterY2);
+    float cc = (pCenterX1 - pCenterX0) * (pCenterX1 - pCenterX0) + (pCenterY1 - pCenterY0) * (pCenterY1 - pCenterY0);
+    resultHH = cc - (bb+ cc - aa) * (bb+ cc - aa) * 0.25 / bb;
+    return resultHH;
+}
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================
