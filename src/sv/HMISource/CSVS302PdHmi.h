@@ -40,6 +40,10 @@ typedef enum S302PdHmiElementTag
     S302_PD_REAR_WARNING,
     S302_PD_LEFT_WARNING,
     S302_PD_RIGHT_WARNING,
+    S302_PD_SINGLE_TOP_SIDE,
+    S302_PD_SINGLE_BOTTOM_SIDE,
+    S302_PD_SINGLE_LEFT_SIDE,
+    S302_PD_SINGLE_RIGHT_SIDE,
     S302_PD_ELEM_NUMS,
 }
 S302PdHmiElementT;
@@ -56,7 +60,10 @@ private:
     int SetHmiParams();
     int RefreshHmi();
     void SetHmiElementProperty(unsigned char pIconIndex, float pIconPosX, float pIconPosY, float pIconWidth, float pIconHeight);
+    int SetSingleViewModWarning(PdObjInfoT PdCoord, unsigned char viewIndex);
+    int TransImgCoord2ScreenCoord(Int32 *pImgCoord, float *pScreenCoord, unsigned char viewIndex);
 
+    
 private:
     Hmi_Button_Data_T m_baseButtonData[S302_PD_ELEM_NUMS];
     HMIButton* m_baseButton[S302_PD_ELEM_NUMS];
