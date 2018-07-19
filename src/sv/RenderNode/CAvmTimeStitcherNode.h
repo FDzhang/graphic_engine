@@ -29,6 +29,8 @@
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 #include "../DataStruct.h"
+#include "../HMI/HMIGuideLine.h"
+#include "../HMI/HMIButton.h"
 
 typedef enum AvmTimeStitcherErrorCodeTag
 {
@@ -48,8 +50,13 @@ public:
 	int UpdateExternCalib2DReslt();
 	int SetClear(unsigned char pColorFlag, unsigned char pDepthFlag);
 private:
+	int CalcGroundTexture();
 	int AddOverlay(class IAvmOverlay * pOverlay);
 	
+	int InitAvmBackground();
+	void SetHmiGuideline();
+    void RefreshHmiGuideline();
+	void ResetGuideLineEndPos(float pSteerAngle);
 protected:
 	class IXrCore*       m_xrCore;
 	class ISceneNode*   m_stitchViewNode;
@@ -57,7 +64,14 @@ protected:
 	class IMaterial*	m_SV2DMtl;
 
 	class IMesh*		m_planeMesh;
+	class IMesh*		m_avmBkMesh;
+	class IMaterial*	m_carBodyMtl;
 	int					m_stitchViewNodeId;
+	int 				m_planeMeshId;
+	int 				m_avmBkMeshId;
+
+	class INode*		m_avmBkNode;
+	class INode*		m_carImageNode;
 
 	class GlSV2D*				m_SV2DData;
 
@@ -73,6 +87,14 @@ protected:
 
 	class IAvmOverlay*			m_overlay;
 	class SVNodeSonar*			m_sonarNode;
+	HMIGuideLineDataT   m_guideLineData[DEMO_GUIDELINE_NUM];
+    HMIGuideLine*       m_guideLine[DEMO_GUIDELINE_NUM];
+
+    unsigned char       m_bevDynGuideLineVisibility;
+	unsigned char       m_bevDynOutLGuideLineVisibility;
+	unsigned char       m_bevDynOutRGuideLineVisibility;
+    unsigned char       m_bevAsitLDynGuideLineVisibility;
+    unsigned char       m_bevAsitRDynGuideLineVisibility;
 };
 #endif // _CAVM_TIMESTITCHER_NODE_H_
 

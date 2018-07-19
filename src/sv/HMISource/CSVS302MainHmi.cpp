@@ -818,10 +818,10 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
     AVMData::GetInstance()->m_2D_lut->GetCarRect(&bevCarPos[3],rect_bottom);
     
 	i = S302_BEV_BK_ICON;
-	m_buttonSize[i][BUTTON_SIZE_WIDTH] = 1.12*(bevCarPos[2] - bevCarPos[0]) * stitchRegionWidth * 0.5;
-	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = 1.12*(bevCarPos[1] - bevCarPos[3]) * stitchRegionHeight * 0.5;
-	m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 - 0.5*1.12 * (bevCarPos[2] - bevCarPos[0]));
-	m_buttonPos[i][BUTTON_POS_Y] = currentStitchRegion.top + stitchRegionHeight * 0.5 * (1 - 0.5*1.12 * (bevCarPos[1] - bevCarPos[3]));
+	m_buttonSize[i][BUTTON_SIZE_WIDTH] = (bevCarPos[2] - bevCarPos[0]) * stitchRegionWidth * 0.5;
+	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = (bevCarPos[1] - bevCarPos[3]) * stitchRegionHeight * 0.5;
+	m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 + bevCarPos[0]);
+	m_buttonPos[i][BUTTON_POS_Y] = currentStitchRegion.top + stitchRegionHeight * 0.5 * (1 - bevCarPos[1]);
 	
 	m_baseButtonData[i].icon_type = STATIC_ICON;
 	m_baseButtonData[i].show_flag = 1;
@@ -842,14 +842,14 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 	m_baseButtonData[i].delegate_func = NULL;
 	m_baseButtonData[i].trigger = NULL;
 
-	m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+	m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode,0.3);
     m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 
 	i = S302_BEV_CAR_ICON;
-    m_buttonSize[i][BUTTON_SIZE_WIDTH] = 1.12*(bevCarPos[2] - bevCarPos[0]) * stitchRegionWidth * 0.5;
-    m_buttonSize[i][BUTTON_SIZE_HEIGHT] = 1.12*(bevCarPos[1] - bevCarPos[3]) * stitchRegionHeight * 0.5;
-    m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 - 0.5*1.12 * (bevCarPos[2] - bevCarPos[0]));
-    m_buttonPos[i][BUTTON_POS_Y] = currentStitchRegion.top + stitchRegionHeight * 0.5 * (1 - 0.5*1.12 * (bevCarPos[1] - bevCarPos[3]));
+    m_buttonSize[i][BUTTON_SIZE_WIDTH] = (bevCarPos[2] - bevCarPos[0]) * stitchRegionWidth * 0.5;
+    m_buttonSize[i][BUTTON_SIZE_HEIGHT] = (bevCarPos[1] - bevCarPos[3]) * stitchRegionHeight * 0.5;
+    m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 + bevCarPos[0]);
+    m_buttonPos[i][BUTTON_POS_Y] = currentStitchRegion.top + stitchRegionHeight * 0.5 * (1 - bevCarPos[1]);
     
     m_baseButtonData[i].icon_type = STATIC_ICON;
     m_baseButtonData[i].show_flag = 1;
@@ -874,7 +874,7 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
     
     //SetHmiParams();
 
-    m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode);
+    m_baseButton[i] = new HMIButton(&(m_baseButtonData[i]),m_uiNode,0.3);
     m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 
 	i = S302_VIEW180_LEFT_CUTLINE;
@@ -1052,6 +1052,7 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 	
     if(((currentViewStatus >= FRONT_SINGLE_VIEW && currentViewStatus <= FRONT_3D_VIEW)||
         (currentViewStatus >= BMW_LEFT_VIEW && currentViewStatus <= BMW_REAR_3D_VIEW)||
+        (currentViewStatus >= BOSH_FRONT_VIEW && currentViewStatus <= BOSH_REAR_VIEW_TOP)||
         (currentViewStatus == LEFT_RIGHT_LINEAR_VIEW) || (currentViewStatus == TOUR_VIEW)) &&
 		(s302MainMenuData.iconStatus[MAIN_MENU_DVR] == 0))
     {
@@ -1077,6 +1078,7 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_buttonVisibility[S302_BEV_BK_ICON] = 0;
         m_buttonVisibility[S302_BEV_CAR_ICON] = 0;
     }
+    m_buttonVisibility[S302_BEV_BK_ICON] = 0;
 
 	if((currentViewStatus >= LINEAR_FRONT_180_DEGREE_VIEW && currentViewStatus <= LINEAR_REAR_180_DEGREE_VIEW) &&
 		(s302MainMenuData.iconStatus[MAIN_MENU_DVR] == 0))
@@ -1089,14 +1091,6 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
         m_buttonVisibility[S302_VIEW180_LEFT_CUTLINE] = 0;
         m_buttonVisibility[S302_VIEW180_RIGHT_CUTLINE] = 0;
     }
-
-	unsigned char carTransparentStatus = 0;
-	CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&carTransparentStatus);
-	if(carTransparentStatus)
-	{	
-		m_buttonVisibility[S302_BEV_BK_ICON] = 0;
-		m_buttonVisibility[S302_BEV_CAR_ICON] = 0;
-	}
 
     RefreshHmi();
 	RefreshHmiGuideline();
@@ -1231,139 +1225,8 @@ void CSVS302MainHmi::SetHmiGuideline()
 {
     int i = 0;
 
-    ISceneNode* m_avmViewNode = NULL;
-    CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&m_avmViewNode);
     ISceneNode* m_singleViewNode = NULL;
     CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&m_singleViewNode);
-
-    i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 100.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 120.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
-	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 180.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 40;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
-	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L2;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L2";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 60.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
-	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L3;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L3";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 60.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -220.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
-    i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 100.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 120.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]);  
-    m_guideLine[i]->SetVisibility(1);
-
-	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 180.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 40;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
-	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R2;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R2";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 60.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -220.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
-	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3;
-    m_guideLineData[i].guideLineEndPos = 6000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 60.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 80;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
 
     i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L;
     m_guideLineData[i].guideLineEndPos = 4000.0;
@@ -1525,37 +1388,6 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i] = new HMIGuideLine(m_singleViewNode, &m_guideLineData[i]); 
     m_guideLine[i]->SetVisibility(0);*/
 
-    i = DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L;
-    m_guideLineData[i].guideLineEndPos = 10000.0;
-	m_guideLineData[i].guideLineStartPos = 0.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 100.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 100;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-	
-	i = DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R;
-    m_guideLineData[i].guideLineEndPos = 10000.0;
-    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R";
-    m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
-    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 100.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
-    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
-    m_guideLineData[i].guideLinePointNum = 100;
-    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
-    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
-    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
-    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
-    m_guideLine[i]->SetVisibility(1);
-
 //    Log_Error("===============SetHmiGuideline==============");
 }
 
@@ -1563,24 +1395,13 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 {
 	if(s302HmiElementShowImage[S302_MAIN_MENU_DVR_ENTER_ICON] == BUTTON_ON_IMAGE)
 	{	
-		for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
-		{
-			{
-				m_guideLine[i]->SetVisibility(0);
-			}
-		}
 		for(int i = DEMO_GUIDELINE_SINGLEVIEW_SAVE_DIST; i <= DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R3; i++)
 		{
 			if(i != DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST) 	
 			{
 				m_guideLine[i]->SetVisibility(0);
 			}
-		}
-		//m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST]->SetVisibility(0);
-		
-		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(0);
-		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(0);
-		
+		}		
 		return;
 	}
 	
@@ -1611,96 +1432,7 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 		steer_angle = -500.0;
 	}
 	
-
-	//if(gear_state != GEAR_R)
-	//{
-		ResetGuideLineEndPos(steer_angle);
-	//}
-	
 	m_singleViewDynGuideLineVisibility = 0;
-	m_bevDynGuideLineVisibility = 1;
-	m_bevDynOutLGuideLineVisibility = 0;
-	m_bevDynOutRGuideLineVisibility = 0;
-	m_bevAsitLDynGuideLineVisibility = 0;
-	m_bevAsitRDynGuideLineVisibility = 0;
-
-    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
-    {
-    	/*if(i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_L
-			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1
-			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R
-			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1)*/
-		{
-	        if(gear_state == GEAR_R)
-	        {
-	            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
-	        }
-	        else
-	        {
-	            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
-	        }	
-		}
-
-    }
-    if(gear_state == GEAR_R)
-    {
-		if(steer_angle > 1.0)
-		{
-			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
-			m_bevAsitLDynGuideLineVisibility = 1;
-			m_bevDynOutLGuideLineVisibility = 0;
-			m_bevAsitRDynGuideLineVisibility = 0;
-			m_bevDynOutRGuideLineVisibility = 1;
-		}
-		else if(steer_angle < -1.0)
-		{
-			m_bevAsitLDynGuideLineVisibility = 0;
-			m_bevDynOutLGuideLineVisibility = 1;
-			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
-			m_bevAsitRDynGuideLineVisibility = 1;
-			m_bevDynOutRGuideLineVisibility = 0;
-		}
-
-		else if(steer_angle <= 1.0
-            && steer_angle >= -1.0)
-        {
-            m_bevAsitLDynGuideLineVisibility = 0;
-			m_bevDynOutLGuideLineVisibility = 1;
-            m_bevAsitRDynGuideLineVisibility = 0;
-			m_bevDynOutRGuideLineVisibility = 1;
-        }
-
-
-	}
-    else
-    {
-		if(steer_angle > 1.0)
-		{
-			m_bevAsitLDynGuideLineVisibility = 0;
-			m_bevDynOutLGuideLineVisibility = 1;
-			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
-			m_bevAsitRDynGuideLineVisibility = 1;
-			m_bevDynOutRGuideLineVisibility = 0;
-		}
-		else if(steer_angle < -1.0)
-		{
-			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
-			m_bevAsitLDynGuideLineVisibility = 1;
-			m_bevDynOutLGuideLineVisibility = 0;
-			m_bevAsitRDynGuideLineVisibility = 0;
-			m_bevDynOutRGuideLineVisibility = 1;
-		}
-
-		else if(steer_angle <= 1.0
-            && steer_angle >= -1.0)
-        {
-            m_bevAsitLDynGuideLineVisibility = 0;
-			m_bevDynOutLGuideLineVisibility = 1;
-            m_bevAsitRDynGuideLineVisibility = 0;
-			m_bevDynOutRGuideLineVisibility = 1;
-        }
-
-	}   
 
     if(m_displayViewCmd == FRONT_SINGLE_VIEW)
     {    
@@ -1730,13 +1462,6 @@ void CSVS302MainHmi::RefreshHmiGuideline()
     }
 
 
-    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
-    {
-    	if(i != DEMO_GUIDELINE_BEV_DYNAMIC_POS_R)
-        {
-       		m_guideLine[i]->SetVisibility(m_bevDynGuideLineVisibility);
-		}
-    }
 	for(int i = DEMO_GUIDELINE_SINGLEVIEW_SAVE_DIST; i <= DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R3; i++)
 	{
 		if(i != DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST)		
@@ -1747,10 +1472,6 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 
 	//m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST]->SetVisibility(0);
 
-	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_POS_L]->SetVisibility(m_bevDynOutLGuideLineVisibility);
-	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_POS_R]->SetVisibility(m_bevDynOutRGuideLineVisibility);
-	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(m_bevAsitLDynGuideLineVisibility);
-	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(m_bevAsitRDynGuideLineVisibility);
 	
 	unsigned char guideLineVisibility = 0;
 	CAvmRenderDataBase::GetInstance()->GetGuideLineCmd(guideLineVisibility);
@@ -1758,12 +1479,6 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 	if(guideLineVisibility == GUIDE_LINE_CMD_NOT_ACTIVE
 		|| guideLineVisibility == GUIDE_LINE_CMD_CLOSE)
 	{
-	    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
-	    {
-	        {
-	       		m_guideLine[i]->SetVisibility(0);
-			}
-	    }
 		for(int i = DEMO_GUIDELINE_SINGLEVIEW_SAVE_DIST; i <= DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R3; i++)
 		{
 			if(i != DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST)		
@@ -1772,9 +1487,6 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 			}
 		}
 		//m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST]->SetVisibility(0);
-
-		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(0);
-		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(0);	
 	}
 
 }

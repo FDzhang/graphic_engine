@@ -106,7 +106,7 @@ Hmi_Button_Slot_T;
 class HMIButton: public IEventResponder
 {
 public:
-	HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode);
+	HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode, float pOpacity = 1.0);
 
 	virtual ~HMIButton();
 
@@ -165,6 +165,7 @@ private:
 	int				   m_rotateFlag;
 	IActionTrigger*    m_trigger;
 	String			   m_name;
+	float 			   m_opacity;
 
 };
 

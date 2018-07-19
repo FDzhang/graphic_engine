@@ -24,13 +24,13 @@ extern IXrCore* g_pIXrCore;
 /************************************************/
 static IActionTrigger* trigger = NULL;
 
-HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode)
+HMIButton:: HMIButton(Hmi_Button_Data_T* pButtonData,IUINode* uiNode, float pOpacity)
 {
     //m_uiNodeId = g_pIXrCore->CreateRenderNodeUI(RenderNodeType_UI2D, 0, &m_uiNode);
     m_rotateFlag = 0.0;
 	m_anchorPointX = 0.0;
 	m_anchorPointY = 0.0;
-	
+	m_opacity = pOpacity;
     m_uiNode = uiNode;
     m_buttonSlot = new Hmi_Button_Slot_T();
     if(pButtonData != NULL)
@@ -62,7 +62,7 @@ int HMIButton::Init()
     m_buttonId = m_uiNode->CreateSpirit(-1, 
                                         InsertFlag_Default, 
                                         m_mtlId, 
-                                        1.0, 
+                                        m_opacity, 
                                         m_buttonSlot->buttonData->pos[0], 
                                         m_buttonSlot->buttonData->pos[1], 
                                         0,
@@ -199,11 +199,17 @@ int HMIButton::SetRotateZ(float rZ, float anchorPointX, float anchorPointY, int 
 int HMIButton::SetWidth(float width)
 {
     m_buttonSlot->buttonData->width = width;
+	ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	buttonLayer->SetWidth(m_buttonSlot->buttonData->width);
+
     return BUTTON_NORMAL; 
 }
 int HMIButton::SetHeight(float height)
 {
     m_buttonSlot->buttonData->height = height;
+	ISpirit *buttonLayer = m_uiNode->GetSpirit(m_buttonId);
+	buttonLayer->SetHeight(m_buttonSlot->buttonData->height);
+
     return BUTTON_NORMAL; 
 }
 

@@ -15,14 +15,14 @@
 extern IXrCore* g_pIXrCore;
 extern IDeviceManager* rm;
 
-#define GROUND_NODE_WIDTH 100
-#define GROUND_NODE_HEIGHT 250
+#define GROUND_NODE_WIDTH 126
+#define GROUND_NODE_HEIGHT 282
 //#define STICH_AERA_WIDTH 216
 //#define STICH_AERA_HEIGHT 480
 
-#define STICH_AERA_WIDTH 216	
+#define STICH_AERA_WIDTH 324
 
-#define STICH_AERA_HEIGHT 480
+#define STICH_AERA_HEIGHT 720
 
 
 

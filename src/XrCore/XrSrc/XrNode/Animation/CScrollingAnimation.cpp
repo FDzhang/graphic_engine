@@ -175,8 +175,8 @@ Void CScrollingAnimation::DockToDeltaValue(Float32 val)
 	}
     else
     {
-	   // if (m_value>m_upperBound) m_value = m_upperBound;
-	    //if (m_value<m_lowerBound) m_value = m_lowerBound;
+	    if (m_value>m_upperBound) m_value = m_upperBound;
+	    if (m_value<m_lowerBound) m_value = m_lowerBound;
     
     }
 	m_target->Set(m_value, 0, 0);

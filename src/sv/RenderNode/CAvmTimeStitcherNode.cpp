@@ -39,10 +39,19 @@ static char c_SV2DFragCarImageShaderSrcFile[]   = XR_RES"OVFragShaderSV2DCar.frg
 
 CAvmTimeStitcherNode::CAvmTimeStitcherNode():m_stitchViewCameraParams(0),m_SV2DData(0)
 {
+    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R; i++)
+    {
+        m_guideLine[i] = NULL;
+    }
 
 }
 CAvmTimeStitcherNode::~CAvmTimeStitcherNode()
 {
+    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R; i++)
+    {
+        SAFE_DELETE(m_guideLine[i])
+        //SAFE_DELETE(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL])
+    }
 
 }
 int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
@@ -87,6 +96,9 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	// Interleaved vertex data
 	m_stitchViewNodeId = m_xrCore->CreateRenderNodeScene(0, &m_stitchViewNode);
 	m_stitchViewNode->SetRenderROI(stitchViewRegion);
+	CAvmRenderDataBase::GetInstance()->SetStitchViewNode(m_stitchViewNode);
+
+	SetHmiGuideline();
 
 //render stich aera and ground aera.
 	tempmaterialid = m_stitchViewNode->CreateMaterial(Material_Rigid_Texture, &m_stitchViewMtl);
@@ -131,7 +143,7 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 
 	int i = eCarImageMesh;
  	m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
- 	meshid = m_stitchViewNode->CreateMesh(ModelType_Null, 0,0,0,MeshName, &m_planeMesh);
+ 	m_planeMeshId = m_stitchViewNode->CreateMesh(ModelType_Null, 0,0,0,MeshName, &m_planeMesh);
  	m_planeMesh->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
  	m_planeMesh->SetName(Model);
  	m_SV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);		
@@ -142,12 +154,14 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	pIEffect->SetRenderDelegate(m_renderDelegate); 
 	 
 	m_SV2DMtl->SetDiffuseMap(CAR2DICONBMP);
+	InitAvmBackground();
 
-	modelId = m_stitchViewNode->CreateModel(0, SV2DMTL, -1, InsertFlag_Default, 1, 0, 0, 0, &pCarImageNode);
-	pCarImageNode->SetMesh(meshid);
-	pCarImageNode->SetName(Model);		
-	pCarImageNode->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
-	pCarImageNode->SetEnable(1);
+	modelId = m_stitchViewNode->CreateModel(0, SV2DMTL, -1, InsertFlag_Default, 1, 0, 0, 0, &m_carImageNode);
+	m_carImageNode->SetMesh(m_planeMeshId);
+	m_carImageNode->SetName(Model);		
+	m_carImageNode->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
+	m_carImageNode->SetEnable(1);
+	CalcGroundTexture();
 
 	/////////////////////////////cameraObject//////////////////
 	CAvmRenderDataBase::GetInstance()->GetStitchViewCameraParams(&m_stitchViewCameraParams);
@@ -174,6 +188,7 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 }
 int CAvmTimeStitcherNode::UpdateNode()
 {
+	RefreshHmiGuideline();
 	float steer_angle;
 	unsigned char gear_state;
 	float speed;
@@ -209,8 +224,9 @@ int CAvmTimeStitcherNode::UpdateNode()
 	m_timeStitchNode->Update(steer_angle, speed,
 						left_wheel_speed, right_wheel_speed,
 						gear_state,timeInterval, yawRate);
-	m_stitchViewMtl->SetDiffuseMap(m_timeStitchNode->GetStichFrameTextureId());
+	//m_stitchViewMtl->SetDiffuseMap(m_timeStitchNode->GetStichFrameTextureId());
 	//m_stitchViewMtl->SetDiffuseMap(m_timeStitchNode->GetKeyFrameTextureId());
+	m_SV2DMtl->SetDiffuseMap(m_timeStitchNode->GetGroundTextureId());
 
 	lastTime = currentTime;
 
@@ -236,6 +252,68 @@ int CAvmTimeStitcherNode::SetVisibility(unsigned char pVisibilityFlag)
     //AVMData::GetInstance()->SetStitchViewGuideLineVisibility(pVisibilityFlag);
 	//AVMData::GetInstance()->SetStitchViewRadarVisibility(pVisibilityFlag);
 	m_visibilityFlag = pVisibilityFlag;
+
+	return TIME_STITCHER_NORMAL;
+}
+int CAvmTimeStitcherNode::CalcGroundTexture()
+{
+	float car_rect_image[4];
+	float car_rect_adjust[4];
+	float texture[4];
+	float *pVertexData;
+	XRVertexLayout data_format;
+    int icount;
+	IMesh *groundmesh;
+	float pos[3];
+	float *pData; 
+	unsigned short	*pIndex;
+	unsigned int BufferSize;
+
+	for (int i =0; i<4;i++)
+	{
+		AVMData::GetInstance()->m_2D_lut->GetCarRect(&car_rect_image[i],i);
+		AVMData::GetInstance()->m_2D_lut->GetCarShadowAdjust(&car_rect_adjust[i],i);
+	    car_rect_adjust[i]=car_rect_image[i]+car_rect_adjust[i];
+	}
+
+	if(m_timeStitchNode)
+    {
+		m_timeStitchNode->CalcShadowTextureCoord(car_rect_image,car_rect_adjust,texture);
+	}
+	else
+	{
+		return TIME_STITCHER_NORMAL;
+	}
+	m_carImageNode->GetMesh(&groundmesh);
+	groundmesh->LockData(&pVertexData,&data_format,&icount);
+
+#if 0
+	pVertexData[3]=0.0;
+	pVertexData[4]=0.0;
+		
+	pVertexData[10]=1.0;
+	pVertexData[11]=0.0;
+
+	pVertexData[17]=0.0;
+	pVertexData[18]=1.0;
+
+	pVertexData[24]=1.0;
+	pVertexData[25]=1.0;	
+#else
+	pVertexData[3]=texture[rect_left];
+	pVertexData[4]=texture[rect_bottom];
+		
+	pVertexData[10]=texture[rect_right];
+	pVertexData[11]=texture[rect_bottom];
+
+	pVertexData[17]=texture[rect_left];
+	pVertexData[18]=texture[rect_top];
+
+	pVertexData[24]=texture[rect_right];
+	pVertexData[25]=texture[rect_top];
+#endif		
+	
+    groundmesh->UnLockData();
 
 	return TIME_STITCHER_NORMAL;
 }
@@ -317,6 +395,413 @@ int CAvmTimeStitcherNode::UpdateExternCalib2DReslt()
 	
 	return TIME_STITCHER_NORMAL;
 }
+int CAvmTimeStitcherNode::InitAvmBackground()
+{
+    IMaterial* background_mtl;
+    IMesh* background_mesh;
+    XRVertexLayout  data_format;
+    Int32 icount;
+    ICamera*pCamera;
+    IMesh *pGroundMesh;
+    INode *pGroundNode;
+    int cameraId;
+	char MeshName[]={"Car"};
+	char Model[]={"8"};
+	IRenderEffect* pIEffect;
+	unsigned short	*pIndex;
+	unsigned int BufferSize;
+	float *pData; 
+
+    float *pVertexData;
+
+    int background_mtl_id;
+    int background_mesh_id;
+    int background_model_id;
+
+	int i  = eCarImageMesh;
+	m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
+	m_avmBkMeshId = m_stitchViewNode->CreateMesh(ModelType_Null, 0,0,0,MeshName, &m_avmBkMesh);
+ 	m_avmBkMesh->LoadVertexFromArray(pData, XR_VERTEX_LAYOUT_PTAK, BufferSize);
+ 	m_avmBkMesh->SetName(Model);
+ 	m_SV2DData->GetIndexBuffer(i,&pIndex,&BufferSize);		
+ 	m_avmBkMesh->LoadIndexFromArray(pIndex ,2* BufferSize);
+
+	background_mtl_id = m_stitchViewNode->CreateMaterial(Material_Custom, &background_mtl);
+	background_mtl->CreateMaterialEffect(&pIEffect);
+	pIEffect->InitShaderFromFile("Effect_SV2DCarImage", c_SV2DVertShaderSrcFileLUT, c_SV2DFragCarImageShaderSrcFile,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
+	pIEffect->SetRenderDelegate(m_renderDelegate); 
+	 
+	background_mtl->SetDiffuseMap("DEFAULT");
+	background_model_id = m_stitchViewNode->CreateModel(0, background_mtl_id, -1, InsertFlag_Default, 1, 0, 0, 0, &m_avmBkNode);
+	m_avmBkNode->SetMesh(m_avmBkMeshId);
+	m_avmBkNode->SetName(Model); 	
+	m_avmBkNode->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SRX | AP_SRY | AP_SRZ);
+
+	m_avmBkNode->SetEnable(1);
+	
+
+	return TIME_STITCHER_NORMAL;
+}
+
+void CAvmTimeStitcherNode::SetHmiGuideline()
+{
+    int i = 0;
+
+    ISceneNode* m_avmViewNode = NULL;
+    CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&m_avmViewNode);
+    ISceneNode* m_singleViewNode = NULL;
+    CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&m_singleViewNode);
+
+    i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
+    m_guideLineData[i].guideLineWidth = 76.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 120.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
+    m_guideLineData[i].guideLineWidth = 180.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 40;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L2;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L2";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
+    m_guideLineData[i].guideLineWidth = 48.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L3;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L3";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
+    m_guideLineData[i].guideLineWidth = 48.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -220.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+    i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
+    m_guideLineData[i].guideLineWidth = 76.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 120.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]);  
+    m_guideLine[i]->SetVisibility(1);
+
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
+    m_guideLineData[i].guideLineWidth = 180.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 40;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R2;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R2";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
+    m_guideLineData[i].guideLineWidth = 48.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -220.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3;
+    m_guideLineData[i].guideLineEndPos = 6000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
+    m_guideLineData[i].guideLineWidth = 48.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -40.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 80;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L;
+    m_guideLineData[i].guideLineEndPos = 10000.0;
+	m_guideLineData[i].guideLineStartPos = 0.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
+    m_guideLineData[i].guideLineWidth = 76.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 120.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 100;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+	
+	i = DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R;
+    m_guideLineData[i].guideLineEndPos = 10000.0;
+    m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R";
+    m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
+    m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
+    m_guideLineData[i].guideLineWidth = 76.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 120.0;
+    m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
+    m_guideLineData[i].guideLinePointNum = 100;
+    m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
+    sprintf(m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL],"%sCar/s302_dyn_orange_line.dds",XR_RES);
+    m_guideLineData[i].guideLineTextureType = Material_Rigid_Blend;
+    m_guideLine[i] = new HMIGuideLine(m_avmViewNode, &m_guideLineData[i]); 
+    m_guideLine[i]->SetVisibility(1);
+
+}
+
+void CAvmTimeStitcherNode::ResetGuideLineEndPos(float pSteerAngle)
+{
+	float resetEndPos = 5000.0;
+	unsigned char gear_state = GEAR_R;
+	AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
+	if(gear_state != GEAR_R)
+	{
+		if(pSteerAngle > 300.0
+			|| pSteerAngle < -300.0)
+		{
+			resetEndPos = 5000.0;
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->ResetEndPos(resetEndPos);
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->ResetEndPos(resetEndPos);	
+		}
+		else
+		{
+			resetEndPos = 10000.0;
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->ResetEndPos(resetEndPos);
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->ResetEndPos(resetEndPos);	
+		
+		}
+	}
+	else if(gear_state == GEAR_R)
+	{
+		resetEndPos = 10000.0;
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->ResetEndPos(resetEndPos);
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->ResetEndPos(resetEndPos);
+	}
+}
+
+void CAvmTimeStitcherNode::RefreshHmiGuideline()
+{
+    MainMenuDataT s302MainMenuData;
+    memset(&s302MainMenuData, 0, sizeof(MainMenuDataT));
+
+    CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&s302MainMenuData);
+
+ 	if(s302MainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_ON_IMAGE)
+	{	
+		for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
+		{
+			{
+				m_guideLine[i]->SetVisibility(0);
+			}
+		}
+		
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(0);
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(0);
+		
+		return;
+	}
+	
+ 
+ 
+    float steer_angle = 100.0;
+    unsigned char trunk_status = 0; //close
+    unsigned char gear_state = GEAR_R;
+    unsigned char m_displayViewCmd = FRONT_SINGLE_VIEW;
+
+    static int m_cnt = 0;
+
+    AVMData::GetInstance()->m_p_can_data->Get_Steer_Angle(&steer_angle);
+    AVMData::GetInstance()->m_p_can_data->Get_Gear_State(&gear_state);
+    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_displayViewCmd);
+    steer_angle = 0.0 - steer_angle;
+
+	if(steer_angle > 500.0)
+	{
+		steer_angle = 500.0;
+	}
+	else if(steer_angle < -500.0)
+	{
+		steer_angle = -500.0;
+	}
+
+	m_bevDynGuideLineVisibility = 1;
+	m_bevDynOutLGuideLineVisibility = 0;
+	m_bevDynOutRGuideLineVisibility = 0;
+	m_bevAsitLDynGuideLineVisibility = 0;
+	m_bevAsitRDynGuideLineVisibility = 0;
+
+    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
+    {
+    	/*if(i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_L
+			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1
+			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R
+			|| i == DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1)*/
+		{
+	        if(gear_state == GEAR_R)
+	        {
+	            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
+	        }
+	        else
+	        {
+	            m_guideLine[i]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
+	        }	
+		}
+
+    }
+   if(gear_state == GEAR_R)
+    {
+		if(steer_angle > 1.0)
+		{
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
+			m_bevAsitLDynGuideLineVisibility = 1;
+			m_bevDynOutLGuideLineVisibility = 0;
+			m_bevAsitRDynGuideLineVisibility = 0;
+			m_bevDynOutRGuideLineVisibility = 1;
+		}
+		else if(steer_angle < -1.0)
+		{
+			m_bevAsitLDynGuideLineVisibility = 0;
+			m_bevDynOutLGuideLineVisibility = 1;
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->Update(steer_angle, GUIDELINE_DIR_BACKWARD);
+			m_bevAsitRDynGuideLineVisibility = 1;
+			m_bevDynOutRGuideLineVisibility = 0;
+		}
+
+		else if(steer_angle <= 1.0
+            && steer_angle >= -1.0)
+        {
+            m_bevAsitLDynGuideLineVisibility = 0;
+			m_bevDynOutLGuideLineVisibility = 1;
+            m_bevAsitRDynGuideLineVisibility = 0;
+			m_bevDynOutRGuideLineVisibility = 1;
+        }
+
+
+	}
+    else
+    {
+		if(steer_angle > 1.0)
+		{
+			m_bevAsitLDynGuideLineVisibility = 0;
+			m_bevDynOutLGuideLineVisibility = 1;
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
+			m_bevAsitRDynGuideLineVisibility = 1;
+			m_bevDynOutRGuideLineVisibility = 0;
+		}
+		else if(steer_angle < -1.0)
+		{
+			m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->Update(steer_angle, GUIDELINE_DIR_FORWARD);
+			m_bevAsitLDynGuideLineVisibility = 1;
+			m_bevDynOutLGuideLineVisibility = 0;
+			m_bevAsitRDynGuideLineVisibility = 0;
+			m_bevDynOutRGuideLineVisibility = 1;
+		}
+
+		else if(steer_angle <= 1.0
+            && steer_angle >= -1.0)
+        {
+            m_bevAsitLDynGuideLineVisibility = 0;
+			m_bevDynOutLGuideLineVisibility = 1;
+            m_bevAsitRDynGuideLineVisibility = 0;
+			m_bevDynOutRGuideLineVisibility = 1;
+        }
+
+	}   
+    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
+    {
+    	if(i != DEMO_GUIDELINE_BEV_DYNAMIC_POS_R)
+        {
+       		m_guideLine[i]->SetVisibility(m_bevDynGuideLineVisibility);
+		}
+    }
+	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_POS_L]->SetVisibility(m_bevDynOutLGuideLineVisibility);
+	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_POS_R]->SetVisibility(m_bevDynOutRGuideLineVisibility);
+	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(m_bevAsitLDynGuideLineVisibility);
+	m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(m_bevAsitRDynGuideLineVisibility);
+
+	unsigned char guideLineVisibility = 0;
+	CAvmRenderDataBase::GetInstance()->GetGuideLineCmd(guideLineVisibility);
+	if(guideLineVisibility == GUIDE_LINE_CMD_NOT_ACTIVE
+		|| guideLineVisibility == GUIDE_LINE_CMD_CLOSE)
+	{
+	    for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
+	    {
+	        {
+	       		m_guideLine[i]->SetVisibility(0);
+			}
+	    }
+		//m_guideLine[DEMO_GUIDELINE_SINGLEVIEW_MAX_DIST]->SetVisibility(0);
+
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_L]->SetVisibility(0);
+		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(0);	
+	}
+
+}
+
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)
  *===========================================================================
