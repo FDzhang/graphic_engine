@@ -1229,12 +1229,12 @@ void CSVS302MainHmi::SetHmiGuideline()
     CAvmRenderDataBase::GetInstance()->GetSingleViewNode(&m_singleViewNode);
 
     i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
 	m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 40.0;
+    m_guideLineData[i].guideLineWidth = 26.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 500.0;
     m_guideLineData[i].guideLinePointNum = 40;
@@ -1245,7 +1245,7 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(1);  
 
     i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L1;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
 	m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L1";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
@@ -1261,12 +1261,12 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(1);    
 
 	i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L2;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
 	m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L2";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 30.0;
+    m_guideLineData[i].guideLineWidth = 18.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 500.0;
     m_guideLineData[i].guideLinePointNum = 40;
@@ -1277,12 +1277,12 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(1);  
 
 	i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L3;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
 	m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_L3";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 30.0;
+    m_guideLineData[i].guideLineWidth = 18.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = -200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 500.0;
     m_guideLineData[i].guideLinePointNum = 40;
@@ -1293,12 +1293,12 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(1);    
 
     i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
     m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 40.0;
+    m_guideLineData[i].guideLineWidth = 26.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 500.0;
     m_guideLineData[i].guideLinePointNum = 40;
@@ -1310,7 +1310,7 @@ void CSVS302MainHmi::SetHmiGuideline()
 
 
     i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R1;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
 	m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R1";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
@@ -1326,12 +1326,12 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(1);   
 
 	i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R2;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
 	m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R2";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 30.0;
+    m_guideLineData[i].guideLineWidth = 18.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = -200.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 500.0;
     m_guideLineData[i].guideLinePointNum = 40;
@@ -1342,12 +1342,12 @@ void CSVS302MainHmi::SetHmiGuideline()
     m_guideLine[i]->SetVisibility(1);   
 
 	i = DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R3;
-    m_guideLineData[i].guideLineEndPos = 4000.0;
+    m_guideLineData[i].guideLineEndPos = 4500.0;
 	m_guideLineData[i].guideLineStartPos = 500.0;
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_SINGLEVIEW_DYNAMIC_POS_R3";
     m_guideLineData[i].guideLineType = GUIDELINE_SINGLEVIEW_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 30.0;
+    m_guideLineData[i].guideLineWidth = 18.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 500.0;
     m_guideLineData[i].guideLinePointNum = 40;

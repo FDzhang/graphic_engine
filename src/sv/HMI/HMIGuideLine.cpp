@@ -504,7 +504,22 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
         index = Loop%2;
         xLeft= pCenterX+(pRadius[index])*cos(AngleStart[index] + (Loop/2)*step[index]);
         yLeft= pCenterY+(pRadius[index])*sin(AngleStart[index] + (Loop/2)*step[index]);
-    
+		if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC
+			&& m_guideLineData->guideLineWidth < 60.0)
+		{
+			float transRadius[2];
+			if(pRadius[0] > pRadius[1])
+			{
+				transRadius[index] = -((int)(index*2-1)) * ((int)(Loop/2)) * ((m_guideLineData->guideLineWidth)/(m_guideLineData->guideLinePointNum*3/2)) + pRadius[index];
+			}
+			else
+			{
+				transRadius[index] = ((int)(index*2-1)) * ((int)(Loop/2)) * ((m_guideLineData->guideLineWidth)/(m_guideLineData->guideLinePointNum*3/2)) + pRadius[index];
+			}
+			xLeft= pCenterX+(transRadius[index])*cos(AngleStart[index] + (Loop/2)*step[index]);
+        	yLeft= pCenterY+(transRadius[index])*sin(AngleStart[index] + (Loop/2)*step[index]);
+		}
+
         world_coord[0] = xLeft;
         world_coord[1] = yLeft;
 
