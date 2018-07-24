@@ -64,6 +64,7 @@ int CAvmLogicManager::ProcessTouchEvent()
 	
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
+
 int CAvmLogicManager::Update()
 {
 	UpdateHmi();

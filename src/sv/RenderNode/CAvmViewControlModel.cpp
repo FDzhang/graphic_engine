@@ -594,6 +594,20 @@ int CAvmViewControlModel::Process3dTouchData()
 
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
+
+int CAvmViewControlModel::Update3dFreeView()
+{
+	_3DFreeViewParamT freeViewParam;
+	CAvmRenderDataBase::GetInstance()->Get3dFreeView(&freeViewParam);
+
+	if(freeViewParam.freeViewType == FREE_VIEW_TYPE_AXIS_X)
+	{
+		if (m_scrollX) m_scrollX->DockToValue(freeViewParam.value);
+	}
+	
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+
 int CAvmViewControlModel::SetCurrentView()
 {
 	ProcessTimeStitcher();
@@ -795,6 +809,8 @@ int CAvmViewControlModel::Process3dViewDisplay()
 		if(m_avmObjViewNode)
 		{
 			m_avmObjViewNode->UpdateNode();
+			
+			Update3dFreeView();
 		}
 	}
 	return AVM_VIEWCONTROLMODEL_NORMAL;

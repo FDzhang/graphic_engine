@@ -9,6 +9,7 @@ CScrollingAnimation::CScrollingAnimation():
 {
 	m_deltaS = 0.0f;
 	m_value = 0.0f;
+	m_curValue = 0.0f;
 	m_active = 0;
 	m_dx = 0;
 	m_from = 0;
@@ -109,6 +110,7 @@ Boolean CScrollingAnimation::Update(UInt32 timeStamp)
 				m_from = m_value;
                 m_active = FALSE;
 				//xrprint("Update: Pos = %f, m_from = %f, m_to = %f ReposEnd!!! !!!\n", m_value, m_from, m_from+m_dx);
+				m_curValue = m_value;
 				return m_active;
             }
             else {
@@ -151,6 +153,12 @@ Void CScrollingAnimation::SetInterval(Float32 intl)
 {
 }
 
+Void CScrollingAnimation::GetCurPos(
+		/* [out] */ Float32& pCurPos)
+{
+	pCurPos = m_curValue;
+}
+
 Void CScrollingAnimation::DockToValue(Float32 val)
 {
     m_from = m_value;
@@ -184,6 +192,8 @@ Void CScrollingAnimation::DockToDeltaValue(Float32 val)
     m_dx = val;
 	m_active = FALSE;
 	//xrprint("SetVal: layerPos = %f!\n",m_value);
+	m_curValue = m_value;
+	
 	return;
 
     m_startTime = XrGetTime();

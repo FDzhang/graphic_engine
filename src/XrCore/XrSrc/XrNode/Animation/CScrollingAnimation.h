@@ -24,6 +24,8 @@ public:
 	virtual Void SetInterval(Float32 intl);
 	virtual Void DockToValue(Float32 val);
 	virtual Void DockToDeltaValue(Float32 val);
+	virtual Void GetCurPos(
+		/* [out] */ Float32& pCurPos);
 	virtual Void BindTarget(IAProperty* target)
 	{
 		m_target = target;
@@ -58,6 +60,8 @@ private:
 	IAProperty*		m_2ndTarget;
 	Float32			m_2ndOffset;
 	Float32			m_2ndScale;
+
+	Float32         m_curValue;
 };
 
 #endif  //__CSCROLLINGANIMATION_H__

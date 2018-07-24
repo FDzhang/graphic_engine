@@ -93,6 +93,7 @@ private:
 	int ProcessLarge3dView();
 	int ProcessSideBySideSingleView();
 	int SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVisibility[AVM_VIEW_NODE_NUMS]);
+	int Update3dFreeView();
 
 private:
 	class CAvm3dViewNode* m_avm3dViewNode;

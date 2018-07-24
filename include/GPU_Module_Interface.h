@@ -443,6 +443,22 @@ typedef struct CarTransparentResultTag
 }
 CarTransparentResultT;
 
+typedef enum FreeViewTypeTag
+{
+	FREE_VIEW_TYPE_DEFAULT = 0,
+	FREE_VIEW_TYPE_AXIS_X,
+	FREE_VIEW_TYPE_AXIS_Y,
+	FREE_VIEW_TYPE_NUM,
+}
+FreeViewTypeT;
+
+typedef struct _3DFreeViewParamTag
+{
+	FreeViewTypeT freeViewType;
+	float value;
+}
+_3DFreeViewParamT;
+
 typedef enum GuideLineCmdTag
 {
 	GUIDE_LINE_CMD_NOT_ACTIVE = 0x0,
@@ -477,6 +493,7 @@ typedef enum RenderDataTypeTag
 	RENDER_DATA_MOUSE_ICON,
 	RENDER_DATA_GUIDE_LINE_CMD,
 	RENDER_DATA_CLEAR_BUFFER,
+	RENDER_DATA_3D_FREE_VIEW,
 	RENDER_DATA_TIME_STAMP,
 	RENDER_DATA_TYPE_NUM,
 }

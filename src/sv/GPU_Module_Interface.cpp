@@ -616,6 +616,9 @@ int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int 
 		case RENDER_DATA_GUIDE_LINE_CMD:
 			CAvmRenderDataBase::GetInstance()->SetGuideLineCmd(*((unsigned char*)renderData));
 		break;
+		case RENDER_DATA_3D_FREE_VIEW:
+			CAvmRenderDataBase::GetInstance()->Set3dFreeView((_3DFreeViewParamT*)renderData);
+		break;
 		case RENDER_DATA_CLEAR_BUFFER:
 			app.ClearRenderBuffer(*(bool*)renderData);
 		break;

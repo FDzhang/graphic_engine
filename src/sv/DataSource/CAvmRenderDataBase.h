@@ -214,6 +214,7 @@ public:
 	PropertyBuilderByName(APAOverlayStruct, ApaResult, private)
 	PropertyBuilderByName(VehInfoT, VehInfo, private)
 	PropertyBuilderByName(CarTransparentResultT, CarTransptResult, private)
+	PropertyBuilderByName(_3DFreeViewParamT, 3dFreeView, private)
 
 	void SetSingleViewMesh(class IMesh* pSingleViewMesh[]);
 	void GetSingleViewMesh(class IMesh* pSingleViewMesh[]);

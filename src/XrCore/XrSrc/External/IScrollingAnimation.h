@@ -12,6 +12,9 @@ public:
 
 	virtual Void SetInterval(
 		/* [in] */ Float32 intl)=0;
+	
+	virtual Void GetCurPos(
+			/* [out] */ Float32& pCurPos) = 0;
 
 	virtual Void DockToValue(
 		/* [in] */ Float32 val)=0;
