@@ -96,6 +96,9 @@ private:
 	int SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVisibility[AVM_VIEW_NODE_NUMS]);
 	int Update3dFreeView();
 
+	int Process3DHorAngle2Pos(float pAngle, float& pPos);
+	int Process3DPos2HorAngle(float pPos, float& pAngle);
+
 private:
 	class CAvm3dViewNode* m_avm3dViewNode;
 	class CAvmSingleViewNode* m_avmSingleViewNode;
@@ -104,8 +107,8 @@ private:
 	class CAvmObjectViewNode* m_avmObjViewNode;
 	class CAvmMattsView*      m_avmMattsView;
 	class CAvmLargeSingleView* m_avmLargeSingleView;
-	class CAvmLinearViewNode*  m_avm180DegreeView;
-	//class CAvmFrontRearLinearView* m_avm180DegreeView;
+	//class CAvmLinearViewNode*  m_avm180DegreeView;
+	class CAvmFrontRearLinearView* m_avm180DegreeView;
 	class CAvmLeftRightView* m_avmLeftRightView;
 	class CAvmLeftLinearView* m_avmLeftLinearView;
 	class CAvmRightLinearView* m_avmRightLinearView;

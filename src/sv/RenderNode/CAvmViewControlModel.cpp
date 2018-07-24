@@ -102,8 +102,8 @@ int CAvmViewControlModel::InitViewNode()
     m_avmSingleViewNode= new CAvmSingleViewNode;
 	m_avm3dViewNode= new CAvm3dViewNode;
 	m_avmObjViewNode= new CAvmObjectViewNode;
-	m_avm180DegreeView = new CAvmLinearViewNode;
-	//m_avm180DegreeView = new CAvmFrontRearLinearView;
+	//m_avm180DegreeView = new CAvmLinearViewNode;
+	m_avm180DegreeView = new CAvmFrontRearLinearView;
 	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
 	m_avmLeftLinearView = NULL;
 	m_avmRightLinearView = NULL;
@@ -602,7 +602,9 @@ int CAvmViewControlModel::Update3dFreeView()
 
 	if(freeViewParam.freeViewType == FREE_VIEW_TYPE_AXIS_X)
 	{
-		if (m_scrollX) m_scrollX->DockToValue(freeViewParam.value);
+		float pos = 0.0;
+		Process3DHorAngle2Pos(freeViewParam.value, pos);
+		if (m_scrollX) m_scrollX->DockToValue(pos);
 	}
 	
 	return AVM_VIEWCONTROLMODEL_NORMAL;
@@ -1035,6 +1037,21 @@ int CAvmViewControlModel::ProcessLarge3dView()
 
 }
 
+int CAvmViewControlModel::Process3DHorAngle2Pos(float pAngle, float& pPos)
+{
+	float rate = 1.0;
+	pPos = pAngle * rate;
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+
+int CAvmViewControlModel::Process3DPos2HorAngle(float pPos, float& pAngle)
+{
+	float rate = 1.0;
+	pAngle = pPos * rate;
+
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+
 int CAvmViewControlModel::SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVisibility[AVM_VIEW_NODE_NUMS])
 {
 
@@ -1113,7 +1130,9 @@ int CAvmViewControlModel::UpdateRenderStatus()
 	{
 		_3DFreeViewParamT param;
 		CAvmRenderDataBase::GetInstance()->Get3dFreeView(&param);
-		m_scrollX->GetCurPos(param.retValue);
+		float pos = 0.0;
+		m_scrollX->GetCurPos(pos);
+		Process3DPos2HorAngle(pos, param.retValue);	 
 		CAvmRenderDataBase::GetInstance()->Set3dFreeView(&param);
 	}
 	

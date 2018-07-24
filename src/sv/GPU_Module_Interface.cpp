@@ -494,11 +494,12 @@ int GetRenderStatus(RenderStatusTypeT statusTypeId, void* renderData, unsigned i
 
 		CAvmRenderDataBase::GetInstance()->Get3dFreeView(&param);
 
-		if(renderData)
+		if(renderData
+			&& dataLength == sizeof(uint16_t))
 		{
-			float* ret = (float*)renderData;
+			uint16_t* ret = (uint16_t*)renderData;
 
-			*ret = param.retValue;
+			*ret = (uint16_t)param.retValue;
 		}
 		
 		break;
