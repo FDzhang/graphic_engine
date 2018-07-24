@@ -74,6 +74,18 @@ int CAvmLogicManager::Update()
 
 	return AVM_LOGIC_CONTROL_NORMAL;
 }
+
+int CAvmLogicManager::UpdateRenderStatus()
+{
+
+	if(m_avmViewControlModel)
+	{
+		m_avmViewControlModel->UpdateRenderStatus();
+	}
+
+	return AVM_LOGIC_CONTROL_NORMAL;
+}
+
 int CAvmLogicManager::UpdateStitchAngle()
 {
 	if(m_avmViewControlModel)

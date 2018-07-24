@@ -361,7 +361,7 @@ typedef enum VehBodyStyleTag
 	BODY_STYLE_NORMAL = 0,
 	BODY_STYLE_MAX_NUMS,
 }
-VehWheelHubBodyStyleT;
+VehBodyStyleT;
 
 static const unsigned char VEH_LICENSENUM_MAX_NUMS = 9;
 typedef enum VehLicenseNumTag
@@ -430,7 +430,7 @@ VehLicenseNumT;
 
 typedef struct VehInfoTag
 {
-	VehWheelHubBodyStyleT bodyStyle; //Demo: 0:White, 1:Black
+	VehBodyStyleT bodyStyle; //Demo: 0:White, 1:Black
 	VehWheelHubTypeStyleT wheelHubStyle;
 	VehLicenseNumT        licenseNum[VEH_LICENSENUM_MAX_NUMS];
 }
@@ -456,6 +456,7 @@ typedef struct _3DFreeViewParamTag
 {
 	FreeViewTypeT freeViewType;
 	float value;
+	float retValue;
 }
 _3DFreeViewParamT;
 
@@ -513,11 +514,22 @@ typedef struct RenderDataTag
 }
 RenderDataT;
 
+typedef enum RenderStatusTypeTag
+{
+	RENDER_VIEW_STATUS = 0,
+	RENDER_3D_FREE_VIEW_STATUS,	
+}
+RenderStatusTypeT;
+
+/************************************************/
+/*         功能定义：当前GPU对外接口                       */
+/************************************************/
+DLL_PUBLIC int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData = 0, unsigned int dataLength = 0);
+DLL_PUBLIC int GetRenderStatus(RenderStatusTypeT statusTypeId, void* renderData = 0, unsigned int dataLength = 0);
+
+/**********************************************/
 
 DLL_PUBLIC int SetRenderData(RenderDataT* pRenderData);	
-
-DLL_PUBLIC int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData = 0, unsigned int dataLength = 0);
-
 DLL_PUBLIC void InitADASMdlHMI(st_ADAS_Mdl_HMI_T **pAdasMdlHmiHandle,int HmiMdlNum);
 DLL_PUBLIC void SetEglBaseParameter(EGLDisplay display,EGLContext context,EGLSurface surf);
 DLL_PUBLIC int InitAppNew(int width, int height, st_GPU_Init_Config_T* gpu_init);

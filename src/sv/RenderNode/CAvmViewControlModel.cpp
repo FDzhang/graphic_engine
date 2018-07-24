@@ -102,8 +102,8 @@ int CAvmViewControlModel::InitViewNode()
     m_avmSingleViewNode= new CAvmSingleViewNode;
 	m_avm3dViewNode= new CAvm3dViewNode;
 	m_avmObjViewNode= new CAvmObjectViewNode;
-	//m_avm180DegreeView = new CAvmLinearViewNode;
-	m_avm180DegreeView = new CAvmFrontRearLinearView;
+	m_avm180DegreeView = new CAvmLinearViewNode;
+	//m_avm180DegreeView = new CAvmFrontRearLinearView;
 	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
 	m_avmLeftLinearView = NULL;
 	m_avmRightLinearView = NULL;
@@ -1106,6 +1106,20 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 
 	 return AVM_VIEWCONTROLMODEL_NORMAL;
  }
+
+int CAvmViewControlModel::UpdateRenderStatus()
+{
+	if(m_scrollX)
+	{
+		_3DFreeViewParamT param;
+		CAvmRenderDataBase::GetInstance()->Get3dFreeView(&param);
+		m_scrollX->GetCurPos(param.retValue);
+		CAvmRenderDataBase::GetInstance()->Set3dFreeView(&param);
+	}
+	
+	return AVM_VIEWCONTROLMODEL_NORMAL;
+}
+
 int CAvmViewControlModel::UpdateStitchAngle()
 {
 	if(m_avmTimeStitcherNode)

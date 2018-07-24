@@ -62,6 +62,7 @@ public:
     
 	int m_useHDR;
 
+
 public:
 	int SetCurrentAlgoStatus(int algo_status);
 private:

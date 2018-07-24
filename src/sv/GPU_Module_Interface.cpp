@@ -480,8 +480,34 @@ void ProcCanData(CAN_DATA* pCanData)
 int UpdateRenderDvrData(void* renderData, unsigned int dataLength)
 {
 	CAvmRenderDataBase::GetInstance()->SetDvrData((DVR_GUI_LAYOUT_INST_EXT*)renderData);
+	
+	return RENDER_INTERFACE_NO_ERROR;
 }
 
+int GetRenderStatus(RenderStatusTypeT statusTypeId, void* renderData, unsigned int dataLength)
+{
+	switch(statusTypeId)
+	{
+	case RENDER_3D_FREE_VIEW_STATUS:
+	{
+		_3DFreeViewParamT param;
+
+		CAvmRenderDataBase::GetInstance()->Get3dFreeView(&param);
+
+		if(renderData)
+		{
+			float* ret = (float*)renderData;
+
+			*ret = param.retValue;
+		}
+		
+		break;
+	}
+	default:
+	break;
+	}
+	return RENDER_INTERFACE_NO_ERROR;
+}
 
 int UpdateRenderData(RenderDataTypeT dataTypeId, void* renderData, unsigned int dataLength)
 {

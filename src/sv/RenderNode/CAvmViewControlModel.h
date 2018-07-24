@@ -70,6 +70,7 @@ public:
 	virtual int SetCurrentView();
 	virtual int SetViewNodeVisibility(VisibilityIndexT pFuncId);
 
+	int UpdateRenderStatus();
 	int UpdateStitchAngle();
 	int UpdateExternCalib2DReslt();
 	int UpdateExternCalib3DReslt();
@@ -103,8 +104,8 @@ private:
 	class CAvmObjectViewNode* m_avmObjViewNode;
 	class CAvmMattsView*      m_avmMattsView;
 	class CAvmLargeSingleView* m_avmLargeSingleView;
-	//class CAvmLinearViewNode*  m_avm180DegreeView;
-	class CAvmFrontRearLinearView* m_avm180DegreeView;
+	class CAvmLinearViewNode*  m_avm180DegreeView;
+	//class CAvmFrontRearLinearView* m_avm180DegreeView;
 	class CAvmLeftRightView* m_avmLeftRightView;
 	class CAvmLeftLinearView* m_avmLeftLinearView;
 	class CAvmRightLinearView* m_avmRightLinearView;

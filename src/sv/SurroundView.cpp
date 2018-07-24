@@ -438,6 +438,13 @@ bool XRSV::update(unsigned int view_control_flag)
 	
 	endl = XrGetTime();
 	//Log_Debug("frame_process[%d]",endl-start);
+
+	if(m_avmLogicManager)
+	{
+		m_avmLogicManager->UpdateRenderStatus();
+	}
+
+	
 	return true;
 }
 

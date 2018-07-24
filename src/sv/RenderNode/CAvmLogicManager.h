@@ -51,6 +51,7 @@ public:
 	virtual int Update();
 	virtual int ProcessTouchEvent();
 
+	int UpdateRenderStatus();
 	int UpdateStitchAngle();	
 	int UpdateExternCalib2DReslt();
 	int UpdateExternCalib3DReslt();
