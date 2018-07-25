@@ -552,8 +552,6 @@ public:
         float pos_gate[2]={1.0,2.0};
 		float cof[3] = {1.0,1.0,1.0};
 		
-#define TRANS_Z 1600
-#define TRANS_X 2200
 #define SIDEMIRRORDEGREE -0.125
 #define SIDEMIRRORZ -0.0
 		switch (id) {
