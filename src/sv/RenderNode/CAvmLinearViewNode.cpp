@@ -44,9 +44,11 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 
     m_xrCore = pXrcore;
 
-    #define PlaneScaleX 16000.0
-    #define PlaneScaleY 17000.0
-    #define PlaneScaleY_NEG  -17000.0
+	float PlaneScaleX  = TRANS_X;	
+	float UIZ1 = -TRANS_Z;
+	#define PlaneScaleY 3400.0
+	#define PlaneScaleY_NEG  -3400.0
+	#define theta (PI/8)
 
     #define ROTATE_ANGLE 30
     #define ROTATE_LENGTH 3000
@@ -78,8 +80,6 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
     int slotId=0, x, y;
     XRMat4 Transfom=XRMat4::Scale(1.0,1.0,1.0);
 
-#define  UIZ1  -16000.0f
-
     for(int index=0;index<3;index++)
     {
         if(index == 0)
@@ -94,17 +94,19 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
         {
             Transfom = XRMat4::RotationY(3.1415926*(-SIDEMIRRORDEGREE));
             x_pos[1]= -PlaneScaleX;
-            x_pos[0]= -PlaneScaleX + UIZ1;
+		   x_pos[0]= -PlaneScaleX-PlaneScaleX;
             z_pos[1]= UIZ1;
-            z_pos[0]= 0;
+		   z_pos[0]= UIZ1+PlaneScaleY*tan(theta);
+
         }
         else
         {
             Transfom = XRMat4::RotationY(3.1415926*(SIDEMIRRORDEGREE)) ;
             x_pos[0]= PlaneScaleX;
-            x_pos[1]=  PlaneScaleX - UIZ1;
-            z_pos[0]= UIZ1;
-            z_pos[1]= 0;
+		   x_pos[1]=  PlaneScaleX+PlaneScaleX;
+		   z_pos[0]= UIZ1;
+		   z_pos[1]= UIZ1+PlaneScaleY*tan(theta);
+
         }
         slotId=0;
         for (y=0; y<m_meshHeight; y++) {

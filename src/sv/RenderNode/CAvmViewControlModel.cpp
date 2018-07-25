@@ -599,12 +599,15 @@ int CAvmViewControlModel::Update3dFreeView()
 {
 	_3DFreeViewParamT freeViewParam;
 	CAvmRenderDataBase::GetInstance()->Get3dFreeView(&freeViewParam);
-
-	if(freeViewParam.freeViewType == FREE_VIEW_TYPE_AXIS_X)
+	static float lastValue = 400.0;
+
+	if(freeViewParam.freeViewType == FREE_VIEW_TYPE_AXIS_X
+		&& lastValue != freeViewParam.value)
 	{
 		float pos = 0.0;
 		Process3DHorAngle2Pos(freeViewParam.value, pos);
 		if (m_scrollX) m_scrollX->DockToValue(pos);
+		lastValue = freeViewParam.value;
 	}
 	
 	return AVM_VIEWCONTROLMODEL_NORMAL;

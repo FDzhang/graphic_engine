@@ -388,6 +388,8 @@ public:
 	
 };
 
+#define TRANS_Z 1800
+#define TRANS_X 2200
 
 class RenderDelegateCV : public IRenderDelegate
 {
@@ -549,29 +551,23 @@ public:
         float pos_select[3]={0.0,1.0,0.0};
         float pos_gate[2]={1.0,2.0};
 		float cof[3] = {1.0,1.0,1.0};
-#define TRANS_Z 16000
-#define TRANS_X 16000
-#define SIDEMIRRORDEGREE -0.25
-#define SIDEMIRRORZ 0.0
+		
+#define TRANS_Z 1600
+#define TRANS_X 2200
+#define SIDEMIRRORDEGREE -0.125
+#define SIDEMIRRORZ -0.0
 		switch (id) {
 			case 'L':
 				mModel = XRMat4::RotationY(3.1415926*(0));
-				//uvModel =XRMat4::Translation(-TRANS_X,0,-TRANS_Z) *XRMat4::RotationY(3.1415926*(-SIDEMIRRORDEGREE))*XRMat4::Translation(TRANS_X,0,TRANS_Z);
-				uvModel = XRMat4::RotationX(3.1415926*(SIDEMIRRORZ))*XRMat4::Translation(-TRANS_X,0,-TRANS_Z) *XRMat4::RotationY(3.1415926*(-SIDEMIRRORDEGREE))*XRMat4::Translation(TRANS_X,0,TRANS_Z);
-
+				uvModel = XRMat4::Translation(-TRANS_X,0,-TRANS_Z) *XRMat4::RotationX(3.1415926*(SIDEMIRRORZ))*XRMat4::RotationY(3.1415926*(-SIDEMIRRORDEGREE))*XRMat4::Translation(TRANS_X,0,TRANS_Z);
 				break;
 			case 'R':
 				mModel = XRMat4::RotationY(3.1415926*(0));
-				//uvModel =XRMat4::Translation(TRANS_X,0,-TRANS_Z)* XRMat4::RotationY(3.1415926*(SIDEMIRRORDEGREE))*XRMat4::Translation(-TRANS_X,0,TRANS_Z);
-
-				uvModel = XRMat4::RotationX(3.1415926*(SIDEMIRRORZ))*XRMat4::Translation(TRANS_X,0,-TRANS_Z)* XRMat4::RotationY(3.1415926*(SIDEMIRRORDEGREE))*XRMat4::Translation(-TRANS_X,0,TRANS_Z);
-
+				uvModel = XRMat4::Translation(TRANS_X,0,-TRANS_Z)* XRMat4::RotationX(3.1415926*(SIDEMIRRORZ))*XRMat4::RotationY(3.1415926*(SIDEMIRRORDEGREE))*XRMat4::Translation(-TRANS_X,0,TRANS_Z);	
 				break;
 			case 'C':
 				mModel = XRMat4::RotationY(3.1415926*(0));
-				//uvModel = XRMat4::RotationY(3.1415926*(0));
-
-				uvModel =  XRMat4::RotationX(3.1415926*(SIDEMIRRORZ))*XRMat4::RotationY(3.1415926*(0));
+				uvModel = XRMat4::Translation(0,0,-TRANS_Z)* XRMat4::RotationX(3.1415926*(SIDEMIRRORZ))*XRMat4::RotationY(3.1415926*(0))*XRMat4::Translation(-0,0,TRANS_Z);
 				break;
 			case 'M':
 				mModel = XRMat4::RotationY(3.1415926*(0));
