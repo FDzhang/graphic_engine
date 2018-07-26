@@ -599,7 +599,8 @@ int CAvmViewControlModel::Update3dFreeView()
 {
 	_3DFreeViewParamT freeViewParam;
 	CAvmRenderDataBase::GetInstance()->Get3dFreeView(&freeViewParam);
-	static float lastValue = 400.0;
+
+	static float lastValue = 400.0;
 
 	if(freeViewParam.freeViewType == FREE_VIEW_TYPE_AXIS_X
 		&& lastValue != freeViewParam.value)
