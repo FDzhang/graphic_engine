@@ -390,7 +390,7 @@ Cam_Model * AVMCameraInternal::GetFullCameraModel(int camera_index,float *pCamer
 		m_cam_cfg_fisheye[camera_index].CAM_LEN_ORIGIN_VFOV,
 		m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT);
 
-	/*Cam_Init(mp_full_cam_model[camera_index], 
+	Cam_Init(mp_full_cam_model[camera_index], 
 		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
 		m_cam_cfg_fisheye[camera_index].CAM_INT_H, 
 		m_cam_cfg_fisheye[camera_index].CAM_INT_CX,  
@@ -404,8 +404,8 @@ Cam_Model * AVMCameraInternal::GetFullCameraModel(int camera_index,float *pCamer
 		m_cam_cfg_fisheye[camera_index].CAM_LEN_TOP_CUT, 
 		pCameraR, 
 		pCam_T
-		);*/
-	if(camera_index == 0)
+		);
+	/*if(camera_index == 0)
 	{
 		Cam_Init(mp_full_cam_model[camera_index], 
 		m_cam_cfg_fisheye[camera_index].CAM_INT_W, 
@@ -494,7 +494,7 @@ Cam_Model * AVMCameraInternal::GetFullCameraModel(int camera_index,float *pCamer
 		pCameraR, 
 		pCam_T
 		);
-	}
+	}*/
 
 	return mp_full_cam_model[camera_index];
 }
