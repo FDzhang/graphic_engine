@@ -123,6 +123,8 @@ private:
     unsigned char m_buttonVisibility[S302_MAIN_ELEMENT_NUM];
     unsigned char m_buttonShowImage[S302_MAIN_ELEMENT_NUM];
 
+	float m_carOpacity;
+
     IActionTrigger*	m_trigger[S302_MAIN_ELEMENT_NUM];
 
     unsigned char m_subHmiInitFlag[S302_MENU_SUB_HMI_NUM];
