@@ -1076,7 +1076,7 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 {
 /*	viewIndex,postion_x, postion_y,postion_z,look_x,look_y,look_z,scrollX,scrollY,scrollZ,camPos;*/
 	 Avm3dViewCameraParamsT cameraParams[BMW_REAR_3D_VIEW - FRONT_3D_VIEW + 1] = 
-	{   {FRONT_3D_VIEW,                     0.0,    0.0, 3600.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free}, //rear 3d
+	{   {FRONT_3D_VIEW,                     0.0,    -480.0, 3600.0, 0.0, -480.0, 0.0, 0.0, 25.0, 0.0, CameraPosition_Free}, //rear 3d
 		//{FRONT_3D_VIEW, 0.0, 0.0, 2820.0, 0.0, 0.0, -580.0, 0.0, 25.0, 0.0, CameraPosition_Free},
 		{REAR_3D_VIEW,                      0.0,        0.0,    3600.0,     0.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Free},
 		{LEFT_FRONT_3D_VIEW,                1000.0,     100.0,  2000.0,     800.0, 100.0, 500.0, -10.0, 75.0, 0.0, CameraPosition_Left},
@@ -1095,14 +1095,14 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 		{BOSH_REAR_VIEW_TOP,                0.0,        1200.0, 1800.0,     0.0, 1200.0, 850.0,  0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top},
 		{LEFT_MIRROR_VIEW,                  0.0,        400.0,  560.0,  0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
 		{RIGHT_MIRROR_VIEW,                 0.0,        400.0,  560.0,      0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
-	 	{BMW_REAR_VIEW,                     -3600.0,    0.0,    0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear},
-		{BMW_LEFT_VIEW,                     -3600.0,    -100.0, 0.0, 0.25*(-3600.0), -100.0, 0.0, 0.0, 38.0, 0.0,CameraPosition_BMW_Left}, //left 3d
+	 	{BMW_REAR_VIEW,                     0.0,        0.0,    -3600.0,    0.0,    0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear},
+		{BMW_LEFT_VIEW,                     0.0,    -480.0, -3600.0, 0.0, -480.0, 0.0, 270.0, 25.0, 0.0,CameraPosition_BMW_Left}, //left 3d
 		{BMW_RIGHT_VIEW,                    3600.0,     -100.0, 0.0, 0.25*(3600.0), -100.0, 0.0, 0.0, 38.0, 0.0, CameraPosition_BMW_Right}, //right 3d
 		{BMW_LEFT_FRONT_VIEW,               -2000.0,    -100.0, -2250.0,  0.25*(-2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Front}, //front left 3d
 		{BMW_RIGHT_FRONT_VIEW,              2000.0,     -100.0, -2250.0,  0.25*(2000.0), -100.0, 0.3*(-2250.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Front}, //front right 3d
 		{BMW_LEFT_REAR_VIEW,                -1150.0,    -100.0, 2950.0, 0.5*(-1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Left_Rear}, //rear left 3d
 		{BMW_RIGHT_REAR_VIEW,               1150.0,     -100.0, 2950.0, 0.5*(1150.0), -100.0, 0.2*(2950.0), 0.0, 38.0, 0.0, CameraPosition_BMW_Right_Rear}, //rear right 3d
-	    {BMW_REAR_3D_VIEW,                  0.0, 0.0,   -3600.0, 0.0, 0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear}, //front 3d
+	    {BMW_REAR_3D_VIEW,                  0.0, -480.0,   -3600.0, 0.0, -480.0, 0.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear}, //front 3d
 		//{BMW_REAR_3D_VIEW, 0.0, 0.0, 3000.0, 0.0, 0.0, -600.0, 0.0, 22.0 , 0.0, CameraPosition_BMW_3D_Rear},
 
 	};
@@ -1114,15 +1114,8 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 	m_avmObjViewNode->GetAvmObjViewCamera()->SetPosition(cameraParams[pViewIndex - FRONT_3D_VIEW].postion_x, cameraParams[pViewIndex - FRONT_3D_VIEW].postion_y, cameraParams[pViewIndex - FRONT_3D_VIEW].postion_z);
 	m_avmObjViewNode->GetAvmObjViewCamera()->LookAt(cameraParams[pViewIndex - FRONT_3D_VIEW].look_x,cameraParams[pViewIndex - FRONT_3D_VIEW].look_y,cameraParams[pViewIndex - FRONT_3D_VIEW].look_z);
 
-	m_scrollX->DockToValue(0);
-	if(BOSH_FRONT_VIEW_TOP == pViewIndex)
-	{
-		m_scrollY->DockToValue(cameraParams[pViewIndex - FRONT_3D_VIEW].scrollY);
-	}
-	else
-	{
-		m_scrollY->DockToValue(25);
-	}
+	m_scrollX->DockToValue(cameraParams[pViewIndex - FRONT_3D_VIEW].scrollX);
+	m_scrollY->DockToValue(cameraParams[pViewIndex - FRONT_3D_VIEW].scrollY);
 
 
 	 return AVM_VIEWCONTROLMODEL_NORMAL;
