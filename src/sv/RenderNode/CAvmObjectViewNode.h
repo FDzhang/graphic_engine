@@ -67,6 +67,7 @@ private:
 
     class IMesh*				m_planeMesh;
 	class IMesh*				m_wheelMesh;
+	class IMesh*				m_wheelMeshRight;
 	class IMesh*				m_groundMesh;
 	class IMesh*				m_pMeshStichGround[2];
 
@@ -92,6 +93,7 @@ private:
 	class INode*				m_TRUCK;
 	class IMaterial*			m_3dGroundMtl;
 	class IMaterial*			m_carLightMtl;
+	class IMaterial*			m_carWheelMtl;
 	class IMaterial* 			m_carMtl;
 
 	class IAnimationManager*	m_am;
@@ -104,7 +106,7 @@ private:
 	int							m_iSUVId;
 	int							m_iVanId;
 	int							m_iTruckId;
-
+	int							m_carWheelId;
 
 };
 
