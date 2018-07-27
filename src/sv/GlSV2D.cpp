@@ -502,12 +502,12 @@ int GlSV2D::InitFrontRearViewBuffer(int width,int height,GLfloat **pData,GLushor
 }
 
 #define CAMERA_NUM 2
-#define IMAGE_WIDTH 1280    //?¨´¡Á¡ä¨ª??¨ª
-#define IMAGE_HEIGHT 720    //?¨´¡Á¡ä¨ª???
-#define LINE_WIDTH 4        //¡À|?¨ª???¨ª
-#define LINE_BRIGHTNESS 30       //¡À|?¨ª??¨¢¨¢?¨¨
-#define IMAGE_CENTER_RATIO_W 2     //3?¨º??¡¥?¨´¡Á¡ä¨ª??DD?????
-#define IMAGE_CENTER_RATIO_H 1.2   //3?¨º??¡¥?¨´¡Á¡ä¨ª??DD?????
+#define IMAGE_WIDTH 1280    //?ï¿½ï¿½ï¿½ï¿½ï¿½ä¨ª??ï¿½ï¿½
+#define IMAGE_HEIGHT 720    //?ï¿½ï¿½ï¿½ï¿½ï¿½ä¨ª???
+#define LINE_WIDTH 4        //ï¿½ï¿½|?ï¿½ï¿½???ï¿½ï¿½
+#define LINE_BRIGHTNESS 30       //ï¿½ï¿½|?ï¿½ï¿½??ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½
+#define IMAGE_CENTER_RATIO_W 2     //3?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ä¨ª??DD?????
+#define IMAGE_CENTER_RATIO_H 1.2   //3?ï¿½ï¿½??ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ä¨ª??DD?????
 
 int GlSV2D::GenerateFrontRearSingleViewLUT(int camera_index,float *pVert)
 {
@@ -638,6 +638,16 @@ int GlSV2D::InitFrontRearSingleViewCamLUT(int camera_index)
 
 
 }
+void normalize_angles(float angles[3])
+{
+  for(int i = 0; i < 3; i++)
+  {
+    if(angles[i]>3.1415926/2)
+      angles[i] = angles[i]-3.1415926;
+    else if(angles[i]<-3.1415926/2)
+      angles[i] = 3.1415926+angles[i];
+  }
+}
 int GlSV2D::GenerateSideSingleViewLUT(int camera_index,float *pVert)
 {
     Cam_Model *pRealCam;
@@ -678,30 +688,42 @@ int GlSV2D::GenerateSideSingleViewLUT(int camera_index,float *pVert)
     pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
 	m_cam_linear[camera_index] = new Cam_Model;
 
+	normalize_angles(prsource);
 	Cam_Init(m_cam_linear[camera_index], 
 		LINEAR_CAMERA_WIDTH,LINEAR_CAMERA_HEIGHT,
-		LINEAR_CAMERA_CX, LINEAR_CAMERA_CY, 
+		LINEAR_CAMERA_WIDTH/2, LINEAR_CAMERA_HEIGHT/2, 
 		LINEAR_CAMERA_SKEW_C, LINEAR_CAMERA_SKEW_D, LINEAR_CAMERA_SKER_E, 
 		Cam_Lut_Linear,
 		LINEAR_CAMERA_HFOV*deg2rad, 
 		LINEAR_CAMERA_VFOV*deg2rad, 
 		true, 
-		pR, 
-		pT
+		prsource, 
+		ptsource
 		);
+		
 	FLT_T a[3]={RIGHT_LINEAR_CAM_ROT_X*deg2rad, RIGHT_LINEAR_CAM_ROT_Y*deg2rad, RIGHT_LINEAR_CAM_ROT_Z*deg2rad};
     //FLT_T a[3] = {-pR[0], view_angle * deg2rad - pR[1], -pR[2]};
-    if(camera_index == left_camera_index)
+    int deltaX = 0;
+	float deltaY = 3.4;
+	float deltaZ = 2.7;
+	if(camera_index == left_camera_index)
     {
         config[0] = LEFT_SIDE_VIEW_ROI_START_X;
 		config[1] = LEFT_SIDE_VIEW_ROI_START_Y;
 		config[2] = LEFT_SIDE_VIEW_ROI_END_X;
 		config[3] = LEFT_SIDE_VIEW_ROI_END_Y;
-        a[0]=LEFT_LINEAR_CAM_ROT_X*deg2rad;
-		a[1]=LEFT_LINEAR_CAM_ROT_Y*deg2rad;
-		a[2]=LEFT_LINEAR_CAM_ROT_Z*deg2rad;
+		a[0] = -prsource[0]- deltaX * 3.14159 / 180.f;
+		a[1] = -view_angle*deg2rad + prsource[1] - deltaY * 3.14159 / 180.f;
+		a[2] = -prsource[2] - deltaZ * 3.14159 / 180.f;;	
 		
     }
+	else 
+	{
+		 a[0] = -prsource[0]- deltaX * 3.14159 / 180.f;
+		 a[1] = view_angle*deg2rad - prsource[1] - deltaY * 3.14159 / 180.f;
+		 a[2] = -prsource[2] - deltaZ * 3.14159 / 180.f;	
+	}
+	
 	m_linear_cam[camera_index][0]=a[0];
 	m_linear_cam[camera_index][1]=a[1];
 	m_linear_cam[camera_index][2]=a[2];

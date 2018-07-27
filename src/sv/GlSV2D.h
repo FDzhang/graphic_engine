@@ -70,8 +70,8 @@ enum
 #define LINEAR_CAMERA_SKEW_C 1
 #define LINEAR_CAMERA_SKEW_D 0
 #define LINEAR_CAMERA_SKER_E 0
-#define LINEAR_CAMERA_HFOV  50.0
-#define LINEAR_CAMERA_VFOV  50.0
+#define LINEAR_CAMERA_HFOV  70.0
+#define LINEAR_CAMERA_VFOV  70.0
 
 #define RIGHT_LINEAR_CAM_R_X    1.7929496
 #define RIGHT_LINEAR_CAM_R_Y    0.0461896
@@ -97,23 +97,19 @@ enum
 #define RIGHT_SIDE_VIEW_ROI_END_Y   639
 
 #else
-#define RIGHT_SIDE_VIEW_ROI_START_X  106
+#define RIGHT_SIDE_VIEW_ROI_START_X  215
 //47 //106 //112 big
-#define RIGHT_SIDE_VIEW_ROI_START_Y  183
+#define RIGHT_SIDE_VIEW_ROI_START_Y  340
 //168 small //198 big
-#define RIGHT_SIDE_VIEW_ROI_END_X   450
+#define RIGHT_SIDE_VIEW_ROI_END_X   640
 //463 //480 big //420 small
-#define RIGHT_SIDE_VIEW_ROI_END_Y   510
+#define RIGHT_SIDE_VIEW_ROI_END_Y   640
 //503
 
-//#define RIGHT_SIDE_VIEW_ROI_START_X  57
-//#define RIGHT_SIDE_VIEW_ROI_START_Y  108
-//#define RIGHT_SIDE_VIEW_ROI_END_X   463
-//#define RIGHT_SIDE_VIEW_ROI_END_Y   483
 
 #endif
-#define RIGHT_SIDE_VIEW_MESH_WIDTH  11     //actual width +1
-#define RIGHT_SIDE_VIEW_MESH_HEIGHT 11     //actual height +1
+#define RIGHT_SIDE_VIEW_MESH_WIDTH  20     //actual width +1
+#define RIGHT_SIDE_VIEW_MESH_HEIGHT 20     //actual height +1
 
 
 
@@ -138,15 +134,14 @@ enum
 
 
 #else
-
-#define LEFT_SIDE_VIEW_ROI_START_X  0
+#define LEFT_SIDE_VIEW_ROI_START_X  10
 //;//;
-#define LEFT_SIDE_VIEW_ROI_START_Y  167
+#define LEFT_SIDE_VIEW_ROI_START_Y  337
 //;//177;
-#define LEFT_SIDE_VIEW_ROI_END_X   308
+#define LEFT_SIDE_VIEW_ROI_END_X   450
 //394;//320
-#define LEFT_SIDE_VIEW_ROI_END_Y  512
-//;//507
+#define LEFT_SIDE_VIEW_ROI_END_Y  600
+
 
 /*
 #define LEFT_SIDE_VIEW_ROI_START_X  17
