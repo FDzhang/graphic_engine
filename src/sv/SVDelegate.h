@@ -388,8 +388,8 @@ public:
 	
 };
 
-#define TRANS_Z 1800
-#define TRANS_X 2200
+#define TRANS_Z 520
+#define TRANS_X 520
 
 class RenderDelegateCV : public IRenderDelegate
 {
@@ -552,7 +552,7 @@ public:
         float pos_gate[2]={1.0,2.0};
 		float cof[3] = {1.0,1.0,1.0};
 		
-#define SIDEMIRRORDEGREE -0.125
+#define SIDEMIRRORDEGREE -0.25
 #define SIDEMIRRORZ -0.0
 		switch (id) {
 			case 'L':

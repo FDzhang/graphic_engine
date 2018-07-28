@@ -102,8 +102,8 @@ int CAvmViewControlModel::InitViewNode()
     m_avmSingleViewNode= new CAvmSingleViewNode;
 	m_avm3dViewNode= new CAvm3dViewNode;
 	m_avmObjViewNode= new CAvmObjectViewNode;
-	//m_avm180DegreeView = new CAvmLinearViewNode;
-	m_avm180DegreeView = new CAvmFrontRearLinearView;
+	m_avm180DegreeView = new CAvmLinearViewNode;
+	//m_avm180DegreeView = new CAvmFrontRearLinearView;
 	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
 	m_avmLeftLinearView = NULL;
 	m_avmRightLinearView = NULL;
@@ -166,7 +166,7 @@ int CAvmViewControlModel::InitViewNode()
 	linear180DegreeRegion[REGION_POS_LEFT] = left_panel_width;
 	linear180DegreeRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
 	linear180DegreeRegion[REGION_POS_TOP] = 0+black_width;
-	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
+	linear180DegreeRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width + 40.0;
 
 	leftSingleViewRegion[REGION_POS_LEFT] = left_panel_width;
 	leftSingleViewRegion[REGION_POS_RIGHT] = (XrGetScreenWidth() - left_panel_width)/2.0 + leftSingleViewRegion[REGION_POS_LEFT];

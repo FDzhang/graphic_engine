@@ -225,7 +225,28 @@ void AVMData::CalcUVTextureSV(float *pWorld,float *texture,int chann)
 
 
 }
+void AVMData::CalcUVTextureCV(float *pWorld,float *texture,int chann)
+{
 
+  XRVec4 WorldCoord,InCamCoord;
+  float pt3d[3];
+    double image2D[2],world3D[3];
+  float *temp_trans;
+  XRMat4 *uvTransform;
+
+  WorldCoord = XRVec4::XRVec4(-pWorld[2],pWorld[0],-pWorld[1],1.0);
+
+  //m_pAVMData->m_exParam->GetTransformMatrix(&uvTransform,chann);
+  //m_pAVMData->m_exParam->GetInnerModelTransform(&temp_trans,chann);
+  InCamCoord = XRMat4::RotationX(3.1415926*(0.0))*XRMat4::RotationY(3.1415926*(0.5))*XRMat4::RotationX(3.1415926*(0.5))*WorldCoord;//(*uvTransform)*(WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
+  //InCamCoord = (WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
+
+  pt3d[0] = InCamCoord.x;
+  pt3d[1] = InCamCoord.y;
+  pt3d[2] = InCamCoord.z;
+
+   m_pAVMData->m_camInstrinct->MapCamRay2ImagePointGpu(pt3d,texture,chann);
+}
 float AVMData::GetFrontSingleViewRect(int index)
 {
 
