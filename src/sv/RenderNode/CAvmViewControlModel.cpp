@@ -1089,7 +1089,7 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 		{RIGHT_REAR_TURN_SIGNAL_3D_VIEW,    400.0,      0.0,    3500.0,     400.0, 0.0, 0.0, 180.0, 50.0, 0.0, CameraPosition_Right_Rear_Light},
 		{LEFT_HIGHT_SPEED_TURN_3D_VIEW,     400.0,      0.0,    3500.0,     400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Left_Front_Light},
 		{RIGHT_HIGHT_SPEED_TURN_3D_VIEW,    -400.0,     0.0,    3500.0,     -400.0, 0.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Right_Front_Light},
-		{TOUR_VIEW,                         0.0,        0.0,    2600.0,     0.0, 0.0, 0.0, 0.0, 0.0, 0.0, CameraPosition_Free},
+		{TOUR_VIEW,                         0.0,        0.0,    2600.0,     0.0, 0.0, 0.0, 0.0, 25.0, 0.0, CameraPosition_Free},
 		{BOSH_FRONT_VIEW,                   0.0,        600.0,  1400.0,     0.0, 600.0, 100.0, 0.0, 45.0, 0.0, CameraPosition_BOSCH_Front},
 		{BOSH_FRONT_VIEW_TOP,               0.0,        1200.0, 100.0,      0.0, 1200.0, -850.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Front_Top},
 		{BOSH_REAR_VIEW_TOP,                0.0,        1200.0, 1800.0,     0.0, 1200.0, 850.0,  0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top},
