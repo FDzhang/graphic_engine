@@ -46,9 +46,9 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 
 	float PlaneScaleX  = TRANS_X;	
 	float UIZ1 = -TRANS_Z;
-	#define PlaneScaleY 3400.0
-	#define PlaneScaleY_NEG  -3400.0
-	#define theta (PI/8)
+	#define PlaneScaleY 640.0
+	#define PlaneScaleY_NEG  -640.0
+	#define theta (PI/4)
 
     #define ROTATE_ANGLE 30
     #define ROTATE_LENGTH 3000
@@ -144,7 +144,7 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
                 m_rear_afVertices[index][slotId*8+1] = m_front_afVertices[index][slotId*8+1];
                 m_rear_afVertices[index][slotId*8+2] = m_front_afVertices[index][slotId*8+2];
                 #endif
-                AVMData::GetInstance()->CalcUVTextureSV(&afVertices[index][slotId*8],&afVertices[index][slotId*8+3],0);
+                AVMData::GetInstance()->CalcUVTextureCV(&afVertices[index][slotId*8],&afVertices[index][slotId*8+3],0);
                 m_front_afVertices[index][slotId*8+3] =  afVertices[index][slotId*8+3];
                 m_front_afVertices[index][slotId*8+4] =  afVertices[index][slotId*8+4];
                 m_front_afVertices[index][slotId*8+5] =  afVertices[index][slotId*8+5];

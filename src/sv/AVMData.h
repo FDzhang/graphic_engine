@@ -113,6 +113,7 @@ public:
 	static void InitConfig(SV_DATA_CONFIG_T config);
 	
 	static void CalcUVTextureSV(float *pWorld,float *texture,int chann);
+	void  CalcUVTextureCV(float *pWorld,float *texture,int chann);
 	float GetFrontSingleViewRect(int index);
 	float GetRearSingleViewRect(int index);
 	float GetLeftSingleViewRect(int index);
