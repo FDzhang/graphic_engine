@@ -386,7 +386,7 @@ int CAvmViewControlModel::InitDisplayEffect()
 	m_am->CreateScrollingAnimation(&m_sliderX);
 
 
-	m_scrollX->SetRange(-180, 180, 0);
+	m_scrollX->SetRange(0, 359, 0);
 	m_scrollY->SetRange(50, 90, 1);
 
 	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RX, &rotX);
@@ -1075,6 +1075,7 @@ int CAvmViewControlModel::SetViewNodeVisibility(ViewNodeVisibilityT pViewNodeVis
 int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 {
 /*	viewIndex,postion_x, postion_y,postion_z,look_x,look_y,look_z,scrollX,scrollY,scrollZ,camPos;*/
+/*	3D视角做X方向旋转时角度取值在0~359*/
 	 Avm3dViewCameraParamsT cameraParams[BMW_REAR_3D_VIEW - FRONT_3D_VIEW + 1] = 
 	{   {FRONT_3D_VIEW,                     0.0,    -600.0, -3600.0, 0.0, -600.0, 0.0, 180.0, 25.0, 0.0, CameraPosition_Free}, //rear 3d
 		//{FRONT_3D_VIEW, 0.0, 0.0, 2820.0, 0.0, 0.0, -580.0, 0.0, 25.0, 0.0, CameraPosition_Free},
