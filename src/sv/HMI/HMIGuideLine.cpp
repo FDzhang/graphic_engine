@@ -161,8 +161,6 @@ int HMIGuideLine::Update(float pSteeringWheel,int pDriveDirection)
     float center[2];
     float radius[2];
     float theta[2];
-    static float lastSteeringWheel = 1000.0;
-    static int lastDriveDirection = 10;
 
     if(pSteeringWheel < 0.1 && pSteeringWheel > -0.1)
     {
@@ -203,24 +201,12 @@ int HMIGuideLine::Update(float pSteeringWheel,int pDriveDirection)
     }
     else if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_SAVE_DYNAMIC)
     {
-        //if((IsFloatEqual(lastSteeringWheel, pSteeringWheel, 0.0001)) == false
-        //    ||lastDriveDirection != pDriveDirection)
-        {
-            CaculateHorizontalDynamicLine(m_vertext , pSteeringWheel, pDriveDirection);
-        }
-        lastSteeringWheel = pSteeringWheel;
-        lastDriveDirection = pDriveDirection;
+        CaculateHorizontalDynamicLine(m_vertext , pSteeringWheel, pDriveDirection);
     }
     else    
     {
-        //if((IsFloatEqual(lastSteeringWheel, pSteeringWheel, 0.0001)) == false
-        //    ||lastDriveDirection != pDriveDirection)
-        {
-            CaculateCenter(&center[0],&center[1],radius,theta,pSteeringWheel,pDriveDirection);  
-            GenerateDynamicGuideLine(center[0],center[1],radius,theta, m_vertext);  
-        }
-        lastSteeringWheel = pSteeringWheel;
-        lastDriveDirection = pDriveDirection;
+        CaculateCenter(&center[0],&center[1],radius,theta,pSteeringWheel,pDriveDirection);  
+        GenerateDynamicGuideLine(center[0],center[1],radius,theta, m_vertext);  
     }
 
     m_guideLineMesh->UnLockData();

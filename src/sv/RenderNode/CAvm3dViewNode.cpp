@@ -114,11 +114,11 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 	modelId = m_3dViewNode->LoadModelFromFile(skyL ,SVMTL[1], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
 	m_renderDelegate->ProcessModel(pImdl, "2");
 
-	/*modelId = m_3dViewNode->LoadModelFromFile(skyF ,SVMTL[2], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
+	modelId = m_3dViewNode->LoadModelFromFile(skyF ,SVMTL[2], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
 	m_renderDelegate->ProcessModel(pImdl, "0");
 
 	modelId = m_3dViewNode->LoadModelFromFile(skyB ,SVMTL[3], -1, InsertFlag_Default, 0, SV_Y_POS, -0,	bev_3d_param->model_param.model_scale, &pImdl);
-	m_renderDelegate->ProcessModel(pImdl, "1");	*/
+	m_renderDelegate->ProcessModel(pImdl, "1");	
 
 	modelId = m_3dViewNode->LoadModelFromFile(skyFA ,SVMTL[2], -1, InsertFlag_Default, 0, SV_Y_POS, -0, bev_3d_param->model_param.model_scale, &pImdl);
 	m_renderDelegate->ProcessModel(pImdl, "4");

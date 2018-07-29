@@ -81,7 +81,7 @@ int CAvmViewControlModel::InitViewNode()
 	unsigned char initSingleViewNode = 0;
 	unsigned char initObjViewNode = 0;
 
-	unsigned char carTransparentStatus = 1;
+	unsigned char carTransparentStatus = 0;
 	CAvmRenderDataBase::GetInstance()->SetCarTransparentStatus(&carTransparentStatus);
 
 	//CAvmRenderDataBase::GetInstance()->GetCarTransparentStatus(&carTransparentStatus);
@@ -386,7 +386,7 @@ int CAvmViewControlModel::InitDisplayEffect()
 	m_am->CreateScrollingAnimation(&m_sliderX);
 
 
-	m_scrollX->SetRange(0, 359, 0);
+	m_scrollX->SetRange(-180, 180, 0);
 	m_scrollY->SetRange(50, 90, 1);
 
 	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RX, &rotX);

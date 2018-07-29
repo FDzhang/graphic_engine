@@ -259,8 +259,8 @@ int GlSV2D::InitLinear()
     InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eLeftSingle],&m_pucIndexBuff[eLeftSingle],
 		&m_SideViewVertSize[left_camera_index],&m_SideViewIndexSize[left_camera_index], 1);
-	GenerateSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
-
+	//GenerateSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
+	GenerateCyliSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
 	InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
 	&m_pfVertexBuff[eRightSingle],&m_pucIndexBuff[eRightSingle],
 		&m_SideViewVertSize[right_camera_index],&m_SideViewIndexSize[right_camera_index]);
@@ -268,7 +268,9 @@ int GlSV2D::InitLinear()
 	m_pucIndexBuff[eRightSingle] = m_pucIndexBuff[eLeftSingle];
 	m_SideViewIndexSize[right_camera_index] = m_SideViewIndexSize[left_camera_index];
 	
-	GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+	//GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+	GenerateCyliSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+
 	InitFrontRearViewBuffer(FRONT_CLC_VIEW_MESH_WIDTH,FRONT_CLC_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eFrontSingle],&m_pucIndexBuff[eFrontSingle],
 		&m_SideViewVertSize[front_camera_index],&m_SideViewIndexSize[front_camera_index]);
@@ -748,6 +750,86 @@ int GlSV2D::GenerateSideSingleViewLUT(int camera_index,float *pVert)
 
 
 }
+int GlSV2D::GenerateCyliSideSingleViewLUT(int camera_index,float *pVert)
+{
+    Cam_Model *pRealCam;
+    float view_angle = 90.0;
+	int vertex_num;
+    float pR[3]={RIGHT_LINEAR_CAM_R_X,RIGHT_LINEAR_CAM_R_Y,RIGHT_LINEAR_CAM_R_Z};
+	float pT[3] = {RIGHT_LINEAR_CAM_T_X,RIGHT_LINEAR_CAM_T_Y,RIGHT_LINEAR_CAM_T_Z};
+    float prsource[3];
+	float ptsource[3];
+    int config[6]={RIGHT_SIDE_VIEW_ROI_START_X,
+		RIGHT_SIDE_VIEW_ROI_START_Y,
+		RIGHT_SIDE_VIEW_ROI_END_X,
+		RIGHT_SIDE_VIEW_ROI_END_Y,
+		RIGHT_SIDE_VIEW_MESH_WIDTH, 
+		RIGHT_SIDE_VIEW_MESH_HEIGHT};
+	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
+	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+
+    pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
+	m_cam_clc_side[camera_index] = new Cam_Model_Cyli;
+	
+	normalize_angles(prsource);
+	_Cam_Init_Cyli(m_cam_clc_side[camera_index], 
+		LINEAR_CAMERA_WIDTH,LINEAR_CAMERA_HEIGHT,
+		LINEAR_CAMERA_WIDTH/2, LINEAR_CAMERA_HEIGHT/2, 
+		prsource,
+		ptsource,
+		prsource[0],0,0
+		);
+	FLT_T a[3]={RIGHT_LINEAR_CAM_ROT_X*deg2rad, RIGHT_LINEAR_CAM_ROT_Y*deg2rad, RIGHT_LINEAR_CAM_ROT_Z*deg2rad};
+    //FLT_T a[3] = {-pR[0], view_angle * deg2rad - pR[1], -pR[2]};
+	int deltaX = 0;
+	float deltaY = 3.4;
+	float deltaZ = 0.0;
+    if(camera_index == left_camera_index)
+    {
+        config[0] = LEFT_SIDE_VIEW_ROI_START_X;
+		config[1] = LEFT_SIDE_VIEW_ROI_START_Y;
+		config[2] = LEFT_SIDE_VIEW_ROI_END_X;
+		config[3] = LEFT_SIDE_VIEW_ROI_END_Y;
+	
+		a[0] = 0;
+		a[1] = 0;
+		a[2] = -view_angle*deg2rad - deltaZ * 3.14159 / 180.f;
+		m_cam_clc_side[camera_index]->cam_int.offSetX = 450;
+		m_cam_clc_side[camera_index]->cam_int.offSetY = 0;
+	
+    }
+	else 
+	{
+		a[0] = 0;
+		a[1] = 0;
+		a[2] = view_angle*deg2rad - deltaZ * 3.14159 / 180.f;
+		m_cam_clc_side[camera_index]->cam_int.offSetX = 158;
+		m_cam_clc_side[camera_index]->cam_int.offSetY = 0;
+
+	}
+
+	_Cam_UpdateViewRotation(m_cam_clc_side[camera_index], a);
+
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCyliCameraModel(camera_index,m_cam_clc_side[camera_index]);
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCamROI(camera_index,config[0],config[1],config[2],config[3]);
+
+	Cam_MapImage_Fish2Cyli_GenerateGPULUT(
+		pRealCam, 
+		m_cam_clc_side[camera_index],
+		config[0],
+		config[1],
+		config[2],
+		config[3],
+		config[4], 
+		config[5],
+		config[6],
+		&vertex_num,
+		pVert);
+
+	return 0;
+
+}
+
 void GlSV2D::AdjustSideSingleViewLUT(int camera_index,unsigned char adjust_port,unsigned char adjust_direct)
 {
 	FLT_T a[3]={0*deg2rad, 0*deg2rad, 0*deg2rad};

@@ -238,8 +238,8 @@ void AVMData::CalcUVTextureCV(float *pWorld,float *texture,int chann)
 
   //m_pAVMData->m_exParam->GetTransformMatrix(&uvTransform,chann);
   //m_pAVMData->m_exParam->GetInnerModelTransform(&temp_trans,chann);
-  InCamCoord = XRMat4::RotationX(3.1415926*(0.0))*XRMat4::RotationY(3.1415926*(0.5))*XRMat4::RotationX(3.1415926*(0.5))*WorldCoord;//(*uvTransform)*(WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
-  //InCamCoord = (WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
+  InCamCoord = XRMat4::RotationZ(3.1415926*(-0.03))*XRMat4::RotationY(3.1415926*(0.5))*XRMat4::RotationX(3.1415926*(0.5))*WorldCoord;//(*uvTransform)*(WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
+   //InCamCoord = (WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
 
   pt3d[0] = InCamCoord.x;
   pt3d[1] = InCamCoord.y;
