@@ -3,6 +3,11 @@
 #include "../../Common/XrInternal.h"
 //#include "..\External\ILayer.h"
 
+#define UP_LESS_180 0
+#define DOWN_LESS_180 1
+#define UP_MORE_180 2
+#define DOWN_MORE_180 3
+
 class CSeriesGenerator
 {
 public:
@@ -22,6 +27,7 @@ protected:
 	AnimationStyle			m_style;
 	Float32					m_from;
 	Float32					m_dx;
+	UInt8					m_varTrend;
 	Float32					m_interValue;
 	Int32					m_active;
 	Int32					m_totalTime;

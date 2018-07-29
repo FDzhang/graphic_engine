@@ -163,6 +163,28 @@ Void CScrollingAnimation::DockToValue(Float32 val)
 {
     m_from = m_value;
     m_dx = (val - m_from);
+    if(val - m_from > 0 && val - m_from <= 180)
+    {
+        m_dx = val - m_from;
+        m_varTrend = UP_LESS_180;
+    }
+    else if(val - m_from < 0 && val - m_from >= -180)
+    {
+        m_dx = val - m_from;
+        m_varTrend = DOWN_LESS_180;
+    }
+    else if(val - m_from > 180)
+    {
+        m_from = m_from + 360;
+        m_dx = val - m_from;
+        m_varTrend = UP_MORE_180;
+    }
+    else if(val - m_from < -180)
+    {
+        m_from = m_from - 360;
+        m_dx = val - m_from;
+        m_varTrend = DOWN_MORE_180;
+    }
     m_startTime = XrGetTime();
     m_totalTime = m_rewardDuration;
     m_state = STATE_REPOSITIONING;

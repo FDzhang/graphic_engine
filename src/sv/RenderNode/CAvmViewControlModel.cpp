@@ -386,7 +386,7 @@ int CAvmViewControlModel::InitDisplayEffect()
 	m_am->CreateScrollingAnimation(&m_sliderX);
 
 
-	m_scrollX->SetRange(-180, 180, 0);
+	m_scrollX->SetRange(0, 359, 0);
 	m_scrollY->SetRange(50, 90, 1);
 
 	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RX, &rotX);
