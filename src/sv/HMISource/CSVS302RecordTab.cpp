@@ -39,7 +39,7 @@ int CSVS302RecordTab::SetHmiParams()
 
     index = S302_RECORD_INDEX_RECPOINT;
     m_baseButtonData[index].pos[0] = offset + 34;
-    m_baseButtonData[index].pos[1] = 26;
+    m_baseButtonData[index].pos[1] = 20;
     m_baseButtonData[index].width = 108;
     m_baseButtonData[index].height = 26;
     m_baseButtonData[index].delegate_func = NULL;
@@ -178,8 +178,8 @@ int CSVS302RecordTab::HmiInitSTBar()
     int svresIndex = 2;
 
     int index = S302_RECORD_INDEX_STABR_SPEED;
-    m_baseButtonData[index].pos[0] = 680.0;
-    m_baseButtonData[index].pos[1] = 22.0;
+    m_baseButtonData[index].pos[0] = 790.0;
+    m_baseButtonData[index].pos[1] = 12.0;
     m_baseButtonData[index].width = 108;
     m_baseButtonData[index].height = 36;
     m_baseButtonData[index].delegate_func = NULL;
@@ -192,8 +192,8 @@ int CSVS302RecordTab::HmiInitSTBar()
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;    
 
     index = S302_RECORD_INDEX_STABR_GEAR;
-    m_baseButtonData[index].pos[0] = 790.0;
-    m_baseButtonData[index].pos[1] = 22.0;
+    m_baseButtonData[index].pos[0] = 900.0;
+    m_baseButtonData[index].pos[1] = 12.0;
     m_baseButtonData[index].width = 36;
     m_baseButtonData[index].height = 36;
     m_baseButtonData[index].delegate_func = NULL;
@@ -211,8 +211,8 @@ int CSVS302RecordTab::HmiInitSTBar()
     
     for (int index = S302_RECORD_INDEX_STABR_ACC; index <= S302_RECORD_INDEX_STABR_BUCKLE; index++)
     {
-        m_baseButtonData[index].pos[0] = 790.0 + (index - S302_RECORD_INDEX_STABR_GEAR) * 40.0;
-        m_baseButtonData[index].pos[1] = 22.0;
+        m_baseButtonData[index].pos[0] = 900.0 + (index - S302_RECORD_INDEX_STABR_GEAR) * 40.0;
+        m_baseButtonData[index].pos[1] = 12.0;
         m_baseButtonData[index].width = 36;
         m_baseButtonData[index].height = 36;
         m_baseButtonData[index].delegate_func = NULL;
@@ -382,8 +382,8 @@ int CSVS302RecordTab::InitText()
     int i = 0;
 
     i = S302_REC_TIME_TEXT;
-    m_textEditData[i].pos[0] = 135;
-    m_textEditData[i].pos[1] = 26;
+    m_textEditData[i].pos[0] = 145;
+    m_textEditData[i].pos[1] = 16;
     m_textEditData[i].width = 25;
 	m_textEditData[i].font_size = 5.0;
 	m_textEditData[i].line_num = 1;
@@ -400,8 +400,8 @@ int CSVS302RecordTab::InitText()
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext0);
 
     i = S302_REC_GPS_TEXT;
-    m_textEditData[i].pos[0] = 380;
-    m_textEditData[i].pos[1] = 26;
+    m_textEditData[i].pos[0] = 445;
+    m_textEditData[i].pos[1] = 16;
     m_textEditData[i].width = 25;
 	m_textEditData[i].font_size = 5.0;
 	m_textEditData[i].line_num = 1;
@@ -418,8 +418,8 @@ int CSVS302RecordTab::InitText()
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext1);
 
     i = S302_REC_SPEED_TEXT;
-    m_textEditData[i].pos[0] = 690;
-    m_textEditData[i].pos[1] = 26;
+    m_textEditData[i].pos[0] = 800;
+    m_textEditData[i].pos[1] = 16;
     m_textEditData[i].width = 25;
 	m_textEditData[i].font_size = 5.0;
 	m_textEditData[i].line_num = 1;
