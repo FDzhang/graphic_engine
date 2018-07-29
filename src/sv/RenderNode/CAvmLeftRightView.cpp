@@ -28,7 +28,8 @@
 #include "../AVMData.h"
 #include "../SVDelegate.h"
 #include "../GlSV2D.h"
-
+static char c_SV2DFragStaticShaderSrcFile[]   = XR_RES"OVFragShaderSV2DStatic.frg";
+static char c_SV2DVertShaderSrcFileLUT[]  = XR_RES"OVVertShaderSV2D.vtx"; 
 CAvmLeftRightView::CAvmLeftRightView():m_leftRightViewCameraParams(0)
 {
 	m_leftRightViewMesh[0] = NULL;
@@ -60,7 +61,7 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 	char VertexName[MAX_NAME_LENGTH];
 	char FragShaderName[MAX_NAME_LENGTH];
     AVMData::GetInstance()->m_cam_source->GetShaderName(VertexName,SV_2D_VERTEX_SHADER);	
-    AVMData::GetInstance()->m_cam_source->GetShaderName(FragShaderName,SV_2D_FRAGMENT_SHADER);
+    //AVMData::GetInstance()->m_cam_source->GetShaderName(FragShaderName,SV_2D_FRAGMENT_SHADER);
 	// Interleaved vertex data
 	m_leftRightViewNodeId[0] = m_xrCore->CreateRenderNodeScene(0, &m_leftRightViewNode[0]);
  
@@ -126,7 +127,7 @@ int CAvmLeftRightView::InitNode(class IXrCore* pXrcore)
 	
 		AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_leftRightViewMtl,i - eFrontSingle); 
 
-		pIEffect->InitShaderFromFile("Effect_LeftRight2D", VertexName, FragShaderName,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
+		pIEffect->InitShaderFromFile("Effect_LeftRight2D", VertexName, c_SV2DFragStaticShaderSrcFile,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
 		pIEffect->SetRenderDelegate(m_renderDelegate);
 	   //--------------------- new code
 

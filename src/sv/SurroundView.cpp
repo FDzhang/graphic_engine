@@ -437,7 +437,7 @@ bool XRSV::update(unsigned int view_control_flag)
 	g_pXrSwapChain->Swap();
 	
 	endl = XrGetTime();
-	//Log_Debug("frame_process[%d]",endl-start);
+	//Log_Message("frame_process[%d]",endl-start);
 
 	if(m_avmLogicManager)
 	{
