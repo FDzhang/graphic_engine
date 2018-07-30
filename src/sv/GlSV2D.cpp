@@ -794,7 +794,7 @@ int GlSV2D::GenerateCyliSideSingleViewLUT(int camera_index,float *pVert)
 		a[0] = 0;
 		a[1] = 0;
 		a[2] = -view_angle*deg2rad - deltaZ * 3.14159 / 180.f;
-		m_cam_clc_side[camera_index]->cam_int.offSetX = 450;
+		m_cam_clc_side[camera_index]->cam_int.offSetX = 0;
 		m_cam_clc_side[camera_index]->cam_int.offSetY = 0;
 	
     }
@@ -803,7 +803,7 @@ int GlSV2D::GenerateCyliSideSingleViewLUT(int camera_index,float *pVert)
 		a[0] = 0;
 		a[1] = 0;
 		a[2] = view_angle*deg2rad - deltaZ * 3.14159 / 180.f;
-		m_cam_clc_side[camera_index]->cam_int.offSetX = 158;
+		m_cam_clc_side[camera_index]->cam_int.offSetX = 0;
 		m_cam_clc_side[camera_index]->cam_int.offSetY = 0;
 
 	}
