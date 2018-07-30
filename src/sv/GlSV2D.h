@@ -97,13 +97,13 @@ enum
 #define RIGHT_SIDE_VIEW_ROI_END_Y   639
 
 #else
-#define RIGHT_SIDE_VIEW_ROI_START_X  142
+#define RIGHT_SIDE_VIEW_ROI_START_X  203
 //47 //106 //112 big
-#define RIGHT_SIDE_VIEW_ROI_START_Y  315
+#define RIGHT_SIDE_VIEW_ROI_START_Y  360
 //168 small //198 big
 #define RIGHT_SIDE_VIEW_ROI_END_X   640
 //463 //480 big //420 small
-#define RIGHT_SIDE_VIEW_ROI_END_Y   550
+#define RIGHT_SIDE_VIEW_ROI_END_Y   640
 //503
 
 
@@ -136,11 +136,11 @@ enum
 #else
 #define LEFT_SIDE_VIEW_ROI_START_X  0
 //;//;
-#define LEFT_SIDE_VIEW_ROI_START_Y  315
+#define LEFT_SIDE_VIEW_ROI_START_Y  350
 //;//177;
-#define LEFT_SIDE_VIEW_ROI_END_X   500
+#define LEFT_SIDE_VIEW_ROI_END_X   450
 //394;//320
-#define LEFT_SIDE_VIEW_ROI_END_Y  550
+#define LEFT_SIDE_VIEW_ROI_END_Y  640
 
 
 /*
@@ -232,7 +232,7 @@ public:
 	int GetIndexBuffer(int Index,GLushort **pIndexBuffer, unsigned int *BufSize);
 	
 	int GetVertexBuffer(int Index,float **pVertexBuffer, unsigned int *BufSize);
-
+	int GenerateFishSideSingleViewLUT(int camera_index,float *pVert);
 	int GenerateCyliSideSingleViewLUT(int camera_index,float *pVert);
 	int GenerateSideSingleViewLUT(int camera_index,float *pVert);
 	int InitSideViewBuffer(int width, int height, GLfloat **pData, GLushort **pIndex, unsigned int *puiVertSize, unsigned int *puiIndexSize,unsigned char index_flag = 0);
@@ -262,6 +262,7 @@ private:
 	unsigned int m_SideViewIndexSize[4];
 	
 	Cam_Model *m_cam_linear[4];
+	Cam_Model *m_cam_fish_side[4];
 	Cam_Model_Cyli *m_cam_clc_side[4];
 	Cam_Model_Cyli *m_cam_clc[4];
 	float m_linear_cam[4][3];

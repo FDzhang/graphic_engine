@@ -260,7 +260,8 @@ int GlSV2D::InitLinear()
 		&m_pfVertexBuff[eLeftSingle],&m_pucIndexBuff[eLeftSingle],
 		&m_SideViewVertSize[left_camera_index],&m_SideViewIndexSize[left_camera_index], 1);
 	//GenerateSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
-	GenerateCyliSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
+	//GenerateCyliSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
+	GenerateFishSideSingleViewLUT(left_camera_index,m_pfVertexBuff[eLeftSingle]);
 	InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
 	&m_pfVertexBuff[eRightSingle],&m_pucIndexBuff[eRightSingle],
 		&m_SideViewVertSize[right_camera_index],&m_SideViewIndexSize[right_camera_index]);
@@ -269,7 +270,9 @@ int GlSV2D::InitLinear()
 	m_SideViewIndexSize[right_camera_index] = m_SideViewIndexSize[left_camera_index];
 	
 	//GenerateSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
-	GenerateCyliSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+	//GenerateCyliSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+	GenerateFishSideSingleViewLUT(right_camera_index,m_pfVertexBuff[eRightSingle]);
+
 
 	InitFrontRearViewBuffer(FRONT_CLC_VIEW_MESH_WIDTH,FRONT_CLC_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eFrontSingle],&m_pucIndexBuff[eFrontSingle],
@@ -829,7 +832,82 @@ int GlSV2D::GenerateCyliSideSingleViewLUT(int camera_index,float *pVert)
 	return 0;
 
 }
+int GlSV2D::GenerateFishSideSingleViewLUT(int camera_index,float *pVert)
+{
+    Cam_Model *pRealCam;
+    float view_angle = 90.0;
+	int vertex_num;
+    float pR[3]={RIGHT_LINEAR_CAM_R_X,RIGHT_LINEAR_CAM_R_Y,RIGHT_LINEAR_CAM_R_Z};
+	float pT[3] = {RIGHT_LINEAR_CAM_T_X,RIGHT_LINEAR_CAM_T_Y,RIGHT_LINEAR_CAM_T_Z};
+    float prsource[3];
+	float ptsource[3];
+    int config[6]={RIGHT_SIDE_VIEW_ROI_START_X,
+		RIGHT_SIDE_VIEW_ROI_START_Y,
+		RIGHT_SIDE_VIEW_ROI_END_X,
+		RIGHT_SIDE_VIEW_ROI_END_Y,
+		RIGHT_SIDE_VIEW_MESH_WIDTH, 
+		RIGHT_SIDE_VIEW_MESH_HEIGHT};
+	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
+	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
 
+    pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
+	m_cam_fish_side[camera_index] = new Cam_Model;
+	
+	normalize_angles(prsource);
+	Cam_Init(m_cam_fish_side[camera_index], 
+		LINEAR_CAMERA_WIDTH,LINEAR_CAMERA_HEIGHT,
+		LINEAR_CAMERA_WIDTH/2, LINEAR_CAMERA_HEIGHT/2, 
+		1,0,0,
+		pRealCam->cam_int.lut,
+		90*deg2rad,70*deg2rad,
+		1,
+		pRealCam->cam_ext.pose_r,
+		pRealCam->cam_ext.pose_t
+		);
+
+	FLT_T a[3]={RIGHT_LINEAR_CAM_ROT_X*deg2rad, RIGHT_LINEAR_CAM_ROT_Y*deg2rad, RIGHT_LINEAR_CAM_ROT_Z*deg2rad};
+    //FLT_T a[3] = {-pR[0], view_angle * deg2rad - pR[1], -pR[2]};
+	int deltaX = 0;
+	float deltaY = 3.4;
+	float deltaZ = 0.0;
+    if(camera_index == left_camera_index)
+    {
+        config[0] = LEFT_SIDE_VIEW_ROI_START_X;
+		config[1] = LEFT_SIDE_VIEW_ROI_START_Y;
+		config[2] = LEFT_SIDE_VIEW_ROI_END_X;
+		config[3] = LEFT_SIDE_VIEW_ROI_END_Y;
+	
+		a[0] = -pRealCam->cam_ext.pose_r[0];
+		a[1] = view_angle*deg2rad + pRealCam->cam_ext.pose_r[1];
+		a[2] = -pRealCam->cam_ext.pose_r[2];
+    }
+	else 
+	{
+		a[0] = -pRealCam->cam_ext.pose_r[0];
+		a[1] = -view_angle*deg2rad - pRealCam->cam_ext.pose_r[1];
+		a[2] = 180*deg2rad-pRealCam->cam_ext.pose_r[2];
+	}
+
+	Cam_UpdateViewRotation(m_cam_fish_side[camera_index], a);
+
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCyliCameraModel(camera_index,m_cam_clc_side[camera_index]);
+	AVMData::GetInstance()->m_camInstrinct->SetUndistCamROI(camera_index,config[0],config[1],config[2],config[3]);
+
+	Cam_MapImage_GenerateGPULUT(
+		pRealCam, 
+		m_cam_fish_side[camera_index],
+		config[0],
+		config[1],
+		config[2],
+		config[3],
+		config[4], 
+		config[5],
+		&vertex_num,
+		pVert);
+
+	return 0;
+
+}
 void GlSV2D::AdjustSideSingleViewLUT(int camera_index,unsigned char adjust_port,unsigned char adjust_direct)
 {
 	FLT_T a[3]={0*deg2rad, 0*deg2rad, 0*deg2rad};
