@@ -126,10 +126,10 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 		memset(m_imageGridListItem[i].imageData, 200, sizeof(char)*m_imageGridListItem[i].imageWidth * m_imageGridListItem[i].imageHeight*3);
 		m_imageGridListItem[i].trigger = NULL;
 
-		m_textEditData[i].pos[0] = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing - 39;
+		m_textEditData[i].pos[0] = (m_imageGridListData.itemWidth + m_imageGridListData.horizontalSpacing) * (i % m_imageGridListData.columnNums) + m_imageGridListData.horizontalSpacing - 40;
 		m_textEditData[i].pos[1] = (m_imageGridListData.itemHeight + m_imageGridListData.verticalSpacing) * (i / m_imageGridListData.columnNums + 1) + 16.0;
-		m_textEditData[i].width = 20;
-		m_textEditData[i].font_size = 4.0;
+		m_textEditData[i].width = 24;
+		m_textEditData[i].font_size = 5.0;
 		m_textEditData[i].line_num = 1;
 		m_textEditData[i].visibilityStatus = 1;
 		m_textEditData[i].targetIndex = -1;
@@ -159,9 +159,9 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	m_pageNumData.insertFlag = InsertFlag_Default;
 	m_pageNumData.fontTypeMtlName = XR_RES"text_box.ttf";
 	m_pageNumData.trigger = NULL;
-	m_pageNumData.textColor[0] = 0.625;
-	m_pageNumData.textColor[1] = 0.625;
-	m_pageNumData.textColor[2] = 0.625;
+	m_pageNumData.textColor[0] = 1.0;
+	m_pageNumData.textColor[1] = 1.0;
+	m_pageNumData.textColor[2] = 1.0;
 	m_pageNumData.textContent[0] = new char[100];
 	char* ptext0 = "1234";
 	sprintf(m_pageNumData.textContent[0],"%s", ptext0);
@@ -280,7 +280,7 @@ int CSVDvrFileListHmi::Update(Hmi_Message_T & hmiMsg)
                     //Log_Error("curPage: %d, totalPage: %d", curPage, totalPage);
                     if(totalPage > 0)
                     {
-                        sprintf(m_pageNumData.textContent[0],"%u / %u", curPage, totalPage);
+                        sprintf(m_pageNumData.textContent[0],"%03u / %03u", curPage, totalPage);
                         m_pageNum->SetVisibility(1);
                         waitCnt = 0;
                         if(totalPage > 1)
