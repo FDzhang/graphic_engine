@@ -387,7 +387,7 @@ int CAvmViewControlModel::InitDisplayEffect()
 
 
 	m_scrollX->SetRange(0, 359, 0);
-	m_scrollY->SetRange(50, 90, 1);
+	m_scrollY->SetRange(15, 40, 1);
 
 	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RX, &rotX);
 	m_avm3dViewNode->GetAvm3dViewCamera()->GetCAProperty(AP_RY, &rotY);
@@ -561,6 +561,7 @@ int CAvmViewControlModel::Process3dTouchData()
 
 	static int prePosX = touchData.x;
 	static int prePosY = touchData.y;
+	static int preAction = 100;
 
 	static int deltaPosX = prePosX - touchData.x;
 	static int deltaPosY = prePosY - touchData.y;
@@ -571,16 +572,19 @@ int CAvmViewControlModel::Process3dTouchData()
 	switch(touchData.touchAction)
 	{
 	case TouchEvent_Move:
-		if (m_scrollX) m_scrollX->DockToDeltaValue(Float32(deltaPosX)/4.0);
-		if (m_scrollY) m_scrollY->DockToDeltaValue(Float32(deltaPosY)/4.0);
+		if(preAction == TouchEvent_Move)
+		{
+			if (m_scrollX) m_scrollX->DockToDeltaValue(Float32(-deltaPosX)/4.0);
+			//if (m_scrollY) m_scrollY->DockToDeltaValue(Float32(deltaPosY)/4.0);
+		}
 
 		break;
 	case TouchEvent_Up:
 
 		deltaPosX = 0;
 		deltaPosY = 0;
-		if (m_scrollX) m_scrollX->DockToDeltaValue(Float32(deltaPosX)/4.0);
-		if (m_scrollY) m_scrollY->DockToDeltaValue(Float32(deltaPosY)/4.0);
+		if (m_scrollX) m_scrollX->DockToDeltaValue(Float32(-deltaPosX)/4.0);
+		//if (m_scrollY) m_scrollY->DockToDeltaValue(Float32(deltaPosY)/4.0);
 
 		break;
 	case TouchEvent_Down:
@@ -589,7 +593,8 @@ int CAvmViewControlModel::Process3dTouchData()
 	}
 	
 	prePosX = touchData.x;
-	prePosY = touchData.y;		
+	prePosY = touchData.y;
+	preAction = touchData.touchAction;
 
 
 	return AVM_VIEWCONTROLMODEL_NORMAL;

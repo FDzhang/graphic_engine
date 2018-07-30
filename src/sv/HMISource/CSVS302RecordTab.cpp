@@ -383,8 +383,8 @@ int CSVS302RecordTab::InitText()
 
     i = S302_REC_TIME_TEXT;
     m_textEditData[i].pos[0] = 165;
-    m_textEditData[i].pos[1] = 16;
-    m_textEditData[i].width = 25;
+    m_textEditData[i].pos[1] = 12;
+    m_textEditData[i].width = 30;
 	m_textEditData[i].font_size = 5.0;
 	m_textEditData[i].line_num = 1;
 	m_textEditData[i].visibilityStatus = 1;
@@ -392,17 +392,17 @@ int CSVS302RecordTab::InitText()
 	m_textEditData[i].insertFlag = InsertFlag_Default;
 	m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
 	m_textEditData[i].trigger = NULL;
-	m_textEditData[i].textColor[0] = 0.9;
-	m_textEditData[i].textColor[1] = 0.9;
-	m_textEditData[i].textColor[2] = 0.9;
+	m_textEditData[i].textColor[0] = 1.0;
+	m_textEditData[i].textColor[1] = 1.0;
+	m_textEditData[i].textColor[2] = 1.0;
 	m_textEditData[i].textContent[0] = new char[100];
 	char* ptext0 = "2018-05-11  18:00:00";
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext0);
 
     i = S302_REC_GPS_TEXT;
     m_textEditData[i].pos[0] = 465;
-    m_textEditData[i].pos[1] = 16;
-    m_textEditData[i].width = 25;
+    m_textEditData[i].pos[1] = 12;
+    m_textEditData[i].width = 30;
 	m_textEditData[i].font_size = 5.0;
 	m_textEditData[i].line_num = 1;
 	m_textEditData[i].visibilityStatus = 1;
@@ -410,16 +410,16 @@ int CSVS302RecordTab::InitText()
 	m_textEditData[i].insertFlag = InsertFlag_Default;
 	m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
 	m_textEditData[i].trigger = NULL;
-	m_textEditData[i].textColor[0] = 0.9;
-	m_textEditData[i].textColor[1] = 0.9;
-	m_textEditData[i].textColor[2] = 0.9;
+	m_textEditData[i].textColor[0] = 1.0;
+	m_textEditData[i].textColor[1] = 1.0;
+	m_textEditData[i].textColor[2] = 1.0;
 	m_textEditData[i].textContent[0] = new char[100];
 	char* ptext1 = "N 00.00'00\"  E 00.00'00\"";
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext1);
 
     i = S302_REC_SPEED_TEXT;
-    m_textEditData[i].pos[0] = 820;
-    m_textEditData[i].pos[1] = 16;
+    m_textEditData[i].pos[0] = 824;
+    m_textEditData[i].pos[1] = 14;
     m_textEditData[i].width = 25;
 	m_textEditData[i].font_size = 5.0;
 	m_textEditData[i].line_num = 1;
@@ -428,9 +428,9 @@ int CSVS302RecordTab::InitText()
 	m_textEditData[i].insertFlag = InsertFlag_Default;
 	m_textEditData[i].fontTypeMtlName = XR_RES"text_box.ttf";
 	m_textEditData[i].trigger = NULL;
-	m_textEditData[i].textColor[0] = 0.9;
-	m_textEditData[i].textColor[1] = 0.9;
-	m_textEditData[i].textColor[2] = 0.9;
+	m_textEditData[i].textColor[0] = 1.0;
+	m_textEditData[i].textColor[1] = 1.0;
+	m_textEditData[i].textColor[2] = 1.0;
 	m_textEditData[i].textContent[0] = new char[100];
 	char* ptext2 = "025";
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext2);
