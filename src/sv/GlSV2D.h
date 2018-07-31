@@ -101,7 +101,7 @@ enum
 //47 //106 //112 big
 #define RIGHT_SIDE_VIEW_ROI_START_Y  360
 //168 small //198 big
-#define RIGHT_SIDE_VIEW_ROI_END_X   615
+#define RIGHT_SIDE_VIEW_ROI_END_X   590
 //463 //480 big //420 small
 #define RIGHT_SIDE_VIEW_ROI_END_Y   640
 //503

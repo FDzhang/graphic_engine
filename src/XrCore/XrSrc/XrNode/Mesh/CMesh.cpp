@@ -131,7 +131,7 @@ xr_state CMesh::LoadVertexFromArray(
 	/* [in] */ XRVertexLayout format,
 	/* [in] */ Int32 count)
 {
-	SetupVB(pData, format, count, XR_BUFFER_DYNAMIC);
+	SetupVB(pData, format, count, XR_BUFFER_STATIC);
 
 	return XR_OK;
 }

@@ -128,7 +128,7 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 	
     //step 2 prepare mesh for 2D stiching
 	
-    for(int i = 0;i <= 8;i++)
+    for(int i = 0;i <= 7;i++)
     {
         m_SV2DData->GetVertexBuffer(i,&pData,&BufferSize);
 	    meshid[i] = m_stitchViewNode->CreateMesh(ModelType_Null, 0,0,0,MeshName[i], &m_planeMesh);
@@ -177,13 +177,13 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 		m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
     }
 
-	int i=8;
+	/*int i=8;
 	materialID =4;
 	modelId = m_stitchViewNode->CreateModel(0, SV2DMTL[materialID], -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
 	m_SV2Dplane[i]->SetMesh(meshid[i]);
 	m_SV2Dplane[i]->SetName(Model[i]);		
 	m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
-
+*/
 
 	CAvmRenderDataBase::GetInstance()->SetStitchViewNode(m_stitchViewNode);
 	
