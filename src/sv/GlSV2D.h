@@ -97,13 +97,13 @@ enum
 #define RIGHT_SIDE_VIEW_ROI_END_Y   639
 
 #else
-#define RIGHT_SIDE_VIEW_ROI_START_X  203
+#define RIGHT_SIDE_VIEW_ROI_START_X  240
 //47 //106 //112 big
 #define RIGHT_SIDE_VIEW_ROI_START_Y  360
 //168 small //198 big
 #define RIGHT_SIDE_VIEW_ROI_END_X   590
 //463 //480 big //420 small
-#define RIGHT_SIDE_VIEW_ROI_END_Y   640
+#define RIGHT_SIDE_VIEW_ROI_END_Y   620
 //503
 
 
@@ -134,13 +134,14 @@ enum
 
 
 #else
-#define LEFT_SIDE_VIEW_ROI_START_X  60
+#define LEFT_SIDE_VIEW_ROI_START_X  70
 //;//;
 #define LEFT_SIDE_VIEW_ROI_START_Y  350
 //;//177;
-#define LEFT_SIDE_VIEW_ROI_END_X   450
+#define LEFT_SIDE_VIEW_ROI_END_X   410
 //394;//320
-#define LEFT_SIDE_VIEW_ROI_END_Y  640
+#define LEFT_SIDE_VIEW_ROI_END_Y  620
+//;//507
 
 
 /*

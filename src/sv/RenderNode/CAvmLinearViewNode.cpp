@@ -48,7 +48,7 @@ int CAvmLinearViewNode::InitNode(class IXrCore* pXrcore)
 	float UIZ1 = -TRANS_Z;
 	#define PlaneScaleY 640.0
 	#define PlaneScaleY_NEG  -640.0
-	#define theta (PI/8)
+	#define theta (PI/4)
 
     #define ROTATE_ANGLE 30
     #define ROTATE_LENGTH 3000

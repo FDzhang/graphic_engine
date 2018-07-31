@@ -76,6 +76,7 @@ public:
 	int  GetDataTotalCnt(void );
 	int  GetIndexTotalCnt(void );
 	void GetCarRect(float *pData,int index);
+	void GetRealCarRect(float *pData,int index);
 	void GetCarShadowAdjust(float *pData,int index);
 	void CvtPointImage2Wolrd(GpuCvPoint2D32f InPoint,GpuCvPoint2D32f *pOutPoint);
 	void CvtPointWorld2ImageUnitmm(GpuCvPoint2D32f InPoint,GpuCvPoint2D32f *pOutPoint);
@@ -108,6 +109,7 @@ private:
 	int m_total_data_size;
 	int m_total_index_size;
 	float m_car_rect[4];
+	float m_real_car_rect[4];
 	float m_car_shadow_adjust_rect[4];
 	float m_calib_para[4];
 

@@ -202,19 +202,26 @@ attribute highp vec2 myUV;\
 uniform highp mat4 MVPMatrix;\
 uniform highp mat4 MVMatrix;\
 uniform highp mat3 MVITMatrix;\
+uniform highp mat4 MMatrix;\
+uniform highp vec3 EyePosition;\
 varying mediump vec3 normal;\
-varying mediump vec3 halfVector;\
+varying mediump vec3 worldnormal;\
 varying lowp float ReflectRatio;\
 varying mediump vec2 ReflectCoord;\
 varying mediump vec2 TexCoord;\
+varying mediump vec3 LightDir;\
+varying mediump vec3 viewDir;\
+varying mediump vec3 CalReflectDir;\
 lowp float RIRSquare = 2.5;\
 void main()\
 {\
 	gl_Position = MVPMatrix * vec4(myVertex, 1.0);\
+	gl_PointSize=10.0;\
 	normal = normalize(MVITMatrix * myNormal);\
-	highp vec3 ecPosition = vec3(MVMatrix * vec4(myVertex,1.0));\
-	highp vec3 eyeDirection = -normalize(ecPosition);\
-	halfVector = vec3(0.0, 1.0, 0.0) + eyeDirection;\
+	highp vec4 ecPosition = MVMatrix * vec4(myVertex,1.0);\
+	highp vec3 vPosition3 = ecPosition.xyz/ecPosition.z;\
+	highp vec3 eyeDirection = -normalize(ecPosition.xyz);\
+	LightDir = normalize(MVITMatrix*vec3(0,1000,0)-vPosition3);\
 	highp float c = abs(dot(eyeDirection, normal));\
 	highp float g = sqrt(RIRSquare + c * c - 1.0);\
 	highp float f1 = (g - c) / (g + c);\
@@ -222,34 +229,44 @@ void main()\
 	ReflectRatio = 0.5 * f1 * f1 * (1.0 + f2 * f2);\
 	ReflectCoord = normalize(reflect(eyeDirection, normal)).xy * 0.5;\
 	TexCoord = myUV;\
-    gl_PointSize = 10.0;\n\
+	worldnormal=normalize(myNormal);\
+	highp vec4 real_vertex = MMatrix*vec4(myVertex,1.0);\
+	highp vec4 real_normal = MMatrix*vec4(myNormal,0.0);\
+	viewDir=normalize(-real_vertex.xyz+EyePosition);\
+	CalReflectDir =reflect(-viewDir,real_normal.xyz);\
+	normal = normalize(real_normal.xyz);\
+	LightDir = normalize(vec3(0.0,800.0,-800.0)-real_vertex.xyz);\
 }";
 
 const char* FR_Glossy_fs = "\
 uniform sampler2D sBaseTex;\
-uniform sampler2D sReflectTex;\
+uniform samplerCube sReflectTex;\
 varying mediump vec3 normal;\
-varying mediump vec3 halfVector;\
+varying mediump vec3 worldnormal;\
 varying mediump vec2 ReflectCoord;\
 varying mediump vec2 TexCoord;\
+varying mediump vec3 LightDir;\
+varying mediump vec3 viewDir;\
 varying lowp float ReflectRatio;\
 uniform lowp vec3 AmbientColor;\
 uniform lowp vec3 DiffuseColor;\
 uniform lowp vec3 SpecularColor;\
-lowp float cShininess = 36.0;\
+varying mediump vec3 CalReflectDir;\
+lowp float cShininess = 12.0;\
 void main()\
 {\
-	mediump vec3 nor = normalize(normal);\
-	mediump float NdotL = max(dot(nor, vec3(0.0, 1.0, 0.0)), 0.0);\
-	lowp vec3 DiffuseLight = vec3(0.8,0.8,0.8) + NdotL * DiffuseColor;\
-	lowp  vec3 texColor  = vec3(texture2D(sBaseTex, TexCoord)) * DiffuseLight;\
-	lowp  vec3 reflection = vec3(texture2D(sReflectTex, ReflectCoord));\
+	mediump vec3 nor = normal;\
+	mediump float NdotL = max(dot(nor, LightDir), 0.0);\
+	lowp  vec3 reflection =normalize(reflect(-LightDir,nor));\
+	lowp vec3 reflecttex = vec3(0.5, 0.5, 0.5);\
+	lowp vec3 DiffuseLight =0.8*texture2D(sBaseTex, TexCoord).rgb+ 0.3*NdotL+0.2*reflecttex;\
+	lowp  vec3 texColor  = DiffuseLight;\
 	lowp  vec3  color = texColor;\
-	mediump float NdotH = max(dot(nor, normalize(halfVector)), 0.0);\
+	mediump float NdotH = max(dot(nor, reflection), 0.0);\
 	mediump float specular = pow(NdotH, cShininess);\
-	lowp vec3 SpecularLight = specular * SpecularColor;\
-	lowp vec3 fcolor = color + SpecularLight;\
-	gl_FragColor = vec4(fcolor, 1.0);\
+	lowp vec3 SpecularLight = 0.1*specular * vec3(1.0,1.0,1.0);\
+	lowp vec3 fcolor = color;\
+	gl_FragColor = vec4(texColor+SpecularLight, 1.0);\
 	gl_FragColor.a = texture2D(sBaseTex,TexCoord).a;\
 }";
 XRVertexLayout FR_Glossy_layout_index = XR_VERTEX_LAYOUT_PNT;

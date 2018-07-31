@@ -529,6 +529,12 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
                 m_car_rect[2] = -1.0+2.0*((float)(pSticherReslt->car_Icon_Rect.x-1)+(float)pSticherReslt->car_Icon_Rect.width+2)/(float)pSticherReslt->bev_img_width ;
                 m_car_rect[3] = 1.0-2.0*((float)(pSticherReslt->car_Icon_Rect.y-1)+(float)pSticherReslt->car_Icon_Rect.height+2)/(float)pSticherReslt->bev_img_height ;
 
+                m_real_car_rect[0] = -1.0+2.0*(float)(pSticherReslt->carRealRect.x-1)/(float)pSticherReslt->bev_img_width ;
+                m_real_car_rect[1] = 1.0-2.0*(float)(pSticherReslt->carRealRect.y-1)/(float)pSticherReslt->bev_img_height ;
+
+                m_real_car_rect[2] = -1.0+2.0*((float)(pSticherReslt->carRealRect.x-1)+(float)pSticherReslt->carRealRect.width+2)/(float)pSticherReslt->bev_img_width ;
+                m_real_car_rect[3] = 1.0-2.0*((float)(pSticherReslt->carRealRect.y-1)+(float)pSticherReslt->carRealRect.height+2)/(float)pSticherReslt->bev_img_height ;
+
                 car_rect[0] = m_car_rect[0];
                 car_rect[1] = m_car_rect[1];
                 car_rect[2] = m_car_rect[2];
@@ -604,6 +610,12 @@ void AVM2DLUT::GetLutData(float **pData)
 void AVM2DLUT::GetCarRect(float *pData,int index)
 {
     *pData = m_car_rect[index];
+	return;
+
+}
+void AVM2DLUT::GetRealCarRect(float *pData,int index)
+{
+    *pData = m_real_car_rect[index];
 	return;
 
 }
