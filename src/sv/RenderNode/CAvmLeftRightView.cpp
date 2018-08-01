@@ -164,11 +164,16 @@ int CAvmLeftRightView::UpdateNode()
 	Region* viewRegionright = NULL;
 	Region  viewRegion2;
 
+	ISceneNode* stitchViewNode = NULL;
+	CAvmRenderDataBase::GetInstance()->GetStitchViewNode(&stitchViewNode);
+
+	stitchViewNode->SetClear(TRUE, TRUE);
+
 	if(leftRightViewCmd == LEFT_SINGLE_VIEW)
 	{
 		CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&viewRegion1);
 		m_leftRightViewNode[0]->SetRenderROI(viewRegion1);
-		
+		stitchViewNode->SetClear(FALSE, FALSE);
 		viewRegion2.Set(0,0,0,0);
 		m_leftRightViewNode[1]->SetRenderROI(&viewRegion2);
 	}
@@ -176,12 +181,13 @@ int CAvmLeftRightView::UpdateNode()
 	{
 		CAvmRenderDataBase::GetInstance()->GetSingleViewRegion(&viewRegion1);
 		m_leftRightViewNode[1]->SetRenderROI(viewRegion1);
-		
+		stitchViewNode->SetClear(FALSE, FALSE);
 		viewRegion2.Set(0,0,0,0);
 		m_leftRightViewNode[0]->SetRenderROI(&viewRegion2);	
 	}
 	else if(leftRightViewCmd == LEFT_RIGHT_LINEAR_VIEW)
 	{	
+		stitchViewNode->SetClear(FALSE, FALSE);
 		CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegionleft, left_camera_index);
 		m_leftRightViewNode[0]->SetRenderROI(viewRegionleft);	
 		CAvmRenderDataBase::GetInstance()->GetLeftRightViewRegion(&viewRegionright, right_camera_index);	
@@ -202,6 +208,7 @@ int CAvmLeftRightView::SetVisibility(unsigned char pVisibilityFlag)
 
 	return LEFT_RIGHT_VIEW_NORMAL;
 }
+
 
 int CAvmLeftRightView::SetClear(unsigned char pColorFlag, unsigned char pDepthFlag)
 {

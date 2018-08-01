@@ -163,6 +163,8 @@ int CAvmTimeStitcherNode::InitNode(IXrCore* pXrcore)
 	m_carImageNode->SetEnable(1);
 	CalcGroundTexture();
 
+	CAvmRenderDataBase::GetInstance()->SetStitchViewNode(m_stitchViewNode);
+
 	/////////////////////////////cameraObject//////////////////
 	CAvmRenderDataBase::GetInstance()->GetStitchViewCameraParams(&m_stitchViewCameraParams);
 	

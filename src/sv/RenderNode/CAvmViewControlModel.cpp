@@ -178,13 +178,13 @@ int CAvmViewControlModel::InitViewNode()
 	rightSingleViewRegion[REGION_POS_TOP] = 0+black_width;
 	rightSingleViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
-	leftViewRegion[REGION_POS_LEFT] = stich_region_width + left_panel_width + delta;
+	leftViewRegion[REGION_POS_LEFT] = stich_region_width + left_panel_width + delta - 200.0;
 	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + left_panel_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2;
 	leftViewRegion[REGION_POS_TOP] = 0+black_width;
 	leftViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 		
 	rightViewRegion[REGION_POS_LEFT] = stich_region_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2 + left_panel_width ;
-	rightViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth();
+	rightViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth() + 300.0;
 	rightViewRegion[REGION_POS_TOP] = 0+black_width;
 	rightViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
@@ -262,7 +262,14 @@ int CAvmViewControlModel::InitViewNode()
 	m_180DegreeViewCameraParams.zfar = 16000.0f;
 	CAvmRenderDataBase::GetInstance()->SetLinearViewCameraParams(&m_180DegreeViewCameraParams);
 
-	
+	if(m_avmLeftRightView == NULL)
+	{
+		m_avmLeftRightView = new CAvmLeftRightView;
+		if(m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
+		{
+			m_avmLeftRightView->SetClear(FALSE, FALSE);
+		}
+	}	
 
 	if(m_avmStitchViewNode)
 	{
@@ -281,7 +288,6 @@ int CAvmViewControlModel::InitViewNode()
 		}
 	}
 	
-
 	if(m_avmSingleViewNode->InitNode(m_xrCore) == AVM_SINGLEVIEW_NORMAL)
 	{
 		m_avmSingleViewNode->SetClear(FALSE, FALSE);
@@ -303,15 +309,6 @@ int CAvmViewControlModel::InitViewNode()
 		initObjViewNode = 1;
 	}
 	
-	if(m_avmLeftRightView == NULL)
-	{
-		m_avmLeftRightView = new CAvmLeftRightView;
-		if(m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
-		{
-			m_avmLeftRightView->SetClear(FALSE, FALSE);
-		}
-	}
-
 	if(SVW_GPU == current_vehicle_type_id)
 	{
 		if(m_avmSideBySideSingleView == NULL)
