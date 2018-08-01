@@ -267,7 +267,7 @@ int CAvmViewControlModel::InitViewNode()
 		m_avmLeftRightView = new CAvmLeftRightView;
 		if(m_avmLeftRightView->InitNode(m_xrCore) == LEFT_RIGHT_VIEW_NORMAL)
 		{
-			m_avmLeftRightView->SetClear(FALSE, FALSE);
+			m_avmLeftRightView->SetClear(TRUE, TRUE);
 		}
 	}	
 
