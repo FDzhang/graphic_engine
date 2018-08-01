@@ -428,8 +428,9 @@ bool XRSV::update(unsigned int view_control_flag)
 	//Log_Error("-------------%d", m_clearBufferFlag);
 	if(m_clearBufferFlag)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0, 0.0, 0.0, 1.0);	
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
 	endl = XrGetTime();
