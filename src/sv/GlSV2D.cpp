@@ -66,6 +66,130 @@ extern GLushort *puiIndex[];
 extern GLuint uiConfigBin[][eConfigEnd];
 
 
+
+#define ANGLE_ADJUST_STEP  2
+
+#define LINEAR_CAMERA_WIDTH 640
+#define LINEAR_CAMERA_HEIGHT 640
+#define LINEAR_CAMERA_CX 200
+#define LINEAR_CAMERA_CY 200
+#define LINEAR_CAMERA_SKEW_C 1
+#define LINEAR_CAMERA_SKEW_D 0
+#define LINEAR_CAMERA_SKER_E 0
+#define LINEAR_CAMERA_HFOV  70.0
+#define LINEAR_CAMERA_VFOV  70.0
+
+#define RIGHT_LINEAR_CAM_R_X    1.7929496
+#define RIGHT_LINEAR_CAM_R_Y    0.0461896
+#define RIGHT_LINEAR_CAM_R_Z    1.024359
+#define RIGHT_LINEAR_CAM_T_X    5835.072022
+#define RIGHT_LINEAR_CAM_T_Y     -1122.099127
+#define RIGHT_LINEAR_CAM_T_Z     -1021.658668
+//#define RIGHT_LINEAR_CAM_ROT_X   28
+//#define RIGHT_LINEAR_CAM_ROT_Y    44
+//#define RIGHT_LINEAR_CAM_ROT_Z   60
+
+#define RIGHT_LINEAR_CAM_ROT_X   -8
+//0;
+#define RIGHT_LINEAR_CAM_ROT_Y   70
+//63;
+#define RIGHT_LINEAR_CAM_ROT_Z   35
+//43;
+
+#if 0
+#define RIGHT_SIDE_VIEW_ROI_START_X  0
+#define RIGHT_SIDE_VIEW_ROI_START_Y  0
+#define RIGHT_SIDE_VIEW_ROI_END_X   639
+#define RIGHT_SIDE_VIEW_ROI_END_Y   639
+
+#else
+#define RIGHT_SIDE_VIEW_ROI_START_X  240
+//47 //106 //112 big
+#define RIGHT_SIDE_VIEW_ROI_START_Y  360
+//168 small //198 big
+#define RIGHT_SIDE_VIEW_ROI_END_X   590
+//463 //480 big //420 small
+#define RIGHT_SIDE_VIEW_ROI_END_Y   620
+//503
+
+
+#endif
+#define RIGHT_SIDE_VIEW_MESH_WIDTH  20     //actual width +1
+#define RIGHT_SIDE_VIEW_MESH_HEIGHT 20     //actual height +1
+
+
+
+#define LEFT_LINEAR_CAM_R_X    1.7929496
+#define LEFT_LINEAR_CAM_R_Y    0.0461896
+#define LEFT_LINEAR_CAM_R_Z    1.024359
+#define LEFT_LINEAR_CAM_T_X    5835.072022
+#define LEFT_LINEAR_CAM_T_Y     -1122.099127
+#define LEFT_LINEAR_CAM_T_Z     -1021.658668
+#define LEFT_LINEAR_CAM_ROT_X   -8
+//0;//-8
+#define LEFT_LINEAR_CAM_ROT_Y    -70
+//-63;//-68
+#define LEFT_LINEAR_CAM_ROT_Z   -35
+//-43;//-40;
+
+#if 0
+#define LEFT_SIDE_VIEW_ROI_START_X  0
+#define LEFT_SIDE_VIEW_ROI_START_Y  0
+#define LEFT_SIDE_VIEW_ROI_END_X   639
+#define LEFT_SIDE_VIEW_ROI_END_Y  639
+
+
+#else
+#define LEFT_SIDE_VIEW_ROI_START_X  70
+//;//;
+#define LEFT_SIDE_VIEW_ROI_START_Y  350
+//;//177;
+#define LEFT_SIDE_VIEW_ROI_END_X   410
+//394;//320
+#define LEFT_SIDE_VIEW_ROI_END_Y  620
+//;//507
+
+
+/*
+#define LEFT_SIDE_VIEW_ROI_START_X  17
+#define LEFT_SIDE_VIEW_ROI_START_Y  118
+#define LEFT_SIDE_VIEW_ROI_END_X   463
+#define LEFT_SIDE_VIEW_ROI_END_Y   473
+*/
+#endif
+
+#define CLC_CAM_WIDTH  1280
+#define CLC_CAM_HEIGHT 720
+#define CLC_CAM_CX   320
+#define CLC_CAM_CY 480
+#define CLC_CAM_PITCH 60
+#define CLC_CAM_ROLL 0
+#define CLC_CAM_YAW  0
+#define REAR_CLC_CAM_PITCH 57
+
+#define FRONT_CLC_VIEW_ROI_START_X  195
+#define FRONT_CLC_VIEW_ROI_START_Y  400
+#define FRONT_CLC_VIEW_ROI_END_X   1095
+#define FRONT_CLC_VIEW_ROI_END_Y   850
+
+#define FRONT_CLC_VIEW_MESH_WIDTH  21     //actual width +1
+#define FRONT_CLC_VIEW_MESH_HEIGHT 21     //actual height +1
+
+#if 1
+#define REAR_CLC_VIEW_ROI_START_X  195
+#define REAR_CLC_VIEW_ROI_START_Y  400
+#define REAR_CLC_VIEW_ROI_END_X   1110
+#define REAR_CLC_VIEW_ROI_END_Y   850
+
+#else
+#define REAR_CLC_VIEW_ROI_START_X  0
+#define REAR_CLC_VIEW_ROI_START_Y  0
+#define REAR_CLC_VIEW_ROI_END_X   639
+#define REAR_CLC_VIEW_ROI_END_Y   479
+#endif
+#define REAR_CLC_VIEW_MESH_WIDTH  21     //actual width +1
+#define REAR_CLC_VIEW_MESH_HEIGHT 21     //actual height +1
+
 #define NUMBER_PER_VERTEX 7
 
 //car image aera
@@ -505,7 +629,42 @@ int GlSV2D::InitFrontRearViewBuffer(int width,int height,GLfloat **pData,GLushor
 
 	
 }
+#if 1
+int GlSV2D::GenerateFrontRearSingleViewLUT(int camera_index,float *pVert)
+{
+	int vertex_num;
+    int config[7]={FRONT_CLC_VIEW_ROI_START_X,
+		FRONT_CLC_VIEW_ROI_START_Y,
+		FRONT_CLC_VIEW_ROI_END_X,
+		FRONT_CLC_VIEW_ROI_END_Y,
+		FRONT_CLC_VIEW_MESH_WIDTH, 
+		FRONT_CLC_VIEW_MESH_HEIGHT,0};
 
+	if(camera_index == rear_camera_index)
+	{
+        config[0] = REAR_CLC_VIEW_ROI_START_X;
+		config[1] = REAR_CLC_VIEW_ROI_START_Y;
+		config[2] = REAR_CLC_VIEW_ROI_END_X;
+		config[3] = REAR_CLC_VIEW_ROI_END_Y;
+		config[4] = REAR_CLC_VIEW_MESH_WIDTH;
+		config[5] = REAR_CLC_VIEW_MESH_HEIGHT;
+		config[6] = 1; 
+	}
+
+	Cam_MapImage_Fish2DoubleLatitude_GenerateLUT(
+		config[0],
+		config[1],
+		config[2],
+		config[3],
+		config[4], 
+		config[5],
+		config[6],
+		&vertex_num,
+		pVert);
+
+	return 0;
+}
+#else
 #define CAMERA_NUM 2
 #define IMAGE_WIDTH 1280    //?�����䨪??��
 #define IMAGE_HEIGHT 720    //?�����䨪???
@@ -601,7 +760,7 @@ int GlSV2D::GenerateFrontRearSingleViewLUT(int camera_index,float *pVert)
 
 
 }
-
+#endif
 int GlSV2D::InitFrontRearSingleViewCamLUT(int camera_index)
 {
     Cam_Model *pRealCam;

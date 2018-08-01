@@ -102,8 +102,8 @@ int CAvmViewControlModel::InitViewNode()
     m_avmSingleViewNode= new CAvmSingleViewNode;
 	m_avm3dViewNode= new CAvm3dViewNode;
 	m_avmObjViewNode= new CAvmObjectViewNode;
-	m_avm180DegreeView = new CAvmLinearViewNode;
-	//m_avm180DegreeView = new CAvmFrontRearLinearView;
+	//m_avm180DegreeView = new CAvmLinearViewNode;
+	m_avm180DegreeView = new CAvmFrontRearLinearView;
 	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
 	m_avmLeftLinearView = NULL;
 	m_avmRightLinearView = NULL;
