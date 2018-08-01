@@ -208,7 +208,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
     door_offset_x = bev_3d_param->car_model_param.door_offset_side * 50 * bev_3d_param->car_model_param.car_scale_x;
     door_offset_y = bev_3d_param->car_model_param.door_offset_front * 50 * bev_3d_param->car_model_param.car_scale_z;
 
-	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORMODEL[0], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z-door_offset_y, 50, &m_CarDoor[0]); //envision
+	/*iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORMODEL[0], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x-door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z-door_offset_y, 50, &m_CarDoor[0]); //envision
 
 	m_CarDoor[0]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[0]->SetEnable(1);
@@ -231,7 +231,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	iCarnodeId = m_objViewNode->LoadModelFromFile(CARDOORMODEL[3], m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x+door_offset_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z+door_offset_y, 50, &m_CarDoor[3]); //envision
 
 	m_CarDoor[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
-	m_CarDoor[3]->SetEnable(1);	
+	m_CarDoor[3]->SetEnable(1);	*/
 
 	iCarLightMtlId = m_objViewNode->CreateMaterial(Material_Glossy, &m_carLightMtl);
 	m_carLightMtl->SetDiffuseMap(CARLIGHTTEX);
@@ -364,10 +364,10 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
     m_CarLight->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
     m_CarInternal->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
 		
-    m_CarDoor[0]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
+    /*m_CarDoor[0]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
     m_CarDoor[1]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
     m_CarDoor[2]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);
-    m_CarDoor[3]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);	
+    m_CarDoor[3]->SetScale(bev_3d_param->car_model_param.car_scale_x, bev_3d_param->car_model_param.car_scale_y, bev_3d_param->car_model_param.car_scale_z);	*/
    
     /*for(int i =0;i<5;i++)
 	{
