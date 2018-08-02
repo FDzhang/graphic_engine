@@ -179,11 +179,11 @@ int CAvmViewControlModel::InitViewNode()
 	rightSingleViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 
 	leftViewRegion[REGION_POS_LEFT] = stich_region_width + left_panel_width + delta - 200.0;
-	leftViewRegion[REGION_POS_RIGHT] = stich_region_width + left_panel_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2;
+	leftViewRegion[REGION_POS_RIGHT] = -5.0 + stich_region_width + left_panel_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2;
 	leftViewRegion[REGION_POS_TOP] = 0+black_width;
 	leftViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
 		
-	rightViewRegion[REGION_POS_LEFT] = stich_region_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2 + left_panel_width ;
+	rightViewRegion[REGION_POS_LEFT] = 5.0 + stich_region_width + delta + (XrGetScreenWidth() - stich_region_width - delta)/2 + left_panel_width ;
 	rightViewRegion[REGION_POS_RIGHT] = XrGetScreenWidth() + 300.0;
 	rightViewRegion[REGION_POS_TOP] = 0+black_width;
 	rightViewRegion[REGION_POS_BOTTOM] = XrGetScreenHeight()-black_width;
@@ -620,13 +620,13 @@ int CAvmViewControlModel::SetCurrentView()
 {
 	ProcessTimeStitcher();
 	ProcessSingleViewDisplay();
+	ProcessLeftRightView();
 	ProcessLarge3dView();
 	Process3dViewDisplay();
 	ProcessTourView();
 	ProcessMattsView();
 	ProcessLargeSingleView();
 	Process180DegreeView();
-	ProcessLeftRightView();
 	ProcessSideBySideSingleView();
 	
 	return AVM_VIEWCONTROLMODEL_NORMAL;

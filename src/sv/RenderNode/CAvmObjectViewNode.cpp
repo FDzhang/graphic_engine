@@ -181,7 +181,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	float opacity = 1.0;
 	
 	IMaterial* carInternalMtl;
-    m_carInternalId = m_objViewNode->CreateMaterial(Material_Glossy, &carInternalMtl);
+    m_carInternalId = m_objViewNode->CreateMaterial(Material_Rigid_Texture, &carInternalMtl);
 	carInternalMtl->SetOpacity(((opacity - 0.1) > 0.001) ? (opacity - 0.1) : 0.001);
 	carInternalMtl->SetDiffuseMap(CARINTTEX);
 	carInternalMtl->SetEnvironmentMap(CARENV);
@@ -456,7 +456,7 @@ int CAvmObjectViewNode::ProcessWheelRoll()
         vehicleState = 1;
     }
 
-    vehicleSpeed += (0.005 * speed) ;
+    vehicleSpeed += (0.01 * speed) ;
 
     IAProperty* val=0;
 	int wheelNumbers = 0;

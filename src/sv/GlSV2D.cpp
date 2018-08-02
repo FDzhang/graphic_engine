@@ -103,7 +103,7 @@ extern GLuint uiConfigBin[][eConfigEnd];
 #define RIGHT_SIDE_VIEW_ROI_END_Y   639
 
 #else
-#define RIGHT_SIDE_VIEW_ROI_START_X  240
+#define RIGHT_SIDE_VIEW_ROI_START_X  226
 //47 //106 //112 big
 #define RIGHT_SIDE_VIEW_ROI_START_Y  360
 //168 small //198 big
@@ -144,7 +144,7 @@ extern GLuint uiConfigBin[][eConfigEnd];
 //;//;
 #define LEFT_SIDE_VIEW_ROI_START_Y  350
 //;//177;
-#define LEFT_SIDE_VIEW_ROI_END_X   410
+#define LEFT_SIDE_VIEW_ROI_END_X   428
 //394;//320
 #define LEFT_SIDE_VIEW_ROI_END_Y  620
 //;//507
@@ -176,10 +176,10 @@ extern GLuint uiConfigBin[][eConfigEnd];
 #define FRONT_CLC_VIEW_MESH_HEIGHT 21     //actual height +1
 
 #if 1
-#define REAR_CLC_VIEW_ROI_START_X  195
+#define REAR_CLC_VIEW_ROI_START_X  250
 #define REAR_CLC_VIEW_ROI_START_Y  400
-#define REAR_CLC_VIEW_ROI_END_X   1110
-#define REAR_CLC_VIEW_ROI_END_Y   850
+#define REAR_CLC_VIEW_ROI_END_X   1040
+#define REAR_CLC_VIEW_ROI_END_Y   815
 
 #else
 #define REAR_CLC_VIEW_ROI_START_X  0
@@ -870,6 +870,7 @@ int GlSV2D::GenerateSideSingleViewLUT(int camera_index,float *pVert)
     int deltaX = 0;
 	float deltaY = 3.4;
 	float deltaZ = 2.7;
+	
 	if(camera_index == left_camera_index)
     {
         config[0] = LEFT_SIDE_VIEW_ROI_START_X;
@@ -906,7 +907,8 @@ int GlSV2D::GenerateSideSingleViewLUT(int camera_index,float *pVert)
 		config[4], 
 		config[5],
 		&vertex_num,
-		pVert);
+		pVert,
+		0);
 
 	return 0;
 
@@ -1029,6 +1031,7 @@ int GlSV2D::GenerateFishSideSingleViewLUT(int camera_index,float *pVert)
 	int deltaX = 0;
 	float deltaY = 3.4;
 	float deltaZ = 0.0;
+	float rot_angle=8.0*deg2rad;
     if(camera_index == left_camera_index)
     {
         config[0] = LEFT_SIDE_VIEW_ROI_START_X;
@@ -1039,6 +1042,7 @@ int GlSV2D::GenerateFishSideSingleViewLUT(int camera_index,float *pVert)
 		a[0] = -pRealCam->cam_ext.pose_r[0];
 		a[1] = view_angle*deg2rad + pRealCam->cam_ext.pose_r[1];
 		a[2] = -pRealCam->cam_ext.pose_r[2];
+		rot_angle = -8.0*deg2rad;
     }
 	else 
 	{
@@ -1062,7 +1066,8 @@ int GlSV2D::GenerateFishSideSingleViewLUT(int camera_index,float *pVert)
 		config[4], 
 		config[5],
 		&vertex_num,
-		pVert);
+		pVert,
+		rot_angle);
 
 	return 0;
 
@@ -1155,7 +1160,8 @@ void GlSV2D::AdjustSideSingleViewLUT(int camera_index,unsigned char adjust_port,
 		RIGHT_SIDE_VIEW_MESH_WIDTH, 
 		RIGHT_SIDE_VIEW_MESH_HEIGHT,
 		&vertex_num,
-		pVert);
+		pVert,
+		0);
 
 }
 
