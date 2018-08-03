@@ -378,14 +378,6 @@ bool XRSV::update(unsigned int view_control_flag)
 		start = XrGetTime();
 		//Set_Frame_TimeStamp(start-pre_time_start);
 		Set_Frame_TimeStamp(AVMData::GetInstance()->m_p_can_data->GetTimeStamp());
-        
-		unsigned char displayCmd = DatabaseGetAvmViewType();
-		static unsigned char lastDisplayCmd = 255;
-		if(lastDisplayCmd != displayCmd)
-		{
-			//CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(displayCmd);
-			lastDisplayCmd = displayCmd;
-		}
 
     	//UpdateHmiData();
 

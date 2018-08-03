@@ -482,7 +482,7 @@ CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISV
     memset(m_buttonShowImage, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
     memset(s302HmiElementShowImage, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
 	m_carOpacity = 1.0;
-
+/*
 	m_licenseData.pos[0] = 0.0;
 	m_licenseData.pos[1] = 0.0;
 	m_licenseData.pos[2] = 0.0;
@@ -522,7 +522,7 @@ CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISV
 	float orig3dVertex[16] = {-240, 1000, -1050,280, 1000, -1050,-240,1200, -1050,280,1200, -1050,158,367,261,328};
 	polygonBox->SetVisibility(0);
 	polygonBox->Update(orig3dVertex,0);
-	polygonBox->SetBoxImageEx(m_licenese->GetTextTextureId());
+	polygonBox->SetBoxImageEx(m_licenese->GetTextTextureId());*/
 }
 
 CSVS302MainHmi::~CSVS302MainHmi()

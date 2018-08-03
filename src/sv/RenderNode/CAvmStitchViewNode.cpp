@@ -87,17 +87,13 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 
 	for(int i=0;i<Material_MAX;i++)
 	{
-    	SV2DMTL[i] = m_stitchViewNode->CreateMaterial(Material_Custom, &m_SV2DMtl);
-		m_SV2DMtl->CreateMaterialEffect(&pIEffect[i]);
-		if(i == 4)
-		{
-			pIEffect[i]->InitShaderFromFile("Effect_SV2DImage", c_SV2DVertShaderSrcFileLUT, c_SV2DFragStaticShaderSrcFile,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
+		if(i != 4)
+    	{
+			SV2DMTL[i] = m_stitchViewNode->CreateMaterial(Material_Custom, &m_SV2DMtl);
+			m_SV2DMtl->CreateMaterialEffect(&pIEffect[i]);
+			pIEffect[i]->InitShaderFromFile("Effect_SV2D", VertexName, FragShaderName,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
+			pIEffect[i]->SetRenderDelegate(m_renderDelegate);
 		}
-		else
-		{
-		   	pIEffect[i]->InitShaderFromFile("Effect_SV2D", VertexName, FragShaderName,  sizeof(SV2D_PARAM_CB), XR_VERTEX_LAYOUT_PTAK, 0);
-		}
-		pIEffect[i]->SetRenderDelegate(m_renderDelegate);
 		if(i == 0)
 		{
 		    
@@ -170,20 +166,14 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 			//Model[i] = "N";
 			
 		}
-			
-    	modelId = m_stitchViewNode->CreateModel(0, SV2DMTL[materialID], -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
-    	m_SV2Dplane[i]->SetMesh(meshid[i]);
-    	m_SV2Dplane[i]->SetName(Model[i]);		
-		m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
+		if(i != eCarImageMesh)	
+    	{
+			modelId = m_stitchViewNode->CreateModel(0, SV2DMTL[materialID], -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
+    		m_SV2Dplane[i]->SetMesh(meshid[i]);
+    		m_SV2Dplane[i]->SetName(Model[i]);		
+			m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
+		}
     }
-
-	/*int i=8;
-	materialID =4;
-	modelId = m_stitchViewNode->CreateModel(0, SV2DMTL[materialID], -1, InsertFlag_Default, 1, 0, 0, 1, &m_SV2Dplane[i]);
-	m_SV2Dplane[i]->SetMesh(meshid[i]);
-	m_SV2Dplane[i]->SetName(Model[i]);		
-	m_SV2Dplane[i]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY);
-*/
 
 	CAvmRenderDataBase::GetInstance()->SetStitchViewNode(m_stitchViewNode);
 	

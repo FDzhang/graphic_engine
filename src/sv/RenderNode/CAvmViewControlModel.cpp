@@ -107,7 +107,7 @@ int CAvmViewControlModel::InitViewNode()
 	m_avmLeftRightView = NULL;//new CAvmLeftRightView;
 	m_avmLeftLinearView = NULL;
 	m_avmRightLinearView = NULL;
-	m_avmLarge3dView = new CAvmLarge3dView;
+	m_avmLarge3dView = NULL;//new CAvmLarge3dView;
 	m_avmSideBySideSingleView = NULL;
 
 	
@@ -352,8 +352,8 @@ int CAvmViewControlModel::InitViewNode()
 	m_avmLargeSingleView = new CAvmLargeSingleView();
 	m_avmLargeSingleView->Init();
 
-	m_avmLarge3dView = new CAvmLarge3dView();
-	m_avmLarge3dView->Init();
+	//m_avmLarge3dView = new CAvmLarge3dView();
+	//m_avmLarge3dView->Init();
 
 	InitDisplayEffect();
 

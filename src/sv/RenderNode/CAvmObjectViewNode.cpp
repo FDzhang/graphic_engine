@@ -233,7 +233,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_CarDoor[3]->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ|AP_SRY);
 	m_CarDoor[3]->SetEnable(1);	*/
 
-	iCarLightMtlId = m_objViewNode->CreateMaterial(Material_Glossy, &m_carLightMtl);
+	iCarLightMtlId = m_objViewNode->CreateMaterial(Material_Rigid_Texture, &m_carLightMtl);
 	m_carLightMtl->SetDiffuseMap(CARLIGHTTEX);
 	m_carLightMtl->SetOpacity(opacity);
 	//carlightmtl->SetDiffuseMap(CARTEX);
@@ -304,11 +304,11 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	int wheelMeshIdRight = m_objViewNode->CreateMesh(ModelType_Null, 0,0,0,"wheel", &m_wheelMeshRight);
 	m_wheelMeshRight->LoadFromFile(WHEELMODELRIGHT, bev_3d_param->car_model_param.wheel_model_scale, FALSE);
 
-    m_carWheelId = m_objViewNode->CreateMaterial(Material_Glossy, &carWheelmtl);
+    m_carWheelId = m_objViewNode->CreateMaterial(Material_Rigid_Texture, &carWheelmtl);
     carWheelmtl->SetOpacity(opacity);
     carWheelmtl->SetDiffuseMap(CARWHEELTEX);
-    carWheelmtl->SetEnvironmentMap(CARENV);
-    carWheelmtl->SetAmbientMap(CARTEXMASK);
+    //carWheelmtl->SetEnvironmentMap(CARENV);
+    //carWheelmtl->SetAmbientMap(CARTEXMASK);
     modelId = m_objViewNode->CreateModel(0, m_carWheelId, m_carId, InsertFlag_Child, bev_3d_param->car_model_param.wheel_offset_side, bev_3d_param->car_model_param.wheel_offset_up, -bev_3d_param->car_model_param.wheel_offset_front, 1.1, &m_wheel[0]);
     modelId = m_objViewNode->CreateModel(0, m_carWheelId, m_carId, InsertFlag_Child, -bev_3d_param->car_model_param.wheel_offset_side, bev_3d_param->car_model_param.wheel_offset_up, -bev_3d_param->car_model_param.wheel_offset_front, 1.1, &m_wheel[1]);
     modelId = m_objViewNode->CreateModel(0, m_carWheelId, m_carId, InsertFlag_Child, bev_3d_param->car_model_param.wheel_offset_side, bev_3d_param->car_model_param.wheel_offset_up, bev_3d_param->car_model_param.wheel_offset_rear, 1.1, &m_wheel[2]);
