@@ -864,9 +864,9 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
     m_baseButton[i]->SetVisibility(m_buttonVisibility[i]);
 
 	i = S302_BEV_CAR_ICON;
-    m_buttonSize[i][BUTTON_SIZE_WIDTH] = (bevRealCarPos[2] - bevRealCarPos[0]) * stitchRegionWidth * 0.5;
+    m_buttonSize[i][BUTTON_SIZE_WIDTH] = (bevRealCarPos[2] - bevRealCarPos[0]) * stitchRegionWidth * 0.5 * 1.191;
     m_buttonSize[i][BUTTON_SIZE_HEIGHT] = (bevRealCarPos[1] - bevRealCarPos[3]) * stitchRegionHeight * 0.5;
-    m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 + bevRealCarPos[0]);
+    m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 + bevRealCarPos[0]) - m_buttonSize[i][BUTTON_SIZE_WIDTH] * 0.09;
     m_buttonPos[i][BUTTON_POS_Y] = currentStitchRegion.top + stitchRegionHeight * 0.5 * (1 - bevRealCarPos[1]);
     
     m_baseButtonData[i].icon_type = STATIC_ICON;
