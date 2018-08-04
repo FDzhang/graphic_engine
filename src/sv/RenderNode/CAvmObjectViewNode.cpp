@@ -184,8 +184,8 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
     m_carInternalId = m_objViewNode->CreateMaterial(Material_Rigid_Texture, &carInternalMtl);
 	carInternalMtl->SetOpacity(((opacity - 0.1) > 0.001) ? (opacity - 0.1) : 0.001);
 	carInternalMtl->SetDiffuseMap(CARINTTEX);
-	carInternalMtl->SetEnvironmentMap(CARENV);
-	carInternalMtl->SetAmbientMap(CARTEXMASK);
+	//carInternalMtl->SetEnvironmentMap(CARENV);
+	//carInternalMtl->SetAmbientMap(CARTEXMASK);
 	iCarnodeId = m_objViewNode->LoadModelFromFile(CARINTMODEL, m_carInternalId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_CarInternal); //envision
 
 	m_CarInternal->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
@@ -196,8 +196,8 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	m_carmtlId = m_objViewNode->CreateMaterial(Material_Glossy, &m_carMtl);
 	m_carMtl->SetOpacity(opacity);
 	m_carMtl->SetDiffuseMap(CARTEX);
-	m_carMtl->SetEnvironmentMap(CARENV);
-	m_carMtl->SetAmbientMap(CARAMBIENTTEXTMASK);
+	//m_carMtl->SetEnvironmentMap(CARENV);
+	//m_carMtl->SetAmbientMap(CARAMBIENTTEXTMASK);
 	m_carId = m_objViewNode->LoadModelFromFile(CARMODEL, m_carmtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_Car); //envision
 
 	m_Car->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_SX | AP_SY | AP_SZ);
@@ -239,7 +239,7 @@ int CAvmObjectViewNode::InitNode(class IXrCore* pXrcore)
 	//carlightmtl->SetDiffuseMap(CARTEX);
 	
 	m_carLightMtl->SetEnvironmentMap(CARLIGHTON);
-	m_carLightMtl->SetAmbientMap(CARTEXMASK);
+	//m_carLightMtl->SetAmbientMap(CARTEXMASK);
 	iCarnodeId = m_objViewNode->LoadModelFromFile(CARLIGHTMODEL, iCarLightMtlId, -1, InsertFlag_Default, bev_3d_param->car_model_param.car_pos_x, bev_3d_param->car_model_param.car_pos_y, bev_3d_param->car_model_param.car_pos_z, 50, &m_CarLight); //envision
 
 	m_carLightMtl->SetAmbientColor(1.0,0.5,0.0,0.0);
@@ -456,7 +456,7 @@ int CAvmObjectViewNode::ProcessWheelRoll()
         vehicleState = 1;
     }
 
-    vehicleSpeed += (0.01 * speed) ;
+    vehicleSpeed += (0.02 * speed) ;
 
     IAProperty* val=0;
 	int wheelNumbers = 0;

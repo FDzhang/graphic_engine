@@ -1068,6 +1068,9 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
     CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(currentViewStatus);
 
 	
+    m_buttonVisibility[S302_VIEW180_LEFT_CUTLINE] = 0;
+    m_buttonVisibility[S302_VIEW180_RIGHT_CUTLINE] = 0;
+
     if(((currentViewStatus >= FRONT_SINGLE_VIEW && currentViewStatus <= FRONT_3D_VIEW)||
         (currentViewStatus >= BMW_LEFT_VIEW && currentViewStatus <= BMW_REAR_3D_VIEW)||
         (currentViewStatus >= BOSH_FRONT_VIEW && currentViewStatus <= BOSH_REAR_VIEW_TOP)||
@@ -1090,6 +1093,12 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 		{	
 			m_buttonShowImage[S302_BEV_CAR_ICON] = 1;
 		}
+        
+        Region currentStitchRegion;
+        CAvmRenderDataBase::GetInstance()->GetStitchViewRegion(&currentStitchRegion);
+
+        m_buttonVisibility[S302_VIEW180_LEFT_CUTLINE] = 1;
+        m_baseButton[S302_VIEW180_LEFT_CUTLINE]->SetX(currentStitchRegion.right);
     }
     else
     {
@@ -1106,13 +1115,9 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
     {
         m_buttonVisibility[S302_VIEW180_LEFT_CUTLINE] = 1;
         m_buttonVisibility[S302_VIEW180_RIGHT_CUTLINE] = 1;
+        m_baseButton[S302_VIEW180_LEFT_CUTLINE]->SetX(m_buttonPos[S302_VIEW180_LEFT_CUTLINE][BUTTON_POS_X]);
     }
-    else
-    {
-        m_buttonVisibility[S302_VIEW180_LEFT_CUTLINE] = 0;
-        m_buttonVisibility[S302_VIEW180_RIGHT_CUTLINE] = 0;
-    }
-
+    
     RefreshHmi();
 	RefreshHmiGuideline();
 
@@ -1595,7 +1600,6 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 		m_guideLine[DEMO_GUIDELINE_BEV_DYNAMIC_ASSI_R]->SetVisibility(0);
 		return;
 	}
-	
     float steer_angle = 100.0;
     unsigned char gear_state = GEAR_R;
     unsigned char m_displayViewCmd = FRONT_SINGLE_VIEW;
@@ -1613,6 +1617,7 @@ void CSVS302MainHmi::RefreshHmiGuideline()
 	//if(m_cnt > 500) m_cnt = -500;
 
 	//m_cnt += 2;
+	//Log_Message("steer_angle: %0.4f, gear_state: %d", steer_angle,gear_state);
 
 	steer_angle = 0.0 - steer_angle;
 

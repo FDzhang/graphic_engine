@@ -103,19 +103,19 @@ extern GLuint uiConfigBin[][eConfigEnd];
 #define RIGHT_SIDE_VIEW_ROI_END_Y   639
 
 #else
-#define RIGHT_SIDE_VIEW_ROI_START_X  232
+#define RIGHT_SIDE_VIEW_ROI_START_X  212
 //47 //106 //112 big
-#define RIGHT_SIDE_VIEW_ROI_START_Y  360
+#define RIGHT_SIDE_VIEW_ROI_START_Y  328
 //168 small //198 big
-#define RIGHT_SIDE_VIEW_ROI_END_X   540
+#define RIGHT_SIDE_VIEW_ROI_END_X   600
 //463 //480 big //420 small
-#define RIGHT_SIDE_VIEW_ROI_END_Y   620
+#define RIGHT_SIDE_VIEW_ROI_END_Y   629
 //503
 
 
 #endif
-#define RIGHT_SIDE_VIEW_MESH_WIDTH  20     //actual width +1
-#define RIGHT_SIDE_VIEW_MESH_HEIGHT 20     //actual height +1
+#define RIGHT_SIDE_VIEW_MESH_WIDTH  41     //actual width +1
+#define RIGHT_SIDE_VIEW_MESH_HEIGHT 41     //actual height +1
 
 
 
@@ -141,14 +141,15 @@ extern GLuint uiConfigBin[][eConfigEnd];
 
 #else
 
-#define LEFT_SIDE_VIEW_ROI_START_X  100
+#define LEFT_SIDE_VIEW_ROI_START_X  65
 //;//;
-#define LEFT_SIDE_VIEW_ROI_START_Y  350
+#define LEFT_SIDE_VIEW_ROI_START_Y  328
 //;//177;
-#define LEFT_SIDE_VIEW_ROI_END_X   420
+#define LEFT_SIDE_VIEW_ROI_END_X   424
 //394;//320
-#define LEFT_SIDE_VIEW_ROI_END_Y  620
+#define LEFT_SIDE_VIEW_ROI_END_Y  629
 //;//507
+
 
 
 /*
@@ -173,8 +174,8 @@ extern GLuint uiConfigBin[][eConfigEnd];
 #define FRONT_CLC_VIEW_ROI_END_X   1095
 #define FRONT_CLC_VIEW_ROI_END_Y   850
 
-#define FRONT_CLC_VIEW_MESH_WIDTH  21     //actual width +1
-#define FRONT_CLC_VIEW_MESH_HEIGHT 21     //actual height +1
+#define FRONT_CLC_VIEW_MESH_WIDTH  41     //actual width +1
+#define FRONT_CLC_VIEW_MESH_HEIGHT 41     //actual height +1
 
 #if 1
 #define REAR_CLC_VIEW_ROI_START_X  250
@@ -188,8 +189,8 @@ extern GLuint uiConfigBin[][eConfigEnd];
 #define REAR_CLC_VIEW_ROI_END_X   639
 #define REAR_CLC_VIEW_ROI_END_Y   479
 #endif
-#define REAR_CLC_VIEW_MESH_WIDTH  21     //actual width +1
-#define REAR_CLC_VIEW_MESH_HEIGHT 21     //actual height +1
+#define REAR_CLC_VIEW_MESH_WIDTH  41     //actual width +1
+#define REAR_CLC_VIEW_MESH_HEIGHT 41     //actual height +1
 
 #define NUMBER_PER_VERTEX 7
 
@@ -379,7 +380,7 @@ int GlSV2D::InitLinear()
 	//	 m_pucIndexBuff[i] = RectIndex;
 	//}	 
 
-#if 1
+#ifndef USING_LUT
 
     InitSideViewBuffer(RIGHT_SIDE_VIEW_MESH_WIDTH,RIGHT_SIDE_VIEW_MESH_HEIGHT,
 		&m_pfVertexBuff[eLeftSingle],&m_pucIndexBuff[eLeftSingle],
@@ -413,8 +414,8 @@ int GlSV2D::InitLinear()
 
 #else
 	int ret = 0;	
-	ret = InitFrontRearSingleViewCamLUT(front_camera_index);
-	ret = InitFrontRearSingleViewCamLUT(rear_camera_index);
+	//ret = InitFrontRearSingleViewCamLUT(front_camera_index);
+	//ret = InitFrontRearSingleViewCamLUT(rear_camera_index);
 
 	ret = InitSideViewParams(&m_pfVertexBuff[eLeftSingle], &m_pucIndexBuff[eLeftSingle], left_camera_index);
 	ret = InitSideViewParams(&m_pfVertexBuff[eRightSingle], &m_pucIndexBuff[eRightSingle], right_camera_index);
@@ -548,7 +549,40 @@ int GlSV2D::GetIndexBuffer(int Index,GLushort **pIndexBuffer, unsigned int *BufS
 
 	return 0;
 }
-
+int GlSV2D::InitSideViewParams(GLfloat** pVert, GLushort **pIndex, unsigned char view_index)
+{
+	if(pVert == NULL || pIndex == NULL)
+	{
+		return -1;
+	}
+	
+	int index = 0;
+	switch(view_index)
+	{
+	case left_camera_index:
+		*pVert = left_view_vertex_params;
+		m_SideViewVertSize[view_index] = 7 * RIGHT_SIDE_VIEW_MESH_WIDTH * RIGHT_SIDE_VIEW_MESH_HEIGHT;
+		break;
+	case right_camera_index:
+		*pVert = right_view_vertex_params;
+		m_SideViewVertSize[view_index] = 7 * RIGHT_SIDE_VIEW_MESH_WIDTH * RIGHT_SIDE_VIEW_MESH_HEIGHT;
+		break;
+	case front_camera_index:
+		*pVert = front_view_vertex_params;
+		m_SideViewVertSize[view_index] = 7 * RIGHT_SIDE_VIEW_MESH_WIDTH * RIGHT_SIDE_VIEW_MESH_HEIGHT;
+		break;
+	case rear_camera_index:
+		*pVert = rear_view_vertex_params;
+		m_SideViewVertSize[view_index] = 7 * RIGHT_SIDE_VIEW_MESH_WIDTH * RIGHT_SIDE_VIEW_MESH_HEIGHT;
+		break;
+	default:
+		break;
+	}
+	
+	*pIndex = index_params;
+	m_SideViewIndexSize[view_index] = 6 * (RIGHT_SIDE_VIEW_MESH_WIDTH - 1) * (RIGHT_SIDE_VIEW_MESH_HEIGHT - 1);
+	return 0;
+}
 extern "C" FLT_T Cam_Lut_Linear[];
 //for side single view undistortion and turn function
 int GlSV2D::InitSideViewBuffer(int width,int height,GLfloat **pData,GLushort **pIndex,unsigned int *puiVertSize,unsigned int *puiIndexSize, unsigned char index_flag)
@@ -997,7 +1031,7 @@ int GlSV2D::GenerateCyliSideSingleViewLUT(int camera_index,float *pVert)
 int GlSV2D::GenerateFishSideSingleViewLUT(int camera_index,float *pVert)
 {
     Cam_Model *pRealCam;
-    float view_angle = 90.0;
+    float view_angle = 82.0;
 	int vertex_num;
     float pR[3]={RIGHT_LINEAR_CAM_R_X,RIGHT_LINEAR_CAM_R_Y,RIGHT_LINEAR_CAM_R_Z};
 	float pT[3] = {RIGHT_LINEAR_CAM_T_X,RIGHT_LINEAR_CAM_T_Y,RIGHT_LINEAR_CAM_T_Z};
@@ -1032,7 +1066,7 @@ int GlSV2D::GenerateFishSideSingleViewLUT(int camera_index,float *pVert)
 	int deltaX = 0;
 	float deltaY = 3.4;
 	float deltaZ = 0.0;
-	float rot_angle=8.0*deg2rad;
+	float rot_angle=5.0*deg2rad;
     if(camera_index == left_camera_index)
     {
         config[0] = LEFT_SIDE_VIEW_ROI_START_X;
@@ -1043,7 +1077,7 @@ int GlSV2D::GenerateFishSideSingleViewLUT(int camera_index,float *pVert)
 		a[0] = -pRealCam->cam_ext.pose_r[0];
 		a[1] = view_angle*deg2rad + pRealCam->cam_ext.pose_r[1];
 		a[2] = -pRealCam->cam_ext.pose_r[2];
-		rot_angle = -8.0*deg2rad;
+		rot_angle = -2.6*deg2rad;
     }
 	else 
 	{
