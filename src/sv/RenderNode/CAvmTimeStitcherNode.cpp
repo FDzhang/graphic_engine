@@ -461,7 +461,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
     m_guideLineData[i].guideLineWidth = 76.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 238.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 40;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
@@ -476,7 +476,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_L1";
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
-    m_guideLineData[i].guideLineWidth = 200.0;
+    m_guideLineData[i].guideLineWidth = 225.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 40;
@@ -509,7 +509,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
     m_guideLineData[i].guideLineWidth = 48.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -200.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -180.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 40;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
@@ -525,7 +525,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
     m_guideLineData[i].guideLineWidth = 76.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 238.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 40;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
@@ -540,7 +540,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineName = "DEMO_GUIDELINE_BEV_DYNAMIC_POS_R1";
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
-    m_guideLineData[i].guideLineWidth = 200.0;
+    m_guideLineData[i].guideLineWidth = 225.0;
     m_guideLineData[i].guideLineSideDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 40;
@@ -557,7 +557,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
     m_guideLineData[i].guideLineWidth = 48.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = -200.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = -180.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 40;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
@@ -589,7 +589,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_LEFT;
     m_guideLineData[i].guideLineWidth = 76.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 238.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 50;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
@@ -604,7 +604,7 @@ void CAvmTimeStitcherNode::SetHmiGuideline()
     m_guideLineData[i].guideLineType = GUIDELINE_BEV_ASSIST_DYNAMIC;
     m_guideLineData[i].guideLinePos = GUIDELINE_POS_RIGHT;
     m_guideLineData[i].guideLineWidth = 76.0;
-    m_guideLineData[i].guideLineSideDistanceFromVehicle = 200.0;
+    m_guideLineData[i].guideLineSideDistanceFromVehicle = 238.0;
     m_guideLineData[i].guideLineStartDistanceFromVehicle = 0.0;
     m_guideLineData[i].guideLinePointNum = 50;
     m_guideLineData[i].guideLineTexture[GUIDELINE_TEXTURE_NORMAL] = new char[50];
