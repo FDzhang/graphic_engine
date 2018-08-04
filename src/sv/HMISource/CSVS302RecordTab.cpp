@@ -39,15 +39,28 @@ int CSVS302RecordTab::SetHmiParams()
 
     index = S302_RECORD_INDEX_RECPOINT;
     m_baseButtonData[index].pos[0] = offset + 34;
-    m_baseButtonData[index].pos[1] = 20;
-    m_baseButtonData[index].width = 108;
-    m_baseButtonData[index].height = 26;
+    m_baseButtonData[index].pos[1] = 12;
+    m_baseButtonData[index].width = 34;
+    m_baseButtonData[index].height = 34;
     m_baseButtonData[index].delegate_func = NULL;
     m_baseButtonData[index].trigger = NULL;
     m_baseButtonData[index].icon_type = STATIC_ICON;
     m_baseButtonData[index].show_flag = 1;
     m_baseButtonData[index].show_icon_num = 0;
     m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[1];
+    m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
+
+    index = S302_RECORD_INDEX_TEXT;
+    m_baseButtonData[index].pos[0] = offset + 70;
+    m_baseButtonData[index].pos[1] = 12;
+    m_baseButtonData[index].width = 110;
+    m_baseButtonData[index].height = 34;
+    m_baseButtonData[index].delegate_func = NULL;
+    m_baseButtonData[index].trigger = NULL;
+    m_baseButtonData[index].icon_type = STATIC_ICON;
+    m_baseButtonData[index].show_flag = 1;
+    m_baseButtonData[index].show_icon_num = 0;
+    m_baseButtonData[index].icon_file_name[0] = m_hmiSvresFileName[2];
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;
     
     HmiInitSTBar();
@@ -95,10 +108,12 @@ int CSVS302RecordTab::Update(Hmi_Message_T &hmiMsg)
                     {
                         m_buttonVisibility[S302_RECORD_INDEX_RECPOINT] = 0;
                     }
+                        m_buttonVisibility[S302_RECORD_INDEX_TEXT] = 1;
                 }
                 else if(fileListTabMsg[i].uStatus.ObjVal == 0)
                 {
                     m_buttonVisibility[S302_RECORD_INDEX_RECPOINT] = 0;
+                    m_buttonVisibility[S302_RECORD_INDEX_TEXT] = 0;
                 }
 			break;
 				
@@ -139,7 +154,7 @@ int CSVS302RecordTab::SetElementsVisibility(unsigned char pFlag)
 {
     for (int i = S302_RECORD_INDEX_BG_IMAGE; i <= S302_RECORD_INDEX_STABR_BUCKLE; i++)
     {		
-    	if(i == S302_RECORD_INDEX_RECPOINT)
+    	if(i == S302_RECORD_INDEX_RECPOINT || i == S302_RECORD_INDEX_TEXT)
         {
         	if(pFlag == 0)
         	{
@@ -175,10 +190,10 @@ int CSVS302RecordTab::DestroyHmiElems()
 
 int CSVS302RecordTab::HmiInitSTBar()
 {
-    int svresIndex = 2;
+    int svresIndex = 3;
 
     int index = S302_RECORD_INDEX_STABR_SPEED;
-    m_baseButtonData[index].pos[0] = 810.0;
+    m_baseButtonData[index].pos[0] = 845.0;
     m_baseButtonData[index].pos[1] = 12.0;
     m_baseButtonData[index].width = 108;
     m_baseButtonData[index].height = 36;
@@ -192,7 +207,7 @@ int CSVS302RecordTab::HmiInitSTBar()
     m_baseButtonData[index].animationStyle = BUTTON_NOMAL;    
 
     index = S302_RECORD_INDEX_STABR_GEAR;
-    m_baseButtonData[index].pos[0] = 920.0;
+    m_baseButtonData[index].pos[0] = 955.0;
     m_baseButtonData[index].pos[1] = 12.0;
     m_baseButtonData[index].width = 36;
     m_baseButtonData[index].height = 36;
@@ -211,7 +226,7 @@ int CSVS302RecordTab::HmiInitSTBar()
     
     for (int index = S302_RECORD_INDEX_STABR_ACC; index <= S302_RECORD_INDEX_STABR_BUCKLE; index++)
     {
-        m_baseButtonData[index].pos[0] = 920.0 + (index - S302_RECORD_INDEX_STABR_GEAR) * 40.0;
+        m_baseButtonData[index].pos[0] = 955.0 + (index - S302_RECORD_INDEX_STABR_GEAR) * 40.0;
         m_baseButtonData[index].pos[1] = 12.0;
         m_baseButtonData[index].width = 36;
         m_baseButtonData[index].height = 36;
@@ -249,6 +264,8 @@ int CSVS302RecordTab::HmiInitSvresList()
     sprintf(m_hmiSvresFileName[index++], "%sS302/record_bk.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sCar/DVR/record_red_dot_normal.dds", XR_RES);
+    m_hmiSvresFileName[index] = new char[50];
+    sprintf(m_hmiSvresFileName[index++], "%sCar/DVR/record_text_normal.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_speed_w.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
@@ -382,7 +399,7 @@ int CSVS302RecordTab::InitText()
     int i = 0;
 
     i = S302_REC_TIME_TEXT;
-    m_textEditData[i].pos[0] = 165;
+    m_textEditData[i].pos[0] = 200;
     m_textEditData[i].pos[1] = 12;
     m_textEditData[i].width = 30;
 	m_textEditData[i].font_size = 5.0;
@@ -400,7 +417,7 @@ int CSVS302RecordTab::InitText()
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext0);
 
     i = S302_REC_GPS_TEXT;
-    m_textEditData[i].pos[0] = 465;
+    m_textEditData[i].pos[0] = 500;
     m_textEditData[i].pos[1] = 12;
     m_textEditData[i].width = 30;
 	m_textEditData[i].font_size = 5.0;
@@ -418,7 +435,7 @@ int CSVS302RecordTab::InitText()
 	sprintf(m_textEditData[i].textContent[0],"%s", ptext1);
 
     i = S302_REC_SPEED_TEXT;
-    m_textEditData[i].pos[0] = 824;
+    m_textEditData[i].pos[0] = 860;
     m_textEditData[i].pos[1] = 14;
     m_textEditData[i].width = 25;
 	m_textEditData[i].font_size = 5.0;
