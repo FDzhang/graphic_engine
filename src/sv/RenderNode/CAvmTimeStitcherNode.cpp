@@ -681,13 +681,13 @@ void CAvmTimeStitcherNode::RefreshHmiGuideline()
     CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(m_displayViewCmd);
     steer_angle = 0.0 - steer_angle;
 
-	if(steer_angle > 500.0)
+	if(steer_angle > 600.0)
 	{
-		steer_angle = 500.0;
+		steer_angle = 600.0;
 	}
-	else if(steer_angle < -500.0)
+	else if(steer_angle < -600.0)
 	{
-		steer_angle = -500.0;
+		steer_angle = -600.0;
 	}
 
 	m_bevDynGuideLineVisibility = 1;
