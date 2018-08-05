@@ -39,7 +39,7 @@ int CSVS302RecordTab::SetHmiParams()
 
     index = S302_RECORD_INDEX_RECPOINT;
     m_baseButtonData[index].pos[0] = offset + 34;
-    m_baseButtonData[index].pos[1] = 12;
+    m_baseButtonData[index].pos[1] = 14;
     m_baseButtonData[index].width = 34;
     m_baseButtonData[index].height = 34;
     m_baseButtonData[index].delegate_func = NULL;
@@ -52,7 +52,7 @@ int CSVS302RecordTab::SetHmiParams()
 
     index = S302_RECORD_INDEX_TEXT;
     m_baseButtonData[index].pos[0] = offset + 70;
-    m_baseButtonData[index].pos[1] = 12;
+    m_baseButtonData[index].pos[1] = 14;
     m_baseButtonData[index].width = 110;
     m_baseButtonData[index].height = 34;
     m_baseButtonData[index].delegate_func = NULL;
