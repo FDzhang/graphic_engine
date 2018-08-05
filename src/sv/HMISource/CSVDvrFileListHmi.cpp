@@ -149,7 +149,7 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 
 	}
 
-    m_pageNumData.pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 12;
+    m_pageNumData.pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 150;
     m_pageNumData.pos[1] = 110;
     m_pageNumData.width = 25;
 	m_pageNumData.font_size = 5.0;
@@ -167,7 +167,7 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	sprintf(m_pageNumData.textContent[0],"%s", ptext0);
 
 
-    m_baseButtonData[FILE_LIST_NOTHUMB].pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 60;
+    m_baseButtonData[FILE_LIST_NOTHUMB].pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 150;
     m_baseButtonData[FILE_LIST_NOTHUMB].pos[1] = 300;
     m_baseButtonData[FILE_LIST_NOTHUMB].width = 115;
     m_baseButtonData[FILE_LIST_NOTHUMB].height = 55;
