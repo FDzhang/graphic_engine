@@ -849,7 +849,7 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 
 	m_baseButtonData[i].icon_file_name[0] = new char [50];
 	m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
-	sprintf(m_baseButtonData[i].icon_file_name[0],"%sbev_bk.dds",XR_RES);
+	sprintf(m_baseButtonData[i].icon_file_name[0],"%sgreen.dds",XR_RES);
 	
 	m_trigger[i] = NULL;
 	
