@@ -678,19 +678,23 @@ void CAvmObjectViewNode::MockRefreshCarBodyTexture()
 	char CARTEXW[] = XR_RES"envision_black.tga";
 
 	VehInfoT vehInfo;
+	static VehBodyStyleT lastBodyStyle = 200;
 
 	CAvmRenderDataBase::GetInstance()->GetVehInfo(&vehInfo);
 
-	if(vehInfo.bodyStyle == 0)
+	if(lastBodyStyle != vehInfo.bodyStyle)
 	{
-		m_carMtl->SetDiffuseMap(CARTEX);
+		if(vehInfo.bodyStyle == 0)
+		{
+			m_carMtl->SetDiffuseMap(CARTEX);
 
+		}
+		else if(vehInfo.bodyStyle == 1)
+		{	
+			m_carMtl->SetDiffuseMap(CARTEXW);
+		}
+		lastBodyStyle = vehInfo.bodyStyle;
 	}
-	else if(vehInfo.bodyStyle == 1)
-	{	
-		m_carMtl->SetDiffuseMap(CARTEXW);
-	}
-
 }
 
 /*===========================================================================*\

@@ -113,8 +113,8 @@ int CAvmStitchViewNode::InitNode(IXrCore* pXrcore)
 		}	
 		else if(i ==4)
 		{
-    	    m_SV2DMtl->SetDiffuseMap(CAR2DICONBMP);	
-			m_carBodyMtl = m_SV2DMtl;
+    	    //m_SV2DMtl->SetDiffuseMap(CAR2DICONBMP);	
+			//m_carBodyMtl = m_SV2DMtl;
 		}	
 		else
 		{	
