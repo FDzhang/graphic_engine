@@ -621,13 +621,13 @@ int CAvmViewControlModel::SetCurrentView()
 	ProcessTimeStitcher();
 	ProcessSingleViewDisplay();
 	ProcessLeftRightView();
-	ProcessLarge3dView();
+	//ProcessLarge3dView();
 	Process3dViewDisplay();
 	ProcessTourView();
 	ProcessMattsView();
 	ProcessLargeSingleView();
 	Process180DegreeView();
-	ProcessSideBySideSingleView();
+	//ProcessSideBySideSingleView();
 	
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 
