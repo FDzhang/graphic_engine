@@ -162,6 +162,8 @@ int HMIGuideLine::Update(float pSteeringWheel,int pDriveDirection)
     float radius[2];
     float theta[2];
 
+    static float lastSteeringWheel = 1000.0;
+
     if(pSteeringWheel < 0.1 && pSteeringWheel > -0.1)
     {
         pSteeringWheel=0.1;
@@ -201,15 +203,27 @@ int HMIGuideLine::Update(float pSteeringWheel,int pDriveDirection)
     }
     else if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_SAVE_DYNAMIC)
     {
-        CaculateHorizontalDynamicLine(m_vertext , pSteeringWheel, pDriveDirection);
+        if(IsFloatEqual(pSteeringWheel, lastSteeringWheel, 0.001) == false)
+        {
+            CaculateHorizontalDynamicLine(m_vertext , pSteeringWheel, pDriveDirection);
+            
+            m_guideLineMesh->UnLockData();
+
+            pSteeringWheel = lastSteeringWheel;
+        }
     }
     else    
     {
-        CaculateCenter(&center[0],&center[1],radius,theta,pSteeringWheel,pDriveDirection);  
-        GenerateDynamicGuideLine(center[0],center[1],radius,theta, m_vertext);  
-    }
+        if(IsFloatEqual(pSteeringWheel, lastSteeringWheel, 0.001) == false)
+        {
+            CaculateCenter(&center[0],&center[1],radius,theta,pSteeringWheel,pDriveDirection);  
+            GenerateDynamicGuideLine(center[0],center[1],radius,theta, m_vertext); 
+               
+            m_guideLineMesh->UnLockData();
 
-    m_guideLineMesh->UnLockData();
+            pSteeringWheel = lastSteeringWheel;
+        } 
+    }
 
     return GUIDELINE_NORMAL;
 }
@@ -502,8 +516,6 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
     for(Loop = 0; Loop < m_guideLineData->guideLinePointNum * 2; Loop++)
     {
         index = Loop%2;
-        xLeft= pCenterX+(pRadius[index])*cos(AngleStart[index] + (Loop/2)*step[index]);
-        yLeft= pCenterY+(pRadius[index])*sin(AngleStart[index] + (Loop/2)*step[index]);
 		if(m_guideLineData->guideLineType == GUIDELINE_SINGLEVIEW_DYNAMIC
 			&& m_guideLineData->guideLineWidth < 60.0)
 		{
@@ -519,6 +531,11 @@ int HMIGuideLine::GenerateDynamicGuideLine(float pCenterX, float pCenterY,float 
 			xLeft= pCenterX+(transRadius[index])*cos(AngleStart[index] + (Loop/2)*step[index]);
         	yLeft= pCenterY+(transRadius[index])*sin(AngleStart[index] + (Loop/2)*step[index]);
 		}
+        else
+        {
+            xLeft= pCenterX+(pRadius[index])*cos(AngleStart[index] + (Loop/2)*step[index]);
+            yLeft= pCenterY+(pRadius[index])*sin(AngleStart[index] + (Loop/2)*step[index]);
+        }
 
         world_coord[0] = xLeft;
         world_coord[1] = yLeft;
