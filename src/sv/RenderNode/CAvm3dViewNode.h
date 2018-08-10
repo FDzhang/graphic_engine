@@ -69,6 +69,10 @@ private:
 	SurroundViewCameraParamsT*   m_3dViewCameraParams;
 
 	unsigned char m_visibilityFlag;
+
+	IMaterial* m_svMtl[4];
+	unsigned int m_mtlId[4];
+	unsigned int m_mtlId2[4];
 };
 
 #endif // _CAVM_3DVIEW_NODE_H_

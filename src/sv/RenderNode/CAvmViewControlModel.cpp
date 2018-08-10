@@ -820,6 +820,10 @@ int CAvmViewControlModel::Process3dViewDisplay()
 			
 			Update3dFreeView();
 		}
+		if(m_avm3dViewNode)
+		{
+			m_avm3dViewNode->UpdateNode();
+		}
 	}
 	return AVM_VIEWCONTROLMODEL_NORMAL;
 }
