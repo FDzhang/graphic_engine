@@ -545,7 +545,7 @@ bool AVM2DLUT::Init( char *pConfigfilename,char *pIndexfilename,char *datafilena
                 m_calib_para[1] = pSticherReslt->cy;
                 m_calib_para[2] = pSticherReslt->ppmmx;
                 m_calib_para[3] = pSticherReslt->ppmmy;
-				//AdjustCarPose(m_car_rect,0.005,0.01);
+				AdjustCarPose(m_car_rect,0.005,0.005);
 				m_car_shadow_adjust_rect[0] = -(1000.0/pSticherReslt->ppmmy/108.0);
 				m_car_shadow_adjust_rect[1]=(1200.0/pSticherReslt->ppmmx/240.0);
 				m_car_shadow_adjust_rect[2]=-m_car_shadow_adjust_rect[0];
