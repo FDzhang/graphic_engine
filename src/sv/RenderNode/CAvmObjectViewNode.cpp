@@ -675,7 +675,8 @@ int CAvmObjectViewNode::SetClear(unsigned char pColorFlag, unsigned char pDepthF
 }
 void CAvmObjectViewNode::MockRefreshCarBodyTexture()
 {
-	char CARTEXW[] = XR_RES"envision_black.tga";
+	//char CARTEXW[] = XR_RES"envision_black.tga";
+	char CARTEXW[] = XR_RES"envision_white.tga";
 
 	VehInfoT vehInfo;
 	static VehBodyStyleT lastBodyStyle = 200;
@@ -684,15 +685,15 @@ void CAvmObjectViewNode::MockRefreshCarBodyTexture()
 
 	if(lastBodyStyle != vehInfo.bodyStyle)
 	{
-		if(vehInfo.bodyStyle == 0)
-		{
+		//if(vehInfo.bodyStyle == 0)
+		//{
 			m_carMtl->SetDiffuseMap(CARTEX);
 
-		}
-		else if(vehInfo.bodyStyle == 1)
-		{	
-			m_carMtl->SetDiffuseMap(CARTEXW);
-		}
+		//}
+		//else if(vehInfo.bodyStyle == 1)
+		//{	
+		//	m_carMtl->SetDiffuseMap(CARTEXW);
+		//}
 		lastBodyStyle = vehInfo.bodyStyle;
 	}
 }
