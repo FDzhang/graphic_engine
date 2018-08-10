@@ -167,9 +167,9 @@ int CSVDvrFileListHmi::Init(int window_width, int window_height)
 	sprintf(m_pageNumData.textContent[0],"%s", ptext0);
 
 
-    m_baseButtonData[FILE_LIST_NOTHUMB].pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 150;
+    m_baseButtonData[FILE_LIST_NOTHUMB].pos[0] = m_imageGridListData.posX + m_imageGridListData.gridListWidth * 0.5 - 144;
     m_baseButtonData[FILE_LIST_NOTHUMB].pos[1] = 300;
-    m_baseButtonData[FILE_LIST_NOTHUMB].width = 115;
+    m_baseButtonData[FILE_LIST_NOTHUMB].width = 98;
     m_baseButtonData[FILE_LIST_NOTHUMB].height = 55;
     m_baseButtonData[FILE_LIST_NOTHUMB].delegate_func = NULL;
     m_baseButtonData[FILE_LIST_NOTHUMB].trigger = NULL;
