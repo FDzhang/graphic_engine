@@ -879,7 +879,8 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 	m_baseButtonData[i].icon_file_name[1] = new char [50];
     m_baseButtonData[i].animationStyle = BUTTON_NOMAL;
     sprintf(m_baseButtonData[i].icon_file_name[0],"%scar_icon_rx5.dds",XR_RES);
-    sprintf(m_baseButtonData[i].icon_file_name[1],"%scar_icon_rx5_black.dds",XR_RES);
+    sprintf(m_baseButtonData[i].icon_file_name[1],"%scar_icon_rx5.dds",XR_RES);
+    //sprintf(m_baseButtonData[i].icon_file_name[1],"%scar_icon_rx5_black.dds",XR_RES);
 	
     m_trigger[i] = NULL;
     
@@ -1084,15 +1085,15 @@ int CSVS302MainHmi::Update(Hmi_Message_T& hmiMsg)
 
 		CAvmRenderDataBase::GetInstance()->GetVehInfo(&vehInfo);
 
-		if(vehInfo.bodyStyle == 0)
-		{
+		//if(vehInfo.bodyStyle == 0)
+		//{
 			m_buttonShowImage[S302_BEV_CAR_ICON] = 0;
 
-		}
-		else if(vehInfo.bodyStyle == 1)
-		{	
-			m_buttonShowImage[S302_BEV_CAR_ICON] = 1;
-		}
+		//}
+		//else if(vehInfo.bodyStyle == 1)
+		//{	
+		//	m_buttonShowImage[S302_BEV_CAR_ICON] = 1;
+		//}
         
         Region currentStitchRegion;
         CAvmRenderDataBase::GetInstance()->GetStitchViewRegion(&currentStitchRegion);

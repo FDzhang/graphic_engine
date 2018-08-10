@@ -29,6 +29,8 @@
 static char OVERLAPMASK[] = XR_RES"mask.bmp";
 static char OVERLAPMASKREAR[] = XR_RES"maskrear.bmp";
 
+static char OVERLAYMASK2[] = XR_RES"mask_change.bmp";
+
 static char skyR[]	= XR_RES"skylrex.mqo";
 static char skyL[]	= XR_RES"skylrex.mqo";
 static char skyF[]	= XR_RES"skyfbex.mqo";
@@ -89,16 +91,28 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
     AVMData::GetInstance()->m_cam_source->GetShaderName(FragShaderName,SV_3D_FRAGMENT_SHADER);		
 	for(int i =0;i<4;i++)
 	{
-    	SVMTL[i] = m_3dViewNode->CreateMaterial(Material_Custom, &pISVmtl);
-        pISVmtl->CreateMaterialEffect(&pIEffect);
-    	AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(pISVmtl,i);	
+    	SVMTL[i] = m_3dViewNode->CreateMaterial(Material_Custom, &m_svMtl[i]);
+        m_svMtl[i]->CreateMaterialEffect(&pIEffect);
+    	AVMData::GetInstance()->m_cam_source->SetCameraSourceToMaterial(m_svMtl[i],i);	
 		if(i<3)
-    	pISVmtl->SetAmbientMap(OVERLAPMASK);
+    	{
+			m_svMtl[i]->SetAmbientMap(OVERLAPMASK);
+			m_mtlId[i] = m_svMtl[i]->GetAmbientMap()->texid;
+			m_svMtl[i]->SetAmbientMap(OVERLAYMASK2);
+			m_mtlId2[i] = m_svMtl[i]->GetAmbientMap()->texid;
+
+
+		}
 		else
-		pISVmtl->SetAmbientMap(OVERLAPMASKREAR);
+		{
+			m_svMtl[i]->SetAmbientMap(OVERLAPMASKREAR);
+			m_mtlId[i] = m_svMtl[i]->GetAmbientMap()->texid;
+			m_svMtl[i]->SetAmbientMap(OVERLAYMASK2);
+			m_mtlId2[i] = m_svMtl[i]->GetAmbientMap()->texid;
+		}
 			
-    	AVMData::GetInstance()->m_cam_source->SetCameraSourceMask(pISVmtl->GetAmbientMap()->texid,i);	
-    
+    	AVMData::GetInstance()->m_cam_source->SetCameraSourceMask(m_mtlId[i],i);	
+        
     	pIEffect->InitShaderFromFile("Effect_SV", VertexName, FragShaderName, sizeof(SV_PARAM_CB), XR_VERTEX_LAYOUT_PNT, 0);
     	pIEffect->SetRenderDelegate(m_renderDelegate);
 	}
@@ -150,6 +164,30 @@ int CAvm3dViewNode::InitNode(IXrCore* pXrcore)
 
 int CAvm3dViewNode::UpdateNode()
 {
+	unsigned char currentViewStatus = 0;
+    CAvmRenderDataBase::GetInstance()->GetDisplayViewCmd(currentViewStatus);
+
+	switch(currentViewStatus)
+	{
+		case BMW_LEFT_VIEW:// chang an 左3D
+    	case BMW_RIGHT_VIEW:// chang an 右3D
+		case BMW_LEFT_FRONT_VIEW:
+		case BMW_RIGHT_FRONT_VIEW:
+		case BMW_LEFT_REAR_VIEW:
+		case BMW_RIGHT_REAR_VIEW:
+		for(int i =0;i<4;i++)
+		{
+			AVMData::GetInstance()->m_cam_source->SetCameraSourceMask(m_mtlId[i],i);	
+		}		
+		break;
+		default:
+		for(int i =0;i<4;i++)
+		{
+			AVMData::GetInstance()->m_cam_source->SetCameraSourceMask(m_mtlId2[i],i);	
+		}
+		break;
+	}
+
 	return AVM_3DVIEW_NORMAL;
 }
 int CAvm3dViewNode::SetVisibility(unsigned char pVisibilityFlag)
