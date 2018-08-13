@@ -237,9 +237,9 @@ int CSVS302PlaybackTab::HmiInitSvresList()
     m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_turnright_r.dds", XR_RES);
     m_hmiSvresFileName[index] = new char[50];
-    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_buckle_r.dds", XR_RES);
-    m_hmiSvresFileName[index] = new char[50];
     sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_buckle_green.dds", XR_RES);
+    m_hmiSvresFileName[index] = new char[50];
+    sprintf(m_hmiSvresFileName[index++], "%sS302/statebar_buckle_r.dds", XR_RES);
     
     m_currentSvresNum = index;
 }
