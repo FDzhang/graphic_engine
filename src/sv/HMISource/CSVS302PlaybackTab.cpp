@@ -308,7 +308,7 @@ int CSVS302PlaybackTab::SetStateBarVal(void *ptr)
     m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BRAKE] = (recCanMsg->BrakePedalStatus > 1) ? 0 : recCanMsg->BrakePedalStatus;
     m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNLEFT] = (recCanMsg->LeftTurnLampStatus > 1) ? 0 : recCanMsg->LeftTurnLampStatus;
     m_buttonStatus[S302_PLAYBACK_INDEX_STABR_TURNRIGHT] = (recCanMsg->RightTurnLampStatus > 1) ? 0 : recCanMsg->RightTurnLampStatus;
-    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BUCKLE] = (recCanMsg->DriverBuckleSwitchStatus > 1) ? 0 : recCanMsg->DriverBuckleSwitchStatus; 
+    m_buttonStatus[S302_PLAYBACK_INDEX_STABR_BUCKLE] = (recCanMsg->DriverBuckleSwitchStatus > 0) ? 1 : 0; 
 
     sprintf(m_textEditData[S302_TIME_TEXT].textContent[0],"%04d-%02d-%02d  %02d:%02d:%02d",recCanMsg->TimeYear,recCanMsg->TimeMon,recCanMsg->TimeDay,recCanMsg->TimeHour,recCanMsg->TimeMin,recCanMsg->TimeSec);
 
