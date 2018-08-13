@@ -171,10 +171,10 @@ int CAvm3dViewNode::UpdateNode()
 	{
 		case BMW_LEFT_VIEW:// chang an 左3D
     	case BMW_RIGHT_VIEW:// chang an 右3D
-		case BMW_LEFT_FRONT_VIEW:
-		case BMW_RIGHT_FRONT_VIEW:
-		case BMW_LEFT_REAR_VIEW:
-		case BMW_RIGHT_REAR_VIEW:
+		//case BMW_LEFT_FRONT_VIEW:
+		//case BMW_RIGHT_FRONT_VIEW:
+		//case BMW_LEFT_REAR_VIEW:
+		//case BMW_RIGHT_REAR_VIEW:
 		for(int i =0;i<4;i++)
 		{
 			AVMData::GetInstance()->m_cam_source->SetCameraSourceMask(m_mtlId[i],i);	

@@ -1103,12 +1103,12 @@ int CAvmViewControlModel::Avm3dViewMode(unsigned char pViewIndex)
 		{LEFT_MIRROR_VIEW,                  0.0,        400.0,  560.0,  0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
 		{RIGHT_MIRROR_VIEW,                 0.0,        400.0,  560.0,      0.0, 400.0, 1120.0, 0.0, 90.0, 0.0, CameraPosition_BOSCH_Rear_Top_REVERSE},
 	 	{BMW_REAR_VIEW,                     0.0,        0.0,    -3600.0,    0.0,    0.0, -300.0, 0.0, 25.0 , 0.0, CameraPosition_BMW_3D_Rear},
-		{BMW_LEFT_VIEW,                     0.0,    -398.0, -4000.0, 0.0, -398.0, 0.0, 270.0, 15.0, 0.0, CameraPosition_BMW_Left}, //left 3d
-		{BMW_RIGHT_VIEW,                    0.0,    -398.0, -4000.0, 0.0, -398.0, 0.0,  90.0, 15.0, 0.0, CameraPosition_BMW_Right}, //right 3d
- 		{BMW_LEFT_FRONT_VIEW,               0.0,    -398.0, -4000.0, 0.0, -398.0, 0.0, 315.0, 15.0, 0.0, CameraPosition_BMW_Left_Front}, //front left 3d
- 		{BMW_RIGHT_FRONT_VIEW,              0.0,    -398.0, -4000.0, 0.0, -398.0, 0.0,  45.0, 15.0, 0.0, CameraPosition_BMW_Right_Front}, //front right 3d
-		{BMW_LEFT_REAR_VIEW,                0.0,    -398.0, -4000.0, 0.0, -398.0, 0.0, 225.0, 15.0, 0.0, CameraPosition_BMW_Left_Rear}, //rear left 3d
-		{BMW_RIGHT_REAR_VIEW,               0.0,    -398.0, -4000.0, 0.0, -398.0, 0.0, 135.0, 15.0, 0.0, CameraPosition_BMW_Right_Rear}, //rear right 3d
+		{BMW_LEFT_VIEW,                     0.0,    -600.0, -4000.0, 0.0, -600.0, 0.0, 270.0, 15.0, 0.0, CameraPosition_BMW_Left}, //left 3d
+		{BMW_RIGHT_VIEW,                    0.0,    -600.0, -4000.0, 0.0, -600.0, 0.0,  90.0, 15.0, 0.0, CameraPosition_BMW_Right}, //right 3d
+ 		{BMW_LEFT_FRONT_VIEW,               0.0,    -600.0, -4000.0, 0.0, -600.0, 0.0, 315.0, 15.0, 0.0, CameraPosition_BMW_Left_Front}, //front left 3d
+ 		{BMW_RIGHT_FRONT_VIEW,              0.0,    -600.0, -4000.0, 0.0, -600.0, 0.0,  45.0, 15.0, 0.0, CameraPosition_BMW_Right_Front}, //front right 3d
+		{BMW_LEFT_REAR_VIEW,                0.0,    -600.0, -4000.0, 0.0, -600.0, 0.0, 225.0, 15.0, 0.0, CameraPosition_BMW_Left_Rear}, //rear left 3d
+		{BMW_RIGHT_REAR_VIEW,               0.0,    -600.0, -4000.0, 0.0, -600.0, 0.0, 135.0, 15.0, 0.0, CameraPosition_BMW_Right_Rear}, //rear right 3d
 	    {BMW_REAR_3D_VIEW,                  0.0,    -448.0, -3800.0, 0.0, -448.0, 0.0,   0.0, 18.0, 0.0, CameraPosition_BMW_3D_Rear}, //front 3d
 		//{BMW_REAR_3D_VIEW, 0.0, 0.0, 3000.0, 0.0, 0.0, -600.0, 0.0, 22.0 , 0.0, CameraPosition_BMW_3D_Rear},
 
