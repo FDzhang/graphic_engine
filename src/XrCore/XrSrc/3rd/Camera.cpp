@@ -175,7 +175,7 @@ void Camera::perspective(float fovx, float aspect, float znear, float zfar)
 
 	updateProjectionMatrix();
 }
-
+#if 1
 void Camera::updateProjectionMatrix()
 {
     float e = 1.0f / tanf(degreesToRadians(m_fovx) / 2.0f);
@@ -219,6 +219,79 @@ void Camera::updateProjectionMatrix()
 	}
 
 }
+#else
+
+void Camera::updateProjectionMatrix()
+{
+    float e = 1.0f / tanf(degreesToRadians(m_fovx) / 2.0f);
+    float aspectInv = 1.0f / m_aspectRatio;
+    float fovy = 2.0f * atanf(aspectInv / e);
+    float xScale = 1.0f / tanf(0.5f * fovy);
+    float yScale = xScale / aspectInv;
+#if 0
+    m_projMatrix[0][0] = xScale;
+    m_projMatrix[0][1] = 0.0f;
+    m_projMatrix[0][2] = 0.0f;
+    m_projMatrix[0][3] = 0.0f;
+
+    m_projMatrix[1][0] = 0.0f;
+    m_projMatrix[1][1] = yScale;
+    m_projMatrix[1][2] = 0.0f;
+    m_projMatrix[1][3] = 0.0f;
+
+    m_projMatrix[2][0] = 0.0f;
+    m_projMatrix[2][1] = 0.0f;
+    
+    m_projMatrix[2][3] = -1.0f;
+
+    m_projMatrix[3][0] = 0.0f;
+    m_projMatrix[3][1] = 0.0f;
+    
+    m_projMatrix[3][3] = 0.0f;
+
+#ifdef USE_DX11
+		m_projMatrix[2][2] = (m_zfar) / (m_znear - m_zfar);
+		m_projMatrix[3][2] = (m_zfar * m_znear) / (m_znear - m_zfar);
+#else
+		m_projMatrix[2][2] = (m_zfar + m_znear) / (m_znear - m_zfar);
+		m_projMatrix[3][2] = (2.0f * m_zfar * m_znear) / (m_znear - m_zfar);
+#endif
+
+	if (!m_rh)
+	{
+		m_projMatrix[2][2] = m_projMatrix[2][2]*(-1);
+		m_projMatrix[2][3] = f2vt(1);
+	}
+#endif
+
+   float n= m_znear;
+   float f = m_zfar;
+   float r = n*tanf(degreesToRadians(m_fovx) / 2.0f);
+   float t = r*m_aspectRatio;
+
+m_projMatrix[0][0] = n/r;
+m_projMatrix[0][1] = 0.0f;
+m_projMatrix[0][2] = 0.0f;
+m_projMatrix[0][3] = 0.0f;
+
+m_projMatrix[1][0] = 0.0f;
+m_projMatrix[1][1] = n/t;
+m_projMatrix[1][2] = 0.0f;
+m_projMatrix[1][3] = 0.0f;
+
+m_projMatrix[2][0] = 0.0f;
+m_projMatrix[2][1] = 0.0f;
+m_projMatrix[2][2] = -(f+n)/(f-n);
+
+m_projMatrix[2][3] = -2*f*n/(f-n);
+
+m_projMatrix[3][0] = 0.0f;
+m_projMatrix[3][1] = 0.0f;
+m_projMatrix[3][2] = -1.0f;
+m_projMatrix[3][3] = 0.0f;
+   
+}
+#endif
 
 void Camera::RotateAround(float headingDegrees, float pitchDegrees)
 {

@@ -53,6 +53,12 @@
  #define SCALE_3D_TO_2D_Y   SCALE_TEST
  #define SCALE_3D_TO_2D_Z   SCALE_TEST
 
+#define LINEAR_MODE 0
+
+ #define FRONT_LINEAR_CAMERA_HEIGHT 960
+ #define FRONT_LINEAR_CAMERA_WIDTH  1280
+ #define FRONT_LINEAR_CAMERA_HFOV   20
+ #define FRONT_LINEAR_CAMERA_VFOV   15
 /*===========================================================================*\
  * Local Type Declarations
 \*===========================================================================*/
@@ -60,7 +66,7 @@
 /*===========================================================================*\
  * External Object Definitions
 \*===========================================================================*/
-
+extern "C" FLT_T Cam_Lut_Linear[];
 /*===========================================================================*\
  * Local Object Definitions
 \*===========================================================================*/
@@ -79,6 +85,30 @@
 \*===========================================================================*/
 
 AVMData* AVMData::m_pAVMData;
+
+void _CamRay2ViewRay(FLT_T ray[3], const Cam_Model *cam)
+{
+    FLT_T r[3];
+    if(cam->_is_view_rotated)
+    {
+        r[0] = cam->_inv_view_R[0] * ray[0] + cam->_inv_view_R[1] * ray[1] + cam->_inv_view_R[2] * ray[2];
+        r[1] = cam->_inv_view_R[3] * ray[0] + cam->_inv_view_R[4] * ray[1] + cam->_inv_view_R[5] * ray[2];
+        r[2] = cam->_inv_view_R[6] * ray[0] + cam->_inv_view_R[7] * ray[1] + cam->_inv_view_R[8] * ray[2];
+        ray[0] = r[0]; ray[1] = r[1]; ray[2] = r[2];
+    }
+}
+
+void _ViewRay2CamRay(FLT_T ray[3], const Cam_Model *cam)
+{
+    FLT_T t[3];
+    if(cam->_is_view_rotated)
+    {
+        t[0] = cam->_view_R[0] * ray[0] + cam->_view_R[1] * ray[1] + cam->_view_R[2] * ray[2];
+        t[1] = cam->_view_R[3] * ray[0] + cam->_view_R[4] * ray[1] + cam->_view_R[5] * ray[2];
+        t[2] = cam->_view_R[6] * ray[0] + cam->_view_R[7] * ray[1] + cam->_view_R[8] * ray[2];
+        ray[0] = t[0]; ray[1] = t[1]; ray[2] = t[2];
+    }
+}
 
 AVMData::AVMData()
 {
@@ -199,17 +229,191 @@ void AVMData::InitConfig(SV_DATA_CONFIG_T config)
 	m_pAVMData->m_Veh_Data = config.vehicle_para;
     m_pAVMData->m_vehParam = config.pSmc->veh_param;
     m_pAVMData->m_smc = config.pSmc;
-   
-}
-void AVMData::CalcUVTextureSV(float *pWorld,float *texture,int chann)
-{
+    if(LINEAR_MODE)
+    {
+        InitLinearCameraModel(front_camera_index);
+		InitLinearCameraModel(rear_camera_index);
 
+		InitLinearCameraModel(left_camera_index);
+
+		InitLinearCameraModel(right_camera_index);
+    }
+}
+void AVMData::InitLinearCameraModel(int camera_index)
+{
+    Cam_Model *pRealCam;
+    float prsource[3];
+	float ptsource[3];
+	
+	AVMData::GetInstance()->m_exParam->GetCameraPos(ptsource,camera_index);	
+	AVMData::GetInstance()->m_exParam->GetCameraAngle(prsource,camera_index);
+    pRealCam = AVMData::GetInstance()->m_camInstrinct->GetFullCameraModel(camera_index,prsource,ptsource);
+    AVMData::GetInstance()->m_pFishCam[camera_index] = pRealCam;
+    
+	AVMData::GetInstance()->m_pLinearCam[camera_index] = new Cam_Model;
+ 	Cam_Init(AVMData::GetInstance()->m_pLinearCam[camera_index], 
+		FRONT_LINEAR_CAMERA_WIDTH,FRONT_LINEAR_CAMERA_HEIGHT,
+		FRONT_LINEAR_CAMERA_WIDTH/2.0, FRONT_LINEAR_CAMERA_HEIGHT/2.0, 
+		1, 0, 0, 
+		Cam_Lut_Linear,
+		FRONT_LINEAR_CAMERA_HFOV*deg2rad, 
+		FRONT_LINEAR_CAMERA_VFOV*deg2rad, 
+		true, 
+		prsource, 
+		ptsource
+		);
+	float a[3];
+    a[0] = -0.5; a[1] = 0.0; a[2] = -0.0;
+	Cam_UpdateViewRotation(AVMData::GetInstance()->m_pLinearCam[camera_index], a);
+
+	return ;
+}
+void AVMData::CvtFishEyeCoord2LinearCoord(float in_fish_coord[2],float out_linear_coord[2],int camera_index)
+{
+	FLT_T ray[3];
+    Cam_Model_Intrinsic *pFishCam;
+	
+	AVMData::GetInstance()->m_camInstrinct->GetCameraInstrinct(&pFishCam,camera_index);
+	Cam_MapImagePoint2CamRay(ray,in_fish_coord,pFishCam);
+	_CamRay2ViewRay(ray, AVMData::GetInstance()->m_pFishCam[camera_index]);
+	_ViewRay2CamRay(ray, AVMData::GetInstance()->m_pLinearCam[camera_index]);
+	Cam_MapCamRay2ImagePoint(out_linear_coord,ray,&(AVMData::GetInstance()->m_pLinearCam[camera_index]->cam_int));
+	
+    return;
+}
+
+void AVMData::CvtLinearCoord2FishEyeCoord(float in_linear_coord[2],float out_fish_coord[2],int camera_index)
+{
+	FLT_T ray[3];
+    Cam_Model_Intrinsic *pFishCam;
+	
+	AVMData::GetInstance()->m_camInstrinct->GetCameraInstrinct(&pFishCam,camera_index);
+	Cam_MapImagePoint2CamRay(ray,in_linear_coord,&(AVMData::GetInstance()->m_pLinearCam[camera_index]->cam_int));
+	_CamRay2ViewRay(ray, AVMData::GetInstance()->m_pLinearCam[camera_index]);
+	_ViewRay2CamRay(ray, AVMData::GetInstance()->m_pFishCam[camera_index]);
+	Cam_MapCamRay2ImagePoint(out_fish_coord,ray,pFishCam);
+	
+    return;
+}
+void AVMData::CalcUVTextureSV(float *pWorldin,float *texture,int chann)
+{
+#if 1 - LINEAR_MODE
 	XRVec4 WorldCoord,InCamCoord;
 	float pt3d[3];
     double image2D[2],world3D[3];
 	float *temp_trans;
 	XRMat4 *uvTransform;
+	float pWorld[3];
 
+#if 1
+	pWorld[0] = (0.004613610149942*pWorldin[2] * pWorldin[2] / 1000 / 1000 + 1.666666666666667)*pWorldin[0];
+	  // pWorld[0]=pWorldin[0]*kp;
+	pWorld[1]=pWorldin[1];
+	pWorld[2]=pWorldin[2];
+#else
+	float kp;
+	int turn_point = 250;
+	   if(chann == rear_camera_index|| chann == left_camera_index)
+	   {
+		   if (pWorldin[2] > turn_point)
+		   {
+			  kp = (1.0 + 0.3*(pWorldin[2] - turn_point) / (850 - turn_point));
+
+		   }
+		   else if (pWorldin[2] < -turn_point)
+		   {
+			  // kp = (2 - (pWorldin[2] + 850)*1 / (850 - turn_point));
+
+		   }
+		   else
+		   {
+
+		   }
+		   //front
+		   //kp = (1.0 + (pWorldin[2] + 250)*0.3 / (850 + 250));
+		   //rear
+		   kp = (1.3 - (pWorldin[2] + 850)*0.3 / (850 +250));
+	   }
+	   else if (chann == front_camera_index|| chann == right_camera_index)
+	   {
+		   if (pWorldin[2] > turn_point)
+		   {
+			 //  kp = (1.0 + (pWorldin[2] - turn_point)*1 / (850 - turn_point));
+		   }
+		   else if (pWorldin[2] < -turn_point)
+		   {
+			   kp = (1.3 - 0.3*(pWorldin[2] + 850)*1 / (850 + turn_point));
+		   }
+		   else
+		   {
+
+		   }
+		   //front
+		   //kp = (1.3 - (pWorldin[2] + 850)*0.3 / (850 +250));
+		   //rear
+		   kp = (1.0 + (pWorldin[2] + 250)*0.3 / (850 + 250));
+	   }
+
+	pWorld[0]=pWorldin[0]*kp;
+	   pWorld[1]=pWorldin[1];
+	   pWorld[2]=pWorldin[2];
+#endif	   
+	WorldCoord = XRVec4::XRVec4(pWorld[0],pWorld[1],pWorld[2],1.0);
+
+	m_pAVMData->m_exParam->GetTransformMatrix(&uvTransform,chann);
+	m_pAVMData->m_exParam->GetInnerModelTransform(&temp_trans,chann);
+	InCamCoord = (*uvTransform)*(WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
+
+	pt3d[0] = InCamCoord.x;
+	pt3d[1] = InCamCoord.y;
+	pt3d[2] = InCamCoord.z;
+
+   m_pAVMData->m_camInstrinct->MapCamRay2ImagePointGpu(pt3d,texture,chann);
+#else
+  	XRVec4 WorldCoord,InCamCoord;
+	float pt3d[3];
+    double image2D[2],world3D[3];
+	float *temp_trans;
+	XRMat4 *uvTransform;
+
+    float current_vanish_point=230.f/720.f;
+    float expect_vanish_point =280.f/720.f;
+    float border_row = 350.f/720.f;
+    float linear_border_row = 442.f; //590 //432  //442
+	float linear_border_column = 442.0f;
+    float linear_expect_vanish_pt = 380.f; //380   //300 //210 //372 //380
+    float linear_current_vanish_pt = 163.f; //163
+    float texture_border[2];
+    float scale;
+    float temp;
+    float fish_coord_point[2];
+    float linear_coord_point[2];
+    float linear_coord_border[2];
+    float camera_width,camera_height;
+    float temp_texture[2];
+    float pWorld[3];
+    float max_scale =0.5;
+    float height =200;
+    float portion;
+
+    pWorld[0]=pWorldin[0];
+    pWorld[1]=pWorldin[1];
+    pWorld[2]=pWorldin[2];
+    if(LINEAR_MODE)
+    {
+        if(chann == front_camera_index &&(pWorld[1]>-560))
+        {
+            //pWorld[1] = pWorld[1] + 1.05* (pWorld[1] + 560);
+        }    
+		if(chann == front_camera_index &&(pWorldin[0]<0))
+		{
+		   //pWorldin[0] = pWorldin[0] + 0.9* (pWorldin[0]);
+		} 
+		else if(chann == front_camera_index &&(pWorldin[0]>0))
+		{
+			//pWorldin[0] = pWorldin[0] - 0.6* (pWorldin[0]);
+		}
+    }
 	WorldCoord = XRVec4::XRVec4(pWorld[0],pWorld[1],pWorld[2],1.0);
 
 	m_pAVMData->m_exParam->GetTransformMatrix(&uvTransform,chann);
@@ -222,6 +426,184 @@ void AVMData::CalcUVTextureSV(float *pWorld,float *texture,int chann)
 
    m_pAVMData->m_camInstrinct->MapCamRay2ImagePointGpu(pt3d,texture,chann);
 
+    if(LINEAR_MODE)
+    {
+        if(chann == front_camera_index)   //front_camera_index
+        {
+            AVMData::GetInstance()->m_camInstrinct->GetCameraWidth(&camera_width,front_camera_index);	
+            AVMData::GetInstance()->m_camInstrinct->GetCameraHeight(&camera_height,front_camera_index);
+            fish_coord_point[0]= texture[0]*camera_width; 
+            fish_coord_point[1]= texture[1]*camera_height;
+            CvtFishEyeCoord2LinearCoord(fish_coord_point,linear_coord_point,chann);
+
+#if 1
+            linear_border_row = 880;  //600
+			linear_border_column = 880;  //600
+			if((chann == front_camera_index 
+				||rear_camera_index == chann)
+				&&(linear_coord_point[1]>-540))
+			{
+				//linear_coord_point[0] = (1.0-0.7*((linear_coord_point[1]+540)/(500+540)))*linear_coord_point[0];// + 0.85* (pWorld[1] + 540);
+				//linear_coord_point[1] = -540 + 0.9*(linear_coord_point[1] + 540);
+				//linear_coord_point[1] = linear_coord_point[1] + 0.2 * linear_coord_point[1];
+			}
+            if(linear_coord_point[1]<linear_border_row)
+            {
+                scale = 1.0 - (linear_border_row - linear_coord_point[1]) * 0.002;
+                if(scale < 0.85) scale = 0.85;
+                scale = 0.85;  //0.2857
+                linear_coord_point[1]=linear_border_row-scale*(linear_border_row - linear_coord_point[1]);
+
+				scale = 1.0 - (linear_border_column - linear_coord_point[0]) * 0.002;
+                if(scale < 0.45) scale = 0.45;
+                scale = 0.45;  //0.2857
+                //linear_coord_point[0]=linear_border_column-scale*(linear_border_column - linear_coord_point[0]);
+    
+
+                CvtLinearCoord2FishEyeCoord(linear_coord_point, fish_coord_point,chann);
+                texture[0] = fish_coord_point[0] / camera_width;
+                texture[1] = fish_coord_point[1] / camera_height;
+				//texture[0] = 0;
+				/*if(texture[0] < 0.5)
+                {
+					texture[0] = texture[0] + 0.01;
+				}
+				else
+				{
+					texture[0] = texture[0] + 0.03;
+				}*/
+           }
+		}	
+            
+#endif
+		if(chann == left_camera_index)   //front_camera_index
+        {
+            AVMData::GetInstance()->m_camInstrinct->GetCameraWidth(&camera_width,chann);	
+            AVMData::GetInstance()->m_camInstrinct->GetCameraHeight(&camera_height,chann);
+            fish_coord_point[0]= texture[0]*camera_width; 
+            fish_coord_point[1]= texture[1]*camera_height;
+            CvtFishEyeCoord2LinearCoord(fish_coord_point,linear_coord_point,chann);
+
+#if 1
+            linear_border_row = 880;  //600
+			linear_border_column = 880;  //600
+            if(linear_coord_point[1]<linear_border_row)
+            {
+                scale = 1.0 - (linear_border_row - linear_coord_point[1]) * 0.002;
+  				float rate_raw = 0.95;
+                if(scale < rate_raw) scale = rate_raw;
+                scale = rate_raw;  //0.2857
+                linear_coord_point[1]=linear_border_row-scale*(linear_border_row - linear_coord_point[1]);
+
+				scale = 1.0 - (linear_border_column - linear_coord_point[0]) * 0.002;
+                if(scale < 0.45) scale = 0.45;
+                scale = 0.45;  //0.2857
+                //linear_coord_point[0]=linear_border_column-scale*(linear_border_column - linear_coord_point[0]);
+    
+
+                CvtLinearCoord2FishEyeCoord(linear_coord_point, fish_coord_point,chann);
+                texture[0] = fish_coord_point[0] / camera_width;
+                texture[1] = fish_coord_point[1] / camera_height;
+				//texture[0] = 0;
+				/*if(texture[0] < 0.5)
+                {
+					texture[0] = texture[0] + 0.01;
+				}
+				else
+				{
+					texture[0] = texture[0] + 0.03;
+				}*/
+           }
+			
+		}   
+#endif
+		if(chann == right_camera_index)   //front_camera_index
+        {
+            AVMData::GetInstance()->m_camInstrinct->GetCameraWidth(&camera_width,chann);	
+            AVMData::GetInstance()->m_camInstrinct->GetCameraHeight(&camera_height,chann);
+            fish_coord_point[0]= texture[0]*camera_width; 
+            fish_coord_point[1]= texture[1]*camera_height;
+            CvtFishEyeCoord2LinearCoord(fish_coord_point,linear_coord_point,chann);
+
+#if 1
+            linear_border_row = 880;  //600
+			linear_border_column = 880;  //600
+            if(linear_coord_point[1]<linear_border_row)
+            {
+                scale = 1.0 - (linear_border_row - linear_coord_point[1]) * 0.002;
+  				float rate_raw = 0.95;
+                if(scale < rate_raw) scale = rate_raw;
+                scale = rate_raw;  //0.2857
+                linear_coord_point[1]=linear_border_row-scale*(linear_border_row - linear_coord_point[1]);
+
+				scale = 1.0 - (linear_border_column - linear_coord_point[0]) * 0.002;
+                if(scale < 0.45) scale = 0.45;
+                scale = 0.45;  //0.2857
+                //linear_coord_point[0]=linear_border_column-scale*(linear_border_column - linear_coord_point[0]);
+    
+
+                CvtLinearCoord2FishEyeCoord(linear_coord_point, fish_coord_point,chann);
+                texture[0] = fish_coord_point[0] / camera_width;
+                texture[1] = fish_coord_point[1] / camera_height;
+				//texture[0] = 0;
+				/*if(texture[0] < 0.5)
+                {
+					texture[0] = texture[0] + 0.01;
+				}
+				else
+				{
+					texture[0] = texture[0] + 0.03;
+				}*/
+           }
+			
+            
+#endif
+        }
+		if(chann == rear_camera_index)   //front_camera_index
+        {
+            AVMData::GetInstance()->m_camInstrinct->GetCameraWidth(&camera_width,chann);	
+            AVMData::GetInstance()->m_camInstrinct->GetCameraHeight(&camera_height,chann);
+            fish_coord_point[0]= texture[0]*camera_width; 
+            fish_coord_point[1]= texture[1]*camera_height;
+            CvtFishEyeCoord2LinearCoord(fish_coord_point,linear_coord_point,chann);
+
+#if 1
+            linear_border_row = 880;  //600
+			linear_border_column = 880;  //600
+				
+			scale = 1.0 - (linear_border_column - linear_coord_point[0]) * 0.002;
+			float rate_raw = 0.95;
+			if(scale < rate_raw) scale = rate_raw;
+			scale = rate_raw;  //0.2857
+            linear_coord_point[0]=linear_border_column-scale*(linear_border_column - linear_coord_point[0]);
+
+            if(linear_coord_point[1]<linear_border_row)
+            {
+                scale = 1.0 - (linear_border_row - linear_coord_point[1]) * 0.002;
+                float rate_raw = 0.95;
+                if(scale < rate_raw) scale = rate_raw;
+                scale = rate_raw;  //0.2857
+                linear_coord_point[1]=linear_border_row-scale*(linear_border_row - linear_coord_point[1]);
+
+                CvtLinearCoord2FishEyeCoord(linear_coord_point, fish_coord_point,chann);
+                texture[0] = fish_coord_point[0] / camera_width;
+                texture[1] = fish_coord_point[1] / camera_height;
+				//texture[0] = 0;
+				/*if(texture[0] < 0.5)
+                {
+					texture[0] = texture[0] + 0.01;
+				}
+				else
+				{
+					texture[0] = texture[0] + 0.03;
+				}*/
+           }
+			
+            
+#endif
+        }
+    }
+#endif
 
 
 }

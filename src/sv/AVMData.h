@@ -153,7 +153,13 @@ public:
 		AVMCANData *m_p_can_data;
 		ICameraSourceRender *m_cam_source;
 		AVMProcessingInfo *m_process_info;
+ 
+ 	Cam_Model *m_pFishCam[4];
 
+    Cam_Model *m_pLinearCam[4];
+    static void CvtLinearCoord2FishEyeCoord(float in_linear_coord[2],float out_fish_coord[2],int camera_index);
+    static void CvtFishEyeCoord2LinearCoord(float in_fish_coord[2],float out_linear_coord[2],int camera_index);
+    static void InitLinearCameraModel(int camera_index);
 private:
     AVMData();
 
