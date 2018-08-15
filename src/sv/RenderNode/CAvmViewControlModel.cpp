@@ -247,7 +247,7 @@ int CAvmViewControlModel::InitViewNode()
 	CAvmRenderDataBase::GetInstance()->SetStitchViewCameraParams(&m_stitchCameraParams);
 	CAvmRenderDataBase::GetInstance()->SetSingleViewCameraParams(&m_stitchCameraParams);
 	m_objectViewCameraParams.fovx = 35;//10;//35;
-	m_objectViewCameraParams.aspect = 1.05;//1.23265302;//1.05;//1.28265302;
+	m_objectViewCameraParams.aspect = 1.23265302;//1.05;//1.28265302;
 	m_objectViewCameraParams.znear = 4.0f;//2.0f;
 	m_objectViewCameraParams.zfar = 12000;//100.0f;
 	CAvmRenderDataBase::GetInstance()->SetObjectViewCameraParams(&m_objectViewCameraParams);

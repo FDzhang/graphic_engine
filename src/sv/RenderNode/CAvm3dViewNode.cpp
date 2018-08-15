@@ -171,6 +171,8 @@ int CAvm3dViewNode::UpdateNode()
 	{
 		case BMW_LEFT_VIEW:// chang an 左3D
     	case BMW_RIGHT_VIEW:// chang an 右3D
+		//case FRONT_3D_VIEW:
+		//case BMW_REAR_3D_VIEW:
 		//case BMW_LEFT_FRONT_VIEW:
 		//case BMW_RIGHT_FRONT_VIEW:
 		//case BMW_LEFT_REAR_VIEW:
