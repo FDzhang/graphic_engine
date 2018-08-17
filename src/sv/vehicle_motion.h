@@ -32,7 +32,7 @@ typedef struct COMMON_VEHICLE_DATA_SIMPLE_T
 
 #include <math.h>
 
-#define CV_PI 3.1415926
+//#define CV_PI 3.1415926
 
 //struct tag
 //{

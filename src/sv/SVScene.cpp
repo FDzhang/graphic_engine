@@ -99,8 +99,8 @@ char CARWINDOWMODEL[] = XR_RES"envision_window.mqo";
 
 char CARLIGHTTEX[]=XR_RES"envision_light.tga";
 char CARINTTEX[]=XR_RES"envision_int_tex.bmp";
-char *CARDOORMODEL[4] = {XR_RES"envision_driver_door.mqo",XR_RES"envision_driver_assist_door.mqo",XR_RES"envision_left_rear.mqo",XR_RES"envision_right_rear.mqo"};
-char *CARDOORWINDOWMODEL[4] = {XR_RES"envision_driver_door_w.mqo",XR_RES"envision_driver_assist_door_w.mqo",XR_RES"envision_left_rear_w.mqo",XR_RES"envision_right_rear_w.mqo"};
+const char *CARDOORMODEL[4] = {XR_RES"envision_driver_door.mqo",XR_RES"envision_driver_assist_door.mqo",XR_RES"envision_left_rear.mqo",XR_RES"envision_right_rear.mqo"};
+const char *CARDOORWINDOWMODEL[4] = {XR_RES"envision_driver_door_w.mqo",XR_RES"envision_driver_assist_door_w.mqo",XR_RES"envision_left_rear_w.mqo",XR_RES"envision_right_rear_w.mqo"};
 char CARTEX[] = XR_RES"envision_white.tga";
 char RX5TEXMASK[] = XR_RES"envision_mask.bmp";
 char CARLIGHTON[]=XR_RES"envision_light_on.tga";
@@ -194,7 +194,7 @@ char WAVETEX[] = XR_RES"wave.bmp";
 char GREENTEX[] = XR_RES"green.bmp";
 char IFVWAVETEX[]=XR_RES"ifvwave.bmp";
 
-char *RADARALARMTEX[4] = {XR_RES"red.dds",XR_RES"orange.dds",XR_RES"yellow.dds",XR_RES"green.dds"};
+const char *RADARALARMTEX[4] = {XR_RES"red.dds",XR_RES"orange.dds",XR_RES"yellow.dds",XR_RES"green.dds"};
 
 #define _DATAPGSPARA_ XR_RES"pgs.txt"
 
@@ -315,7 +315,7 @@ void SVScene::InitMirrorNode(BEV_CONFIG_T pConfig , ISceneNode *pNode,float *pPo
 	IRenderEffect* pIEffect;
 	int SV2DMTL;
 
-	char *MeshName[]={"M","b","l","r"};
+	const char *MeshName[]={"M","b","l","r"};
 	char VertexName[MAX_NAME_LENGTH];
 	char FragShaderName[MAX_NAME_LENGTH];
     AVMData::GetInstance()->m_cam_source->GetShaderName(VertexName,SV_3D_VERTEX_SHADER);
@@ -1672,8 +1672,8 @@ void SVScene::Init2DAVMNodeRT()
 	unsigned int BufferSize;
 
 
-	char *MeshName[eCarImageMesh+1]={"FrontMesh","RearMesh","LeftMesh","RightMesh","FrontLeftMesh","FrontRightMesh","RearLeftMesh","RearRightMesh","Car"};
-	char *Model[eCarImageMesh+1]={"0","1","2","3","4","5","6","7","8"};
+	const char *MeshName[eCarImageMesh+1]={"FrontMesh","RearMesh","LeftMesh","RightMesh","FrontLeftMesh","FrontRightMesh","RearLeftMesh","RearRightMesh","Car"};
+	const char *Model[eCarImageMesh+1]={"0","1","2","3","4","5","6","7","8"};
 
 	int rtid = rm->CreateRenderTarget(XrGetScreenWidth()*0.3, XrGetScreenHeight(), XR_R8G8B8A8, XR_NONE, &m_lisenceRT);
 
@@ -2282,7 +2282,7 @@ void SVScene::InitSingleViewNode(GlSV2D *pSV2DData)
 	unsigned int BufferSize;
 
 
-	char *MeshName[]={"f","b","l","r"};
+	const char *MeshName[]={"f","b","l","r"};
 
     float pos[3];
     char VertexName[MAX_NAME_LENGTH];
@@ -2410,7 +2410,7 @@ void SVScene::InitAliControlViewNode(BEV_CONFIG_T bev_config)
 	int groundId;
 	int lisenceMeshId ;
 
-	char *MeshName[]={"f","b","l","r"};
+	const char *MeshName[]={"f","b","l","r"};
 
     float pos[3];
 
@@ -2500,7 +2500,7 @@ void SVScene::Init2DAVMNodeRTDraw(int cameraId)
 	Int32 tempmaterialid,modelid;
 	IMesh *pStichMesh;
     INode *pStichNode,*pNode;
-	char *MeshName[]={"f","b","l","r"};
+	const char *MeshName[]={"f","b","l","r"};
     ICamera*pCamera;
 	float pos[3];
     IMaterial* pMtl;
@@ -2595,8 +2595,8 @@ void SVScene::Init2DAVMNodeRTDraw(int cameraId)
 
 void SVScene::InitRadarWaveMesh(float radius, int mesh_longi,int mesh_lati,int angle,float point_z,IMesh **pMesh,INode **pNode,float wavecolor[],char tex[],float speed)
 {
-#define PlaneScaleX 3000.0
-#define PlaneScaleY 7000.0
+//#define PlaneScaleX 3000.0
+//#define PlaneScaleY 7000.0
 
 
 	IMaterial*			temp_material;
@@ -2609,7 +2609,7 @@ void SVScene::InitRadarWaveMesh(float radius, int mesh_longi,int mesh_lati,int a
 
 	// buffer file %s,line %d,",__FILE__,__LINE__);
 	int slotId=0, x, y,text;
-#define	UIZ1  -5900.0f
+//#define	UIZ1  -5900.0f
 //#define	UIZ1  -1100.0f
 
 
@@ -2695,7 +2695,7 @@ void SVScene::InitRadarWaveMesh(float radius, int mesh_longi,int mesh_lati,int a
 	(*pMesh)->LoadVertexFromArray(afVertices, XR_VERTEX_LAYOUT_PNT, mesh_longi*(mesh_lati+1)*2);
 	(*pMesh)->LoadIndexFromArray(afIndices, (mesh_lati)*(mesh_longi)*6*2);
 
-#define VIEW_Z 100
+//#define VIEW_Z 100
 
 
 	int modelId = m_objectNode->CreateModel(0, tempmaterialid, -1, InsertFlag_Default, 100, 100, VIEW_Z, 1000.0, pNode);
@@ -3094,12 +3094,12 @@ void SVScene::EnterMirrorView(Int32 pos)
    	{
 
 
-#define AT_X 240.5
-#define AT_Z -30
+//#define AT_X 240.5
+//#define AT_Z -30
 //#define AT_Z -20
 
 //#define AT_Y 100
-#define AT_Y -60
+//#define AT_Y -60
 
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(325, -60, -230);
@@ -3141,7 +3141,7 @@ void SVScene::EnterMirrorView(Int32 pos)
 
 #define SIDE_POS_FRONT_HIGH_SPEED  3500
 
-#define AT_Y  -100
+//#define AT_Y  -100
 void SVScene::EnterFreeView(Int32 pos)
 {
 	FadeInView(0);
@@ -3183,8 +3183,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
 	}
 	else if (pos == CameraPosition_Back) {
-#define AT_X 1900.0
-#define AT_Z 1000
+//#define AT_X 1900.0
+//#define AT_Z 1000
 		m_sceneCamera->SetPosition(-AT_X, 0, AT_Z);
 		m_sceneCamera->LookAt(000.0, 0, AT_Z);
 		m_objectCamera->SetPosition(-AT_X, 0, AT_Z);
@@ -3196,8 +3196,8 @@ void SVScene::EnterFreeView(Int32 pos)
 	}
 	else if (pos == CameraPosition_Front) {
 
-#define AT_X 1900.0
-#define AT_Z -1000
+//#define AT_X 1900.0
+//#define AT_Z -1000
         m_sceneCamera->SetPosition(-AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(000.0, 0, AT_Z);
         m_objectCamera->SetPosition(-AT_X, 0, AT_Z);
@@ -3208,8 +3208,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
 	}
 	else if (pos == CameraPosition_Left) {
-#define AT_X -SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X -SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT
         //#define AT_X -800.0
         //#define AT_Z 1500
 		m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3370,8 +3370,8 @@ void SVScene::EnterFreeView(Int32 pos)
     }
     else if(CameraPosition_Right_Front_Light == pos)
     {
-#define AT_X -SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT_HIGH_SPEED
+//#define AT_X -SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT_HIGH_SPEED
 #if 1
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
@@ -3391,10 +3391,10 @@ void SVScene::EnterFreeView(Int32 pos)
     }
     else if (pos == CameraPosition_BOSCH_Front) {
 
-#define AT_X 0.0
-#define AT_Z -20
+//#define AT_X 0.0
+//#define AT_Z -20
 //				#define AT_Z -20
-#define AT_Y -500
+//#define AT_Y -500
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
         m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3449,9 +3449,9 @@ void SVScene::EnterFreeView(Int32 pos)
     }
     else if (pos == CameraPosition_BOSCH_Rear_Top_REVERSE) {
 
-#define AT_X 0.0
-#define AT_Z 560
-#define AT_Y 1200
+//#define AT_X 0.0
+//#define AT_Z 560
+//#define AT_Y 1200
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
         m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);

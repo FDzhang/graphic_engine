@@ -10,14 +10,14 @@
 #include "GlSVLuminance.h"
 
 #define NONE_CHINESE_WORD 999
-typedef enum SceneMode {
+enum SceneMode {
     SceneMode_Free				= 0x00000000,
     SceneMode_Top               = 0x00000001,
     SceneMode_Cross             = 0x00000002,
     SceneMode_Pano              = 0x00000003,
 };
 
-typedef enum ProductList {
+enum ProductList {
     PRODUCT_BEV				= 0x00000000,
     PRODUCT_ESR             = 0x00000001,
      PRODUCT_IFV              = 0x00000002,
@@ -26,7 +26,7 @@ typedef enum ProductList {
 	PRODUCT_TOUR			  = 0x00000005,
     PRODUCT_AMOUNT
 };
-typedef enum ZoomList {
+enum ZoomList {
     ZOOM_IN				= 0x00000000,
     ZOOM_OUT             = 0x00000001,
 	ZOOM_TURN			 = 0x00000002,	
@@ -36,7 +36,7 @@ typedef enum ZoomList {
 	
     
 };
-typedef enum DirectCtrl {
+enum DirectCtrl {
     CTRL_BUTTON_FRONT			= 0x00000000,
     CTRL_BUTTON_REAR             = 0x00000001,
 	CTRL_BUTTON_LEFT			 = 0x00000002,	
@@ -44,7 +44,7 @@ typedef enum DirectCtrl {
     
 };
 
-typedef enum ProductionPosAdjust {
+enum ProductionPosAdjust {
     POS_X_POS,
 	POS_Y_POS,
 	POS_Z_POS,
@@ -63,7 +63,7 @@ typedef enum ProductionPosAdjust {
 	POS_ZOOM_OUT,
 };
 
-typedef enum CarColor {
+enum CarColor {
     RED_CAR				= 0x00000000,
     GREEN_CAR               = 0x00000001,
     WHITE_CAR             = 0x00000002,
@@ -71,7 +71,7 @@ typedef enum CarColor {
     
     PINK_CAR              = 0x00000004,
 };
-typedef enum CarModel {
+enum CarModel {
     CAR_CAR				= 0x00000000,
     CAR_SUV               = 0x00000001,
     CAR_VAN             = 0x00000002,
@@ -381,4 +381,4 @@ private:
 };
 
 
-#endif __SV_SCENE_H__
+#endif

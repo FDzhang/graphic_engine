@@ -193,7 +193,7 @@ static ISpirit* ZoomContentLayer=0;
 static ISpirit* CamDirLayer=0;
 static ISpirit* ModeSelLayer=0;
 
-static char* liscenceText[] = {
+static const char* liscenceText[] = {
 "1", "2", "3", "4","5", "6", "7", "8","9","0",
 "Q", "W", "E", "R","T", "Y", "U", "I","O","P", 
 "A", "S", "D", "F","G", "H", "J", "K","L",
@@ -1055,11 +1055,11 @@ private:
 static ADOnSettingsShowHide*	pADOnSettingsShowHide;
 
 
-static char* dockText[] = {
+static const char* dockText[] = {
 	"MODE", "ADJUST", "STYLE", "POSITION","SETTINGS", };
-static char* AlidockText[] = {
+static const char* AlidockText[] = {
 	"View Mode", "Camera Direction", "Style", "Menu","Zoom","CAN" };
-static char* buttonText[] = {
+static const char* buttonText[] = {
 	"FRONT",  "BACK", "LEFT", "RIGHT"};
 
 int SVUI::InitNode(BEV_CONFIG_T  pConfig,int width,int height)
@@ -1396,7 +1396,7 @@ void SVUI::TriggerChineseKeyboard(int Id)
 int SVUI::InitSideProductPanel()
 {
 
-	char *Text[5]={"WHEEL","TOUR","WHITE","GRAY","YELLOW"};
+	const char *Text[5]={"WHEEL","TOUR","WHITE","GRAY","YELLOW"};
 
     sideproductpanel = new CXrPanel(2);
 	
@@ -1510,7 +1510,7 @@ int SVUI::InitStylePanel()
 {
 	////////////////////////style panel////////////////////////
 	Int32 lid;
-	static char* styleText[] = {
+	static const char* styleText[] = {
 	"Color", "Model", "License", "Reset" };
 	
 	stylepanel = new CXrPanel(3);
@@ -1550,7 +1550,7 @@ int SVUI::InitStylePanelAli()
 {
 	////////////////////////style panel////////////////////////
 	Int32 lid;
-	static char* styleText[] = {
+	static const char* styleText[] = {
 	"Color", "Model", "Reset", "Reset" };
 	IActionTrigger* style_trigger_temp;
 	stylepanel = new CXrPanel(-1);
@@ -1587,7 +1587,7 @@ int SVUI::InitCamDirPanel()
 {
 	////////////////////////style panel////////////////////////
 	Int32 lid;
-	static char* styleText[] = {
+	static const char* styleText[] = {
 	"Front", "Rear", "Left", "Right" };
 	IActionTrigger* style_trigger_temp;
 	CamDirPanel = new CXrPanel(-1);
@@ -1625,7 +1625,7 @@ int SVUI::InitModeSelPanel()
 {
 	////////////////////////style panel////////////////////////
 	Int32 lid;
-	static char* styleText[] = {
+	static const char* styleText[] = {
 	"Rotate", "Surround View", "Top View", "Cross View","Panarama View" };
 	IActionTrigger* style_trigger_temp;
 	ModeSelectPanel = new CXrPanel(-1);
@@ -1667,7 +1667,7 @@ int SVUI::InitCANSimulatePanel()
 	Int32 lid;
 	
 	IActionTrigger* style_trigger_temp;
-	static char* styleText[] = {
+	static const char* styleText[] = {
 	"wheel turn", "driver door", "front right door", "rear left door","rear right door" ,"turn left","turn right"};
 	
 	CANSimpanel = new CXrPanel(-1);
@@ -1704,7 +1704,7 @@ int SVUI::InitZoomPanel()
 	Int32 lid;
 	
 	IActionTrigger* style_trigger_temp;
-	static char* styleText[] = {
+	static const char* styleText[] = {
 	"Zoom In", "Zoom Out", "front right door", "rear left door","rear right door" };
 	
 	Zoompanel = new CXrPanel(-1);
@@ -1977,7 +1977,7 @@ AliCtrlSelFB->SetOpacity(0.0);
 
 int SVUI::InitAutoshowProductPanel()
 {
-	static char* settingText[] = {
+	static const char* settingText[] = {
 	"SSR", "IFV", "ESR", "BEV" };
 
 	Int32 lid = m_node->CreateSpirit(settingspanel->GetRootId(), InsertFlag_Child, -1, 0, 0, 0, 0, SETTINGSPANEL_WIDTH, SETTINGSPANEL_HEIGHT);
@@ -2013,7 +2013,7 @@ int SVUI::InitPositionAdjustPanel()
 	 PositionSubContentLayer = m_node->GetSpirit(lid);
 	 PositionSubContentLayer->SetTransitionStyle(500, AnimationStyle_EaseOut, AP_OPACITY);
 	 
-	 static char* PositionText[] = {
+	 static const char* PositionText[] = {
 	 "X+", "Y+","Z+", "RotX+","RotY+","RotZ+","Save","ZoomIn" "X-","Y-", "Z-", "RotX-", "RotY-","RotZ-","Cancel","ZoomOut"};
 	 
 	 
@@ -2225,7 +2225,7 @@ void SVUI::InitModelPanel()
 {
 	Int32 lid;
 	IActionTrigger* style_trigger_temp[4];
-     char *Text[4]={"SUV","CAR","TRUCK","UFO"};
+     const char *Text[4]={"SUV","CAR","TRUCK","UFO"};
 
 #define MODEL_PANEL_X_OFFSET 20
 #define MODEL_PANEL_Y_OFFSET 10
@@ -2268,7 +2268,7 @@ void SVUI::InitColorPanel()
 {
 	Int32 lid;
 	IActionTrigger* style_trigger_temp;
-     char *Text[5]={"RED","BLACK","WHITE","GRAY","YELLOW"};
+     const char *Text[5]={"RED","BLACK","WHITE","GRAY","YELLOW"};
 
 #define COLOR_PANEL_X_OFFSET 20
 #define COLOR_PANEL_Y_OFFSET 10

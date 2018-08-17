@@ -101,8 +101,8 @@ class CSVV302RecordTab : public ISVHmi
 
     unsigned char *HmiGetSvresFile(int index);
 
-    unsigned char *m_hmiSvresFileName[MAX_SVRES_NUM];
-    unsigned char m_currentSvresNum;
+    char *m_hmiSvresFileName[MAX_SVRES_NUM];
+    char m_currentSvresNum;
 
     int m_screenWidth;
     int m_screenHeight;
