@@ -126,7 +126,7 @@ enum
 #define REAR_LEFT_DOOR_POS  2
 #define REAR_RIGHT_DOOR_POS  3
 
-typedef enum CameraPosition {
+enum CameraPosition {
 	CameraPosition_Free			= 0x00000000,
 	CameraPosition_Back			= 0x00000001,
     CameraPosition_Front		= 0x00000002,

@@ -11,7 +11,7 @@
 #define CV_PI 3.1416926
 
 #define  MAXPOINTNUM 1
-#define FLT_MIN 1.1e-30f
+//#define FLT_MIN 1.1e-30f
 
 #ifndef ABS
 #define ABS(x) ((x) >= 0 ? (x):-(x))

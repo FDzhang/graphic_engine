@@ -44,7 +44,7 @@
 			if(initFlag == 0)\
 			{\
 				m_##name = new type;\
-				initFlag = 1;\				
+				initFlag = 1;\
 				m_##name##InitFlag = 1;\
 			}\
 			if(data == NULL)\
@@ -100,7 +100,7 @@
 			{\
 				m_##name##Param1 = new type1;\\
 				m_##name##Param2 = new type2;\
-				initFlag = 1;\				
+				initFlag = 1;\
 				m_##name##InitFlag = 1;\
 			}\
 			if(data1 == NULL)\
@@ -125,7 +125,7 @@
 			}\
 			if(m_##name##InitFlag == 1)\
 			{\
-				memcpy(data1, m_##name##Param1, sizeof(type1));\			
+				memcpy(data1, m_##name##Param1, sizeof(type1));\
 				memcpy(data2, m_##name##Param2, sizeof(type2));\
 			}\
         }

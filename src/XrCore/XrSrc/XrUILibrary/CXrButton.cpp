@@ -16,7 +16,7 @@ CXrButton::CXrButton(Int32 cornerSize, class IActionTrigger* action, Boolean res
 
 }
 
-xr_state CXrButton::Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, String texBase, String texHit)
+xr_state CXrButton::Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, const char*  texBase, const char* texHit)
 {
 	Float32 tw,th;
 	m_rootId = node->CreateSpirit(targetIndex, flag, -1, 1.0, x, y, 0 ,w,h); 
@@ -47,7 +47,7 @@ xr_state CXrButton::SetTextSize(Float32 size)
 	return XR_OK;
 }
 
-xr_state CXrButton::SetText(String text)
+xr_state CXrButton::SetText(char* text)
 {
 	Float32 w,h,tw,th;
 	w = m_root->GetWidth();

@@ -18,7 +18,7 @@ CXrSelector::~CXrSelector()
 {
 
 }
-xr_state CXrSelector::Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Int32 dx, Int32 dy,  Float32 opacity, String BGTex, String FGTex, Int32 row, Int32 colume)
+xr_state CXrSelector::Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Int32 dx, Int32 dy,  Float32 opacity, const char* BGTex, const char* FGTex, Int32 row, Int32 colume)
 {
 	IMaterial* pMtl=0;
 	ISpirit* pLayer=0;
@@ -148,7 +148,7 @@ Void CXrSelector::SetTextSize(Int32 size)
 	}
 }
 
-Void CXrSelector::SetItemText(Int32 num, String text, Int32 size)
+Void CXrSelector::SetItemText(Int32 num,char* text, Int32 size)
 {
 	Float32 tw, th;
 	Float32 dsx, posx, posy;

@@ -96,7 +96,7 @@ Hmi_Message_T;
 
 #define ACTION_TRIGGER_EVENT_CONSTRUCTION(className, eventDelegateName, eventType, palyloadStruct, payloadName) \
 	private: \
-	CGpuAvmEventDelegate* eventDelegateName; \ 
+	CGpuAvmEventDelegate* eventDelegateName; \
 	palyloadStruct* payloadName; \
 	public: \
 	className()\
@@ -121,7 +121,7 @@ Hmi_Message_T;
 
 #define HMI_BASE_INHERITANCE_FUNC() \
 	public: \
-	virtual int Init(int window_width, int window_height); \ 
+	virtual int Init(int window_width, int window_height); \
 	virtual int Update(Hmi_Message_T& hmiMsg); \
 	virtual int ReturnHmiMsg(Hmi_Message_T* hmi_msg); \
 	virtual int DestroyHmiElems(); 

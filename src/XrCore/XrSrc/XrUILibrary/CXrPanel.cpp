@@ -88,7 +88,7 @@ xr_state CXrPanel::Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, 
 	return XR_OK;
 }
 
-xr_state CXrPanel::Add(IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, String texName)
+xr_state CXrPanel::Add(IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, const char* texName)
 {
 	IMaterial* pMtl=0;
 	Int32 subLayerMtl = node->CreateUIMaterial(Material_UI_Spirit, texName, 0 , &pMtl);

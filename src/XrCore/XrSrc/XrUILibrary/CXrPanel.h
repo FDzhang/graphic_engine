@@ -7,7 +7,7 @@ class CXrPanel : public CXrBaseView
 public:
 	CXrPanel(Int32 cornerSize, Int32 BorderWidth=-1, Boolean hollow=FALSE);
 	CXrPanel();
-	virtual xr_state Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, String texName);
+	virtual xr_state Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity,const char* texName);
 	virtual xr_state Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, Int32 mtlId);
 	//virtual Void SetOpacity(Float32 opacity);
 	//virtual Void SetPosition(Int32 x, Int32 y);

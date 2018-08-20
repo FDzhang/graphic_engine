@@ -8,9 +8,9 @@ class CXrButton : public CXrBaseView
 public:
 	CXrButton(Int32 cornerSize, class IActionTrigger* action=0, Boolean reserveState=0);
 	~CXrButton();
-	virtual xr_state Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, String texBase, String texHit);
+	virtual xr_state Add(class IUINode* node ,Int32 targetIndex, InsertFlag flag, Int32 x, Int32 y, Int32 w, Int32 h, Float32 opacity, const char* texBase, const char* texHit);
 	virtual Void* GetObject() { return (Void*)this; }
-	xr_state SetText(String text);
+	xr_state SetText(char* text);
 	xr_state SetTextSize(Float32 size);
 	virtual Void SetOpacity(Float32 opacity);
 	virtual Void SetActionDelegate(IActionTrigger* action) { buttonAction = action; }

@@ -79,8 +79,8 @@ void SVNode2DStichNew::InitStichAreaRT(void)
 	};
 	float *pCarRect;
 
-	char *MeshName[eCarImageMesh+1]={"FrontMesh","RearMesh","LeftMesh","RightMesh","FrontLeftMesh","FrontRightMesh","RearLeftMesh","RearRightMesh","Car"};
-	char *Model[eCarImageMesh+1]={"0","1","2","3","4","5","6","7","8"};
+	const char *MeshName[eCarImageMesh+1]={"FrontMesh","RearMesh","LeftMesh","RightMesh","FrontLeftMesh","FrontRightMesh","RearLeftMesh","RearRightMesh","Car"};
+	const char *Model[eCarImageMesh+1]={"0","1","2","3","4","5","6","7","8"};
 
 	m_StichAreaNodeId = rm->CreateRenderTarget(STICH_AERA_WIDTH, STICH_AERA_HEIGHT, XR_R8G8B8A8, XR_NONE, &m_StichAreaRT);
 
@@ -307,8 +307,8 @@ void SVNode2DStichNew::InitStichKeyFrameNodeRT(int j)
 	float texture[4]={0.0,1.0,1.0,0.0};
 	float *pCarRect;
 
-	char *MeshName[eCarImageMesh+1]={"FrontMesh","RearMesh","LeftMesh","RightMesh","FrontLeftMesh","FrontRightMesh","RearLeftMesh","RearRightMesh","Car"};
-	char *Model[eCarImageMesh+1]={"0","1","2","3","4","5","6","7","a"};
+	const char *MeshName[eCarImageMesh+1]={"FrontMesh","RearMesh","LeftMesh","RightMesh","FrontLeftMesh","FrontRightMesh","RearLeftMesh","RearRightMesh","Car"};
+	const char *Model[eCarImageMesh+1]={"0","1","2","3","4","5","6","7","a"};
 
 	m_StichNodeId[j] = rm->CreateRenderTarget(STICH_AERA_WIDTH, STICH_AERA_HEIGHT, XR_R8G8B8A8, XR_NONE, &m_StichNodeRT[j]);
 

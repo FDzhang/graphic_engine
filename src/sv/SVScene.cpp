@@ -858,7 +858,7 @@ void SVScene::InitObjectNode(BEV_CONFIG_T  pConfig)
     wheelRot->SetDeltaUpdate(0);
 #ifdef CAR_MODEL
 	//wheelRot->Start();
-#define SCALE_CAR_MIDDLE  0.54
+//#define SCALE_CAR_MIDDLE  0.54
 	//m_Car->SetScale(SCALE_CAR_MIDDLE*0.2,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*0.65);d
     m_SUV->SetScale(SCALE_CAR_MIDDLE*0.9,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*0.9);
     m_VAN->SetScale(SCALE_CAR_MIDDLE*0.9,SCALE_CAR_MIDDLE,SCALE_CAR_MIDDLE*0.95);
@@ -1840,7 +1840,7 @@ void SVScene::InitTourDisplaySecEffect()
 {
 	IAProperty* val=0;
 
-#define fTransitionTime 5.0
+//#define fTransitionTime 5.0
 #if 0
 	float key[]={0 ,0.0,30.0, 0,0,0,
 	             fTransitionTime ,180.0,90.0, 0,0,0,
@@ -1895,14 +1895,14 @@ void SVScene::InitBevDisplayEffect()
 	IAProperty* val=0;
 
 #define DISTANCE_SCALE	-400
-#define TIME_INT   2
+//#define TIME_INT   2
 #define PAUSE_TIME  0.8
 #define ZOOM_IN_TIME  0.4
 #define ZOOM_OUT_TIME 1.2
 #define ZOOM_OUT_PAUSE_TIME 1.4
 #define ANIMATE_START_TIME 0.8
-#define INIT_SCALE	0.05
-#define INIT_SCALE_Z	0.05
+//#define INIT_SCALE	0.05
+//#define INIT_SCALE_Z	0.05
 #define OBJ_ZOOM_IN_DIST  1500.0
 #define OBJ_ZOOM_IN_DIST_SIDE  1500.0
 #define SIDE_VIEW_ANGLE_Y   20.0
@@ -2070,7 +2070,7 @@ void SVScene::SetupLisence()
 }
 #define FRAME_BUFFER_TEXT_WIDTH 160
 #define FRAME_BUFFER_TEXT_HEIGHT 160
-#define SIDEMIRRORDEGREE 0.3
+//#define SIDEMIRRORDEGREE 0.3
 
 void SVScene::InitViewNode()
 {
@@ -3232,8 +3232,8 @@ void SVScene::EnterFreeView(Int32 pos)
         scrollX->DockToValue(0);
         scrollY->DockToValue(25);
 #endif
-#define AT_X SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X SIDE_POS_WIDTH
+//efine AT_Z SIDE_POS_FRONT
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
         m_objectCamera->SetPosition(AT_X, 0, AT_Z);
@@ -3246,8 +3246,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
 	}
 	else if (pos == CameraPosition_Left_Rear) {
-#define AT_X -SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X -SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT
 		m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
 		m_sceneCamera->LookAt(AT_X, 0, 0);
 		m_objectCamera->SetPosition(AT_X, 0, AT_Z);
@@ -3258,8 +3258,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
 	}
     else if (pos == CameraPosition_Right_Rear) {
-#define AT_X SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
         m_objectCamera->SetPosition(AT_X, 0, AT_Z);
@@ -3270,8 +3270,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
     }
     else if (pos == CameraPosition_Left_Front) {
-#define AT_X -SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X -SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT
 #if 1
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
@@ -3289,8 +3289,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
     }
     else if (pos == CameraPosition_Right_Front) {
-#define AT_X SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT
 #if 1
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
@@ -3309,8 +3309,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
     }
     else if (pos == CameraPosition_Left_Rear_Light) {
-#define AT_X -SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X -SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT
 #if 1
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
@@ -3329,8 +3329,8 @@ void SVScene::EnterFreeView(Int32 pos)
 
     }
     else if (pos == CameraPosition_Right_Rear_Light) {
-#define AT_X SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT
+//#define AT_X SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT
 #if 1
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
@@ -3350,8 +3350,8 @@ void SVScene::EnterFreeView(Int32 pos)
     }
     else if(CameraPosition_Left_Front_Light == pos)
     {
-#define AT_X SIDE_POS_WIDTH
-#define AT_Z SIDE_POS_FRONT_HIGH_SPEED
+//#define AT_X SIDE_POS_WIDTH
+//#define AT_Z SIDE_POS_FRONT_HIGH_SPEED
 #if 1
         m_sceneCamera->SetPosition(AT_X, 0, AT_Z);
         m_sceneCamera->LookAt(AT_X, 0, 0);
@@ -3432,9 +3432,9 @@ void SVScene::EnterFreeView(Int32 pos)
 #define AT_Y -560
 #define AT_Z  400
 #else
-#define AT_X 0.0
-#define AT_Z -520
-#define AT_Y 1200
+//#define AT_X 0.0
+//#define AT_Z -520
+//#define AT_Y 1200
 #endif
         m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
         m_sceneCamera->LookAt(0, AT_Y, 2*AT_Z);
@@ -3464,9 +3464,9 @@ void SVScene::EnterFreeView(Int32 pos)
     }
     else if (pos == CameraPosition_BMW_Left_Front) {
     
-#define AT_X -2000
-#define AT_Y -100
-#define AT_Z -2250                    
+//#define AT_X -2000
+//#define AT_Y -100
+//#define AT_Z -2250                    
             m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
             m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.3*AT_Z);
             m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3478,9 +3478,9 @@ void SVScene::EnterFreeView(Int32 pos)
              }
     
              else if (pos == CameraPosition_BMW_Left) {
-#define AT_X -3600
-#define AT_Y -100
-#define AT_Z 0                   
+//#define AT_X -3600
+//#define AT_Y -100
+//#define AT_Z 0                   
                 m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
                 m_sceneCamera->LookAt(0.25*AT_X, AT_Y, AT_Z);
                 m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3493,9 +3493,9 @@ void SVScene::EnterFreeView(Int32 pos)
     
              else if (pos == CameraPosition_BMW_Left_Rear) {
     
-#define AT_X -1150
-#define AT_Y -100
-#define AT_Z 2950
+//#define AT_X -1150
+//#define AT_Y -100
+//#define AT_Z 2950
                        m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
             m_sceneCamera->LookAt(0.5*AT_X, AT_Y, 0.2*AT_Z);
             m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3508,9 +3508,9 @@ void SVScene::EnterFreeView(Int32 pos)
              
              else if (pos == CameraPosition_BMW_Right_Front) {
              
-#define AT_X 2000
-#define AT_Y -100
-#define AT_Z -2250                    
+//#define AT_X 2000
+//#define AT_Y -100
+//#define AT_Z -2250                    
                      m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
                      m_sceneCamera->LookAt(0.25*AT_X, AT_Y, 0.3*AT_Z);
                      m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3522,9 +3522,9 @@ void SVScene::EnterFreeView(Int32 pos)
                        }
              
                        else if (pos == CameraPosition_BMW_Right) {
-#define AT_X 3600
-#define AT_Y -100
-#define AT_Z 0                   
+//#define AT_X 3600
+//#define AT_Y -100
+//#define AT_Z 0                   
                             m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
                             m_sceneCamera->LookAt(0.25*AT_X, AT_Y, AT_Z);
                             m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3537,9 +3537,9 @@ void SVScene::EnterFreeView(Int32 pos)
              
                        else if (pos == CameraPosition_BMW_Right_Rear) {
              
-#define AT_X 1150
-#define AT_Y -100
-#define AT_Z 2950
+//#define AT_X 1150
+//#define AT_Y -100
+//#define AT_Z 2950
                                 m_sceneCamera->SetPosition(AT_X, AT_Y, AT_Z);
                                 m_sceneCamera->LookAt(0.5*AT_X, AT_Y, 0.2*AT_Z);
                                 m_objectCamera->SetPosition(AT_X, AT_Y, AT_Z);
@@ -3550,7 +3550,7 @@ void SVScene::EnterFreeView(Int32 pos)
                        }
 
 					   else if (pos == CameraPosition_BMW_3D_Rear) {
-#define AT_Z -3600
+//#define AT_Z -3600
 
 					       m_sceneCamera->SetPosition(0, 0, AT_Z);
 				           m_sceneCamera->LookAt(0.0,0,-300.0);
