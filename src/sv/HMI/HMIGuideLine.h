@@ -33,7 +33,7 @@
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 #include "../../XrCore/XrSrc/XrUILibrary/XrUILibrary.h"
 #include "../DataStruct.h"
-typedef enum
+enum
 {
     GUIDELINE_NORMAL,
 };

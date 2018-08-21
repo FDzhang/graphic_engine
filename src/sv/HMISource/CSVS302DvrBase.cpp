@@ -97,7 +97,7 @@ public:
 };
 
 
-CSVS302DvrBase::CSVS302DvrBase(IUINode* pUiNode = NULL, int pUiNodeId = -1):ISVHmi::ISVHmi(pUiNode, pUiNodeId)
+CSVS302DvrBase::CSVS302DvrBase(IUINode* pUiNode , int pUiNodeId ):ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
     m_avmViewLastStatus = 0;
 	memset(m_trigger, 0, S302_DVR_BASE_ELEMEMT_NUM * sizeof(IActionTrigger*));
@@ -371,7 +371,7 @@ int CSVS302DvrBase::Update(Hmi_Message_T& hmiMsg)
 
 	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
 
-    if(mainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_OFF_IMAGE)
+    if((int)mainMenuData.iconStatus[MAIN_MENU_DVR] == (int)BUTTON_OFF_IMAGE)
     {
         /*char* hmiName;
 		unsigned char currentVehicleTypeId;

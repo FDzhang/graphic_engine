@@ -32,7 +32,7 @@
 #include "../HMI/HMIGuideLine.h"
 #include "../HMI/HMIButton.h"
 
-typedef enum AvmTimeStitcherErrorCodeTag
+enum AvmTimeStitcherErrorCodeTag
 {
 	TIME_STITCHER_NORMAL = 0,
 	TIME_STITCHER_XRCORE_NULL,

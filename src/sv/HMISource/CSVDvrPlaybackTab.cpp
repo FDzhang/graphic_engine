@@ -607,7 +607,7 @@ CSVDvrPlaybackTab::CSVDvrPlaybackTab(IUINode* pUiNode, int pUiNodeId): ISVHmi::I
 	m_dvrAlgoPlaybackMenu = NULL;
 	m_playbackMode = -1;
 
-	memset(m_trigger, NULL, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
+	memset(m_trigger, 0, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 1, DVR_PLAYBACK_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_textEditVisibility, 0, PB_TEXT_DISPLAY_NUM * sizeof(unsigned char));
@@ -1314,7 +1314,7 @@ int CSVDvrPlaybackTab::Update(Hmi_Message_T & hmiMsg)
                     m_menuVisibility = GUI_SIDEBAR_STATUS_SHOW;
                 }
         
-                for (int i = DVR_PLAYBACK_TAB_MENU_BKG; i < DVR_PLAYBACK_TAB_ELEMEMT_NUM; i++)
+                for (int k = DVR_PLAYBACK_TAB_MENU_BKG; k < DVR_PLAYBACK_TAB_ELEMEMT_NUM; k++)
                 {
                     m_buttonVisibility[i] = m_menuVisibility;
                 }

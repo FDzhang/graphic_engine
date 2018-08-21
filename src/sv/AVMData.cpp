@@ -358,11 +358,11 @@ void AVMData::CalcUVTextureSV(float *pWorldin,float *texture,int chann)
 	   pWorld[1]=pWorldin[1];
 	   pWorld[2]=pWorldin[2];
 #endif	   
-	WorldCoord = XRVec4::XRVec4(pWorld[0],pWorld[1],pWorld[2],1.0);
+	WorldCoord = XRVec4(pWorld[0],pWorld[1],pWorld[2],1.0);
 
 	m_pAVMData->m_exParam->GetTransformMatrix(&uvTransform,chann);
 	m_pAVMData->m_exParam->GetInnerModelTransform(&temp_trans,chann);
-	InCamCoord = (*uvTransform)*(WorldCoord+XRVec4::XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
+	InCamCoord = (*uvTransform)*(WorldCoord+XRVec4(temp_trans[0],temp_trans[1],temp_trans[2],0.0));
 
 	pt3d[0] = InCamCoord.x;
 	pt3d[1] = InCamCoord.y;
@@ -616,7 +616,7 @@ void AVMData::CalcUVTextureCV(float *pWorld,float *texture,int chann)
   float *temp_trans;
   XRMat4 *uvTransform;
 
-  WorldCoord = XRVec4::XRVec4(-pWorld[2],pWorld[0],-pWorld[1],1.0);
+  WorldCoord = XRVec4(-pWorld[2],pWorld[0],-pWorld[1],1.0);
 
   //m_pAVMData->m_exParam->GetTransformMatrix(&uvTransform,chann);
   //m_pAVMData->m_exParam->GetInnerModelTransform(&temp_trans,chann);

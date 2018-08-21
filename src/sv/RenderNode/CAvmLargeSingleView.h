@@ -29,7 +29,7 @@
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 
-typedef enum AvmLargeSingleViewErrorCodeTag
+enum AvmLargeSingleViewErrorCodeTag
 {
 	LARGE_SINGLE_VIEW_NORMAL = 0,
 

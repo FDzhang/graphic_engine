@@ -33,7 +33,7 @@
 
 using namespace std;
 
-typedef enum AvmLogicManagerErrorCodeTag
+enum AvmLogicManagerErrorCodeTag
 {
 	AVM_LOGIC_CONTROL_NORMAL,
 	AVM_LOGIC_VIEW_MODEL_INIT_FAILED,

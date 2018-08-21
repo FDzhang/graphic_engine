@@ -55,7 +55,7 @@ public:
 
 CSVSystemHmi::CSVSystemHmi()
 {
-	memset(m_trigger, NULL, SYSTEM_HMI_ELEMEMT_NUM * sizeof(IActionTrigger*));
+	memset(m_trigger, 0, SYSTEM_HMI_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, SYSTEM_HMI_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 1, SYSTEM_HMI_ELEMEMT_NUM * sizeof(unsigned char));
 	

@@ -1,9 +1,9 @@
 #include "CSVDvrFileListHmi.h"
 
-CSVDvrFileListHmi::CSVDvrFileListHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
+CSVDvrFileListHmi::CSVDvrFileListHmi(IUINode* pUiNode , int pUiNodeId ): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	m_imageGridVisibility = 0;
-	memset(m_gridListTrigger, NULL, IMAGE_GRID_LIST_ITEM_NUM * sizeof(IActionTrigger*));
+	memset(m_gridListTrigger, 0, IMAGE_GRID_LIST_ITEM_NUM * sizeof(IActionTrigger*));
     memset(m_trigger, 0, FILE_LIST_ELEM_NUM * sizeof(IActionTrigger*));
     memset(m_buttonVisibility, 0, FILE_LIST_ELEM_NUM * sizeof(unsigned char));
     memset(m_buttonShowImage, 0, FILE_LIST_ELEM_NUM * sizeof(unsigned char));

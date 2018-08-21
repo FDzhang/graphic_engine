@@ -29,7 +29,7 @@
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 
-typedef enum AvmOverlayErrorCodeTag
+enum AvmOverlayErrorCodeTag
 {
 	AVM_OVERLAY_NORMAL,
 	AVM_OVERLAY_GET_NODE_FALIED,

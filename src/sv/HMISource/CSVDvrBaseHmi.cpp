@@ -168,7 +168,7 @@ public:
 
 CSVDvrBaseHmi::CSVDvrBaseHmi():m_avmViewLastStatus(0)
 {
-	memset(m_trigger, NULL, DVR_BASE_ELEMEMT_NUM * sizeof(IActionTrigger*));
+	memset(m_trigger, 0, DVR_BASE_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_BASE_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 1, DVR_BASE_ELEMEMT_NUM * sizeof(unsigned char));
 

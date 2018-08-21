@@ -91,7 +91,7 @@ void DataExPosParam::Init(char *filename,float vehicle_length,float vehicle_rear
 {
 	float input[24];
 	int i,j,k =0;
-	m_offsetIner2Global  =XRVec4::XRVec4(0,m_space_scale*m_space_y_min,
+	m_offsetIner2Global  = XRVec4(0,m_space_scale*m_space_y_min,
 		-(vehicle_length/2-vehicle_rear_wheel_to_bumper)*SCALE_3D_TO_2D_Y,0.0);
 		m_scale[0]= SCALE_3D_TO_2D_X;
 		m_scale[1]= SCALE_3D_TO_2D_Y;
@@ -119,7 +119,7 @@ void DataExPosParam::Init(str_avm_pose_t *pPose,float vehicle_length,float vehic
 {
 
     int i,j,k =0;
-    m_offsetIner2Global  =XRVec4::XRVec4(0,m_space_scale*m_space_y_min,
+    m_offsetIner2Global  =XRVec4(0,m_space_scale*m_space_y_min,
     	-(vehicle_length/2-vehicle_rear_wheel_to_bumper)*SCALE_3D_TO_2D_Y,0.0);
     	m_scale[0]= SCALE_3D_TO_2D_X;
     	m_scale[1]= SCALE_3D_TO_2D_Y;
@@ -147,7 +147,7 @@ void DataExPosParam::Init(str_avm_pose_t *pPose,float vehicle_length,float vehic
 {
 
     int i,j,k =0;
-    m_offsetIner2Global = XRVec4::XRVec4(0,m_space_scale*m_space_y_min,
+    m_offsetIner2Global = XRVec4(0,m_space_scale*m_space_y_min,
     	-(vehicle_length/2-vehicle_rear_wheel_to_bumper)*SCALE_3D_TO_2D_Y,0.0);
     	m_scale[0]= SCALE_3D_TO_2D_X;
     	m_scale[1]= SCALE_3D_TO_2D_Y;
@@ -222,14 +222,14 @@ void DataExPosParam::InitModleTransformMatrix(XRMat4 *pModelTransform)
 
 void DataExPosParam::Calc3DAVMTransform(XRMat4 *modle,float *Rot, float *intrans,XRVec4 offset,float *scale)
 {
-	XRVec4 offsetIner2Global  =XRVec4::XRVec4(offset.x,offset.y, offset.z,0.0);
+	XRVec4 offsetIner2Global  =XRVec4(offset.x,offset.y, offset.z,0.0);
 	
 	//convert matrix from input2D coorinate system to 3D coordinate system
-	XRMat4 InputCam2InnerCam= XRMat4::XRMat4(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+	XRMat4 InputCam2InnerCam= XRMat4(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
 	//convert matrix from input2D coorinate system to 3D coordinate system		
-	XRMat4 InnerGlobal2InputGlobal = XRMat4::XRMat4(0.0,1.0,0.0,0.0,0.0,0.0,-1.0,0.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0);
+	XRMat4 InnerGlobal2InputGlobal = XRMat4(0.0,1.0,0.0,0.0,0.0,0.0,-1.0,0.0,-1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0);
 	XRMat4 InnerR=	XRMat4::Scale(1.0, 1.0, 1.0);
-	XRVec4 InnerT=XRVec4::XRVec4(0,0,0,0);
+	XRVec4 InnerT= XRVec4(0,0,0,0);
 	XRMat4 ScaleInner2Global = XRMat4::Scale(1.0/scale[0],1.0/scale[1],1.0/scale[2]);
 
 	int i;
@@ -247,11 +247,11 @@ void DataExPosParam::Calc3DAVMTransform(XRMat4 *modle,float *Rot, float *intrans
 		Cvt_Angles_To_Rotation(r,a);	
 
 		//step1: InnerR
-		XRMat4 InputR = XRMat4::XRMat4(r[0],r[1],r[2],0.0,r[3],r[4],r[5],0.0,r[6],r[7],r[8],0,0.0,0.0,0.0,1.0);
+		XRMat4 InputR = XRMat4(r[0],r[1],r[2],0.0,r[3],r[4],r[5],0.0,r[6],r[7],r[8],0,0.0,0.0,0.0,1.0);
 		InnerR = InputCam2InnerCam*InputR*InnerGlobal2InputGlobal*ScaleInner2Global*(modle[i].inverse());
 		
 		//step2: InnerT
-		InnerT = InnerR.inverse()*(InputCam2InnerCam*InputR*InnerGlobal2InputGlobal*ScaleInner2Global*offsetIner2Global-InputCam2InnerCam*InputR*XRVec4::XRVec4(trans[0], trans[1], trans[2], 0));
+		InnerT = InnerR.inverse()*(InputCam2InnerCam*InputR*InnerGlobal2InputGlobal*ScaleInner2Global*offsetIner2Global-InputCam2InnerCam*InputR*XRVec4(trans[0], trans[1], trans[2], 0));
 					
 		 m_uvTransform[i] = InnerR;
 		m_trans_inner_model[3*i] = InnerT.x;			 

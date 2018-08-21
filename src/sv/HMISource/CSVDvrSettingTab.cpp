@@ -286,9 +286,9 @@ public:
 	}
 };
 
-CSVDvrSettingTab::CSVDvrSettingTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
+CSVDvrSettingTab::CSVDvrSettingTab(IUINode* pUiNode , int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-	memset(m_trigger, NULL, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
+	memset(m_trigger, 0, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 0, DVR_SETTING_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	

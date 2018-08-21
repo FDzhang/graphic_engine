@@ -471,11 +471,11 @@ public:
 private:
 };
 
-CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
+CSVS302MainHmi::CSVS302MainHmi(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
     memset(m_subHmiInitFlag, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char)); 
     memset(m_subHmiVisibility, 0, S302_MENU_SUB_HMI_NUM * sizeof(unsigned char));
-    memset(m_subHmi, NULL, S302_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
+    memset(m_subHmi, 0, S302_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
     memset(m_trigger, 0, S302_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
 	memset(m_baseButton, 0, S302_MAIN_ELEMENT_NUM * sizeof(HMIButton));
     memset(m_buttonVisibility, 0, S302_MAIN_ELEMENT_NUM * sizeof(unsigned char));
@@ -835,7 +835,7 @@ int CSVS302MainHmi::Init(int window_width, int window_height)
 		m_carOpacity = 0.3;
 	}
     
-	i = S302_BEV_BK_ICON;
+	int i = S302_BEV_BK_ICON;
 	m_buttonSize[i][BUTTON_SIZE_WIDTH] = (bevCarPos[2] - bevCarPos[0]) * stitchRegionWidth * 0.5;
 	m_buttonSize[i][BUTTON_SIZE_HEIGHT] = (bevCarPos[1] - bevCarPos[3]) * stitchRegionHeight * 0.5;
 	m_buttonPos[i][BUTTON_POS_X] = currentStitchRegion.left + stitchRegionWidth * 0.5 * (1 + bevCarPos[0]);

@@ -28,7 +28,7 @@
 
 #include "../../XrCore/XrSrc/External/XrHeaders.h"
 
-typedef enum AvmMattsViewErrorCodeTag
+enum AvmMattsViewErrorCodeTag
 {
 	MATTS_VIEW_NORMAL = 0,
 	MATTS_VIEW_INIT_FAILED,
@@ -56,7 +56,7 @@ private:
 	float*			  m_singleViewRoi[4];
 };
 
-#endif _CAVM_MATTSVIEW_H_
+#endif
 
 /*===========================================================================*\
  * File Revision History (top to bottom: first revision to last revision)

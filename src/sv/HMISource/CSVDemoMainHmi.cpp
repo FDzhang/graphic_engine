@@ -421,12 +421,12 @@ public:
 private:
 };
 
-CSVDemoMainHmi::CSVDemoMainHmi(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
+CSVDemoMainHmi::CSVDemoMainHmi(IUINode* pUiNode , int pUiNodeId ): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
 	memset(m_subHmiInitFlag, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(unsigned char));	
 	memset(m_subHmiVisibility, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(unsigned char));
-	memset(m_subHmi, NULL, DEMO_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
-	memset(m_trigger, NULL, DEMO_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
+	memset(m_subHmi, 0, DEMO_MENU_SUB_HMI_NUM * sizeof(ISVHmi*));
+	memset(m_trigger, 0, DEMO_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonVisibility, 1, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));	
 	memset(m_buttonImage, 0, DEMO_MAIN_ELEMENT_NUM * sizeof(unsigned char));
 	m_subHmiVisibility[DEMO_SWITCH_VIEW_HMI] = 1;

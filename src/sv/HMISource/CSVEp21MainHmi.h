@@ -45,7 +45,7 @@ public:
     ~CSVEp21MainHmi();
     HMI_BASE_INHERITANCE_FUNC()
 
-    SetElementsVisibility(unsigned char pFlag);
+    int SetElementsVisibility(unsigned char pFlag);
 
 private:
     int SetHmiParams();

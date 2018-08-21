@@ -137,7 +137,7 @@ private:
 
 CSVChangAnMainHmi::CSVChangAnMainHmi()
 {
-	memset(m_trigger, NULL, CHANGAN_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
+	memset(m_trigger, 0, CHANGAN_MAIN_ELEMENT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonVisibility, 1, CHANGAN_MAIN_ELEMENT_NUM * sizeof(unsigned char));
 
 	m_cameraHmiVisibility = 1;

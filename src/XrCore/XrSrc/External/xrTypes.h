@@ -69,7 +69,7 @@ typedef const char*								ConstString;
 #define MAKECOLOR(x) (*((Pixel*)(&x)))
 
 #define SAFE_RELEASE(x) { if (x) x->Release(); x = 0; }
-#define SAFE_DELETE(x) { if (x) delete x; x = 0; }
+#define SAFE_DELETE(x) { if (x) free(x); x = 0; }
 #define SAFE_FREE(x) { if (x) free(x); x = 0; }
 
 //#define XrXRFAILED(x) x

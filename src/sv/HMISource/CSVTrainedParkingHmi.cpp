@@ -70,7 +70,7 @@ CSVTrainedParkingHmi::CSVTrainedParkingHmi(IUINode* pUiNode, int pUiNodeId): ISV
 {
     m_tpButtonClickEvent = new CGpuAvmEventDelegate(TPHMI_EVENT_NAME);
     
-    memset(m_trigger, NULL, TP_ICON_NUMS * sizeof(IActionTrigger*));
+    memset(m_trigger, 0, TP_ICON_NUMS * sizeof(IActionTrigger*));
     memset(tpIcon, 0, sizeof(HMIButton *) * TP_ICON_NUMS);
     m_hmiScroll = NULL;
     m_vehicleType = VEHICLE_TYPE_GEELY;
