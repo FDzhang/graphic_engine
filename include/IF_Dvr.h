@@ -34,12 +34,12 @@
 typedef struct
 {
     //暂时固定itemNum, 后期可调
-    const uint32_t maxItemNum = 6;
-    uint32_t itemNum = maxItemNum;
+    static const uint32_t maxItemNum = 6;
+    static const uint32_t itemNum = maxItemNum;
     struct
     {
         //设置字符串名字地址
-        char* itemName = "";
+        char* itemName ;
         uint32_t thumbnail_width;
         uint32_t thumbnail_height;
         union

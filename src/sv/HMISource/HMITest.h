@@ -20,7 +20,7 @@ public:
 	
 	void InitHMI(int window_width, int window_height);
 	void SetHMIParams();
-	st_ADAS_Mdl_HMI_T* SVNodeTestHMI::GetHMI();
+	st_ADAS_Mdl_HMI_T* GetHMI();
 	void UpdateHMIData(float steer_angle, float vehicle_speed, float yaw_rage);
 
 	void UpdateHMIChainStatus(int chain_status);

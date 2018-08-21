@@ -54,7 +54,7 @@ private:
 
 CSVDemoLkaHmi::CSVDemoLkaHmi(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-    memset(m_trigger, NULL, DEMO_LKA_ICON_NUMS * sizeof(IActionTrigger*));
+    memset(m_trigger, 0, DEMO_LKA_ICON_NUMS * sizeof(IActionTrigger*));
     
     memset(m_buttonVisibility, 1, DEMO_LKA_ICON_NUMS * sizeof(unsigned char));
 

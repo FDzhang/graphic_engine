@@ -33,7 +33,7 @@
 
 CSVS302PdHmi::CSVS302PdHmi(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-    memset(m_trigger, NULL, S302_PD_ELEM_NUMS * sizeof(IActionTrigger*));
+    memset(m_trigger, 0, S302_PD_ELEM_NUMS * sizeof(IActionTrigger*));
     memset(m_buttonVisibility, 0, S302_PD_ELEM_NUMS * sizeof(unsigned char));
     memset(m_buttonImage, 0, S302_PD_ELEM_NUMS * sizeof(unsigned char));
 }

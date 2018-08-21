@@ -403,7 +403,7 @@ void main()\
 	if(AlphaRate > 0.95)\
 	{\
 		gl_FragColor.a = texture2D(sBaseTex,TexCoord).a;\
-	}\	
+	}\
 }";
 XRVertexLayout FR_GlossyAlpha_layout_index = XR_VERTEX_LAYOUT_PNT;
 UInt32 FR_GlossyAlpha_render_state = XR_CULLMODE_FRONT | XR_FRONTFACE_CCW | XR_DEPTHTEST_ENABLE | XR_DEPTHWRITE_ENABLE | XR_DEPTHTEST_LT| XR_BLEND_DEFAULT;
@@ -481,7 +481,7 @@ varying highp vec3  Normal;\n\
 varying highp vec2 TexCoord;\n\
 void main (void)\n\
 {\n\
-	gl_FragColor =vec4(1.0,0.0,0.0,0.3);\n\	
+	gl_FragColor =vec4(1.0,0.0,0.0,0.3);\n\
 }";
 	gl_FragColor.a =texture2D(sampler2d, TexCoord).r;\n\
 gl_FragColor.a = texture2D(samplerAlpha, TexCoord).b;\n

@@ -32,7 +32,7 @@
 
 CSVDemoEolHmi::CSVDemoEolHmi(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-    memset(m_trigger, NULL, DEMO_EOL_ICON_NUMS * sizeof(IActionTrigger*));
+    memset(m_trigger, 0, DEMO_EOL_ICON_NUMS * sizeof(IActionTrigger*));
 
     memset(m_buttonVisibility, 0, DEMO_EOL_ICON_NUMS * sizeof(unsigned char));
 

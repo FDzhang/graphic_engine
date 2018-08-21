@@ -1,7 +1,7 @@
 #include "HMITest.h"
 
-static int SVNodeTestHMI::alg_status = 0;
-static int SVNodeTestHMI::demo_status = 0;
+int SVNodeTestHMI::alg_status = 0;
+int SVNodeTestHMI::demo_status = 0;
 
 enum Function_Mode_Tag
 {
