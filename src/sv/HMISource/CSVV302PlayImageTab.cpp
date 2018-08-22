@@ -1,7 +1,7 @@
 #include "CSVV302PlayImageTab.h"
 #include "gpu_log.h"
 
-CSVV302PlayImageTab::CSVV302PlayImageTab(IUINode *pUiNode = NULL, int pUiNodeId = -1)
+CSVV302PlayImageTab::CSVV302PlayImageTab(IUINode *pUiNode , int pUiNodeId )
 {
     m_currentSvresNum = 0;
 }

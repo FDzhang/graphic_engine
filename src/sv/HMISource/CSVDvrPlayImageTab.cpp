@@ -382,7 +382,7 @@ CSVDvrPlayImageTab::~CSVDvrPlayImageTab()
 
 CSVDvrPlayImageTab::CSVDvrPlayImageTab(IUINode *pUiNode, int pUiNodeId) : ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-    memset(m_trigger, NULL, DVR_PLAYBACK_IMAGE_TAB_ELEMEMT_NUM * sizeof(IActionTrigger *));
+    memset(m_trigger, 0, DVR_PLAYBACK_IMAGE_TAB_ELEMEMT_NUM * sizeof(IActionTrigger *));
     memset(m_buttonStatus, 0, DVR_PLAYBACK_IMAGE_TAB_ELEMEMT_NUM * sizeof(unsigned char));
     memset(m_buttonVisibility, 1, DVR_PLAYBACK_IMAGE_TAB_ELEMEMT_NUM * sizeof(unsigned char));
     memset(m_textEditVisibility, 0, IMAGE_TEXT_DISPLAY_NUM * sizeof(unsigned char));

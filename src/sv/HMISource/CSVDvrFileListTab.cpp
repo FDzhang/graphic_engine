@@ -397,14 +397,14 @@ public:
 };
 
 
-CSVDvrFileListTab::CSVDvrFileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
+CSVDvrFileListTab::CSVDvrFileListTab(IUINode* pUiNode , int pUiNodeId ): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-	memset(m_trigger, NULL, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
+	memset(m_trigger, 0, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(IActionTrigger*));
 	memset(m_buttonStatus, 0, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	memset(m_buttonVisibility, 0, DVR_FILELIST_TAB_ELEMEMT_NUM * sizeof(unsigned char));
 	m_imageGridVisibility = 0;
 	memset(m_dialogVisibility, 0, DVR_FILELIST_DIALOG_NUM * sizeof(unsigned char));
-	memset(m_gridListTrigger, NULL, IMAGE_GRID_LIST_ITEM_NUM * sizeof(IActionTrigger*));
+	memset(m_gridListTrigger, 0, IMAGE_GRID_LIST_ITEM_NUM * sizeof(IActionTrigger*));
 }
 
 CSVDvrFileListTab::~CSVDvrFileListTab()

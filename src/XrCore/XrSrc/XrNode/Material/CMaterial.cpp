@@ -65,7 +65,7 @@ CMaterial::~CMaterial()
 	if (m_effect) {
 		IRenderDelegate* dele = m_effect->GetRenderDelegate();
 		if (!(Material_Custom & m_type) && dele) {
-			delete dele;
+			free(dele);
 		}
 		delete m_effect;
 	}

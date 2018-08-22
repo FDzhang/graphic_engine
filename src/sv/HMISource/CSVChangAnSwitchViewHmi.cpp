@@ -363,7 +363,7 @@ private:
 
 CSVChangAnSwitchViewHmi::CSVChangAnSwitchViewHmi(IUINode* pUiNode, int pUiNodeId): ISVHmi::ISVHmi(pUiNode, pUiNodeId)
 {
-	memset(m_trigger, NULL, CHANGAN_ICON_NUMS * sizeof(IActionTrigger*));
+	memset(m_trigger, 0, CHANGAN_ICON_NUMS * sizeof(IActionTrigger*));
 	
 	memset(m_buttonVisibility, 1, CHANGAN_ICON_NUMS * sizeof(unsigned char));
 

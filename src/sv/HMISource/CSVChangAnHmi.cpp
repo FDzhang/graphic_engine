@@ -7,7 +7,7 @@ extern float car_rect[4];
 static float leftPanelWidth = 100.0;
 static float topPanelHeight = 80.0;
 
-typedef enum ChanganViewType {
+enum ChanganViewType {
 	CCAG_FRONT_SINGLE_VIEW			= 0x00000000,
 	CCAG_REAR_SINGLE_VIEW			= 0x00000001,
     CCAG_LEFT_SINGLE_VIEW		    = 0x00000002,

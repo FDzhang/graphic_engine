@@ -300,7 +300,7 @@ void SVTimeStitcher::add_new_image()
         prev_T.pop_back();
     }
 
-    RT initialRT{ { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0 } };
+    RT initialRT={ { 1.0, 0.0, 0.0, 0.0, 1.0, 0.0 } };
     prev_T.push_front(initialRT);
 
     if (m_iFrame < IMG_NUM_LIMIT - 1)

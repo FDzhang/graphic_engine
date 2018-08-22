@@ -652,7 +652,7 @@ void CAvmTimeStitcherNode::RefreshHmiGuideline()
 
     CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&s302MainMenuData);
 
- 	if(s302MainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_ON_IMAGE)
+ 	if((int)s302MainMenuData.iconStatus[MAIN_MENU_DVR] == (int)BUTTON_ON_IMAGE)
 	{	
 		for (int i = DEMO_GUIDELINE_BEV_DYNAMIC_POS_L; i <= DEMO_GUIDELINE_BEV_DYNAMIC_POS_R3; i++)
 		{

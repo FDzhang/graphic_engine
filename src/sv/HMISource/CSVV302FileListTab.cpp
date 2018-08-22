@@ -36,7 +36,7 @@ public:
 	}
 };    
 
-CSVV302FileListTab::CSVV302FileListTab(IUINode* pUiNode = NULL, int pUiNodeId = -1)
+CSVV302FileListTab::CSVV302FileListTab(IUINode* pUiNode , int pUiNodeId )
 {}
 
 CSVV302FileListTab::~CSVV302FileListTab()

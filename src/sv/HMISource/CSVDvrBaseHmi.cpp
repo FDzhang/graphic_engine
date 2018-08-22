@@ -521,7 +521,7 @@ int CSVDvrBaseHmi::Update(Hmi_Message_T& hmiMsg)
 
 	CAvmRenderDataBase::GetInstance()->GetMainMenuStatus(&mainMenuData);
 
-    if(mainMenuData.iconStatus[MAIN_MENU_DVR] == BUTTON_OFF_IMAGE)
+    if((int)mainMenuData.iconStatus[MAIN_MENU_DVR] == (int)BUTTON_OFF_IMAGE)
     {
         CAvmRenderDataBase::GetInstance()->SetDisplayViewCmd(m_avmViewLastStatus);
         char* hmiName;
